@@ -1,0 +1,4 @@
+interface:
+  display_name: "TapQR Frontend Architecture"
+  short_description: "Choose state and component boundaries well"
+  default_prompt: "Use $tap-qr-frontend-architecture when structuring frontend features or shared state."

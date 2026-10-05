@@ -1,0 +1,4 @@
+interface:
+  display_name: "TapQR Code Quality"
+  short_description: "Write maintainable TapQR frontend code"
+  default_prompt: "Use $tap-qr-code-quality when implementing or refactoring code in tap-qr."

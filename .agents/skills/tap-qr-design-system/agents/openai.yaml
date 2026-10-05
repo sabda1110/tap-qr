@@ -1,0 +1,4 @@
+interface:
+  display_name: "TapQR Design System"
+  short_description: "Build consistent responsive TapQR interfaces"
+  default_prompt: "Use $tap-qr-design-system when designing or implementing TapQR UI."

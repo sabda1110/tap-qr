@@ -1,0 +1,4 @@
+interface:
+  display_name: "TapQR i18n"
+  short_description: "Keep Indonesian and English content aligned"
+  default_prompt: "Use $tap-qr-i18n when adding or changing user-facing TapQR content."
