@@ -2,7 +2,7 @@ import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 import { getCurrentAuthenticatedUser } from "../server/auth/auth.functions";
 
-export const Route = createFileRoute("/$locale/dashboard/user")({
+export const Route = createFileRoute("/$locale/dashboard/admin")({
   loader: async ({ params }) => {
     const user = await getCurrentAuthenticatedUser();
     if (!user) {
@@ -13,9 +13,9 @@ export const Route = createFileRoute("/$locale/dashboard/user")({
       });
     }
 
-    if (user.role === "admin") {
+    if (user.role !== "admin") {
       throw redirect({
-        to: "/$locale/dashboard/admin",
+        to: "/$locale/dashboard/user",
         params: { locale: params.locale },
         replace: true,
       });
@@ -23,9 +23,9 @@ export const Route = createFileRoute("/$locale/dashboard/user")({
 
     return user;
   },
-  component: UserDashboardLayoutRoute,
+  component: AdminDashboardLayoutRoute,
 });
 
-function UserDashboardLayoutRoute() {
+function AdminDashboardLayoutRoute() {
   return <Outlet />;
 }

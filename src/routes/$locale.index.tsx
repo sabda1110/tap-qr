@@ -8,7 +8,7 @@ export const Route = createFileRoute("/$locale/")({
     const user = await getCurrentAuthenticatedUser();
     if (user) {
       throw redirect({
-        to: "/$locale/dashboard/user",
+        to: user.role === "admin" ? "/$locale/dashboard/admin" : "/$locale/dashboard/user",
         params: { locale: params.locale },
         replace: true,
       });

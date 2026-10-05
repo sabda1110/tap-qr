@@ -14,6 +14,14 @@ export const Route = createFileRoute("/$locale/dashboard/user/qr-generator")({
       });
     }
 
+    if (user.role === "admin") {
+      throw redirect({
+        to: "/$locale/dashboard/admin",
+        params: { locale: params.locale },
+        replace: true,
+      });
+    }
+
     return user;
   },
   component: QrGeneratorRoute,

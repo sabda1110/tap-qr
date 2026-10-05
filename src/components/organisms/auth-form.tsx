@@ -24,8 +24,11 @@ export function AuthForm({ content, feedback, language, mode }: AuthFormProps) {
   const { error, isSubmitting, registerWithEmail, signInWithEmail, signInWithGoogle } =
     useFirebaseAuthentication({
       messages: feedback,
-      onAuthenticated: () =>
-        navigate({ to: "/$locale/dashboard/user", params: { locale: language } }),
+      onAuthenticated: (profile) =>
+        navigate({
+          to: profile.role === "admin" ? "/$locale/dashboard/admin" : "/$locale/dashboard/user",
+          params: { locale: language },
+        }),
     });
 
   const submitEmailForm = (values: LoginValues | RegisterValues) => {

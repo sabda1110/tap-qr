@@ -6,7 +6,7 @@ type BrandLogoProps = {
   homeLabel: string;
   language: Language;
   theme?: "light" | "dark";
-  to?: "/$locale" | "/$locale/dashboard/user";
+  to?: "/$locale" | "/$locale/dashboard/user" | "/$locale/dashboard/admin";
 };
 
 export function BrandLogo({

@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 
 import type { Messages } from "../i18n";
+import type { UserProfile } from "../lib/auth/user-profile";
 import { firebaseAuth } from "../lib/firebase/client";
 import { syncAuthenticatedUser } from "../server/auth/auth.functions";
 
@@ -25,7 +26,7 @@ type RegistrationCredentials = Credentials & {
 
 type UseFirebaseAuthenticationOptions = {
   messages: AuthMessages;
-  onAuthenticated: () => void | Promise<void>;
+  onAuthenticated: (profile: UserProfile) => void | Promise<void>;
 };
 
 const googleProvider = new GoogleAuthProvider();
@@ -41,8 +42,8 @@ export function useFirebaseAuthentication({
   const completeAuthentication = useCallback(
     async (user: User) => {
       const idToken = await user.getIdToken(true);
-      await syncAuthenticatedUser({ data: { idToken } });
-      await onAuthenticated();
+      const profile = await syncAuthenticatedUser({ data: { idToken } });
+      await onAuthenticated(profile);
     },
     [onAuthenticated],
   );
