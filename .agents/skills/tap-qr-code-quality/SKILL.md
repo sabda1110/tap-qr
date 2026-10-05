@@ -48,6 +48,10 @@ Keep code easy to scan, change, test, and remove.
 - Run TypeScript checks after code changes.
 - Run the production build for changes affecting routing, rendering, imports, or
   bundling.
-- Visually inspect desktop and mobile when UI changes.
+- Do not open or operate a browser for previews or visual QA unless the user
+  explicitly requests browser inspection in the current request. Do not start a
+  development server solely for visual inspection.
+- For UI changes, implement the relevant responsive states and tell the user
+  what they should verify manually on desktop and mobile.
 - Do not add tests that only duplicate the implementation. Add tests when they
   protect meaningful behavior or an important edge case.

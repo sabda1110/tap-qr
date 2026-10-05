@@ -6,12 +6,14 @@ type BrandLogoProps = {
   homeLabel: string;
   language: Language;
   theme?: "light" | "dark";
+  to?: "/$locale" | "/$locale/dashboard/user";
 };
 
 export function BrandLogo({
   homeLabel,
   language,
   theme = "light",
+  to = "/$locale",
 }: BrandLogoProps) {
   return (
     <Link
@@ -20,7 +22,7 @@ export function BrandLogo({
           ? "text-white hover:text-white"
           : "text-black hover:text-black"
       }`}
-      to="/$locale"
+      to={to}
       params={{ locale: language }}
       aria-label={homeLabel}
     >

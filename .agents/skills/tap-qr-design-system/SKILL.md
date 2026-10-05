@@ -52,4 +52,6 @@ style before implementing UI.
 - Use semantic elements, visible focus states, accessible names, useful alt
   text, and WCAG-conscious contrast.
 - Respect reduced-motion preferences for nonessential animation.
-- Verify visual changes at representative desktop and mobile viewport sizes.
+- Implement representative desktop and mobile states in code, but leave visual
+  browser verification to the user. Do not open or operate a browser unless the
+  user explicitly requests browser inspection in the current request.

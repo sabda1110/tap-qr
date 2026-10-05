@@ -1,4 +1,7 @@
 import { Check, type LucideIcon } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+
+import type { Language } from "../../i18n";
 
 export type PricingCardContent = {
   name: string;
@@ -13,10 +16,16 @@ export type PricingCardContent = {
 type PricingCardProps = {
   content: PricingCardContent;
   icon: LucideIcon;
+  language: Language;
   featured?: boolean;
 };
 
-export function PricingCard({ content, icon: Icon, featured }: PricingCardProps) {
+export function PricingCard({
+  content,
+  icon: Icon,
+  language,
+  featured,
+}: PricingCardProps) {
   return (
     <article
       className={`group relative flex h-full flex-col rounded-3xl border bg-white p-7 transition-[transform,box-shadow,border-color] duration-300 ease-out motion-safe:hover:-translate-y-2 sm:p-8 ${
@@ -62,16 +71,17 @@ export function PricingCard({ content, icon: Icon, featured }: PricingCardProps)
         ))}
       </ul>
 
-      <a
+      <Link
         className={`mt-8 inline-flex h-12 items-center justify-center rounded-xl px-5 text-sm font-semibold no-underline ${
           featured
             ? "bg-black text-white hover:bg-black/80 hover:text-white"
             : "border border-black/15 bg-white text-black hover:border-black hover:text-black"
         }`}
-        href="#get-started"
+        to="/$locale/auth/$mode"
+        params={{ locale: language, mode: "register" }}
       >
         {content.cta}
-      </a>
+      </Link>
     </article>
   );
 }

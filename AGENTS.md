@@ -170,8 +170,12 @@ ditangguhkan.
   - Routes: menghubungkan URL dengan Page dan menjaga route tetap tipis.
 - Ambil konten tampilan dari sistem i18n. Setiap key baru harus tersedia di
   locale Indonesia dan Inggris.
-- Pastikan desain responsif dan lakukan pemeriksaan desktop serta mobile untuk
-  perubahan visual.
+- Pastikan implementasi mencakup breakpoint desktop dan mobile yang relevan.
+- Jangan membuka atau mengoperasikan browser untuk preview maupun pemeriksaan
+  visual kecuali pengguna memintanya secara eksplisit pada permintaan saat
+  itu. Jangan menjalankan development server hanya untuk inspeksi visual.
+- Setelah perubahan UI selesai, beri tahu pengguna bagian yang perlu mereka
+  periksa secara manual di browser.
 - Gunakan aset SVG atau gambar yang sudah tersedia jika sesuai kebutuhan.
 - Simpan state sedekat mungkin dengan pemakainya. Gunakan URL untuk state
   navigasi, loader/server function untuk data server, dan Zustand hanya untuk
@@ -213,7 +217,8 @@ pemisahan aplikasi. Struktur ini belum boleh diterapkan tanpa permintaan:
 - Apakah waktu muat tetap menargetkan kurang dari dua detik?
 - Apakah input yang dibutuhkan dari pemilik UMKM sudah minimal?
 - Apakah fitur mematuhi kebijakan Google Review?
-- Apakah fitur sudah diperiksa pada mobile dan layar desktop yang relevan?
+- Apakah breakpoint mobile dan desktop yang relevan sudah ditangani, serta
+  bagian yang perlu diperiksa pengguna sudah dilaporkan?
 - Apakah event penting sudah dicatat untuk kebutuhan analitik?
 - Apakah locale Indonesia dan Inggris tetap lengkap?
 - Apakah TypeScript dan production build berhasil?

@@ -19,7 +19,13 @@ export function HomePage() {
   return (
     <HomeLayout
       header={<SiteHeader content={messages.header} language={language} />}
-      hero={<HeroSection content={messages.home} imageSrc={heroShot} />}
+      hero={
+        <HeroSection
+          content={messages.home}
+          imageSrc={heroShot}
+          language={language}
+        />
+      }
       footer={<SiteFooter content={messages.footer} language={language} />}
       content={
         <>
@@ -46,6 +52,7 @@ export function HomePage() {
           />
           <PricingSection
             heading={messages.pricing.heading}
+            language={language}
             note={messages.pricing.note}
             plans={[
               { content: messages.pricing.selfPrint, icon: Printer },

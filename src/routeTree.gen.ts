@@ -12,6 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocaleRouteImport } from './routes/$locale'
 import { Route as LocaleIndexRouteImport } from './routes/$locale.index'
+import { Route as LocaleAuthModeRouteImport } from './routes/$locale.auth.$mode'
+import { Route as LocaleDashboardUserRouteImport } from './routes/$locale.dashboard.user'
+import { Route as LocaleDashboardUserIndexRouteImport } from './routes/$locale.dashboard.user.index'
+import { Route as LocaleDashboardUserQrGeneratorRouteImport } from './routes/$locale.dashboard.user.qr-generator'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,28 +32,81 @@ const LocaleIndexRoute = LocaleIndexRouteImport.update({
   path: '/',
   getParentRoute: () => LocaleRoute,
 } as any)
+const LocaleAuthModeRoute = LocaleAuthModeRouteImport.update({
+  id: '/auth/$mode',
+  path: '/auth/$mode',
+  getParentRoute: () => LocaleRoute,
+} as any)
+const LocaleDashboardUserRoute = LocaleDashboardUserRouteImport.update({
+  id: '/dashboard/user',
+  path: '/dashboard/user',
+  getParentRoute: () => LocaleRoute,
+} as any)
+const LocaleDashboardUserIndexRoute =
+  LocaleDashboardUserIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => LocaleDashboardUserRoute,
+  } as any)
+const LocaleDashboardUserQrGeneratorRoute =
+  LocaleDashboardUserQrGeneratorRouteImport.update({
+    id: '/qr-generator',
+    path: '/qr-generator',
+    getParentRoute: () => LocaleDashboardUserRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteWithChildren
   '/$locale/': typeof LocaleIndexRoute
+  '/$locale/auth/$mode': typeof LocaleAuthModeRoute
+  '/$locale/dashboard/user': typeof LocaleDashboardUserRouteWithChildren
+  '/$locale/dashboard/user/qr-generator': typeof LocaleDashboardUserQrGeneratorRoute
+  '/$locale/dashboard/user/': typeof LocaleDashboardUserIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$locale': typeof LocaleIndexRoute
+  '/$locale/auth/$mode': typeof LocaleAuthModeRoute
+  '/$locale/dashboard/user/qr-generator': typeof LocaleDashboardUserQrGeneratorRoute
+  '/$locale/dashboard/user': typeof LocaleDashboardUserIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteWithChildren
   '/$locale/': typeof LocaleIndexRoute
+  '/$locale/auth/$mode': typeof LocaleAuthModeRoute
+  '/$locale/dashboard/user': typeof LocaleDashboardUserRouteWithChildren
+  '/$locale/dashboard/user/qr-generator': typeof LocaleDashboardUserQrGeneratorRoute
+  '/$locale/dashboard/user/': typeof LocaleDashboardUserIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$locale' | '/$locale/'
+  fullPaths:
+    | '/'
+    | '/$locale'
+    | '/$locale/'
+    | '/$locale/auth/$mode'
+    | '/$locale/dashboard/user'
+    | '/$locale/dashboard/user/qr-generator'
+    | '/$locale/dashboard/user/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$locale'
-  id: '__root__' | '/' | '/$locale' | '/$locale/'
+  to:
+    | '/'
+    | '/$locale'
+    | '/$locale/auth/$mode'
+    | '/$locale/dashboard/user/qr-generator'
+    | '/$locale/dashboard/user'
+  id:
+    | '__root__'
+    | '/'
+    | '/$locale'
+    | '/$locale/'
+    | '/$locale/auth/$mode'
+    | '/$locale/dashboard/user'
+    | '/$locale/dashboard/user/qr-generator'
+    | '/$locale/dashboard/user/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -80,15 +137,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleIndexRouteImport
       parentRoute: typeof LocaleRoute
     }
+    '/$locale/auth/$mode': {
+      id: '/$locale/auth/$mode'
+      path: '/auth/$mode'
+      fullPath: '/$locale/auth/$mode'
+      preLoaderRoute: typeof LocaleAuthModeRouteImport
+      parentRoute: typeof LocaleRoute
+    }
+    '/$locale/dashboard/user': {
+      id: '/$locale/dashboard/user'
+      path: '/dashboard/user'
+      fullPath: '/$locale/dashboard/user'
+      preLoaderRoute: typeof LocaleDashboardUserRouteImport
+      parentRoute: typeof LocaleRoute
+    }
+    '/$locale/dashboard/user/': {
+      id: '/$locale/dashboard/user/'
+      path: '/'
+      fullPath: '/$locale/dashboard/user/'
+      preLoaderRoute: typeof LocaleDashboardUserIndexRouteImport
+      parentRoute: typeof LocaleDashboardUserRoute
+    }
+    '/$locale/dashboard/user/qr-generator': {
+      id: '/$locale/dashboard/user/qr-generator'
+      path: '/qr-generator'
+      fullPath: '/$locale/dashboard/user/qr-generator'
+      preLoaderRoute: typeof LocaleDashboardUserQrGeneratorRouteImport
+      parentRoute: typeof LocaleDashboardUserRoute
+    }
   }
 }
 
+interface LocaleDashboardUserRouteChildren {
+  LocaleDashboardUserQrGeneratorRoute: typeof LocaleDashboardUserQrGeneratorRoute
+  LocaleDashboardUserIndexRoute: typeof LocaleDashboardUserIndexRoute
+}
+
+const LocaleDashboardUserRouteChildren: LocaleDashboardUserRouteChildren = {
+  LocaleDashboardUserQrGeneratorRoute: LocaleDashboardUserQrGeneratorRoute,
+  LocaleDashboardUserIndexRoute: LocaleDashboardUserIndexRoute,
+}
+
+const LocaleDashboardUserRouteWithChildren =
+  LocaleDashboardUserRoute._addFileChildren(LocaleDashboardUserRouteChildren)
+
 interface LocaleRouteChildren {
   LocaleIndexRoute: typeof LocaleIndexRoute
+  LocaleAuthModeRoute: typeof LocaleAuthModeRoute
+  LocaleDashboardUserRoute: typeof LocaleDashboardUserRouteWithChildren
 }
 
 const LocaleRouteChildren: LocaleRouteChildren = {
   LocaleIndexRoute: LocaleIndexRoute,
+  LocaleAuthModeRoute: LocaleAuthModeRoute,
+  LocaleDashboardUserRoute: LocaleDashboardUserRouteWithChildren,
 }
 
 const LocaleRouteWithChildren =

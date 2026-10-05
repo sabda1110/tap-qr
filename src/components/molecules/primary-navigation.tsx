@@ -2,6 +2,7 @@ import { HeaderNavLink } from "../elements/header-nav-link";
 import type { Messages } from "../../i18n";
 
 type PrimaryNavigationProps = {
+  activeSection?: string | null;
   labels: Pick<
     Messages["header"],
     "features" | "pricing" | "testimonials" | "mainNavigationLabel"
@@ -11,6 +12,7 @@ type PrimaryNavigationProps = {
 };
 
 export function PrimaryNavigation({
+  activeSection,
   labels,
   mobile = false,
   onNavigate,
@@ -31,6 +33,7 @@ export function PrimaryNavigation({
       {links.map((link) => (
         <HeaderNavLink
           key={link.href}
+          active={activeSection === link.href.slice(1)}
           href={link.href}
           onClick={onNavigate}
         >

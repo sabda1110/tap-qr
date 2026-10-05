@@ -2,6 +2,7 @@ import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import type { Language, Messages } from "../../i18n";
+import { useActiveSection } from "../../hooks/use-active-section";
 import { BrandLogo } from "../elements/brand-logo";
 import { HeaderActions } from "../molecules/header-actions";
 import { PrimaryNavigation } from "../molecules/primary-navigation";
@@ -11,9 +12,12 @@ type SiteHeaderProps = {
   language: Language;
 };
 
+const navigationSectionIds = ["features", "pricing", "testimonials"] as const;
+
 export function SiteHeader({ content, language }: SiteHeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const activeSection = useActiveSection(navigationSectionIds);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,8 +48,8 @@ export function SiteHeader({ content, language }: SiteHeaderProps) {
         <BrandLogo homeLabel={content.brandHomeLabel} language={language} />
 
         <div className="flex items-center gap-8 lg:gap-12">
-          <PrimaryNavigation labels={content} />
-          <HeaderActions labels={content} />
+          <PrimaryNavigation activeSection={activeSection} labels={content} />
+          <HeaderActions labels={content} language={language} />
         </div>
 
         <button
@@ -70,12 +74,17 @@ export function SiteHeader({ content, language }: SiteHeaderProps) {
           className="border-t border-black/5 bg-white/95 px-6 py-6 shadow-xl backdrop-blur-lg md:hidden"
         >
           <PrimaryNavigation
+            activeSection={activeSection}
             labels={content}
             mobile
             onNavigate={() => setIsMenuOpen(false)}
           />
           <div className="mt-6">
-            <HeaderActions labels={content} mobile />
+            <HeaderActions
+              labels={content}
+              language={language}
+              mobile
+            />
           </div>
         </div>
       ) : null}

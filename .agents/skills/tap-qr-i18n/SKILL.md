@@ -40,6 +40,8 @@ TapQR supports Indonesian (`id`) and English (`en`) with the locale in the URL.
 
 ## Verification
 
-- Check both locale URLs after changing copy or navigation.
-- Confirm switching language changes the URL and retains the current page.
+- Validate localized route generation and navigation through types, route
+  definitions, and builds. Leave browser-based URL and language-switch checks
+  to the user unless they explicitly request browser inspection in the current
+  request.
 - Run TypeScript to catch missing or mismatched translation keys.

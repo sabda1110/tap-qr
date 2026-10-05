@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import type { Language } from "../../i18n";
 import { MotionReveal } from "../elements/motion-reveal";
 import { SectionUnderline } from "../elements/section-underline";
 import {
@@ -13,6 +14,7 @@ type PricingPlan = {
 };
 
 type PricingSectionProps = {
+  language: Language;
   heading: {
     kicker: string;
     titleStart: string;
@@ -24,7 +26,12 @@ type PricingSectionProps = {
   note: string;
 };
 
-export function PricingSection({ heading, plans, note }: PricingSectionProps) {
+export function PricingSection({
+  heading,
+  language,
+  plans,
+  note,
+}: PricingSectionProps) {
   return (
     <section id="pricing" className="bg-[#f4f8fc] py-20 sm:py-24 lg:py-28">
       <div className="mx-auto w-[calc(100%-2rem)] max-w-6xl sm:w-[calc(100%-4rem)]">
@@ -52,7 +59,7 @@ export function PricingSection({ heading, plans, note }: PricingSectionProps) {
               className="h-full"
               delay={index * 110}
             >
-              <PricingCard {...plan} />
+              <PricingCard {...plan} language={language} />
             </MotionReveal>
           ))}
         </div>
