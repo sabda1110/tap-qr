@@ -55,6 +55,21 @@ Field `outlets.links` yang mungkin tersimpan dari implementasi sebelumnya tidak
 dibaca atau dijadikan sumber konfigurasi. Tidak ada sinkronisasi tautan antar kartu.
 Password, akun pemilik, dan URL NFC fisik tidak diubah oleh fitur edit ini.
 
+## Tambah outlet dan duplikasi
+
+Admin dapat membuat outlet tambahan untuk owner aktif yang sudah terdaftar,
+tanpa membuat atau mengganti akun dan password owner. Form memakai data outlet,
+logo Cloudinary, dan ID kartu stok pertama. Transaksi memeriksa owner aktif,
+slug unik, dan kartu belum diklaim sebelum membuat outlet, reservasi slug, dan
+mengklaim kartu. Kegagalan validasi tidak menghasilkan outlet atau klaim sebagian.
+
+Duplikasi memilih outlet sumber milik owner yang sama, kartu sumber, lalu tautan
+individual. Tautan yang dipilih disalin ke draft kartu baru dengan ID tautan baru,
+label, tujuan, dan status aktif yang sama. Urutan disimpan ulang untuk kartu baru.
+Admin dapat mengubah salinan sebelum menyimpan. Tidak ada ID sumber atau relasi
+sinkronisasi yang disimpan; mengedit sumber maupun salinan tidak mengubah yang lain.
+Konfigurasi verifikasi Google, token klaim, NFC, dan identitas kartu tidak disalin.
+
 ## Profil outlet publik
 
 Route `/$locale/p/$id` menerima ID dokumen outlet atau slug. Server mengambil

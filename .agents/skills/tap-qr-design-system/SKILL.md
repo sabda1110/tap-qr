@@ -43,6 +43,18 @@ style before implementing UI.
 - Prioritize clarity and predictable patterns over decorative visuals.
 - Prefer choices, toggles, and sensible defaults over long free-form forms.
 - Make outcomes and status understandable to non-technical business owners.
+- Use the shared shadcn-style controls before creating a bespoke input, select,
+  combobox, dialog, alert, toast, or button.
+- Treat destructive actions as visually distinct and pair them with a
+  confirmation dialog. Toast success is green, error is red, warning is yellow,
+  and informational feedback is cyan.
+- Use an intentionally responsive dashboard: desktop sidebar remains within the
+  viewport, while mobile exposes navigation through the existing bottom sheet.
+- Modal forms keep the title and close control in the header, the form fields
+  in the scroll region, and actions in an opaque footer. Mobile actions stack
+  with safe-area spacing.
+- For social links, show the existing official brand marks and let users choose
+  a destination before adding a link. Keep drag handles and move controls clear.
 
 ## Responsive and accessible UI
 

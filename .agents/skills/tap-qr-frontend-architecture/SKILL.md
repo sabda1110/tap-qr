@@ -1,6 +1,6 @@
 ---
 name: tap-qr-frontend-architecture
-description: Structure TapQR frontend features, component boundaries, data flow, and shared state. Use when adding application state, stores, providers, or cross-page frontend architecture.
+description: Structure TapQR frontend features, route loading, state ownership, and shared state. Use when adding application state, TanStack Router data flow, stores, or cross-page frontend architecture.
 ---
 
 # TapQR Frontend Architecture
@@ -13,6 +13,8 @@ Preserve simple data flow and add architecture only when the feature requires it
 - React 19 with strict TypeScript.
 - Tailwind CSS and shadcn/ui primitives.
 - URL-based internationalization for Indonesian and English.
+- Firebase Authentication on the client and Firestore through TanStack server
+  functions.
 - Atomic design component boundaries documented in `AGENTS.md`.
 
 ## State placement
@@ -30,9 +32,11 @@ Choose the narrowest durable owner:
 
 ## Zustand direction
 
-- Zustand is the preferred global client-state library when the first justified
-  global store is introduced. Do not install it or create an empty global store
-  before a real use case exists.
+- Zustand is used for client authentication state in
+  `src/store/auth/auth-store.ts`. Keep its profile and status synchronized with
+  the Firebase/session flow; do not place Firestore collections in this store.
+- Zustand remains the preferred global client-state library for a justified new
+  cross-route client concern. Split stores by domain.
 - Split stores by domain rather than creating one application-wide bag of state.
 - Expose focused selectors so components subscribe only to the values they use.
 - Keep server data out of Zustand unless an explicit offline or optimistic
@@ -52,3 +56,16 @@ Choose the narrowest durable owner:
 - Keep store and architecture files within the repository-wide 300-line limit.
 - Document a non-obvious state ownership decision near the store or feature,
   especially when choosing global state over URL or server state.
+
+## Route and server data flow
+
+- Validate route search state with Zod. Use `loaderDeps` to pass only the
+  search or parameter values that affect a loader.
+- Route loaders call the matching GET `createServerFn` and pass their result
+  to a thin Page component. Do not refetch the same initial data in an effect.
+- After a successful server mutation, call `router.invalidate()` before
+  relying on loader data again. Keep modal, selected-card, and draft state local
+  to the page or form that owns it.
+- Use debounced availability hooks for server-checked inputs such as email,
+  slug, and owner search. Normalize the query, guard stale requests, and cache
+  short-lived lookup results when the existing hook supports it.

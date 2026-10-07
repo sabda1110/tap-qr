@@ -12,7 +12,9 @@ import { OutletListSection } from "../organisms/outlet-list-section";
 import { OutletDetail } from "../molecules/outlet-detail";
 import { OutletCardEditForm } from "../organisms/outlet-card-edit-form";
 import { OutletEditForm } from "../organisms/outlet-edit-form";
-import { Dialog } from "../ui/dialog";
+import { OutletCreateForm } from "../organisms/outlet-create-form";
+import { Dialog, DialogBody } from "../ui/dialog";
+import { CreditCard, Pencil, Store } from "lucide-react";
 import { ToasterProvider } from "../ui/toaster";
 
 export function AdminOutletsPage({
@@ -31,6 +33,7 @@ export function AdminOutletsPage({
   const navigate = useNavigate({ from: "/$locale/dashboard/admin/outlets" });
   const router = useRouter();
   const [busy, setBusy] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const selectedCard = detail?.cards.find((card) => card.id === selectedCardId);
   const content = messages.adminDashboard.outlets;
@@ -56,13 +59,45 @@ export function AdminOutletsPage({
           language={language}
           query={search.query}
           cursor={search.cursor}
+          createLabel={messages.adminDashboard.outletCreate.action}
+          onCreate={() => {
+            setSelectedCardId(null);
+            setCreating(true);
+          }}
           onSearch={(query) => {
             void navigate({ search: { query } });
           }}
         />
-        {detail && (
+        {creating && (
+          <Dialog
+            title={messages.adminDashboard.outletCreate.title}
+            description={messages.adminDashboard.outletCreate.description}
+            icon={Store}
+            dismissOnOutsidePress={false}
+            closeLabel={content.close}
+            busy={busy}
+            onClose={() => setCreating(false)}
+          >
+            <OutletCreateForm
+              content={content}
+              createContent={messages.adminDashboard.outletCreate}
+              activation={messages.adminDashboard.activation}
+              onBusyChange={setBusy}
+              onCancel={() => setCreating(false)}
+              onSaved={async (outletId) => {
+                await router.invalidate();
+                await navigate({
+                  search: { query: "", outletId, edit: false },
+                });
+                setCreating(false);
+              }}
+            />
+          </Dialog>
+        )}
+        {detail && !creating && (
           <Dialog
             title={`${selectedCard ? content.editCardLinks : search.edit ? content.edit : content.detail} · ${detail.name}`}
+            icon={selectedCard ? CreditCard : search.edit ? Pencil : Store}
             closeLabel={content.close}
             onClose={close}
             busy={busy}
@@ -95,14 +130,16 @@ export function AdminOutletsPage({
                 }}
               />
             ) : (
-              <OutletDetail
-                outlet={detail}
-                content={content}
-                activation={messages.adminDashboard.activation}
-                language={language}
-                onEdit={edit}
-                onEditCard={setSelectedCardId}
-              />
+              <DialogBody>
+                <OutletDetail
+                  outlet={detail}
+                  content={content}
+                  activation={messages.adminDashboard.activation}
+                  language={language}
+                  onEdit={edit}
+                  onEditCard={setSelectedCardId}
+                />
+              </DialogBody>
             )}
           </Dialog>
         )}

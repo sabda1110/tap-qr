@@ -19,7 +19,9 @@ TapQR supports Indonesian (`id`) and English (`en`) with the locale in the URL.
 ## Translation content
 
 - Add the same key and object shape to `src/i18n/locales/id.ts` and
-  `src/i18n/locales/en.ts` in one change.
+  `src/i18n/locales/en.ts` in one change. Domain modules such as
+  `admin-dashboard-*.ts`, `outlets-*.ts`, and `outlet-create-*.ts`
+  remain part of that typed locale tree and must be updated as a pair.
 - Indonesian is the default and source shape; English must remain typed against
   it.
 - Never place visible product copy directly in an organism, layout, or route.
@@ -28,6 +30,8 @@ TapQR supports Indonesian (`id`) and English (`en`) with the locale in the URL.
   translation. Keep CTA labels short and natural in both languages.
 - Include accessible labels, alt text, empty states, errors, and navigation text
   in the locale files when they are user-facing.
+- Keep server error codes internal. Map them to localized field errors or toast
+  messages in the UI.
 
 ## Creating a localized page
 

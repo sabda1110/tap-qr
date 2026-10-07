@@ -1,8 +1,10 @@
 import { outletsEn } from "./outlets-en";
+import { outletCreateEn } from "./outlet-create-en";
 import { activationPreviewEn } from "./activation-preview-en";
 import { activationOnboardingEn } from "./activation-onboarding-en";
 
 export const adminDashboardEn = {
+  outletCreate: outletCreateEn,
   outlets: outletsEn,
   sidebar: {
     outlets: "Outlets",

@@ -30,6 +30,11 @@ Keep code easy to scan, change, test, and remove.
 - Prefer early returns and simple control flow over deep nesting.
 - Reuse existing components and dependencies before adding new abstractions or
   packages.
+- For forms, use the existing shadcn-style primitives, React Hook Form, and Zod
+  schemas. Keep validation schemas near the server/domain feature.
+- Keep server functions, repositories, schemas, and UI components separate:
+  server functions authorize and validate, repositories perform persistence,
+  schemas define input contracts, and UI calls server functions.
 - Remove unused code, stale comments, and abandoned variants during the change.
 - Comments explain decisions or constraints, not what readable code already
   says.
@@ -42,6 +47,18 @@ Keep code easy to scan, change, test, and remove.
 - Layouts arrange slots and structure without business copy or actual assets.
 - Pages inject actual data, locale content, assets, and organisms into layouts.
 - Routes connect URLs to Pages.
+
+## Dashboard interaction patterns
+
+- Use the shared dialog primitives. A form dialog has a fixed header,
+  `DialogBody` as the only scrollable region, and `DialogFooter` as an opaque
+  non-scrolling action area; do not reintroduce sticky form footers inside
+  scrolling content.
+- Use shared toast and alert-dialog primitives for mutation feedback and
+  destructive confirmation. Disable relevant inputs and submit actions while a
+  mutation or upload is pending.
+- For sortable card links, use the existing dnd-kit pattern with keyboard and
+  pointer sensors, plus move buttons as an accessible fallback.
 
 ## Verification
 

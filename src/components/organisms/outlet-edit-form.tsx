@@ -15,6 +15,7 @@ import { useDebouncedAvailability } from "../../hooks/use-debounced-availability
 import { CustomInputText } from "../elements/custom-input-text";
 import { ImageUploadField } from "../molecules/image-upload-field";
 import { Button } from "../ui/button";
+import { DialogBody, DialogFooter } from "../ui/dialog";
 import { Form, FormField } from "../ui/form";
 import {
   Select,
@@ -113,124 +114,137 @@ export function OutletEditForm({
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(save)} noValidate aria-busy={busy}>
-        <fieldset disabled={busy} className="grid gap-5 border-0 p-0">
-          <p className="rounded-xl border border-[#bce8ef] bg-[#e8f8fb] p-4 text-sm leading-6 text-[#087e91]">
-            {content.syncHelp}
-          </p>
-          <section className="rounded-2xl border border-black/8 bg-white p-5">
-            <h2 className="mb-5 font-bold">{content.information}</h2>
-            <FormField
-              control={form.control}
-              name="logoUrl"
-              render={({ field }) => (
-                <ImageUploadField
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBusyChange={(uploading) => {
-                    setUploadingLogo(uploading);
-                    onBusyChange(uploading);
-                  }}
-                  content={activation.onboarding.logo}
-                  disabled={form.formState.isSubmitting}
-                />
-              )}
-            />
-            <div className="grid items-start gap-x-5 gap-y-2 sm:grid-cols-2">
-              {fields.map((name) => (
-                <FormField
-                  key={name}
-                  control={form.control}
-                  name={name}
-                  render={({ field, fieldState }) => (
-                    <CustomInputText
-                      {...field}
-                      label={activation.onboarding.fields[name]}
-                      reserveMessageSpace
-                      error={
-                        name === "slug" && slugStatus === "used"
-                          ? content.slugUsed
-                          : name === "slug" && slugStatus === "error"
-                            ? activation.onboarding.slugCheckError
-                            : fieldState.error
-                              ? fieldState.error.message === content.slugUsed
-                                ? content.slugUsed
-                                : content.invalid
-                              : undefined
-                      }
-                      helpText={
-                        name === "slug"
-                          ? slugStatus === "checking"
-                            ? activation.onboarding.slugChecking
-                            : slugStatus === "available"
-                              ? activation.onboarding.slugAvailable
-                              : activation.onboarding.slugHelp
-                          : undefined
-                      }
-                    />
-                  )}
-                />
-              ))}
+      <form
+        className="flex min-h-0 flex-1 flex-col"
+        onSubmit={form.handleSubmit(save)}
+        noValidate
+        aria-busy={busy}
+      >
+        <DialogBody>
+          <fieldset disabled={busy} className="grid gap-5 border-0 p-0">
+            <p className="rounded-xl border border-[#bce8ef] bg-[#e8f8fb] p-4 text-sm leading-6 text-[#087e91]">
+              {content.syncHelp}
+            </p>
+            <section className="rounded-2xl border border-black/8 bg-white p-5">
+              <h2 className="mb-5 font-bold">{content.information}</h2>
               <FormField
                 control={form.control}
-                name="status"
+                name="logoUrl"
                 render={({ field }) => (
-                  <div className="grid gap-2">
-                    <label id="outlet-status" className="text-sm font-semibold">
-                      {content.status}
-                    </label>
-                    <Select
-                      items={{
-                        active: content.active,
-                        disabled: content.disabled,
-                      }}
-                      value={field.value}
-                      disabled={busy}
-                      onValueChange={(value) => value && field.onChange(value)}
-                    >
-                      <SelectTrigger
-                        aria-labelledby="outlet-status"
-                        className="w-full"
-                      >
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="active">{content.active}</SelectItem>
-                        <SelectItem value="disabled">
-                          {content.disabled}
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <ImageUploadField
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBusyChange={(uploading) => {
+                      setUploadingLogo(uploading);
+                      onBusyChange(uploading);
+                    }}
+                    content={activation.onboarding.logo}
+                    disabled={form.formState.isSubmitting}
+                  />
                 )}
               />
-            </div>
-          </section>
-
-          <div className="sticky bottom-0 flex justify-end gap-3 rounded-xl border border-black/8 bg-white/95 p-4 backdrop-blur">
-            <Button
-              className="h-11 px-5"
-              variant="outline"
-              type="button"
-              onClick={onCancel}
-              disabled={busy}
-            >
-              {content.cancel}
-            </Button>
-            <Button
-              className="h-11 px-5"
-              type="submit"
-              disabled={
-                busy ||
-                slugStatus === "checking" ||
-                slugStatus === "used" ||
-                slugStatus === "error"
-              }
-            >
-              {busy ? content.saving : content.save}
-            </Button>
-          </div>
-        </fieldset>
+              <div className="grid items-start gap-x-5 gap-y-2 sm:grid-cols-2">
+                {fields.map((name) => (
+                  <FormField
+                    key={name}
+                    control={form.control}
+                    name={name}
+                    render={({ field, fieldState }) => (
+                      <CustomInputText
+                        {...field}
+                        label={activation.onboarding.fields[name]}
+                        reserveMessageSpace
+                        error={
+                          name === "slug" && slugStatus === "used"
+                            ? content.slugUsed
+                            : name === "slug" && slugStatus === "error"
+                              ? activation.onboarding.slugCheckError
+                              : fieldState.error
+                                ? fieldState.error.message === content.slugUsed
+                                  ? content.slugUsed
+                                  : content.invalid
+                                : undefined
+                        }
+                        helpText={
+                          name === "slug"
+                            ? slugStatus === "checking"
+                              ? activation.onboarding.slugChecking
+                              : slugStatus === "available"
+                                ? activation.onboarding.slugAvailable
+                                : activation.onboarding.slugHelp
+                            : undefined
+                        }
+                      />
+                    )}
+                  />
+                ))}
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <div className="grid gap-2">
+                      <label
+                        id="outlet-status"
+                        className="text-sm font-semibold"
+                      >
+                        {content.status}
+                      </label>
+                      <Select
+                        items={{
+                          active: content.active,
+                          disabled: content.disabled,
+                        }}
+                        value={field.value}
+                        disabled={busy}
+                        onValueChange={(value) =>
+                          value && field.onChange(value)
+                        }
+                      >
+                        <SelectTrigger
+                          aria-labelledby="outlet-status"
+                          className="w-full"
+                        >
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="active">
+                            {content.active}
+                          </SelectItem>
+                          <SelectItem value="disabled">
+                            {content.disabled}
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+                />
+              </div>
+            </section>
+          </fieldset>
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            className="h-11 px-5"
+            variant="outline"
+            type="button"
+            onClick={onCancel}
+            disabled={busy}
+          >
+            {content.cancel}
+          </Button>
+          <Button
+            className="h-11 px-5"
+            type="submit"
+            disabled={
+              busy ||
+              slugStatus === "checking" ||
+              slugStatus === "used" ||
+              slugStatus === "error"
+            }
+          >
+            {busy ? content.saving : content.save}
+          </Button>
+        </DialogFooter>
       </form>
     </Form>
   );

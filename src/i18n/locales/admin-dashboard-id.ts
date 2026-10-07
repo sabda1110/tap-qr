@@ -1,8 +1,10 @@
 import { outletsId } from "./outlets-id";
+import { outletCreateId } from "./outlet-create-id";
 import { activationPreviewId } from "./activation-preview-id";
 import { activationOnboardingId } from "./activation-onboarding-id";
 
 export const adminDashboardId = {
+  outletCreate: outletCreateId,
   outlets: outletsId,
   sidebar: {
     outlets: "Outlet",

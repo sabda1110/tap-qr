@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { Eye, Pencil, Store } from "lucide-react";
+import { Eye, Pencil, Plus } from "lucide-react";
 import type { Messages, Language } from "../../i18n";
 import type { OutletList } from "../../server/outlets/outlet.types";
 import { CustomInputText } from "../elements/custom-input-text";
+import { OutletAvatar } from "../elements/outlet-avatar";
 import { Button } from "../ui/button";
 
 export function OutletListSection({
@@ -13,6 +14,8 @@ export function OutletListSection({
   query,
   cursor,
   onSearch,
+  onCreate,
+  createLabel,
 }: {
   page: OutletList;
   content: Messages["adminDashboard"]["outlets"];
@@ -21,15 +24,23 @@ export function OutletListSection({
   query: string;
   cursor?: string;
   onSearch: (query: string) => void;
+  onCreate: () => void;
+  createLabel: string;
 }) {
   return (
     <section className="mx-auto max-w-6xl">
       <p className="text-xs font-bold tracking-widest text-[#0798ad] uppercase">
         TapQR
       </p>
-      <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-        {content.title}
-      </h1>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          {content.title}
+        </h1>
+        <Button type="button" className="h-11 px-5" onClick={onCreate}>
+          <Plus />
+          {createLabel}
+        </Button>
+      </div>
       <p className="mt-3 text-[#646b75]">{content.description}</p>
       <form
         onSubmit={(event) => {
@@ -62,9 +73,7 @@ export function OutletListSection({
           >
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="flex min-w-0 gap-3">
-                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-[#e8f8fb] text-[#087e91]">
-                  <Store className="size-5" />
-                </span>
+                <OutletAvatar name={outlet.name} logoUrl={outlet.logoUrl} />
                 <div>
                   <h2 className="font-bold break-words">{outlet.name}</h2>
                   <p className="mt-1 text-sm text-[#69737d]">

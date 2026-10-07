@@ -1,13 +1,24 @@
 import { useFieldArray, type UseFormReturn } from "react-hook-form";
 import { useState } from "react";
-import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { SortableOutletLink } from "./sortable-outlet-link";
 import type { Messages } from "../../i18n";
 import type { CardLinksEditValues } from "../../server/outlets/outlet.schemas";
-import { CustomInputText } from "../elements/custom-input-text";
-import { ActivationGoogleSearch } from "./activation-google-search";
 import { Button } from "../ui/button";
 import { AlertDialog } from "../ui/alert-dialog";
-import { FormField } from "../ui/form";
 import {
   Select,
   SelectContent,
@@ -20,17 +31,27 @@ export function OutletLinksEditor({
   form,
   content,
   activation,
+  disabled = false,
 }: {
   form: UseFormReturn<CardLinksEditValues>;
   content: Messages["adminDashboard"]["outlets"];
   activation: Messages["adminDashboard"]["activation"];
+  disabled?: boolean;
 }) {
   const { fields, append, remove, move } = useFieldArray({
     control: form.control,
     name: "links",
     keyName: "fieldKey",
   });
-  const busy = form.formState.isSubmitting;
+  const [selectedType, setSelectedType] =
+    useState<CardLinksEditValues["links"][number]["type"]>("google_review");
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+  const busy = form.formState.isSubmitting || disabled;
   const [pendingRemoval, setPendingRemoval] = useState<string | null>(null);
   const channelLabels: Record<string, string> = {
     ...Object.fromEntries(
@@ -42,207 +63,94 @@ export function OutletLinksEditor({
     facebook: "Facebook",
   };
   return (
-    <section className="rounded-2xl border border-black/8 bg-white p-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-bold">{content.links}</h2>
+    <section className="rounded-2xl border border-black/8 bg-white p-5 sm:p-6">
+      <h2 className="text-lg font-bold">{activation.onboarding.linksTitle}</h2>
+      <p className="mt-2 text-sm leading-6 text-[#69737d]">
+        {activation.onboarding.dragHelp}
+      </p>
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <Select
+          items={channelLabels}
+          value={selectedType}
+          disabled={busy}
+          onValueChange={(value) =>
+            value && setSelectedType(value as typeof selectedType)
+          }
+        >
+          <SelectTrigger
+            aria-label={activation.onboarding.channelLabel}
+            className="w-full sm:w-64"
+          >
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(channelLabels).map(([value, label]) => (
+              <SelectItem key={value} value={value}>
+                {label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <Button
           type="button"
-          variant="outline"
-          className="h-10"
+          className="h-11 px-4"
           disabled={busy || fields.length >= 20}
           onClick={() =>
             append({
               id: crypto.randomUUID(),
-              type: "custom",
-              label: "",
+              type: selectedType,
+              label: channelLabels[selectedType],
               value: "",
               isActive: true,
             })
           }
         >
           <Plus />
-          {content.add}
+          {activation.onboarding.addLink}
         </Button>
       </div>
-      <div className="mt-5 grid gap-4">
-        {fields.map((link, index) => {
-          const type = form.watch(`links.${index}.type`);
-          const destination =
-            activation.destinations[type === "facebook" ? "custom" : type];
-          return (
-            <article
-              key={link.fieldKey}
-              className="rounded-2xl border border-black/8 bg-[#f8fafc] p-4"
-            >
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <span className="text-sm font-bold">
-                  {index + 1}. {channelLabels[type]}
-                </span>
-                <div className="flex gap-2">
-                  <Button
-                    type="button"
-                    size="icon"
-                    variant="outline"
-                    aria-label={content.moveUp}
-                    disabled={busy || index === 0}
-                    onClick={() => move(index, index - 1)}
-                  >
-                    <ArrowUp />
-                  </Button>
-                  <Button
-                    type="button"
-                    size="icon"
-                    variant="outline"
-                    aria-label={content.moveDown}
-                    disabled={busy || index === fields.length - 1}
-                    onClick={() => move(index, index + 1)}
-                  >
-                    <ArrowDown />
-                  </Button>
-                  <Button
-                    type="button"
-                    size="icon"
-                    variant="destructive"
-                    aria-label={content.remove}
-                    disabled={busy}
-                    onClick={() => setPendingRemoval(link.fieldKey)}
-                  >
-                    <Trash2 />
-                  </Button>
-                </div>
-              </div>
-              <div className="grid items-start gap-4 sm:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name={`links.${index}.type`}
-                  render={({ field }) => (
-                    <div className="grid gap-2">
-                      <label
-                        id={`channel-${link.fieldKey}`}
-                        className="text-sm font-semibold"
-                      >
-                        {activation.onboarding.channelLabel}
-                      </label>
-                      <Select
-                        items={channelLabels}
-                        value={field.value}
-                        disabled={busy}
-                        onValueChange={(value) => {
-                          if (value) {
-                            field.onChange(value);
-                            form.setValue(`links.${index}.value`, "", {
-                              shouldDirty: true,
-                            });
-                          }
-                        }}
-                      >
-                        <SelectTrigger
-                          className="w-full"
-                          aria-labelledby={`channel-${link.fieldKey}`}
-                        >
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.entries(channelLabels).map(
-                            ([value, label]) => (
-                              <SelectItem value={value} key={value}>
-                                {label}
-                              </SelectItem>
-                            ),
-                          )}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`links.${index}.isActive`}
-                  render={({ field }) => (
-                    <div className="grid gap-2">
-                      <label
-                        id={`status-${link.fieldKey}`}
-                        className="text-sm font-semibold"
-                      >
-                        {content.linkStatus}
-                      </label>
-                      <Select
-                        items={{
-                          active: content.active,
-                          disabled: content.disabled,
-                        }}
-                        value={field.value ? "active" : "disabled"}
-                        disabled={busy}
-                        onValueChange={(value) =>
-                          field.onChange(value === "active")
-                        }
-                      >
-                        <SelectTrigger
-                          className="w-full"
-                          aria-labelledby={`status-${link.fieldKey}`}
-                        >
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="active">
-                            {content.active}
-                          </SelectItem>
-                          <SelectItem value="disabled">
-                            {content.disabled}
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`links.${index}.label`}
-                  render={({ field, fieldState }) => (
-                    <CustomInputText
-                      {...field}
-                      label={activation.onboarding.linkLabel}
-                      reserveMessageSpace
-                      error={fieldState.error ? content.invalid : undefined}
-                    />
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`links.${index}.value`}
-                  render={({ field, fieldState }) =>
-                    type === "google_review" ? (
-                      <ActivationGoogleSearch
-                        inputId={`outlet-google-${link.fieldKey}`}
-                        content={activation}
-                        value={field.value}
-                        onSelect={field.onChange}
-                        error={
-                          fieldState.error
-                            ? activation.onboarding.selectBusiness
-                            : undefined
-                        }
-                      />
-                    ) : (
-                      <CustomInputText
-                        {...field}
-                        label={destination.label}
-                        placeholder={destination.placeholder}
-                        inputMode={type === "whatsapp" ? "tel" : "url"}
-                        helpText={destination.helpText}
-                        reserveMessageSpace
-                        error={fieldState.error ? content.invalid : undefined}
-                      />
-                    )
-                  }
-                />
-              </div>
-            </article>
-          );
-        })}
-      </div>
-      {(form.formState.errors.links?.root || fields.length === 0) && (
+      <DndContext
+        id="outlet-links"
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={({ active, over }) => {
+          if (!over || active.id === over.id || busy) return;
+          const from = fields.findIndex((link) => link.fieldKey === active.id);
+          const to = fields.findIndex((link) => link.fieldKey === over.id);
+          if (from >= 0 && to >= 0) move(from, to);
+        }}
+      >
+        <SortableContext
+          items={fields.map((link) => link.fieldKey)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="mt-5 grid gap-4">
+            {fields.map((link, index) => (
+              <SortableOutletLink
+                key={link.fieldKey}
+                link={link}
+                index={index}
+                count={fields.length}
+                form={form}
+                content={content}
+                activation={activation}
+                busy={busy}
+                channelLabels={channelLabels}
+                move={move}
+                setPendingRemoval={setPendingRemoval}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
+      {(form.formState.errors.links?.root ||
+        form.formState.errors.links?.message) && (
         <p className="mt-3 text-sm text-red-600">
+          {activation.onboarding.requiredLink}
+        </p>
+      )}
+      {!form.formState.errors.links && fields.length === 0 && (
+        <p className="mt-4 text-sm text-[#69737d]">
           {activation.onboarding.requiredLink}
         </p>
       )}

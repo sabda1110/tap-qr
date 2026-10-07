@@ -11,8 +11,9 @@ bekerja di repository `tap-qr`.
 - Routing memakai TanStack Router dengan locale pada URL: `/id` dan `/en`.
 - UI mengikuti atomic design: `elements` → `molecules` → `organisms` →
   `layouts` → `page` → `routes`.
-- Global client state belum dibutuhkan. Ketika ada kebutuhan nyata lintas fitur
-  atau route, library yang dipilih adalah Zustand.
+- Global client state memakai Zustand ketika dibutuhkan lintas fitur atau route.
+  Store autentikasi yang sudah ada berada di `src/store/auth/auth-store.ts`;
+  jangan menyimpan koleksi Firestore atau secret di sana.
 - Struktur monorepo `/apps` dan `/packages` pada bagian rencana arsitektur belum
   diterapkan. Jangan membuat atau memigrasikan ke struktur tersebut kecuali
   diminta secara eksplisit.
@@ -192,8 +193,9 @@ ditangguhkan.
 - Simpan state sedekat mungkin dengan pemakainya. Gunakan URL untuk state
   navigasi, loader/server function untuk data server, dan Zustand hanya untuk
   client state yang benar-benar digunakan lintas komponen atau route.
-- Jangan memasang Zustand atau membuat global store kosong sebelum ada use case
-  yang membutuhkannya.
+- Zustand sudah terpasang untuk status autentikasi. Jangan membuat store global
+  baru atau menyimpan data server di Zustand tanpa use case lintas-route yang
+  nyata.
 
 ### Skill proyek
 
@@ -207,6 +209,8 @@ Gunakan skill di `.agents/skills` sesuai pekerjaan:
   dashboard, responsive UI, dan aksesibilitas.
 - `tap-qr-frontend-architecture`: kepemilikan state, boundary komponen, data
   flow, dan keputusan penggunaan Zustand.
+- `tap-qr-firebase-server`: Firebase Authentication, Firestore, server
+  function, otorisasi, transaksi, dan perlindungan kredensial.
 
 ### Rencana struktur jangka panjang
 
