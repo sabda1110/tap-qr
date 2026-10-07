@@ -102,6 +102,7 @@ export function OutletListSection({
             <div className="mt-5 flex flex-wrap gap-3">
               <Button
                 className="h-10 px-4"
+                nativeButton={false}
                 variant="outline"
                 render={
                   <Link
@@ -116,6 +117,7 @@ export function OutletListSection({
               </Button>
               <Button
                 className="h-10 px-4"
+                nativeButton={false}
                 render={
                   <Link
                     to="/$locale/dashboard/admin/outlets"
@@ -139,6 +141,7 @@ export function OutletListSection({
       <div className="mt-6 flex justify-end gap-3">
         {cursor && (
           <Button
+            nativeButton={false}
             variant="outline"
             render={
               <Link
@@ -153,6 +156,7 @@ export function OutletListSection({
         )}
         {page.nextCursor && (
           <Button
+            nativeButton={false}
             render={
               <Link
                 to="/$locale/dashboard/admin/outlets"
