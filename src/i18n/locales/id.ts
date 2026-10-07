@@ -1,5 +1,23 @@
 import { adminDashboardId } from "./admin-dashboard-id";
 export const id = {
+  outletProfile: {
+    welcome: "Terhubung dengan kami melalui tautan berikut.",
+    linksLabel: "Tautan outlet",
+    empty: "Belum ada tautan yang tersedia. Silakan kembali lagi nanti.",
+    unavailable: "Profil outlet tidak tersedia",
+    unavailableDescription: "Outlet ini belum tersedia atau sedang dinonaktifkan.",
+    error: "Profil belum dapat dimuat",
+    errorDescription: "Silakan muat ulang halaman beberapa saat lagi.",
+    poweredBy: "Didukung oleh",
+    channels: {
+      google_review: "Beri Ulasan di Google",
+      whatsapp: "Hubungi WhatsApp",
+      instagram: "Instagram",
+      tiktok: "TikTok",
+      facebook: "Facebook",
+      custom: "Buka tautan",
+    },
+  },
   header: {
     brandHomeLabel: "Beranda TapQR",
     mainNavigationLabel: "Navigasi utama",

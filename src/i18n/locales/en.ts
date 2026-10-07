@@ -2,6 +2,24 @@ import { adminDashboardEn } from "./admin-dashboard-en";
 import type { id } from "./id";
 
 export const en: typeof id = {
+  outletProfile: {
+    welcome: "Connect with us using the links below.",
+    linksLabel: "Outlet links",
+    empty: "No links are available yet. Please check back later.",
+    unavailable: "Outlet profile unavailable",
+    unavailableDescription: "This outlet is not available yet or has been disabled.",
+    error: "Unable to load this profile",
+    errorDescription: "Please reload the page in a moment.",
+    poweredBy: "Powered by",
+    channels: {
+      google_review: "Leave a Google Review",
+      whatsapp: "Contact on WhatsApp",
+      instagram: "Instagram",
+      tiktok: "TikTok",
+      facebook: "Facebook",
+      custom: "Open link",
+    },
+  },
   header: {
     brandHomeLabel: "TapQR home",
     mainNavigationLabel: "Main navigation",

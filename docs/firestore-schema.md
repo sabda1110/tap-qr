@@ -38,6 +38,18 @@ Field `outlets.links` yang mungkin tersimpan dari implementasi sebelumnya tidak
 dibaca atau dijadikan sumber konfigurasi. Tidak ada sinkronisasi tautan antar kartu.
 Password, akun pemilik, dan URL NFC fisik tidak diubah oleh fitur edit ini.
 
+## Profil outlet publik
+
+Route `/$locale/p/$id` menerima ID dokumen outlet atau slug. Server mengambil
+kartu berdasarkan `ownerId` outlet, lalu hanya menggunakan kartu yang terhubung
+ke outlet tersebut, sudah diklaim, dan aktif. Tautan aktif digabung berdasarkan
+urutan kartu yang stabil, dengan URL duplikat dihapus dan Google Review sebagai
+tindakan utama. Data akun, token klaim, dan konfigurasi NFC tidak dikirim ke publik.
+Kunjungan halaman mencatat `profile_view` melalui server function POST ke
+`scanEvents`, dengan `business_id`/`outletId`, timestamp, `cardId: null`, dan
+`source: "direct"`. Event ini adalah kunjungan profil, bukan bukti scan QR/NFC
+atau ulasan yang telah dikirim.
+
 ## Akses
 
 `admin` dapat membuat, melihat, dan menghapus master kartu. `owner` adalah pengguna bisnis biasa. Ubah dokumen `users/{uid}.role` menjadi `admin` untuk memberi akses admin.
