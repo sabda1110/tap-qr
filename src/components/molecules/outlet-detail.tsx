@@ -63,6 +63,12 @@ export function OutletDetail({
       </div>
       <section className="rounded-2xl border border-black/8 bg-white p-5">
         <h2 className="mb-4 font-bold">{content.information}</h2>
+        {outlet.logoUrl && (
+          <div className="mb-4">
+            <p className="mb-2 text-xs text-muted-foreground">{content.logo}</p>
+            <img src={outlet.logoUrl} alt="" width={80} height={80} className="size-20 rounded-xl border bg-white object-contain" />
+          </div>
+        )}
         <dl className="grid gap-4 sm:grid-cols-2">
           {info.map(([label, value]) => (
             <div key={label}>

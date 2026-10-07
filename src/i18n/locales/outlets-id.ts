@@ -15,6 +15,7 @@ export const outletsId = {
   saving: "Menyimpan...",
   owner: "Pemilik outlet",
   information: "Informasi outlet",
+  logo: "Logo outlet",
   cards: "Kartu digunakan",
   activeCards: "Kartu aktif",
   links: "Tautan sosial",

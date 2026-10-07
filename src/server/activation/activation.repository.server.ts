@@ -3,7 +3,7 @@ import { FieldValue } from "firebase-admin/firestore";
 import { getFirebaseAdminAuth, getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
 import { getGoogleReviewUrl } from "../../lib/google-review";
 import type { OwnerActivationValues } from "../../lib/validation/owner-activation-schema";
-import type { CardRecord, SocialLink } from "../../lib/firebase/firestore-schema";
+import type { CardRecord, OutletRecord, SocialLink } from "../../lib/firebase/firestore-schema";
 
 export async function activateOwnerCard(input: OwnerActivationValues, activatedBy: string) {
   const database = getFirebaseAdminFirestore();
@@ -35,9 +35,10 @@ export async function activateOwnerCard(input: OwnerActivationValues, activatedB
       });
       transaction.create(outletReference, {
         ownerId: account.uid, name: input.outletName, slug: input.slug, address: input.address,
+        logoUrl: input.logoUrl ?? null,
         city: input.city, province: input.province, phone: input.phone, status: "active",
         createdAt: timestamp, updatedAt: timestamp,
-      });
+      } satisfies OutletRecord);
       transaction.create(slugReference, { outletId: outletReference.id, ownerId: account.uid });
       transaction.update(cardReference, {
         ownerId: account.uid, outletId: outletReference.id, claimStatus: "claimed", isEnabled: true,

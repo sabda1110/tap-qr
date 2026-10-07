@@ -14,6 +14,7 @@ export const outletsEn = {
   saving: "Saving...",
   owner: "Outlet owner",
   information: "Outlet information",
+  logo: "Outlet logo",
   cards: "Assigned cards",
   activeCards: "Active cards",
   links: "Social links",

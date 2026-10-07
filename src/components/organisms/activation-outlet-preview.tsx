@@ -7,7 +7,7 @@ import { SocialBrandMark } from "../elements/social-brand-mark";
 type Content = Messages["adminDashboard"]["activation"];
 
 export function ActivationOutletPreview({ control, content }: { control: Control<OwnerActivationValues>; content: Content }) {
-  const [outletName, slug, address, city, province, links] = useWatch({ control, name: ["outletName", "slug", "address", "city", "province", "links"] });
+  const [outletName, slug, address, city, province, links, logoUrl] = useWatch({ control, name: ["outletName", "slug", "address", "city", "province", "links", "logoUrl"] });
   const title = outletName.trim() || content.preview.defaultName;
   const location = [address, city, province].map((value) => value.trim()).filter(Boolean).join(", ");
   return <aside className="hidden min-w-0 self-start xl:sticky xl:top-6 xl:block" aria-label={content.preview.title}>
@@ -24,7 +24,7 @@ export function ActivationOutletPreview({ control, content }: { control: Control
           <Sparkles aria-hidden="true" className="absolute top-14 right-10 size-5 text-[#0798ad]" />
         </div>
         <div className="relative -mt-9 px-5 pb-6">
-          <div className="mx-auto flex size-20 items-center justify-center rounded-[1.6rem] border-[5px] border-[#f6fafb] bg-[#0798ad] text-white shadow-sm"><Store aria-hidden="true" className="size-8" /></div>
+          <div className="mx-auto flex size-20 items-center justify-center overflow-hidden rounded-[1.6rem] border-[5px] border-[#f6fafb] bg-[#0798ad] text-white shadow-sm">{logoUrl ? <img src={logoUrl} alt="" width={80} height={80} className="size-full bg-white object-contain" /> : <Store aria-hidden="true" className="size-8" />}</div>
           <h3 className="mt-3 break-words text-center text-xl font-extrabold tracking-[-0.04em] text-[#172029]">{title}</h3>
           <p className="mt-1 break-all text-center text-xs font-semibold text-[#087e91]">{slug.trim() ? `@${slug.trim()}` : content.preview.defaultSlug}</p>
           {location && <p className="mt-3 flex justify-center gap-1.5 text-center text-[11px] leading-5 text-[#69737d]"><MapPin aria-hidden="true" className="mt-1 size-3 shrink-0" />{location}</p>}

@@ -27,6 +27,7 @@ function summary(
     ownerId: outlet.ownerId ?? "",
     name: outlet.name ?? "",
     slug: outlet.slug ?? "",
+    logoUrl: outlet.logoUrl ?? null,
     address: outlet.address ?? "",
     city: outlet.city ?? "",
     province: outlet.province ?? "",
@@ -166,6 +167,7 @@ export async function updateOutlet(input: OutletEditValues) {
     const now = FieldValue.serverTimestamp();
     transaction.update(reference, {
       name: input.outletName,
+      ...(input.logoUrl !== undefined ? { logoUrl: input.logoUrl } : {}),
       slug: input.slug,
       address: input.address,
       city: input.city,

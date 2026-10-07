@@ -42,6 +42,7 @@ export const outletSearchSchema = z.object({
 export const updateOutletSchema = ownerActivationSchema
   .pick({
     outletName: true,
+    logoUrl: true,
     slug: true,
     address: true,
     city: true,

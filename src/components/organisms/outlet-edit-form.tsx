@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { Messages } from "../../i18n";
 import type { OutletDetail } from "../../server/outlets/outlet.types";
@@ -13,6 +13,7 @@ import {
 } from "../../server/outlets/outlet.functions";
 import { useDebouncedAvailability } from "../../hooks/use-debounced-availability";
 import { CustomInputText } from "../elements/custom-input-text";
+import { ImageUploadField } from "../molecules/image-upload-field";
 import { Button } from "../ui/button";
 import { Form, FormField } from "../ui/form";
 import {
@@ -38,6 +39,7 @@ function defaults(outlet: OutletDetail): OutletEditValues {
     id: outlet.id,
     outletName: outlet.name,
     slug: outlet.slug,
+    logoUrl: outlet.logoUrl,
     address: outlet.address,
     city: outlet.city,
     province: outlet.province,
@@ -55,12 +57,13 @@ export function OutletEditForm({
   onBusyChange,
 }: Props) {
   const { showToast } = useToast();
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const form = useForm<OutletEditValues>({
     defaultValues: defaults(outlet),
     resolver: zodResolver(updateOutletSchema),
     mode: "onBlur",
   });
-  const busy = form.formState.isSubmitting;
+  const busy = form.formState.isSubmitting || uploadingLogo;
   const slug = form.watch("slug").trim();
   const checkSlug = useCallback(
     (value: string) =>
@@ -83,6 +86,7 @@ export function OutletEditForm({
   ] as const;
   async function save(values: OutletEditValues) {
     if (
+      uploadingLogo ||
       slugStatus === "used" ||
       slugStatus === "checking" ||
       slugStatus === "error"
@@ -116,6 +120,22 @@ export function OutletEditForm({
           </p>
           <section className="rounded-2xl border border-black/8 bg-white p-5">
             <h2 className="mb-5 font-bold">{content.information}</h2>
+            <FormField
+              control={form.control}
+              name="logoUrl"
+              render={({ field }) => (
+                <ImageUploadField
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBusyChange={(uploading) => {
+                    setUploadingLogo(uploading);
+                    onBusyChange(uploading);
+                  }}
+                  content={activation.onboarding.logo}
+                  disabled={form.formState.isSubmitting}
+                />
+              )}
+            />
             <div className="grid items-start gap-x-5 gap-y-2 sm:grid-cols-2">
               {fields.map((name) => (
                 <FormField

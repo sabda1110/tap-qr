@@ -52,7 +52,7 @@ export async function getPublicOutletProfile(id: string): Promise<PublicOutletPr
     slug: outlet.slug ?? "",
     location: [outlet.address, outlet.city, outlet.province].filter(Boolean).join(", "),
     description: social?.description ?? null,
-    avatarUrl: publicUrl(social?.avatarUrl),
+    avatarUrl: publicUrl(outlet.logoUrl) ?? publicUrl(social?.avatarUrl),
     links,
   };
 }

@@ -5,6 +5,20 @@ export type CardClaimStatus = "unclaimed" | "claimed";
 export type CardConfigType = "google_review" | "social";
 export type NfcType = "tapqr" | "google_review" | "custom";
 
+export type OutletRecord = {
+  ownerId: string;
+  name: string;
+  slug: string;
+  logoUrl: string | null;
+  address: string;
+  city: string;
+  province: string;
+  phone: string;
+  status: AccountStatus;
+  createdAt: unknown;
+  updatedAt: unknown;
+};
+
 export type SocialLink = {
   id: string;
   type: "instagram" | "tiktok" | "facebook" | "whatsapp" | "google_review" | "custom";

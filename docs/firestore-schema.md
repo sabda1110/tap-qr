@@ -7,9 +7,22 @@ Schema ini adalah kontrak data proyek. Semua akses aplikasi berjalan melalui Fir
 | Koleksi | Field utama |
 | --- | --- |
 | `users/{uid}` | `role` (`owner`/`admin`), nama, email, telepon, status, waktu dibuat/diubah |
-| `outlets/{outletId}` | `ownerId`, nama, slug, alamat, kota, provinsi, telepon, status, waktu dibuat/diubah |
+| `outlets/{outletId}` | `ownerId`, nama, slug, `logoUrl`, alamat, kota, provinsi, telepon, status, waktu dibuat/diubah |
 | `cards/{cardId}` | ID kartu, material (`acrylic`/`pvc`), status klaim, owner/outlet, konfigurasi, NFC, status aktif, waktu dibuat/diubah |
 | `scanEvents/{eventId}` | `cardId`, event, sumber QR/NFC, waktu, user agent. Koleksi ini dipakai saat analitik dibuat. |
+
+## Outlet dan logo
+
+Schema TypeScript outlet adalah `OutletRecord` di
+`src/lib/firebase/firestore-schema.ts`. `logoUrl` berisi URL HTTPS Cloudinary atau
+`null` jika logo tidak dipilih. Dokumen lama tanpa field ini tetap dapat dibaca.
+Upload gambar menggunakan server function yang memeriksa akses admin dan fungsi
+reusable `uploadCloudinaryImage`. Kredensial disimpan hanya di server pada
+`CLOUDINARY_ENV=cloudinary://API_KEY:API_SECRET@CLOUD_NAME`.
+Format JPG/PNG/WebP dibatasi 2 MB dan logo diperkecil maksimal 512 × 512 piksel.
+URL disimpan pada outlet saat aktivasi berhasil dan menjadi logo profil publik;
+`config.social.avatarUrl` kartu tetap menjadi fallback untuk data lama.
+Tombol hapus logo menghapus pilihan dari form, bukan aset Cloudinary.
 
 ## Kartu
 
@@ -30,8 +43,12 @@ Aktivasi Sosmed oleh admin membuat akun Firebase Authentication dengan role `own
 Tautan dimiliki masing-masing kartu pada `cards/{cardId}.config.social.links`.
 Satu outlet dapat memiliki kartu dengan kombinasi sosmed berbeda. Detail outlet
 mengambil daftar tautan setiap kartu dan ringkasan kanal dari seluruh kartunya.
-Edit informasi outlet hanya memperbarui outlet dan reservasi slug. Edit sosmed
-memerlukan ID outlet dan ID dokumen kartu; transaksi memeriksa kartu sudah diklaim
+Edit informasi outlet hanya memperbarui outlet dan reservasi slug.
+Edit logo menggunakan komponen upload Cloudinary yang sama dengan aktivasi.
+Logo baru atau penghapusan pilihan diterapkan ke `outlets.logoUrl` setelah
+menyimpan form informasi outlet; membatalkan form mempertahankan logo sebelumnya.
+Field logo yang tidak dikirim tidak mengubah nilai yang sudah tersimpan.
+Edit sosmed memerlukan ID outlet dan ID dokumen kartu; transaksi memeriksa kartu sudah diklaim
 serta terhubung ke outlet tersebut, lalu hanya memperbarui konfigurasi kartu itu.
 Tautan, urutan, status aktif, dan konfigurasi Google dapat diubah per kartu.
 Field `outlets.links` yang mungkin tersimpan dari implementasi sebelumnya tidak

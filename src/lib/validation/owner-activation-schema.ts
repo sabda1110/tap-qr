@@ -22,6 +22,7 @@ export const ownerActivationSchema = z.object({
   phone: z.string().trim().min(8).max(30),
   password: z.string().min(8).max(128),
   outletName: z.string().trim().min(2).max(150),
+  logoUrl: z.url().startsWith("https://res.cloudinary.com/").max(2000).nullable().optional(),
   slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(80),
   address: z.string().trim().min(3).max(500),
   city: z.string().trim().min(2).max(100),

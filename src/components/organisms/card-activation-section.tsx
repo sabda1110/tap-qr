@@ -17,18 +17,19 @@ import { useOwnerEmailAvailability } from "../../hooks/use-owner-email-availabil
 
 const defaultValues: OwnerActivationValues = {
   cardId: "", name: "", email: "", phone: "", password: "12345678", outletName: "",
-  slug: "", address: "", city: "", province: "", links: [],
+  slug: "", address: "", city: "", province: "", logoUrl: null, links: [],
 };
 
 export function CardActivationSection({ content }: { content: Messages["adminDashboard"]["activation"] }) {
   const [tab, setTab] = useState<"social" | "wifi">("social");
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const { showToast } = useToast();
   const form = useForm<OwnerActivationValues>({ defaultValues, resolver: zodResolver(ownerActivationSchema), mode: "onBlur" });
-  const busy = form.formState.isSubmitting;
+  const busy = form.formState.isSubmitting || uploadingLogo;
   const emailStatus = useOwnerEmailAvailability(form.watch("email"));
   const slugStatus = useOutletSlugAvailability(form.watch("slug"));
   async function submit(values: OwnerActivationValues) {
-    if (emailStatus !== "available" || slugStatus !== "available") return;
+    if (uploadingLogo || emailStatus !== "available" || slugStatus !== "available") return;
     try {
       await activateAdminCard({ data: values });
       form.reset(defaultValues);
@@ -45,7 +46,7 @@ export function CardActivationSection({ content }: { content: Messages["adminDas
     <div className="my-7 flex gap-2 border-b border-black/10">{(["social", "wifi"] as const).map((key) => <button key={key} type="button" disabled={busy} onClick={() => setTab(key)} aria-pressed={tab === key} className={`border-b-2 px-5 py-3 font-bold ${tab === key ? "border-[#0798ad] text-[#087e91]" : "border-transparent text-[#69737d]"}`}>{content.onboarding.tabs[key]}</button>)}</div>
     {tab === "social" ? <Form {...form}><div className="grid items-start gap-8 xl:grid-cols-[minmax(0,1fr)_320px]"><form className="min-w-0" noValidate aria-busy={busy} onSubmit={form.handleSubmit(submit)}><fieldset disabled={busy} className="grid gap-6 border-0 p-0">
       <div className="rounded-2xl border border-black/8 bg-white p-5"><FormField control={form.control} name="cardId" render={({ field, fieldState }) => <CustomInputText {...field} label={content.cardIdLabel} helpText={content.cardIdHelp} error={fieldState.error ? content.onboarding.invalid : undefined} reserveMessageSpace />} /></div>
-      <ActivationOwnerFields form={form} content={content.onboarding} emailStatus={emailStatus} slugStatus={slugStatus} />
+      <ActivationOwnerFields form={form} content={content.onboarding} emailStatus={emailStatus} slugStatus={slugStatus} onUploadBusyChange={setUploadingLogo} />
       <ActivationLinksEditor form={form} content={content} />
       <Button type="submit" className="h-12 px-6 sm:justify-self-start" disabled={busy || [emailStatus, slugStatus].some((status) => status === "checking" || status === "used" || status === "error")}>{busy ? content.submitting : content.onboarding.submit}</Button>
     </fieldset></form><ActivationOutletPreview control={form.control} content={content} /></div></Form> : <div className="rounded-2xl border border-dashed border-[#bce8ef] bg-white p-12 text-center"><Wifi className="mx-auto size-8 text-[#0798ad]" /><h2 className="mt-4 text-xl font-bold">{content.onboarding.wifiTitle}</h2><p className="mt-2 text-[#69737d]">{content.onboarding.wifiDescription}</p></div>}

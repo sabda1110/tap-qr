@@ -5,6 +5,7 @@ export type OutletSummary = {
   ownerId: string;
   name: string;
   slug: string;
+  logoUrl: string | null;
   address: string;
   city: string;
   province: string;
