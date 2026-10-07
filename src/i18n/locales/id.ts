@@ -1,3 +1,4 @@
+import { adminDashboardId } from "./admin-dashboard-id";
 export const id = {
   header: {
     brandHomeLabel: "Beranda TapQR",
@@ -88,6 +89,7 @@ export const id = {
       profile: "Akun Anda sudah aktif. Berikutnya, lengkapi profil bisnis untuk mulai menggunakan TapQR.",
     },
   },
+  adminDashboard: adminDashboardId,
   qrGenerator: {
     kicker: "Generator QR",
     title: "Buat QR untuk tautan Anda",

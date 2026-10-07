@@ -23,6 +23,13 @@ Halaman lain belum diterjemahkan.
 
 # Getting Started
 
+## Google Review autocomplete
+
+Aktivasi Google Review menggunakan **Places API (New)** melalui server function.
+Aktifkan Places API (New) dan billing pada Google Maps Platform, lalu isi
+`GOOGLE_PLACES_API_KEY` di `.env.local`. Kunci ini hanya dipakai di server dan
+jangan diberi awalan `VITE_`.
+
 To run this application:
 
 ```bash

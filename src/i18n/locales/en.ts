@@ -1,3 +1,4 @@
+import { adminDashboardEn } from "./admin-dashboard-en";
 import type { id } from "./id";
 
 export const en: typeof id = {
@@ -90,6 +91,7 @@ export const en: typeof id = {
       profile: "Your account is active. Next, complete your business profile to start using TapQR.",
     },
   },
+  adminDashboard: adminDashboardEn,
   qrGenerator: {
     kicker: "QR generator",
     title: "Create a QR code for your link",

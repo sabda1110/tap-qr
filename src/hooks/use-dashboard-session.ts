@@ -8,7 +8,7 @@ import { firebaseAuth } from "../lib/firebase/client";
 import { clearAuthenticatedSession } from "../server/auth/auth.functions";
 import { useAuthStore } from "../store/auth/auth-store";
 
-export function useUserDashboardSession(profile: UserProfile, language: Language) {
+export function useDashboardSession(profile: UserProfile, language: Language) {
   const navigate = useNavigate();
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const setUnauthenticated = useAuthStore((state) => state.setUnauthenticated);

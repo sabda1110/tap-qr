@@ -35,6 +35,13 @@ page ringkas yang dapat berisi:
 Pemilik UMKM mengatur tautan dan tampilan tersebut melalui admin dashboard
 tanpa perlu menulis kode.
 
+## Schema Firestore
+
+Gunakan [docs/firestore-schema.md](docs/firestore-schema.md) sebagai kontrak
+database. Role pengguna hanya `owner` atau `admin`; card inventory membedakan
+material `acrylic` dan `pvc`. Akses Firestore aplikasi harus melalui server
+function dan Firebase Admin, bukan Firebase client SDK.
+
 ## Target pengguna
 
 ### Pelanggan UMKM
@@ -176,6 +183,11 @@ ditangguhkan.
   itu. Jangan menjalankan development server hanya untuk inspeksi visual.
 - Setelah perubahan UI selesai, beri tahu pengguna bagian yang perlu mereka
   periksa secara manual di browser.
+- Pada dashboard, sidebar desktop harus tetap berada di viewport dan dapat
+  di-scroll secara mandiri saat konten panjang. Navigasi harus tetap terlihat
+  pada mobile. Gunakan dialog konfirmasi bergaya shadcn untuk aksi destruktif
+  dan toast berwarna: hijau untuk sukses, merah untuk error, kuning untuk
+  peringatan, serta cyan untuk informasi.
 - Gunakan aset SVG atau gambar yang sudah tersedia jika sesuai kebutuhan.
 - Simpan state sedekat mungkin dengan pemakainya. Gunakan URL untuk state
   navigasi, loader/server function untuk data server, dan Zustand hanya untuk

@@ -10,6 +10,7 @@ type CustomInputTextProps = ComponentProps<typeof Input> & {
   helpText?: string;
   icon?: LucideIcon;
   prefix?: ReactNode;
+  reserveMessageSpace?: boolean;
   suffix?: ReactNode;
 };
 
@@ -22,6 +23,7 @@ const CustomInputText = forwardRef<HTMLInputElement, CustomInputTextProps>(
     id,
     label,
     prefix,
+    reserveMessageSpace = false,
     suffix,
     ...props
   }, ref) => {
@@ -54,12 +56,12 @@ const CustomInputText = forwardRef<HTMLInputElement, CustomInputTextProps>(
             </span>
           ) : null}
         </div>
-        {message ? (
+        {message || reserveMessageSpace ? (
           <p
             id={`${inputId}-message`}
-            className={cn("text-xs leading-5", error ? "text-red-600" : "text-[#7a838d]")}
+            className={cn("text-xs leading-5", reserveMessageSpace && "min-h-10", error ? "text-red-600" : "text-[#7a838d]")}
           >
-            {message}
+            {message ?? "\u00a0"}
           </p>
         ) : null}
       </div>

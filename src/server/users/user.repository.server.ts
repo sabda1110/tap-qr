@@ -1,16 +1,11 @@
 import { FieldValue } from "firebase-admin/firestore";
 
 import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
+import type { UserProfile, UserRole } from "../../lib/auth/user-profile";
 import type { FirebaseIdentity } from "../auth/identity.server";
 
-export type UserRole = "user" | "admin";
-
-export type UserProfile = FirebaseIdentity & {
-  role: UserRole;
-};
-
 function toRole(value: unknown): UserRole {
-  return value === "admin" ? "admin" : "user";
+  return value === "admin" ? "admin" : "owner";
 }
 
 export async function upsertUserProfile(identity: FirebaseIdentity): Promise<UserProfile> {
@@ -25,6 +20,8 @@ export async function upsertUserProfile(identity: FirebaseIdentity): Promise<Use
       name: identity.name,
       provider: identity.provider,
       role,
+      phone: current.data()?.phone ?? "",
+      status: current.data()?.status === "disabled" ? "disabled" : "active",
       updatedAt: FieldValue.serverTimestamp(),
       ...(current.exists ? {} : { createdAt: FieldValue.serverTimestamp() }),
     },

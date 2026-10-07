@@ -2,12 +2,12 @@ import { ArrowUpRight, CircleCheck, QrCode, Sparkles } from "lucide-react";
 
 import { useI18n } from "../../i18n";
 import type { UserProfile } from "../../lib/auth/user-profile";
-import { useUserDashboardSession } from "../../hooks/use-user-dashboard-session";
+import { useDashboardSession } from "../../hooks/use-dashboard-session";
 import { UserDashboardLayout } from "../layouts/user-dashboard-layout";
 
 export function UserDashboardPage({ profile }: { profile: UserProfile }) {
   const { language, messages } = useI18n();
-  const signOut = useUserDashboardSession(profile, language);
+  const signOut = useDashboardSession(profile, language);
 
   const content = messages.userDashboard;
   return (
