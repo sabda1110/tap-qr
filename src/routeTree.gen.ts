@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocaleRouteImport } from './routes/$locale'
 import { Route as LocaleIndexRouteImport } from './routes/$locale.index'
+import { Route as LocaleCardIdRouteImport } from './routes/$locale.$cardId'
 import { Route as LocaleAuthModeRouteImport } from './routes/$locale.auth.$mode'
 import { Route as LocaleDashboardAdminRouteImport } from './routes/$locale.dashboard.admin'
 import { Route as LocaleDashboardUserRouteImport } from './routes/$locale.dashboard.user'
@@ -36,6 +37,11 @@ const LocaleRoute = LocaleRouteImport.update({
 const LocaleIndexRoute = LocaleIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => LocaleRoute,
+} as any)
+const LocaleCardIdRoute = LocaleCardIdRouteImport.update({
+  id: '/$cardId',
+  path: '/$cardId',
   getParentRoute: () => LocaleRoute,
 } as any)
 const LocaleAuthModeRoute = LocaleAuthModeRouteImport.update({
@@ -98,6 +104,7 @@ const LocaleDashboardUserQrGeneratorRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteWithChildren
+  '/$locale/$cardId': typeof LocaleCardIdRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/auth/$mode': typeof LocaleAuthModeRoute
   '/$locale/dashboard/admin': typeof LocaleDashboardAdminRouteWithChildren
@@ -112,6 +119,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$locale/$cardId': typeof LocaleCardIdRoute
   '/$locale': typeof LocaleIndexRoute
   '/$locale/auth/$mode': typeof LocaleAuthModeRoute
   '/$locale/p/$id': typeof LocalePIdRoute
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteWithChildren
+  '/$locale/$cardId': typeof LocaleCardIdRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/auth/$mode': typeof LocaleAuthModeRoute
   '/$locale/dashboard/admin': typeof LocaleDashboardAdminRouteWithChildren
@@ -143,6 +152,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$locale'
+    | '/$locale/$cardId'
     | '/$locale/'
     | '/$locale/auth/$mode'
     | '/$locale/dashboard/admin'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$locale/$cardId'
     | '/$locale'
     | '/$locale/auth/$mode'
     | '/$locale/p/$id'
@@ -170,6 +181,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$locale'
+    | '/$locale/$cardId'
     | '/$locale/'
     | '/$locale/auth/$mode'
     | '/$locale/dashboard/admin'
@@ -209,6 +221,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/$locale/'
       preLoaderRoute: typeof LocaleIndexRouteImport
+      parentRoute: typeof LocaleRoute
+    }
+    '/$locale/$cardId': {
+      id: '/$locale/$cardId'
+      path: '/$cardId'
+      fullPath: '/$locale/$cardId'
+      preLoaderRoute: typeof LocaleCardIdRouteImport
       parentRoute: typeof LocaleRoute
     }
     '/$locale/auth/$mode': {
@@ -315,6 +334,7 @@ const LocaleDashboardUserRouteWithChildren =
   LocaleDashboardUserRoute._addFileChildren(LocaleDashboardUserRouteChildren)
 
 interface LocaleRouteChildren {
+  LocaleCardIdRoute: typeof LocaleCardIdRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
   LocaleAuthModeRoute: typeof LocaleAuthModeRoute
   LocaleDashboardAdminRoute: typeof LocaleDashboardAdminRouteWithChildren
@@ -323,6 +343,7 @@ interface LocaleRouteChildren {
 }
 
 const LocaleRouteChildren: LocaleRouteChildren = {
+  LocaleCardIdRoute: LocaleCardIdRoute,
   LocaleIndexRoute: LocaleIndexRoute,
   LocaleAuthModeRoute: LocaleAuthModeRoute,
   LocaleDashboardAdminRoute: LocaleDashboardAdminRouteWithChildren,

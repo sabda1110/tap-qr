@@ -10,3 +10,10 @@ export async function requireAdmin(): Promise<UserProfile> {
   if (!user || user.role !== "admin") throw new Error("Akses admin diperlukan.");
   return user;
 }
+
+export async function requireAuthenticatedUser(): Promise<UserProfile> {
+  const uid = await getAuthenticationSessionUserId();
+  const user = uid ? await findUserProfile(uid) : null;
+  if (!user) throw new Error("AUTH_REQUIRED");
+  return user;
+}

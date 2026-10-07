@@ -14,12 +14,13 @@ export type ImageUploadContent = {
   tooLarge: string;
 };
 
-export function ImageUploadField({ value, onChange, onBusyChange, content, disabled = false }: {
+export function ImageUploadField({ value, onChange, onBusyChange, content, disabled = false, uploadImage = uploadAdminImage }: {
   value: string | null | undefined;
   onChange: (url: string | null) => void;
   onBusyChange: (busy: boolean) => void;
   content: ImageUploadContent;
   disabled?: boolean;
+  uploadImage?: (options: { data: FormData }) => Promise<{ url: string }>;
 }) {
   const id = useId();
   const [uploading, setUploading] = useState(false);
@@ -39,7 +40,7 @@ export function ImageUploadField({ value, onChange, onBusyChange, content, disab
     try {
       const payload = new FormData();
       payload.set("file", file);
-      const image = await uploadAdminImage({ data: payload });
+      const image = await uploadImage({ data: payload });
       onChange(image.url);
       showToast(content.success, "success");
     } catch {

@@ -1,3 +1,4 @@
+import { cardSearchSchema } from "../server/cards/card-entry.schemas";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { AuthPage } from "../components/page/auth-page";
@@ -8,6 +9,7 @@ function isAuthMode(value: string): value is AuthMode {
 }
 
 export const Route = createFileRoute("/$locale/auth/$mode")({
+  validateSearch: cardSearchSchema,
   beforeLoad: ({ params }) => {
     if (!isAuthMode(params.mode)) {
       throw redirect({
@@ -22,5 +24,5 @@ export const Route = createFileRoute("/$locale/auth/$mode")({
 
 function AuthRoute() {
   const { mode } = Route.useParams();
-  return <AuthPage mode={isAuthMode(mode) ? mode : "login"} />;
+  return <AuthPage cardId={Route.useSearch().cardId} mode={isAuthMode(mode) ? mode : "login"} />;
 }

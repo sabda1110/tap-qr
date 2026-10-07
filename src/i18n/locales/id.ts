@@ -85,6 +85,22 @@ export const id = {
       benefits: ["QR dan NFC dalam satu pengalaman", "Insight tap dan scan yang mudah dipahami"],
     },
   },
+  cardClaim: {
+    "title": "Tambah Outlet & Tautan sosmed",
+    "card": "ID kartu TapQR",
+    "name": "Nama outlet",
+    "slug": "Alamat profil outlet",
+    "help": "Gunakan huruf kecil, angka, dan tanda hubung.",
+    "save": "Simpan & aktifkan kartu",
+    "saving": "Menyimpan…",
+    "cancel": "Tutup",
+    "success": "Outlet berhasil ditambahkan dan kartu sudah aktif.",
+    "error": "Tidak dapat menyimpan. Periksa kartu dan coba lagi.",
+    "slugError": "Alamat profil sudah digunakan. Pilih alamat lain.",
+    "invalid": "Lengkapi nama, alamat profil, dan minimal satu tautan yang valid.",
+    "outlets": "Outlet Anda",
+    "profile": "Lihat profil outlet"
+},
   userDashboard: {
     kicker: "Dashboard bisnis",
     greeting: "Halo",

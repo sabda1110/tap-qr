@@ -16,7 +16,8 @@ Schema ini adalah kontrak data proyek. Semua akses aplikasi berjalan melalui Fir
 Schema TypeScript outlet adalah `OutletRecord` di
 `src/lib/firebase/firestore-schema.ts`. `logoUrl` berisi URL HTTPS Cloudinary atau
 `null` jika logo tidak dipilih. Dokumen lama tanpa field ini tetap dapat dibaca.
-Upload gambar menggunakan server function yang memeriksa akses admin dan fungsi
+Upload gambar menggunakan server function yang memeriksa akses admin untuk form
+admin atau sesi pengguna untuk klaim kartu di dashboard user, serta fungsi
 reusable `uploadCloudinaryImage`. Kredensial disimpan hanya di server pada
 `CLOUDINARY_ENV=cloudinary://API_KEY:API_SECRET@CLOUD_NAME`.
 Format JPG/PNG/WebP dibatasi 2 MB dan logo diperkecil maksimal 512 × 512 piksel.
@@ -85,3 +86,22 @@ atau ulasan yang telah dikirim.
 ## Akses
 
 `admin` dapat membuat, melihat, dan menghapus master kartu. `owner` adalah pengguna bisnis biasa. Ubah dokumen `users/{uid}.role` menjadi `admin` untuk memberi akses admin.
+
+## Klaim mandiri melalui URL kartu
+
+Route `/$locale/$cardId` memeriksa kartu aktif di server. Kartu `unclaimed`
+membawa `cardId` ke login/registrasi dan dashboard melalui query URL. Dashboard
+membuka popup tambah outlet dan tautan; penyimpanan memerlukan sesi autentikasi.
+Pembuatan outlet, reservasi slug, dan klaim kartu berjalan dalam satu transaksi
+agar klaim bersamaan tidak menimpa pemilik. Form minimal meminta nama, slug, dan
+setidaknya satu tautan aktif; alamat, kota, provinsi, dan telepon awalnya kosong.
+Klaim mandiri menggunakan ID acak kartu sebagai akses klaim sesuai alur URL;
+token klaim terpisah tidak diwajibkan pada alur ini, dan hash dihapus saat klaim.
+
+Kartu `claimed` memakai tautan aktif milik kartu tersebut: satu URL HTTP/HTTPS
+unik diarahkan langsung, sedangkan nol atau banyak URL membuka profil outlet.
+Kartu nonaktif, outlet nonaktif, dan kartu tidak ditemukan tidak diarahkan.
+Kunjungan route mencatat `card_visit`, `cardId`, `business_id`/`outletId`, serta
+timestamp di `scanEvents`. Sumber `unknown` digunakan karena URL tidak membedakan
+QR, NFC, dan kunjungan langsung; event bukan bukti review terkirim. Prefetch
+route tidak mencatat kunjungan.

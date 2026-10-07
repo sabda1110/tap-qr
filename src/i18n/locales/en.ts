@@ -87,6 +87,22 @@ export const en: typeof id = {
       benefits: ["QR and NFC in one experience", "Easy-to-read tap and scan insights"],
     },
   },
+  cardClaim: {
+    "title": "Add outlet & social links",
+    "card": "TapQR card ID",
+    "name": "Outlet name",
+    "slug": "Outlet profile address",
+    "help": "Use lowercase letters, numbers, and hyphens.",
+    "save": "Save & activate card",
+    "saving": "Saving…",
+    "cancel": "Close",
+    "success": "Outlet added and card activated.",
+    "error": "Unable to save. Check the card and try again.",
+    "slugError": "This profile address is already taken. Choose another.",
+    "invalid": "Enter a name, profile address, and at least one valid link.",
+    "outlets": "Your outlets",
+    "profile": "View outlet profile"
+},
   userDashboard: {
     kicker: "Business dashboard",
     greeting: "Hello",

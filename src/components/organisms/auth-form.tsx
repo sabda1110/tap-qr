@@ -15,9 +15,10 @@ type AuthFormProps = {
   feedback: Messages["auth"];
   language: Language;
   mode: AuthMode;
+  cardId?: string;
 };
 
-export function AuthForm({ content, feedback, language, mode }: AuthFormProps) {
+export function AuthForm({ content, feedback, language, mode, cardId }: AuthFormProps) {
   const navigate = useNavigate();
   const isRegister = mode === "register";
   const nextMode: AuthMode = isRegister ? "login" : "register";
@@ -26,8 +27,9 @@ export function AuthForm({ content, feedback, language, mode }: AuthFormProps) {
       messages: feedback,
       onAuthenticated: (profile) =>
         navigate({
-          to: profile.role === "admin" ? "/$locale/dashboard/admin" : "/$locale/dashboard/user",
+          to: profile.role === "admin" && !cardId ? "/$locale/dashboard/admin" : "/$locale/dashboard/user",
           params: { locale: language },
+          search: { cardId },
         }),
     });
 
@@ -50,6 +52,7 @@ export function AuthForm({ content, feedback, language, mode }: AuthFormProps) {
               className="shrink-0 text-xs font-bold text-black underline decoration-[#ffb332] decoration-2 underline-offset-4 hover:text-[#0798ad] aria-disabled:pointer-events-none aria-disabled:opacity-40"
               to="/$locale/auth/$mode"
               params={{ locale: language, mode: nextMode }}
+              search={{ cardId }}
             >
               {content.switchAction}
             </Link>
@@ -103,6 +106,7 @@ export function AuthForm({ content, feedback, language, mode }: AuthFormProps) {
               className="font-bold text-black underline decoration-[#ffb332] decoration-2 underline-offset-4 hover:text-[#0798ad] aria-disabled:pointer-events-none aria-disabled:opacity-40"
               to="/$locale/auth/$mode"
               params={{ locale: language, mode: nextMode }}
+              search={{ cardId }}
             >
               {content.switchAction}
             </Link>
