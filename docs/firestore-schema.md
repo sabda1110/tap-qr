@@ -7,7 +7,7 @@ Schema ini adalah kontrak data proyek. Semua akses aplikasi berjalan melalui Fir
 | Koleksi | Field utama |
 | --- | --- |
 | `users/{uid}` | `role` (`owner`/`admin`), nama, email, telepon, status, waktu dibuat/diubah |
-| `outlets/{outletId}` | `ownerId`, nama, slug, `logoUrl`, alamat, kota, provinsi, telepon, status, waktu dibuat/diubah |
+| `outlets/{outletId}` | `ownerId`, nama, slug, `logoUrl`, alamat, telepon, status, waktu dibuat/diubah |
 | `cards/{cardId}` | ID kartu, material (`acrylic`/`pvc`), status klaim, owner/outlet, konfigurasi, NFC, status aktif, waktu dibuat/diubah |
 | `scanEvents/{eventId}` | `cardId`, event, sumber QR/NFC, waktu, user agent. Koleksi ini dipakai saat analitik dibuat. |
 
@@ -94,7 +94,7 @@ membawa `cardId` ke login/registrasi dan dashboard melalui query URL. Dashboard
 membuka popup tambah outlet dan tautan; penyimpanan memerlukan sesi autentikasi.
 Pembuatan outlet, reservasi slug, dan klaim kartu berjalan dalam satu transaksi
 agar klaim bersamaan tidak menimpa pemilik. Form minimal meminta nama, slug, dan
-setidaknya satu tautan aktif; alamat, kota, provinsi, dan telepon awalnya kosong.
+setidaknya satu tautan aktif; alamat dan telepon awalnya kosong.
 Klaim mandiri menggunakan ID acak kartu sebagai akses klaim sesuai alur URL;
 token klaim terpisah tidak diwajibkan pada alur ini, dan hash dihapus saat klaim.
 

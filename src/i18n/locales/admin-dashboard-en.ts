@@ -109,8 +109,8 @@ export const adminDashboardEn = {
       },
       whatsapp: {
         label: "WhatsApp number",
-        placeholder: "628123456789",
-        helpText: "Use an Indonesian number format, for example 628123456789.",
+        placeholder: "08123456789",
+        helpText: "Use 08, +62, or 62. Maximum 15 digits.",
       },
       instagram: {
         label: "Instagram link",

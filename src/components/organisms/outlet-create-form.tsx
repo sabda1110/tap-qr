@@ -49,8 +49,6 @@ export function OutletCreateForm({
       logoUrl: null,
       phone: "",
       address: "",
-      city: "",
-      province: "",
       status: "active",
     },
   });

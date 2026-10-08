@@ -109,8 +109,8 @@ export const adminDashboardId = {
       },
       whatsapp: {
         label: "Nomor WhatsApp",
-        placeholder: "628123456789",
-        helpText: "Gunakan format nomor Indonesia, misalnya 628123456789.",
+        placeholder: "08123456789",
+        helpText: "Masukkan nomor WhatsApp bisnis anda.",
       },
       instagram: {
         label: "Tautan Instagram",

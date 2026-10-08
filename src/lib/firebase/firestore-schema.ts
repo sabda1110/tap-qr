@@ -11,8 +11,6 @@ export type OutletRecord = {
   slug: string;
   logoUrl: string | null;
   address: string;
-  city: string;
-  province: string;
   phone: string;
   status: AccountStatus;
   createdAt: unknown;

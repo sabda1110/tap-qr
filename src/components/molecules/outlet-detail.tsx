@@ -24,8 +24,6 @@ export function OutletDetail({
     [content.name, outlet.name],
     [content.slug, outlet.slug],
     [content.address, outlet.address],
-    [content.city, outlet.city],
-    [content.province, outlet.province],
     [content.phone, outlet.phone],
     [
       content.status,

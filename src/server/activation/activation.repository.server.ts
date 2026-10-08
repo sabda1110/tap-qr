@@ -2,6 +2,7 @@ import { FieldValue } from "firebase-admin/firestore";
 
 import { getFirebaseAdminAuth, getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
 import { getGoogleReviewUrl } from "../../lib/google-review";
+import { toWhatsAppInternationalNumber } from "../../lib/validation/whatsapp-number";
 import type { OwnerActivationValues } from "../../lib/validation/owner-activation-schema";
 import type { CardRecord, OutletRecord, SocialLink } from "../../lib/firebase/firestore-schema";
 
@@ -26,7 +27,7 @@ export async function activateOwnerCard(input: OwnerActivationValues, activatedB
       const timestamp = FieldValue.serverTimestamp();
       const links: SocialLink[] = input.links.map((link, order) => ({
         id: link.id, type: link.type, label: link.label, order, isActive: true,
-        url: link.type === "google_review" ? getGoogleReviewUrl(link.value) : link.type === "whatsapp" ? `https://wa.me/${link.value.replace(/\D/g, "")}` : link.value,
+        url: link.type === "google_review" ? getGoogleReviewUrl(link.value) : link.type === "whatsapp" ? `https://wa.me/${toWhatsAppInternationalNumber(link.value)}` : link.value,
       }));
       const google = input.links.find((link) => link.type === "google_review");
       transaction.create(database.collection("users").doc(account.uid), {
@@ -36,7 +37,7 @@ export async function activateOwnerCard(input: OwnerActivationValues, activatedB
       transaction.create(outletReference, {
         ownerId: account.uid, name: input.outletName, slug: input.slug, address: input.address,
         logoUrl: input.logoUrl ?? null,
-        city: input.city, province: input.province, phone: input.phone, status: "active",
+        phone: input.phone, status: "active",
         createdAt: timestamp, updatedAt: timestamp,
       } satisfies OutletRecord);
       transaction.create(slugReference, { outletId: outletReference.id, ownerId: account.uid });

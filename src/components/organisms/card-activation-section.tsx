@@ -17,7 +17,7 @@ import { useOwnerEmailAvailability } from "../../hooks/use-owner-email-availabil
 
 const defaultValues: OwnerActivationValues = {
   cardId: "", name: "", email: "", phone: "", password: "12345678", outletName: "",
-  slug: "", address: "", city: "", province: "", logoUrl: null, links: [],
+  slug: "", address: "", logoUrl: null, links: [],
 };
 
 export function CardActivationSection({ content }: { content: Messages["adminDashboard"]["activation"] }) {

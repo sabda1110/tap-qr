@@ -14,7 +14,7 @@ export const activationOnboardingEn = {
     invalidType: "Choose a JPG, PNG, or WebP image.",
     tooLarge: "Choose a non-empty image up to 2 MB.",
   },
-  fields: { name: "Full name", email: "Email", phone: "Phone number", password: "Initial password", outletName: "Outlet name", slug: "Outlet slug", address: "Address", city: "City", province: "Province" },
+  fields: { name: "Full name", email: "Email", phone: "Phone number", password: "Initial password", outletName: "Outlet name", slug: "Outlet slug", address: "Address" },
   passwordHelp: "The initial password is 12345678. You can change it before creating the account.",
   slugHelp: "Use lowercase letters, numbers, and hyphens. Example: sunset-coffee-medan.",
   linksTitle: "Social links",

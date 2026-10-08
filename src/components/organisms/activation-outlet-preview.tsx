@@ -7,9 +7,9 @@ import { SocialBrandMark } from "../elements/social-brand-mark";
 type Content = Messages["adminDashboard"]["activation"];
 
 export function ActivationOutletPreview({ control, content }: { control: Control<OwnerActivationValues>; content: Content }) {
-  const [outletName, slug, address, city, province, links, logoUrl] = useWatch({ control, name: ["outletName", "slug", "address", "city", "province", "links", "logoUrl"] });
+  const [outletName, slug, address, links, logoUrl] = useWatch({ control, name: ["outletName", "slug", "address", "links", "logoUrl"] });
   const title = outletName.trim() || content.preview.defaultName;
-  const location = [address, city, province].map((value) => value.trim()).filter(Boolean).join(", ");
+  const location = address.trim();
   return <aside className="hidden min-w-0 self-start xl:sticky xl:top-6 xl:block" aria-label={content.preview.title}>
     <div className="mb-5 flex items-center justify-between gap-2">
       <h2 className="text-sm font-bold text-[#252a32]">{content.preview.title}</h2>

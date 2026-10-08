@@ -1,6 +1,7 @@
 import { FieldValue } from "firebase-admin/firestore";
 import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
 import { getGoogleReviewUrl } from "../../lib/google-review";
+import { toWhatsAppInternationalNumber } from "../../lib/validation/whatsapp-number";
 import type {
   CardRecord,
   SocialLink,
@@ -33,7 +34,7 @@ export async function updateOutletCardLinks(input: CardLinksEditValues) {
         link.type === "google_review"
           ? getGoogleReviewUrl(link.value)
           : link.type === "whatsapp"
-            ? `https://wa.me/${link.value.replace(/\D/g, "")}`
+            ? `https://wa.me/${toWhatsAppInternationalNumber(link.value)}`
             : link.value,
     }));
     const google = input.links.find(

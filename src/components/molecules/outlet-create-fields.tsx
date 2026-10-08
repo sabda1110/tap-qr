@@ -1,8 +1,12 @@
+import { useRef } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import type { Messages } from "../../i18n";
 import type { AvailabilityStatus } from "../../hooks/use-debounced-availability";
 import type { CreateOutletFields } from "../../server/outlets/outlet-create.schemas";
+import { toOutletSlug } from "../../lib/validation/outlet-slug";
 import { CustomInputText } from "../elements/custom-input-text";
+import { OutletSlugInput } from "../elements/outlet-slug-input";
+import { WhatsAppNumberInput } from "../elements/whatsapp-number-input";
 import { ImageUploadField } from "./image-upload-field";
 import { FormField } from "../ui/form";
 import {
@@ -30,13 +34,12 @@ export function OutletCreateFields({
   disabled: boolean;
   onUploadBusy: (busy: boolean) => void;
 }) {
+  const hasManualSlug = useRef(false);
   const fields = [
     "outletName",
     "slug",
     "phone",
     "address",
-    "city",
-    "province",
   ] as const;
   return (
     <>
@@ -61,33 +64,67 @@ export function OutletCreateFields({
               key={name}
               control={form.control}
               name={name}
-              render={({ field, fieldState }) => (
+              render={({ field, fieldState }) =>
+                name === "phone" ? (
+                <WhatsAppNumberInput
+                  {...field}
+                  label={activation.onboarding.fields[name]}
+                  reserveMessageSpace
+                  error={fieldState.error ? content.invalid : undefined}
+                />
+                ) : name === "slug" ? (
+                <OutletSlugInput
+                  {...field}
+                  label={activation.onboarding.fields[name]}
+                  reserveMessageSpace
+                  error={
+                    slugStatus === "used"
+                      ? content.slugUsed
+                      : slugStatus === "error"
+                        ? activation.onboarding.slugCheckError
+                        : fieldState.error
+                          ? content.invalid
+                          : undefined
+                  }
+                  helpText={
+                    slugStatus === "checking"
+                      ? activation.onboarding.slugChecking
+                      : slugStatus === "available"
+                        ? activation.onboarding.slugAvailable
+                        : activation.onboarding.slugHelp
+                  }
+                  onChange={(event) => {
+                    hasManualSlug.current = true;
+                    field.onChange(event);
+                  }}
+                />
+                ) : (
                 <CustomInputText
                   {...field}
                   label={activation.onboarding.fields[name]}
                   reserveMessageSpace
                   error={
-                    name === "slug" && slugStatus === "used"
-                      ? content.slugUsed
-                      : name === "slug" && slugStatus === "error"
-                        ? activation.onboarding.slugCheckError
-                        : fieldState.error
-                          ? fieldState.error.message === content.slugUsed
-                            ? content.slugUsed
-                            : content.invalid
-                          : undefined
-                  }
-                  helpText={
-                    name === "slug"
-                      ? slugStatus === "checking"
-                        ? activation.onboarding.slugChecking
-                        : slugStatus === "available"
-                          ? activation.onboarding.slugAvailable
-                          : activation.onboarding.slugHelp
+                    fieldState.error
+                      ? fieldState.error.message === content.slugUsed
+                        ? content.slugUsed
+                        : content.invalid
                       : undefined
                   }
+                  onChange={
+                    name === "outletName"
+                      ? (event) => {
+                          field.onChange(event);
+                          if (!hasManualSlug.current)
+                            form.setValue("slug", toOutletSlug(event.currentTarget.value), {
+                              shouldDirty: true,
+                              shouldValidate: true,
+                            });
+                        }
+                      : field.onChange
+                  }
                 />
-              )}
+                )
+              }
             />
           ))}
           <FormField

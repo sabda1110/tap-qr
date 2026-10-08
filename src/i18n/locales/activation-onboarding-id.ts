@@ -14,7 +14,7 @@ export const activationOnboardingId = {
     invalidType: "Pilih gambar JPG, PNG, atau WebP.",
     tooLarge: "Pilih gambar berukuran maksimal 2 MB dan tidak kosong.",
   },
-  fields: { name: "Nama lengkap", email: "Email", phone: "Nomor HP", password: "Password awal", outletName: "Nama outlet", slug: "Slug outlet", address: "Alamat", city: "Kota", province: "Provinsi" },
+  fields: { name: "Nama lengkap", email: "Email", phone: "Nomor HP", password: "Password awal", outletName: "Nama outlet", slug: "Slug outlet", address: "Alamat" },
   passwordHelp: "Password awal 12345678. Anda dapat menggantinya sebelum membuat akun.",
   slugHelp: "Gunakan huruf kecil, angka, dan tanda hubung. Contoh: kopi-senja-medan.",
   linksTitle: "Tautan Sosmed",

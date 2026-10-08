@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isValidWhatsAppNumber } from "./whatsapp-number";
 
 export function createActivationSchema(messages: { cardId: string; destinationUrl: string }) {
   return z.object({
@@ -7,8 +8,7 @@ export function createActivationSchema(messages: { cardId: string; destinationUr
     type: z.enum(["google_review", "whatsapp", "instagram", "tiktok", "custom"]),
   }).superRefine((values, context) => {
     if (values.type === "whatsapp") {
-      const number = values.destinationUrl.replace(/\D/g, "");
-      if (!/^62\d{8,14}$/.test(number)) context.addIssue({ code: "custom", message: messages.destinationUrl, path: ["destinationUrl"] });
+      if (!isValidWhatsAppNumber(values.destinationUrl)) context.addIssue({ code: "custom", message: messages.destinationUrl, path: ["destinationUrl"] });
       return;
     }
 

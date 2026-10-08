@@ -39,8 +39,6 @@ export const outletsEn = {
   phone: "Phone number",
   slug: "Slug",
   address: "Address",
-  city: "City",
-  province: "Province",
   previous: "First page",
   next: "Next",
   success: "Outlet information updated successfully.",

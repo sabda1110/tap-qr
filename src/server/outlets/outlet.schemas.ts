@@ -45,8 +45,6 @@ export const updateOutletSchema = ownerActivationSchema
     logoUrl: true,
     slug: true,
     address: true,
-    city: true,
-    province: true,
     phone: true,
   })
   .extend({

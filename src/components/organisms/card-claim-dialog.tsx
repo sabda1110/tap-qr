@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { Messages } from "../../i18n";
@@ -6,9 +6,11 @@ import { claimUserCard } from "../../server/cards/card-entry.functions";
 import { claimCardSchema } from "../../server/cards/card-entry.schemas";
 import { updateOutletCardLinksSchema, type CardLinksEditValues } from "../../server/outlets/outlet.schemas";
 import { uploadOutletLogo } from "../../server/uploads/image-upload.functions";
+import { toOutletSlug } from "../../lib/validation/outlet-slug";
 import { ImageUploadField } from "../molecules/image-upload-field";
 import { OutletLinksEditor } from "../molecules/outlet-links-editor";
 import { CustomInputText } from "../elements/custom-input-text";
+import { OutletSlugInput } from "../elements/outlet-slug-input";
 import { Form } from "../ui/form";
 import { Dialog } from "../ui/dialog";
 import { Button } from "../ui/button";
@@ -19,7 +21,8 @@ export function CardClaimDialog({ cardId, messages, onClose, onSaved }: {
 }) {
   const content = messages.cardClaim;
   const [card, setCard] = useState(cardId ?? "");
-  const [outlet, setOutlet] = useState({ outletName: "", slug: "", address: "", city: "", province: "" });
+  const [outlet, setOutlet] = useState({ outletName: "", slug: "", address: "" });
+  const hasManualSlug = useRef(false);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
@@ -58,12 +61,23 @@ export function CardClaimDialog({ cardId, messages, onClose, onSaved }: {
           <ImageUploadField value={logoUrl} onChange={setLogoUrl} onBusyChange={setUploadingLogo}
             content={onboarding.logo} disabled={form.formState.isSubmitting} uploadImage={uploadOutletLogo} />
           <div className="grid items-start gap-4 sm:grid-cols-2">
-            {(["outletName", "slug", "address", "city", "province"] as const).map((name) => (
-              <CustomInputText key={name} label={onboarding.fields[name]} value={outlet[name]}
-                helpText={name === "slug" ? content.help : undefined}
+            {(["outletName", "slug", "address"] as const).map((name) => (
+              name === "slug" ? <OutletSlugInput key={name} label={onboarding.fields[name]} value={outlet[name]}
+                helpText={content.help} error={invalidFields.includes(name) ? content.invalid : undefined}
+                onChange={(event) => {
+                  hasManualSlug.current = true;
+                  setOutlet((current) => ({ ...current, slug: event.target.value }));
+                  setInvalidFields((current) => current.filter((field) => field !== name));
+                }} /> : <CustomInputText key={name} label={onboarding.fields[name]} value={outlet[name]}
                 error={invalidFields.includes(name) ? content.invalid : undefined}
                 onChange={(event) => {
-                  setOutlet((current) => ({ ...current, [name]: event.target.value }));
+                  setOutlet((current) => ({
+                    ...current,
+                    [name]: event.target.value,
+                    ...(name === "outletName" && !hasManualSlug.current
+                      ? { slug: toOutletSlug(event.target.value) }
+                      : {}),
+                  }));
                   setInvalidFields((current) => current.filter((field) => field !== name));
                 }} />
             ))}

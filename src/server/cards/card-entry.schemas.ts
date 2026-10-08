@@ -7,6 +7,6 @@ export const cardSearchSchema = z.object({ cardId: cardIdSchema.optional().catch
 export const claimCardSchema = updateOutletCardLinksSchema.pick({ links: true }).extend({
   links: updateOutletCardLinksSchema.shape.links.refine((links) => links.some((link) => link.isActive)),
   cardId: cardIdSchema,
-  ...ownerActivationSchema.pick({ outletName: true, slug: true, logoUrl: true, address: true, city: true, province: true }).shape,
+  ...ownerActivationSchema.pick({ outletName: true, slug: true, logoUrl: true, address: true }).shape,
 });
 export type ClaimCardValues = z.infer<typeof claimCardSchema>;

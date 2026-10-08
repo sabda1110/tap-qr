@@ -40,8 +40,6 @@ export const outletsId = {
   phone: "Nomor HP",
   slug: "Slug",
   address: "Alamat",
-  city: "Kota",
-  province: "Provinsi",
   previous: "Halaman awal",
   next: "Berikutnya",
   success: "Informasi outlet berhasil diperbarui.",

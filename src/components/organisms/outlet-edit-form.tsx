@@ -1,18 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { Messages } from "../../i18n";
+import { toOutletSlug } from "../../lib/validation/outlet-slug";
 import type { OutletDetail } from "../../server/outlets/outlet.types";
-import {
-  updateOutletSchema,
-  type OutletEditValues,
-} from "../../server/outlets/outlet.schemas";
-import {
-  checkAdminOutletSlug,
-  updateAdminOutlet,
-} from "../../server/outlets/outlet.functions";
+import { updateOutletSchema, type OutletEditValues } from "../../server/outlets/outlet.schemas";
+import { checkAdminOutletSlug, updateAdminOutlet } from "../../server/outlets/outlet.functions";
 import { useDebouncedAvailability } from "../../hooks/use-debounced-availability";
 import { CustomInputText } from "../elements/custom-input-text";
+import { OutletSlugInput } from "../elements/outlet-slug-input";
+import { WhatsAppNumberInput } from "../elements/whatsapp-number-input";
 import { ImageUploadField } from "../molecules/image-upload-field";
 import { Button } from "../ui/button";
 import { DialogBody, DialogFooter } from "../ui/dialog";
@@ -42,8 +39,6 @@ function defaults(outlet: OutletDetail): OutletEditValues {
     slug: outlet.slug,
     logoUrl: outlet.logoUrl,
     address: outlet.address,
-    city: outlet.city,
-    province: outlet.province,
     phone: outlet.phone,
     status: outlet.status,
   };
@@ -59,6 +54,7 @@ export function OutletEditForm({
 }: Props) {
   const { showToast } = useToast();
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const hasManualSlug = useRef(Boolean(outlet.slug));
   const form = useForm<OutletEditValues>({
     defaultValues: defaults(outlet),
     resolver: zodResolver(updateOutletSchema),
@@ -82,8 +78,6 @@ export function OutletEditForm({
     "slug",
     "phone",
     "address",
-    "city",
-    "province",
   ] as const;
   async function save(values: OutletEditValues) {
     if (
@@ -149,33 +143,68 @@ export function OutletEditForm({
                     key={name}
                     control={form.control}
                     name={name}
-                    render={({ field, fieldState }) => (
+                    render={({ field, fieldState }) =>
+                      name === "phone" ? (
+                      <WhatsAppNumberInput
+                        {...field}
+                        label={activation.onboarding.fields[name]}
+                        reserveMessageSpace
+                        error={fieldState.error ? content.invalid : undefined}
+                      />
+                      ) : name === "slug" ? (
+                      <OutletSlugInput
+                        {...field}
+                        label={activation.onboarding.fields[name]}
+                        reserveMessageSpace
+                        error={
+                          slugStatus === "used"
+                            ? content.slugUsed
+                            : slugStatus === "error"
+                              ? activation.onboarding.slugCheckError
+                              : fieldState.error
+                                ? content.invalid
+                                : undefined
+                        }
+                        helpText={
+                          slugStatus === "checking"
+                            ? activation.onboarding.slugChecking
+                            : slugStatus === "available"
+                              ? activation.onboarding.slugAvailable
+                              : activation.onboarding.slugHelp
+                        }
+                        onChange={(event) => {
+                          hasManualSlug.current = true;
+                          field.onChange(event);
+                        }}
+                      />
+                      ) : (
                       <CustomInputText
                         {...field}
                         label={activation.onboarding.fields[name]}
                         reserveMessageSpace
                         error={
-                          name === "slug" && slugStatus === "used"
-                            ? content.slugUsed
-                            : name === "slug" && slugStatus === "error"
-                              ? activation.onboarding.slugCheckError
-                              : fieldState.error
-                                ? fieldState.error.message === content.slugUsed
-                                  ? content.slugUsed
-                                  : content.invalid
-                                : undefined
-                        }
-                        helpText={
-                          name === "slug"
-                            ? slugStatus === "checking"
-                              ? activation.onboarding.slugChecking
-                              : slugStatus === "available"
-                                ? activation.onboarding.slugAvailable
-                                : activation.onboarding.slugHelp
+                          fieldState.error
+                            ? fieldState.error.message === content.slugUsed
+                              ? content.slugUsed
+                              : content.invalid
                             : undefined
                         }
+                        onChange={
+                          name === "outletName"
+                            ? (event) => {
+                                field.onChange(event);
+                                if (!hasManualSlug.current)
+                                  form.setValue(
+                                    "slug",
+                                    toOutletSlug(event.currentTarget.value),
+                                    { shouldDirty: true, shouldValidate: true },
+                                  );
+                              }
+                            : field.onChange
+                        }
                       />
-                    )}
+                      )
+                    }
                   />
                 ))}
                 <FormField

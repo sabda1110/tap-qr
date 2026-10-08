@@ -77,7 +77,7 @@ export function OutletListSection({
                 <div>
                   <h2 className="font-bold break-words">{outlet.name}</h2>
                   <p className="mt-1 text-sm text-[#69737d]">
-                    {outlet.city} · {outlet.slug}
+                    {outlet.slug}
                   </p>
                 </div>
               </div>

@@ -6,6 +6,7 @@ import type { UseFormReturn } from "react-hook-form";
 import type { Messages } from "../../i18n";
 import type { ActivationLink, OwnerActivationValues } from "../../lib/validation/owner-activation-schema";
 import { CustomInputText } from "../elements/custom-input-text";
+import { WhatsAppNumberInput } from "../elements/whatsapp-number-input";
 import { Button } from "../ui/button";
 import { FormField } from "../ui/form";
 import { ActivationGoogleSearch } from "./activation-google-search";
@@ -29,6 +30,6 @@ export function SortableActivationLink({ link, index, count, form, content, move
         <Button size="icon" variant="outline" type="button" aria-label={content.onboarding.moveDown} disabled={disabled || index === count - 1} onClick={() => move(index, index + 1)}><ArrowDown /></Button>
         <Button size="icon" variant="destructive" type="button" aria-label={content.onboarding.removeLink} onClick={() => remove(index)}><Trash2 /></Button></div>
       <div className="grid items-start gap-4 sm:grid-cols-2"><FormField control={form.control} name={`links.${index}.label`} render={({ field, fieldState }) => <CustomInputText {...field} label={content.onboarding.linkLabel} reserveMessageSpace error={fieldState.error ? content.onboarding.invalid : undefined} />} />
-        <FormField control={form.control} name={`links.${index}.value`} render={({ field, fieldState }) => link.type === "google_review" ? <ActivationGoogleSearch key={link.fieldKey} content={content} value={field.value} onSelect={field.onChange} error={fieldState.error ? content.onboarding.selectBusiness : undefined} /> : <CustomInputText {...field} label={content.destinations[link.type].label} placeholder={content.destinations[link.type].placeholder} inputMode={link.type === "whatsapp" ? "tel" : "url"} reserveMessageSpace error={fieldState.error ? content.onboarding.invalid : undefined} helpText={content.destinations[link.type].helpText} />} /></div>
+        <FormField control={form.control} name={`links.${index}.value`} render={({ field, fieldState }) => link.type === "google_review" ? <ActivationGoogleSearch key={link.fieldKey} content={content} value={field.value} onSelect={field.onChange} error={fieldState.error ? content.onboarding.selectBusiness : undefined} /> : link.type === "whatsapp" ? <WhatsAppNumberInput {...field} label={content.destinations.whatsapp.label} placeholder={content.destinations.whatsapp.placeholder} reserveMessageSpace error={fieldState.error ? content.onboarding.invalid : undefined} helpText={content.destinations.whatsapp.helpText} /> : <CustomInputText {...field} label={content.destinations[link.type].label} placeholder={content.destinations[link.type].placeholder} inputMode="url" reserveMessageSpace error={fieldState.error ? content.onboarding.invalid : undefined} helpText={content.destinations[link.type].helpText} />} /></div>
   </article>;
 }

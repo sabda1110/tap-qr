@@ -5,6 +5,7 @@ import type { UseFormReturn } from "react-hook-form";
 import type { Messages } from "../../i18n";
 import type { CardLinksEditValues } from "../../server/outlets/outlet.schemas";
 import { CustomInputText } from "../elements/custom-input-text";
+import { WhatsAppNumberInput } from "../elements/whatsapp-number-input";
 import { SocialBrandMark } from "../elements/social-brand-mark";
 import { ActivationGoogleSearch } from "./activation-google-search";
 import { Button } from "../ui/button";
@@ -219,12 +220,21 @@ export function SortableOutletLink({
                     : undefined
                 }
               />
+            ) : type === "whatsapp" ? (
+              <WhatsAppNumberInput
+                {...field}
+                label={destination.label}
+                placeholder={destination.placeholder}
+                helpText={destination.helpText}
+                reserveMessageSpace
+                error={fieldState.error ? content.invalid : undefined}
+              />
             ) : (
               <CustomInputText
                 {...field}
                 label={destination.label}
                 placeholder={destination.placeholder}
-                inputMode={type === "whatsapp" ? "tel" : "url"}
+                inputMode="url"
                 helpText={destination.helpText}
                 reserveMessageSpace
                 error={fieldState.error ? content.invalid : undefined}

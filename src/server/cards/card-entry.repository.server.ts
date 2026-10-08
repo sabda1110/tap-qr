@@ -2,6 +2,7 @@ import { FieldValue } from "firebase-admin/firestore";
 import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
 import type { CardRecord, OutletRecord } from "../../lib/firebase/firestore-schema";
 import { getGoogleReviewUrl } from "../../lib/google-review";
+import { toWhatsAppInternationalNumber } from "../../lib/validation/whatsapp-number";
 import type { ClaimCardValues } from "./card-entry.schemas";
 
 export async function findEntryCard(cardId: string) {
@@ -42,12 +43,12 @@ export async function claimEntryCard(input: ClaimCardValues, uid: string) {
     const timestamp = FieldValue.serverTimestamp();
     const links = input.links.map((link, order) => ({
       id: link.id, type: link.type, label: link.label, isActive: link.isActive, order,
-      url: link.type === "google_review" ? getGoogleReviewUrl(link.value) : link.type === "whatsapp" ? `https://wa.me/${link.value.replace(/\D/g, "")}` : link.value,
+      url: link.type === "google_review" ? getGoogleReviewUrl(link.value) : link.type === "whatsapp" ? `https://wa.me/${toWhatsAppInternationalNumber(link.value)}` : link.value,
     }));
     const google = input.links.find((link) => link.type === "google_review" && link.isActive);
     transaction.create(outlet, {
       ownerId: uid, name: input.outletName, slug: input.slug, logoUrl: input.logoUrl ?? null,
-      address: input.address, city: input.city, province: input.province, phone: "", status: "active", createdAt: timestamp, updatedAt: timestamp,
+      address: input.address, phone: "", status: "active", createdAt: timestamp, updatedAt: timestamp,
     } satisfies OutletRecord);
     transaction.create(slug, { outletId: outlet.id, ownerId: uid });
     transaction.update(document.ref, {
