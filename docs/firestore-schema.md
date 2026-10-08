@@ -95,6 +95,11 @@ membuka popup tambah outlet dan tautan; penyimpanan memerlukan sesi autentikasi.
 Pembuatan outlet, reservasi slug, dan klaim kartu berjalan dalam satu transaksi
 agar klaim bersamaan tidak menimpa pemilik. Form minimal meminta nama, slug, dan
 setidaknya satu tautan aktif; alamat dan telepon awalnya kosong.
+Jika pengguna sudah memiliki outlet aktif, mereka dapat memilih outlet tersebut
+di langkah pertama. Transaksi memverifikasi `ownerId` outlet sama dengan sesi
+pengguna sebelum menghubungkan kartu; outlet dan reservasi slug tidak dibuat
+ulang. Langkah kedua selalu menyimpan konfigurasi Google Place ID dan tautan
+sosial pada kartu yang sedang diklaim.
 Klaim mandiri menggunakan ID acak kartu sebagai akses klaim sesuai alur URL;
 token klaim terpisah tidak diwajibkan pada alur ini, dan hash dihapus saat klaim.
 

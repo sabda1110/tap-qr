@@ -30,35 +30,49 @@ export async function claimEntryCard(input: ClaimCardValues, uid: string) {
   const database = getFirebaseAdminFirestore();
   const document = await findEntryCard(input.cardId);
   if (!document) throw new Error("CARD_NOT_FOUND");
-  const outlet = database.collection("outlets").doc();
-  const slug = database.collection("outletSlugs").doc(input.slug);
+  const outlet =
+    input.outletMode === "existing"
+      ? database.collection("outlets").doc(input.outletId)
+      : database.collection("outlets").doc();
+  let outletId = outlet.id;
   await database.runTransaction(async (transaction) => {
-    const [snapshot, reservation, existing] = await Promise.all([
-      transaction.get(document.ref), transaction.get(slug),
-      transaction.get(database.collection("outlets").where("slug", "==", input.slug).limit(1)),
-    ]);
+    const snapshot = await transaction.get(document.ref);
     const card = snapshot.data() as CardRecord | undefined;
     if (!card || !card.isEnabled || card.claimStatus !== "unclaimed" || card.ownerId || card.outletId) throw new Error("CARD_ALREADY_ASSIGNED");
-    if (reservation.exists || !existing.empty) throw new Error("SLUG_ALREADY_USED");
     const timestamp = FieldValue.serverTimestamp();
     const links = input.links.map((link, order) => ({
       id: link.id, type: link.type, label: link.label, isActive: link.isActive, order,
       url: link.type === "google_review" ? getGoogleReviewUrl(link.value) : link.type === "whatsapp" ? `https://wa.me/${toWhatsAppInternationalNumber(link.value)}` : link.value,
     }));
     const google = input.links.find((link) => link.type === "google_review" && link.isActive);
-    transaction.create(outlet, {
-      ownerId: uid, name: input.outletName, slug: input.slug, logoUrl: input.logoUrl ?? null,
-      address: input.address, phone: "", status: "active", createdAt: timestamp, updatedAt: timestamp,
-    } satisfies OutletRecord);
-    transaction.create(slug, { outletId: outlet.id, ownerId: uid });
+    let profileName: string;
+    if (input.outletMode === "new") {
+      const slug = database.collection("outletSlugs").doc(input.slug);
+      const [reservation, existing] = await Promise.all([
+        transaction.get(slug),
+        transaction.get(database.collection("outlets").where("slug", "==", input.slug).limit(1)),
+      ]);
+      if (reservation.exists || !existing.empty) throw new Error("SLUG_ALREADY_USED");
+      transaction.create(outlet, {
+        ownerId: uid, name: input.outletName, slug: input.slug, logoUrl: input.logoUrl ?? null,
+        address: input.address, phone: "", status: "active", createdAt: timestamp, updatedAt: timestamp,
+      } satisfies OutletRecord);
+      transaction.create(slug, { outletId: outlet.id, ownerId: uid });
+      profileName = input.outletName;
+    } else {
+      const outletSnapshot = await transaction.get(outlet);
+      if (!outletSnapshot.exists || outletSnapshot.data()?.ownerId !== uid || outletSnapshot.data()?.status !== "active")
+        throw new Error("OUTLET_NOT_AVAILABLE");
+      profileName = String(outletSnapshot.data()?.name ?? "");
+    }
     transaction.update(document.ref, {
       ownerId: uid, outletId: outlet.id, claimStatus: "claimed",
       claim: { claimTokenHash: null, claimedAt: timestamp, claimedBy: uid },
-      config: { type: "social", google: { placeId: google?.value ?? null, reviewUrl: google ? getGoogleReviewUrl(google.value) : null, verificationStatus: google ? "pending" : null, verifiedAt: null }, social: { profileName: input.outletName, description: null, avatarUrl: null, links } },
+      config: { type: "social", google: { placeId: google?.value ?? null, reviewUrl: google ? getGoogleReviewUrl(google.value) : null, verificationStatus: google ? "pending" : null, verifiedAt: null }, social: { profileName, description: null, avatarUrl: null, links } },
       updatedAt: timestamp,
     });
   });
-  return { outletId: outlet.id };
+  return { outletId };
 }
 
 export async function listUserOutlets(uid: string) {

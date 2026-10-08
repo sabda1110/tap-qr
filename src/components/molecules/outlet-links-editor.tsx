@@ -1,4 +1,5 @@
 import { useFieldArray, type UseFormReturn } from "react-hook-form";
+import type { ReactNode } from "react";
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import {
@@ -32,11 +33,15 @@ export function OutletLinksEditor({
   content,
   activation,
   disabled = false,
+  googleReviewInput = "search",
+  placeIdGuide,
 }: {
   form: UseFormReturn<CardLinksEditValues>;
   content: Messages["adminDashboard"]["outlets"];
   activation: Messages["adminDashboard"]["activation"];
   disabled?: boolean;
+  googleReviewInput?: "search" | "placeId";
+  placeIdGuide?: ReactNode;
 }) {
   const { fields, append, remove, move } = useFieldArray({
     control: form.control,
@@ -136,6 +141,8 @@ export function OutletLinksEditor({
                 activation={activation}
                 busy={busy}
                 channelLabels={channelLabels}
+                googleReviewInput={googleReviewInput}
+                placeIdGuide={placeIdGuide}
                 move={move}
                 setPendingRemoval={setPendingRemoval}
               />

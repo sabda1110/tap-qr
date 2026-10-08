@@ -120,7 +120,7 @@ export function UserDashboardPage({
         <CardClaimDialog
           cardId={cardId}
           messages={messages}
-          onClose={() => setClaimOpen(false)}
+          outlets={outlets}
           onSaved={async () => {
             setClaimOpen(false);
             await navigate({

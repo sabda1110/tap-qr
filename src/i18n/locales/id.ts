@@ -5,7 +5,8 @@ export const id = {
     linksLabel: "Tautan outlet",
     empty: "Belum ada tautan yang tersedia. Silakan kembali lagi nanti.",
     unavailable: "Profil outlet tidak tersedia",
-    unavailableDescription: "Outlet ini belum tersedia atau sedang dinonaktifkan.",
+    unavailableDescription:
+      "Outlet ini belum tersedia atau sedang dinonaktifkan.",
     error: "Profil belum dapat dimuat",
     errorDescription: "Silakan muat ulang halaman beberapa saat lagi.",
     poweredBy: "Didukung oleh",
@@ -68,7 +69,10 @@ export const id = {
       showcaseTitle: "Hubungkan pelanggan dengan bisnis Anda.",
       showcaseDescription:
         "Satu halaman ringkas untuk Google Review, WhatsApp, WiFi, menu, dan kanal penting lainnya.",
-      benefits: ["Siap dipakai dalam hitungan menit", "Tautan dapat diubah kapan saja"],
+      benefits: [
+        "Siap dipakai dalam hitungan menit",
+        "Tautan dapat diubah kapan saja",
+      ],
     },
     register: {
       kicker: "Mulai bersama TapQR",
@@ -82,29 +86,88 @@ export const id = {
       showcaseTitle: "Ubah setiap kunjungan menjadi koneksi baru.",
       showcaseDescription:
         "Permudah pelanggan menemukan bisnis, meninggalkan review, dan kembali terhubung setelah transaksi.",
-      benefits: ["QR dan NFC dalam satu pengalaman", "Insight tap dan scan yang mudah dipahami"],
+      benefits: [
+        "QR dan NFC dalam satu pengalaman",
+        "Insight tap dan scan yang mudah dipahami",
+      ],
     },
   },
   cardClaim: {
-    "title": "Tambah Outlet & Tautan sosmed",
-    "card": "ID kartu TapQR",
-    "name": "Nama outlet",
-    "slug": "Alamat profil outlet",
-    "help": "Gunakan huruf kecil, angka, dan tanda hubung.",
-    "save": "Simpan & aktifkan kartu",
-    "saving": "Menyimpan…",
-    "cancel": "Tutup",
-    "success": "Outlet berhasil ditambahkan dan kartu sudah aktif.",
-    "error": "Tidak dapat menyimpan. Periksa kartu dan coba lagi.",
-    "slugError": "Alamat profil sudah digunakan. Pilih alamat lain.",
-    "invalid": "Lengkapi nama, alamat profil, dan minimal satu tautan yang valid.",
-    "outlets": "Outlet Anda",
-    "profile": "Lihat profil outlet"
-},
+    title: "Aktifkan kartu TapQR",
+    description:
+      "Selesaikan dua langkah singkat agar kartu siap dipakai pelanggan.",
+    step: "Langkah {current} dari 2",
+    steps: {
+      outlet: "Buat atau pilih outlet",
+      links: "Tautkan & konfigurasi kartu",
+    },
+    newOutlet: "Buat outlet baru",
+    existingOutlet: "Pilih outlet yang sudah ada",
+    selectOutlet: "Pilih outlet",
+    noOutlets:
+      "Belum ada outlet yang terdaftar. Buat outlet baru untuk melanjutkan.",
+    outletDescription:
+      "Pilih outlet yang akan menggunakan kartu ini, atau buat outlet baru terlebih dahulu.",
+    linksDescription:
+      "Masukkan Google Place ID untuk tombol review, lalu tambahkan tautan sosial bila diperlukan.",
+    next: "Lanjut ke langkah 2",
+    back: "Kembali ke langkah 1",
+    card: "ID kartu TapQR",
+    name: "Nama outlet",
+    slug: "Alamat profil outlet",
+    help: "Gunakan huruf kecil, angka, dan tanda hubung.",
+    save: "Klaim & aktifkan kartu",
+    saving: "Menyimpan…",
+    cancel: "Tutup",
+    success: "Outlet berhasil ditambahkan dan kartu sudah aktif.",
+    error: "Tidak dapat menyimpan. Periksa kartu dan coba lagi.",
+    slugError: "Alamat profil sudah digunakan. Pilih alamat lain.",
+    invalid:
+      "Lengkapi data outlet, ID kartu, dan minimal satu tautan yang valid.",
+    outletInvalid:
+      "Lengkapi nama outlet, alamat profil, dan alamat operasional.",
+    outletRequired: "Pilih outlet untuk melanjutkan.",
+    placeIdGuide: {
+      quick: "Cari Place ID bisnis Anda melalui",
+      googleDocs: "panduan Google",
+      tutorial: "Atau lihat tutorial TapQR lengkap",
+    },
+    outlets: "Outlet Anda",
+    profile: "Lihat profil outlet",
+  },
+  googlePlaceIdTutorial: {
+    title: "Cara menemukan Google Place ID",
+    description:
+      "Gunakan Place ID agar tombol Google Review di kartu TapQR mengarah ke profil bisnis yang tepat.",
+    steps: [
+      {
+        title: "Buka Place ID Finder",
+        description: "Buka alat resmi Google di tab baru.",
+      },
+      {
+        title: "Cari bisnis Anda",
+        description:
+          "Ketik nama bisnis dan alamat operasional hingga pin lokasi yang benar muncul.",
+      },
+      {
+        title: "Salin Place ID",
+        description:
+          "Klik lokasi bisnis, lalu salin kode Place ID yang diawali ChIJ.",
+      },
+      {
+        title: "Tempel di TapQR",
+        description:
+          "Kembali ke langkah klaim kartu, tempel kode tersebut pada kolom Google Place ID, lalu aktifkan kartu.",
+      },
+    ],
+    googleDocs: "Buka Place ID Finder Google",
+    backHome: "Kembali ke beranda",
+  },
   userDashboard: {
     kicker: "Dashboard bisnis",
     greeting: "Halo",
-    description: "Siapkan TapQR Anda, lalu bantu pelanggan menemukan tautan yang tepat dalam satu tap atau scan.",
+    description:
+      "Siapkan TapQR Anda, lalu bantu pelanggan menemukan tautan yang tepat dalam satu tap atau scan.",
     sidebar: {
       dashboard: "Dashboard",
       logout: "Keluar",
@@ -113,14 +176,17 @@ export const id = {
     },
     startCard: {
       title: "Mulai siapkan pengalaman pertama Anda",
-      description: "Buat profil bisnis dan pilih tujuan utama agar media QR atau NFC siap digunakan pelanggan.",
+      description:
+        "Buat profil bisnis dan pilih tujuan utama agar media QR atau NFC siap digunakan pelanggan.",
       action: "Siapkan bisnis",
     },
     statusCards: {
       mediaTitle: "Media TapQR",
-      media: "Belum ada QR atau NFC yang terhubung. Anda dapat menambahkannya setelah profil bisnis siap.",
+      media:
+        "Belum ada QR atau NFC yang terhubung. Anda dapat menambahkannya setelah profil bisnis siap.",
       profileTitle: "Profil akun",
-      profile: "Akun Anda sudah aktif. Berikutnya, lengkapi profil bisnis untuk mulai menggunakan TapQR.",
+      profile:
+        "Akun Anda sudah aktif. Berikutnya, lengkapi profil bisnis untuk mulai menggunakan TapQR.",
     },
   },
   adminDashboard: adminDashboardId,
@@ -129,7 +195,8 @@ export const id = {
     title: "Buat QR untuk tautan Anda",
     inputLabel: "Tautan tujuan",
     inputPlaceholder: "https://contoh.com/menu",
-    invalidUrl: "Masukkan tautan lengkap yang dimulai dengan http:// atau https://.",
+    invalidUrl:
+      "Masukkan tautan lengkap yang dimulai dengan http:// atau https://.",
     generate: "Buat QR",
     previewTitle: "Preview QR",
     emptyPreview: "Masukkan tautan lalu buat QR Anda.",
@@ -235,8 +302,7 @@ export const id = {
       ],
       cta: "Pilih Paket NFC",
     },
-    note:
-      "Harga media satu kali bayar per unit. Biaya pengiriman dan layanan dashboard lanjutan dapat dihitung terpisah.",
+    note: "Harga media satu kali bayar per unit. Biaya pengiriman dan layanan dashboard lanjutan dapat dihitung terpisah.",
   },
   testimonials: {
     heading: {

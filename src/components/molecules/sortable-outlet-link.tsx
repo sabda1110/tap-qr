@@ -2,6 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { ArrowDown, ArrowUp, GripVertical, Trash2 } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
+import type { ReactNode } from "react";
 import type { Messages } from "../../i18n";
 import type { CardLinksEditValues } from "../../server/outlets/outlet.schemas";
 import { CustomInputText } from "../elements/custom-input-text";
@@ -27,6 +28,8 @@ export function SortableOutletLink({
   activation,
   busy,
   channelLabels,
+  googleReviewInput,
+  placeIdGuide,
   move,
   setPendingRemoval,
 }: {
@@ -38,6 +41,8 @@ export function SortableOutletLink({
   activation: Messages["adminDashboard"]["activation"];
   busy: boolean;
   channelLabels: Record<string, string>;
+  googleReviewInput: "search" | "placeId";
+  placeIdGuide?: ReactNode;
   move: (from: number, to: number) => void;
   setPendingRemoval: (key: string) => void;
 }) {
@@ -208,7 +213,7 @@ export function SortableOutletLink({
           control={form.control}
           name={`links.${index}.value`}
           render={({ field, fieldState }) =>
-            type === "google_review" ? (
+            type === "google_review" && googleReviewInput === "search" ? (
               <ActivationGoogleSearch
                 inputId={`outlet-google-${link.fieldKey}`}
                 content={activation}
@@ -220,6 +225,17 @@ export function SortableOutletLink({
                     : undefined
                 }
               />
+            ) : type === "google_review" ? (
+              <div className="grid gap-2">
+                <CustomInputText
+                  {...field}
+                  label={activation.onboarding.placeId}
+                  placeholder="ChIJ..."
+                  reserveMessageSpace
+                  error={fieldState.error ? content.invalid : undefined}
+                />
+                {placeIdGuide}
+              </div>
             ) : type === "whatsapp" ? (
               <WhatsAppNumberInput
                 {...field}

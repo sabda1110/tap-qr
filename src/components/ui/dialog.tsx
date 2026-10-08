@@ -11,6 +11,7 @@ export function Dialog({
   children,
   busy = false,
   dismissOnOutsidePress = true,
+  dismissible = true,
   description,
   icon: Icon = PanelTop,
 }: {
@@ -20,15 +21,16 @@ export function Dialog({
   children: ReactNode;
   busy?: boolean;
   dismissOnOutsidePress?: boolean;
+  dismissible?: boolean;
   description?: string;
   icon?: LucideIcon;
 }) {
   return (
     <DialogPrimitive.Root
       open
-      disablePointerDismissal={!dismissOnOutsidePress}
+      disablePointerDismissal={!dismissOnOutsidePress || !dismissible}
       onOpenChange={(open) => {
-        if (!open && !busy) onClose();
+        if (!open && !busy && dismissible) onClose();
       }}
     >
       <DialogPrimitive.Portal>
@@ -50,16 +52,18 @@ export function Dialog({
                 )}
               </div>
             </div>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="shrink-0 rounded-xl border border-black/8 bg-[#f8fafc] text-[#69737d] hover:bg-black/5 hover:text-[#172029]"
-              aria-label={closeLabel}
-              disabled={busy}
-              onClick={onClose}
-            >
-              <X />
-            </Button>
+            {dismissible && (
+              <Button
+                size="icon"
+                variant="ghost"
+                className="shrink-0 rounded-xl border border-black/8 bg-[#f8fafc] text-[#69737d] hover:bg-black/5 hover:text-[#172029]"
+                aria-label={closeLabel}
+                disabled={busy}
+                onClick={onClose}
+              >
+                <X />
+              </Button>
+            )}
           </div>
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
             {children}
