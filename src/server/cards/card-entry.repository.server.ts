@@ -1,6 +1,6 @@
 import { FieldValue } from "firebase-admin/firestore";
 import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
-import type { CardRecord, OutletRecord } from "../../lib/firebase/firestore-schema";
+import type { CardRecord, OutletRecord, SocialLink } from "../../lib/firebase/firestore-schema";
 import { getGoogleReviewUrl } from "../../lib/google-review";
 import { toWhatsAppInternationalNumber } from "../../lib/validation/whatsapp-number";
 import type { ClaimCardValues } from "./card-entry.schemas";
@@ -78,6 +78,19 @@ export async function claimEntryCard(input: ClaimCardValues, uid: string) {
 export async function listUserOutlets(uid: string) {
   const snapshot = await getFirebaseAdminFirestore().collection("outlets").where("ownerId", "==", uid).get();
   return snapshot.docs.map((document) => ({ id: document.id, name: String(document.data().name ?? "") }));
+}
+
+export type UserOutletCopyCard = { id: string; cardId: string; links: SocialLink[] };
+
+export async function listUserOutletCards(uid: string, outletId: string): Promise<UserOutletCopyCard[]> {
+  const database = getFirebaseAdminFirestore();
+  const outlet = await database.collection("outlets").doc(outletId).get();
+  if (!outlet.exists || outlet.data()?.ownerId !== uid) throw new Error("OUTLET_NOT_AVAILABLE");
+  const cards = await database.collection("cards").where("outletId", "==", outletId).get();
+  return cards.docs
+    .map((document) => ({ id: document.id, record: document.data() as CardRecord }))
+    .filter(({ record }) => record.claimStatus === "claimed")
+    .map(({ id, record }) => ({ id, cardId: record.cardId, links: record.config?.social?.links ?? [] }));
 }
 
 export async function recordCardVisit(cardId: string) {

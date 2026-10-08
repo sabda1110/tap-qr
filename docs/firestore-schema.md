@@ -100,6 +100,9 @@ di langkah pertama. Transaksi memverifikasi `ownerId` outlet sama dengan sesi
 pengguna sebelum menghubungkan kartu; outlet dan reservasi slug tidak dibuat
 ulang. Langkah kedua selalu menyimpan konfigurasi Google Place ID dan tautan
 sosial pada kartu yang sedang diklaim.
+Pemilik dapat memilih kartu sumber dari outlet miliknya untuk menyalin tautan
+pilihan ke draft kartu baru. Server memeriksa kepemilikan outlet sumber; salinan
+menerima ID tautan baru dan tidak terhubung dengan kartu asal.
 Klaim mandiri menggunakan ID acak kartu sebagai akses klaim sesuai alur URL;
 token klaim terpisah tidak diwajibkan pada alur ini, dan hash dihapus saat klaim.
 

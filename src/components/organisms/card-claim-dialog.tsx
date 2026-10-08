@@ -11,8 +11,12 @@ import {
 import { updateOutletCardLinksSchema, type CardLinksEditValues } from "../../server/outlets/outlet.schemas";
 import { uploadOutletLogo } from "../../server/uploads/image-upload.functions";
 import { toOutletSlug } from "../../lib/validation/outlet-slug";
+import { extractCardIdFromQr } from "../../lib/card-id";
+import { copySocialLinks } from "../../lib/outlet-link-copy";
 import { ImageUploadField } from "../molecules/image-upload-field";
 import { OutletLinksEditor } from "../molecules/outlet-links-editor";
+import { UserCardCopyPicker } from "../molecules/user-card-copy-picker";
+import { CardQrScanner } from "../elements/card-qr-scanner";
 import { CustomInputText } from "../elements/custom-input-text";
 import { OutletSlugInput } from "../elements/outlet-slug-input";
 import { Form } from "../ui/form";
@@ -126,7 +130,24 @@ export function CardClaimDialog({ cardId, messages, onSaved, outlets }: {
             /> : <>
               <p className="text-sm leading-6 text-[#69737d]">{content.linksDescription}</p>
               <CustomInputText label={content.card} value={card} readOnly={Boolean(cardId)} error={invalidFields.includes("cardId") ? content.invalid : undefined} onChange={(event) => setCard(event.target.value)} />
+              {!cardId && <CardQrScanner content={content.scanner} onScan={(value) => {
+                const scannedCardId = extractCardIdFromQr(value);
+                if (!scannedCardId) return false;
+                setCard(scannedCardId);
+                setInvalidFields((current) => current.filter((field) => field !== "cardId"));
+                return true;
+              }} />}
               <OutletLinksEditor form={form} content={messages.adminDashboard.outlets} activation={messages.adminDashboard.activation} googleReviewInput="placeId" placeIdGuide={<p className="text-xs leading-5 text-[#69737d]">{content.placeIdGuide.quick} <a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder" target="_blank" rel="noreferrer" className="font-semibold text-[#087e91] underline">{content.placeIdGuide.googleDocs}</a>. <a href={`/${language}/tutorial/google-place-id`} target="_blank" rel="noreferrer" className="font-semibold text-[#087e91] underline">{content.placeIdGuide.tutorial}</a>.</p>} />
+              <UserCardCopyPicker outlets={outlets} content={content.copy} channels={messages.adminDashboard.activation.channels} disabled={busy} onCopy={(links) => {
+                const current = form.getValues("links");
+                const copied = copySocialLinks(links);
+                if (current.length + copied.length > 20) {
+                  showToast(content.copy.tooMany, "warning");
+                  return;
+                }
+                form.setValue("links", [...current, ...copied], { shouldDirty: true, shouldValidate: true });
+                showToast(content.copy.copied, "success");
+              }} />
             </>}
             {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
           </fieldset>
