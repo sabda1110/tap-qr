@@ -87,12 +87,9 @@ export const userDashboardId = {
   editLinks: "Edit tautan",
   viewProfile: "Lihat profil",
   viewCard: "Buka kartu",
-  search: "Cari outlet atau ID kartu",
-  searchPlaceholder: "Nama outlet atau ID kartu…",
-  results: "{count} outlet ditampilkan",
-  clearSearch: "Hapus pencarian",
-  noResults: "Outlet atau kartu tidak ditemukan",
-  noResultsHelp: "Coba nama outlet atau ID kartu lainnya.",
+  selectOutlet: "Pilih outlet",
+  selectOutletHelp:
+    "Pilih outlet untuk melihat dan mengatur kartu yang terhubung.",
   emptyTitle: "Siapkan outlet pertama Anda",
   emptyDescription:
     "Hubungkan kartu TapQR, lengkapi informasi outlet, lalu pilih tautan yang akan dibuka pelanggan.",

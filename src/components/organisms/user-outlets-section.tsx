@@ -1,10 +1,16 @@
-import { useId, useRef, useState } from "react";
-import { Search, Store, X } from "lucide-react";
+import { useId, useState } from "react";
+import { Store } from "lucide-react";
 import type { Language, Messages } from "../../i18n";
 import type { OutletDetail } from "../../server/outlets/outlet.types";
 import { UserOutletManagementCard } from "../molecules/user-outlet-management-card";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 type Props = {
   outlets: OutletDetail[];
@@ -25,21 +31,13 @@ export function UserOutletsSection({
   onEditCard,
   onAddCard,
 }: Props) {
-  const [query, setQuery] = useState("");
-  const searchId = useId();
-  const searchInput = useRef<HTMLInputElement>(null);
-  const clearSearch = () => {
-    setQuery("");
-    searchInput.current?.focus();
-  };
-  const normalizedQuery = query.trim().toLocaleLowerCase(language);
-  const matchingOutlets = outlets.filter(
-    (outlet) =>
-      outlet.name.toLocaleLowerCase(language).includes(normalizedQuery) ||
-      outlet.cards.some((card) =>
-        card.cardId.toLowerCase().includes(normalizedQuery),
-      ),
+  const selectId = useId();
+  const newestOutlet = findNewestOutlet(outlets);
+  const [selectedOutletId, setSelectedOutletId] = useState(
+    () => newestOutlet?.id ?? "",
   );
+  const selectedOutlet =
+    outlets.find((outlet) => outlet.id === selectedOutletId) ?? newestOutlet;
   if (outlets.length === 0)
     return (
       <section className="rounded-2xl border border-dashed border-[#bce8ef] bg-white px-5 py-10 text-center sm:py-14">
@@ -60,68 +58,67 @@ export function UserOutletsSection({
     );
   return (
     <section aria-label={content.title}>
-      <div className="mb-5">
-        <label htmlFor={searchId} className="mb-2 block text-sm font-semibold">
-          {content.search}
+      <div className="mb-5 rounded-2xl border border-black/8 bg-white p-4 sm:p-5">
+        <label htmlFor={selectId} className="block text-sm font-semibold">
+          {content.selectOutlet}
         </label>
-        <div className="relative">
-          <Search
-            aria-hidden="true"
-            className="pointer-events-none absolute top-3.5 left-3.5 size-4 text-[#69737d]"
-          />
-          <Input
-            ref={searchInput}
-            id={searchId}
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder={content.searchPlaceholder}
-            className="h-11 bg-white pr-12 pl-10 text-base sm:text-sm [&::-webkit-search-cancel-button]:appearance-none"
-          />
-          {query && (
-            <Button
-              aria-label={content.clearSearch}
-              className="absolute top-0 right-0 size-11"
-              variant="ghost"
-              size="icon"
-              onClick={clearSearch}
-            >
-              <X aria-hidden="true" />
-            </Button>
-          )}
-        </div>
-        <p className="mt-2 text-xs text-[#69737d]" role="status">
-          {content.results.replace("{count}", String(matchingOutlets.length))}
+        <p className="mt-1 text-xs leading-5 text-[#69737d]">
+          {content.selectOutletHelp}
         </p>
+        <Select
+          items={Object.fromEntries(
+            outlets.map((outlet) => [outlet.id, outlet.name]),
+          )}
+          value={selectedOutlet?.id ?? ""}
+          onValueChange={(value) => value && setSelectedOutletId(value)}
+        >
+          <SelectTrigger id={selectId} className="mt-3 w-full sm:max-w-md">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {outlets.map((outlet) => (
+              <SelectItem key={outlet.id} value={outlet.id}>
+                <span className="min-w-0">
+                  <span className="block truncate font-semibold">
+                    {outlet.name}
+                  </span>
+                  <span className="block text-xs text-[#69737d]">
+                    {content.cardCount.replace(
+                      "{count}",
+                      String(outlet.cardCount),
+                    )}
+                  </span>
+                </span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
-      {matchingOutlets.length > 0 ? (
-        <div className="grid items-start gap-4 xl:grid-cols-2">
-          {matchingOutlets.map((outlet) => (
-            <UserOutletManagementCard
-              key={outlet.id}
-              outlet={outlet}
-              language={language}
-              content={content}
-              materials={materials}
-              onEditOutlet={() => onEditOutlet(outlet.id)}
-              onEditCard={(cardId) => onEditCard(outlet.id, cardId)}
-              onAddCard={() => onAddCard(outlet.id)}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="rounded-2xl border border-black/8 bg-white px-5 py-10 text-center">
-          <h2 className="font-bold">{content.noResults}</h2>
-          <p className="mt-2 text-sm text-[#69737d]">{content.noResultsHelp}</p>
-          <Button
-            className="mt-4 h-11 px-4"
-            variant="outline"
-            onClick={clearSearch}
-          >
-            {content.clearSearch}
-          </Button>
-        </div>
+      {selectedOutlet && (
+        <UserOutletManagementCard
+          key={selectedOutlet.id}
+          outlet={selectedOutlet}
+          language={language}
+          content={content}
+          materials={materials}
+          onEditOutlet={() => onEditOutlet(selectedOutlet.id)}
+          onEditCard={(cardId) => onEditCard(selectedOutlet.id, cardId)}
+          onAddCard={() => onAddCard(selectedOutlet.id)}
+        />
       )}
     </section>
   );
+}
+
+function findNewestOutlet(outlets: OutletDetail[]) {
+  return outlets.reduce<OutletDetail | undefined>((newest, outlet) => {
+    if (!newest) return outlet;
+    const outletCreatedAt = outlet.createdAt
+      ? Date.parse(outlet.createdAt)
+      : Number.NEGATIVE_INFINITY;
+    const newestCreatedAt = newest.createdAt
+      ? Date.parse(newest.createdAt)
+      : Number.NEGATIVE_INFINITY;
+    return outletCreatedAt > newestCreatedAt ? outlet : newest;
+  }, undefined);
 }
