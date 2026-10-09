@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, QrCode } from "lucide-react";
+import { LayoutDashboard, LogOut, Settings } from "lucide-react";
 import type { Language, Messages } from "../../i18n";
 import { BrandLogo } from "../elements/brand-logo";
 import { Button } from "../ui/button";
@@ -11,7 +11,7 @@ export function UserMobileHeader({
   language,
   onSignOut,
 }: {
-  activeItem: "dashboard" | "qrGenerator";
+  activeItem: "dashboard" | "accountSettings";
   content: Messages["userDashboard"]["sidebar"];
   homeLabel: string;
   language: Language;
@@ -46,10 +46,10 @@ export function UserMobileHeader({
             icon: LayoutDashboard,
           },
           {
-            key: "qrGenerator",
-            label: content.qrGenerator,
-            to: "/$locale/dashboard/user/qr-generator",
-            icon: QrCode,
+            key: "accountSettings",
+            label: content.accountSettings,
+            to: "/$locale/dashboard/user/account",
+            icon: Settings,
           },
         ].map(({ key, label, to, icon: Icon }) => (
           <Link

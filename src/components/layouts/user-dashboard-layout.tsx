@@ -6,7 +6,7 @@ import { UserDashboardSidebar } from "../organisms/user-dashboard-sidebar";
 import { UserMobileHeader } from "../organisms/user-mobile-header";
 
 type UserDashboardLayoutProps = {
-  activeItem: "dashboard" | "qrGenerator";
+  activeItem: "dashboard" | "accountSettings";
   children: ReactNode;
   homeLabel: string;
   language: Language;

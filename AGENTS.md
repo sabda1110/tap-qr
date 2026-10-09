@@ -14,6 +14,11 @@ bekerja di repository `tap-qr`.
 - Global client state memakai Zustand ketika dibutuhkan lintas fitur atau route.
   Store autentikasi yang sudah ada berada di `src/store/auth/auth-store.ts`;
   jangan menyimpan koleksi Firestore atau secret di sana.
+- Dashboard pemilik di `/$locale/dashboard/user` menampilkan satu outlet pada
+  satu waktu melalui select. Pilihan awal adalah outlet dengan `createdAt`
+  terbaru dan panel hanya menampilkan kartu milik outlet yang dipilih.
+- Pengaturan akun pemilik berada di `/$locale/dashboard/user/account` dan
+  navigasi menyebutnya “Pengaturan akun”/“Account settings”.
 - Struktur monorepo `/apps` dan `/packages` pada bagian rencana arsitektur belum
   diterapkan. Jangan membuat atau memigrasikan ke struktur tersebut kecuali
   diminta secara eksplisit.
@@ -198,6 +203,12 @@ ditangguhkan.
 - Zustand sudah terpasang untuk status autentikasi. Jangan membuat store global
   baru atau menyimpan data server di Zustand tanpa use case lintas-route yang
   nyata.
+- Pilihan outlet pada dashboard user adalah state lokal. Jika outlet terpilih
+  tidak lagi tersedia setelah data diperbarui, gunakan kembali outlet terbaru.
+- Penggantian kata sandi akun email/password harus melakukan reautentikasi
+  Firebase Authentication dengan kata sandi saat ini sebelum memperbarui kata
+  sandi. Akun Google hanya menampilkan petunjuk untuk mengelola kata sandi di
+  Google; jangan membuat atau menyimpan kata sandi aplikasi untuk akun tersebut.
 
 ### Skill proyek
 

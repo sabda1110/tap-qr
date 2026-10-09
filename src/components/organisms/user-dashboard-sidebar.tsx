@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, QrCode } from "lucide-react";
+import { LayoutDashboard, LogOut, Settings } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { BrandLogo } from "../elements/brand-logo";
 import type { Language, Messages } from "../../i18n";
 
 type UserDashboardSidebarProps = {
-  activeItem: "dashboard" | "qrGenerator";
+  activeItem: "dashboard" | "accountSettings";
   content: Messages["userDashboard"]["sidebar"];
   homeLabel: string;
   language: Language;
@@ -38,12 +38,12 @@ export function UserDashboardSidebar({
             <LayoutDashboard className="size-4" />
           </SidebarLink>
           <SidebarLink
-            active={activeItem === "qrGenerator"}
-            label={content.qrGenerator}
+            active={activeItem === "accountSettings"}
+            label={content.accountSettings}
             language={language}
-            to="/$locale/dashboard/user/qr-generator"
+            to="/$locale/dashboard/user/account"
           >
-            <QrCode className="size-4" />
+            <Settings className="size-4" />
           </SidebarLink>
         </nav>
       </div>
@@ -70,7 +70,7 @@ function SidebarLink({
   children: ReactNode;
   language: Language;
   label: string;
-  to: "/$locale/dashboard/user" | "/$locale/dashboard/user/qr-generator";
+  to: "/$locale/dashboard/user" | "/$locale/dashboard/user/account";
 }) {
   return (
     <Link

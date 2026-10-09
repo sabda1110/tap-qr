@@ -27,6 +27,12 @@ when changing Firebase setup or authentication flow.
 
 - Firebase client login obtains an ID token; auth server functions verify it,
   synchronize the user profile, and establish the HTTP-only session.
+- Password changes are Firebase Authentication client operations. For a
+  password-provider user, reauthenticate with the current password immediately
+  before `updatePassword`; never send either password through a Firestore
+  server function or persist it in application state beyond the form.
+- Do not show password-change controls for Google-provider users. Direct them
+  to their Google Account settings instead of adding a separate TapQR password.
 - Use `requireAdmin()` before every admin card, activation, outlet, owner
   lookup, image upload, or place-search operation. Add a focused owner guard
   when an owner-only feature is introduced.

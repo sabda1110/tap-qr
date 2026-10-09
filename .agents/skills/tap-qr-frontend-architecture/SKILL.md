@@ -30,6 +30,10 @@ Choose the narrowest durable owner:
 5. Use Zustand only for client state shared across distant components or routes
    when URL state, props, and a focused provider are no longer suitable.
 
+For the owner dashboard outlet selector, keep the selected outlet ID in the
+owning section component. Derive the initial and fallback selection from the
+largest valid `createdAt`; do not copy the outlet collection into Zustand.
+
 ## Zustand direction
 
 - Zustand is used for client authentication state in
@@ -66,6 +70,9 @@ Choose the narrowest durable owner:
 - After a successful server mutation, call `router.invalidate()` before
   relying on loader data again. Keep modal, selected-card, and draft state local
   to the page or form that owns it.
+- Owner account settings use `/$locale/dashboard/user/account`. Keep its route
+  loader and Page boundary thin, and use the semantic `accountSettings` name in
+  component state and navigation.
 - Use debounced availability hooks for server-checked inputs such as email,
   slug, and owner search. Normalize the query, guard stale requests, and cache
   short-lived lookup results when the existing hook supports it.

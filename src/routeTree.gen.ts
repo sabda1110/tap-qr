@@ -23,7 +23,7 @@ import { Route as LocaleDashboardAdminActivationRouteImport } from './routes/$lo
 import { Route as LocaleDashboardAdminCardsRouteImport } from './routes/$locale.dashboard.admin.cards'
 import { Route as LocaleDashboardAdminOutletsRouteImport } from './routes/$locale.dashboard.admin.outlets'
 import { Route as LocaleDashboardUserIndexRouteImport } from './routes/$locale.dashboard.user.index'
-import { Route as LocaleDashboardUserQrGeneratorRouteImport } from './routes/$locale.dashboard.user.qr-generator'
+import { Route as LocaleDashboardUserAccountRouteImport } from './routes/$locale.dashboard.user.account'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -101,10 +101,10 @@ const LocaleDashboardUserIndexRoute =
     path: '/',
     getParentRoute: () => LocaleDashboardUserRoute,
   } as any)
-const LocaleDashboardUserQrGeneratorRoute =
-  LocaleDashboardUserQrGeneratorRouteImport.update({
-    id: '/qr-generator',
-    path: '/qr-generator',
+const LocaleDashboardUserAccountRoute =
+  LocaleDashboardUserAccountRouteImport.update({
+    id: '/account',
+    path: '/account',
     getParentRoute: () => LocaleDashboardUserRoute,
   } as any)
 
@@ -121,7 +121,7 @@ export interface FileRoutesByFullPath {
   '/$locale/dashboard/admin/activation': typeof LocaleDashboardAdminActivationRoute
   '/$locale/dashboard/admin/cards': typeof LocaleDashboardAdminCardsRoute
   '/$locale/dashboard/admin/outlets': typeof LocaleDashboardAdminOutletsRoute
-  '/$locale/dashboard/user/qr-generator': typeof LocaleDashboardUserQrGeneratorRoute
+  '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
   '/$locale/dashboard/admin/': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user/': typeof LocaleDashboardUserIndexRoute
 }
@@ -135,7 +135,7 @@ export interface FileRoutesByTo {
   '/$locale/dashboard/admin/activation': typeof LocaleDashboardAdminActivationRoute
   '/$locale/dashboard/admin/cards': typeof LocaleDashboardAdminCardsRoute
   '/$locale/dashboard/admin/outlets': typeof LocaleDashboardAdminOutletsRoute
-  '/$locale/dashboard/user/qr-generator': typeof LocaleDashboardUserQrGeneratorRoute
+  '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
   '/$locale/dashboard/admin': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user': typeof LocaleDashboardUserIndexRoute
 }
@@ -153,7 +153,7 @@ export interface FileRoutesById {
   '/$locale/dashboard/admin/activation': typeof LocaleDashboardAdminActivationRoute
   '/$locale/dashboard/admin/cards': typeof LocaleDashboardAdminCardsRoute
   '/$locale/dashboard/admin/outlets': typeof LocaleDashboardAdminOutletsRoute
-  '/$locale/dashboard/user/qr-generator': typeof LocaleDashboardUserQrGeneratorRoute
+  '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
   '/$locale/dashboard/admin/': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user/': typeof LocaleDashboardUserIndexRoute
 }
@@ -172,7 +172,7 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/admin/activation'
     | '/$locale/dashboard/admin/cards'
     | '/$locale/dashboard/admin/outlets'
-    | '/$locale/dashboard/user/qr-generator'
+    | '/$locale/dashboard/user/account'
     | '/$locale/dashboard/admin/'
     | '/$locale/dashboard/user/'
   fileRoutesByTo: FileRoutesByTo
@@ -186,7 +186,7 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/admin/activation'
     | '/$locale/dashboard/admin/cards'
     | '/$locale/dashboard/admin/outlets'
-    | '/$locale/dashboard/user/qr-generator'
+    | '/$locale/dashboard/user/account'
     | '/$locale/dashboard/admin'
     | '/$locale/dashboard/user'
   id:
@@ -203,7 +203,7 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/admin/activation'
     | '/$locale/dashboard/admin/cards'
     | '/$locale/dashboard/admin/outlets'
-    | '/$locale/dashboard/user/qr-generator'
+    | '/$locale/dashboard/user/account'
     | '/$locale/dashboard/admin/'
     | '/$locale/dashboard/user/'
   fileRoutesById: FileRoutesById
@@ -313,11 +313,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleDashboardUserIndexRouteImport
       parentRoute: typeof LocaleDashboardUserRoute
     }
-    '/$locale/dashboard/user/qr-generator': {
-      id: '/$locale/dashboard/user/qr-generator'
-      path: '/qr-generator'
-      fullPath: '/$locale/dashboard/user/qr-generator'
-      preLoaderRoute: typeof LocaleDashboardUserQrGeneratorRouteImport
+    '/$locale/dashboard/user/account': {
+      id: '/$locale/dashboard/user/account'
+      path: '/account'
+      fullPath: '/$locale/dashboard/user/account'
+      preLoaderRoute: typeof LocaleDashboardUserAccountRouteImport
       parentRoute: typeof LocaleDashboardUserRoute
     }
   }
@@ -341,12 +341,12 @@ const LocaleDashboardAdminRouteWithChildren =
   LocaleDashboardAdminRoute._addFileChildren(LocaleDashboardAdminRouteChildren)
 
 interface LocaleDashboardUserRouteChildren {
-  LocaleDashboardUserQrGeneratorRoute: typeof LocaleDashboardUserQrGeneratorRoute
+  LocaleDashboardUserAccountRoute: typeof LocaleDashboardUserAccountRoute
   LocaleDashboardUserIndexRoute: typeof LocaleDashboardUserIndexRoute
 }
 
 const LocaleDashboardUserRouteChildren: LocaleDashboardUserRouteChildren = {
-  LocaleDashboardUserQrGeneratorRoute: LocaleDashboardUserQrGeneratorRoute,
+  LocaleDashboardUserAccountRoute: LocaleDashboardUserAccountRoute,
   LocaleDashboardUserIndexRoute: LocaleDashboardUserIndexRoute,
 }
 

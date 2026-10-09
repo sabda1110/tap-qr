@@ -50,6 +50,12 @@ style before implementing UI.
   and informational feedback is cyan.
 - Use an intentionally responsive dashboard: desktop sidebar remains within the
   viewport, while mobile exposes navigation through the existing bottom sheet.
+- On the owner dashboard, use one outlet selector and show only the selected
+  outlet's cards. Default to the newest outlet so owners immediately see their
+  latest setup without scanning a long multi-outlet grid.
+- Account settings should show compact account identity details and expose the
+  password form only for email/password accounts. For Google accounts, explain
+  where the password is managed instead of showing an unusable form.
 - Modal forms keep the title and close control in the header, the form fields
   in the scroll region, and actions in an opaque footer. Mobile actions stack
   with safe-area spacing.

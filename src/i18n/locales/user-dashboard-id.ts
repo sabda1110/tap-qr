@@ -74,7 +74,7 @@ export const userDashboardId = {
     dashboard: "Outlet & kartu",
     logout: "Keluar",
     navigationLabel: "Navigasi dashboard",
-    qrGenerator: "Buat QR",
+    accountSettings: "Pengaturan akun",
   },
   title: "Outlet & kartu Anda",
   outlets: "Outlet",

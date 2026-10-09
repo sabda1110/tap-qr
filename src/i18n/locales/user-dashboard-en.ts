@@ -71,7 +71,7 @@ export const userDashboardEn = {
     dashboard: "Outlets & cards",
     logout: "Log out",
     navigationLabel: "Dashboard navigation",
-    qrGenerator: "Create QR",
+    accountSettings: "Account settings",
   },
   title: "Your outlets & cards",
   outlets: "Outlets",

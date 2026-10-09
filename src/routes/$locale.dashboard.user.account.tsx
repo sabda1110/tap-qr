@@ -1,9 +1,9 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { QrGeneratorPage } from "../components/page/qr-generator-page";
+import { AccountSettingsPage } from "../components/page/account-settings-page";
 import { getCurrentAuthenticatedUser } from "../server/auth/auth.functions";
 
-export const Route = createFileRoute("/$locale/dashboard/user/qr-generator")({
+export const Route = createFileRoute("/$locale/dashboard/user/account")({
   loader: async ({ params }) => {
     const user = await getCurrentAuthenticatedUser();
     if (!user) {
@@ -24,9 +24,9 @@ export const Route = createFileRoute("/$locale/dashboard/user/qr-generator")({
 
     return user;
   },
-  component: QrGeneratorRoute,
+  component: AccountSettingsRoute,
 });
 
-function QrGeneratorRoute() {
-  return <QrGeneratorPage profile={Route.useLoaderData()} />;
+function AccountSettingsRoute() {
+  return <AccountSettingsPage profile={Route.useLoaderData()} />;
 }

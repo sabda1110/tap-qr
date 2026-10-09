@@ -15,6 +15,9 @@ TapQR supports Indonesian (`id`) and English (`en`) with the locale in the URL.
 - Preserve the current path, query, and hash when switching languages.
 - Keep the document `lang` attribute synchronized with the URL locale for SSR
   and client navigation.
+- Keep owner account settings at `/$locale/dashboard/user/account`. Its visible
+  navigation and page copy must use account settings terminology in both
+  languages.
 
 ## Translation content
 
