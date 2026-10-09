@@ -7,8 +7,9 @@ import type {
   SocialLink,
 } from "../../lib/firebase/firestore-schema";
 import type { CardLinksEditValues } from "./outlet.schemas";
+import { assertOutletOwner } from "./outlet-ownership";
 
-export async function updateOutletCardLinks(input: CardLinksEditValues) {
+export async function updateOutletCardLinks(input: CardLinksEditValues, ownerId?: string) {
   const database = getFirebaseAdminFirestore();
   const reference = database.collection("cards").doc(input.cardId);
   await database.runTransaction(async (transaction) => {
@@ -24,6 +25,10 @@ export async function updateOutletCardLinks(input: CardLinksEditValues) {
       card.claimStatus !== "claimed"
     )
       throw new Error("OUTLET_CARD_NOT_FOUND");
+    if (ownerId !== undefined) {
+      assertOutletOwner(outlet.data()?.ownerId, ownerId);
+      assertOutletOwner(card.ownerId, ownerId);
+    }
     const links: SocialLink[] = input.links.map((link, order) => ({
       id: link.id,
       type: link.type,

@@ -56,6 +56,18 @@ Field `outlets.links` yang mungkin tersimpan dari implementasi sebelumnya tidak
 dibaca atau dijadikan sumber konfigurasi. Tidak ada sinkronisasi tautan antar kartu.
 Password, akun pemilik, dan URL NFC fisik tidak diubah oleh fitur edit ini.
 
+## Pengelolaan outlet pemilik
+
+Dashboard `/$locale/dashboard/user` memuat outlet dan kartu melalui server
+function GET, dengan query `ownerId` dari sesi pengguna. Respons hanya berisi
+informasi outlet dan konfigurasi tautan untuk pengelolaan; token klaim dan
+konfigurasi NFC tidak dikirim ke browser.
+Pemilik dapat memperbarui informasi, logo, slug, dan status outlet, serta tautan
+masing-masing kartu. Transaksi edit outlet memeriksa kepemilikan outlet;
+transaksi edit kartu memeriksa kepemilikan outlet dan kartu, hubungan outlet,
+dan status klaim sebelum menulis. Endpoint admin tetap memakai guard admin.
+Menambah outlet baru menggunakan alur klaim kartu yang sudah tersedia.
+
 ## Tambah outlet dan duplikasi
 
 Admin dapat membuat outlet tambahan untuk owner aktif yang sudah terdaftar,

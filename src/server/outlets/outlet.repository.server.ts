@@ -3,6 +3,7 @@ import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
 import type { CardRecord } from "../../lib/firebase/firestore-schema";
 import type { OutletDetail, OutletList, OutletSummary } from "./outlet.types";
 import type { OutletEditValues } from "./outlet.schemas";
+import { assertOutletOwner } from "./outlet-ownership";
 
 function timestamp(value: unknown): string | null {
   if (
@@ -16,7 +17,7 @@ function timestamp(value: unknown): string | null {
   return null;
 }
 
-function summary(
+export function buildOutletSummary(
   id: string,
   outlet: DocumentData,
   cards: CardRecord[],
@@ -73,7 +74,7 @@ export async function listOutlets({
         .collection("cards")
         .where("outletId", "==", document.id)
         .get();
-      return summary(
+      return buildOutletSummary(
         document.id,
         document.data(),
         cards.docs.map((card) => card.data() as CardRecord),
@@ -103,7 +104,7 @@ export async function getOutletDetail(id: string): Promise<OutletDetail> {
   }));
   const profile = owner?.data();
   return {
-    ...summary(
+    ...buildOutletSummary(
       id,
       outlet,
       cards.map((card) => card.record),
@@ -136,13 +137,14 @@ export async function getOutletDetail(id: string): Promise<OutletDetail> {
   };
 }
 
-export async function updateOutlet(input: OutletEditValues) {
+export async function updateOutlet(input: OutletEditValues, ownerId?: string) {
   const database = getFirebaseAdminFirestore();
   const reference = database.collection("outlets").doc(input.id);
   await database.runTransaction(async (transaction) => {
     const outletSnapshot = await transaction.get(reference);
     if (!outletSnapshot.exists) throw new Error("OUTLET_NOT_FOUND");
     const outlet = outletSnapshot.data()!;
+    if (ownerId !== undefined) assertOutletOwner(outlet.ownerId, ownerId);
     const newSlugReference = database.collection("outletSlugs").doc(input.slug);
     const oldSlugReference =
       outlet.slug && outlet.slug !== input.slug

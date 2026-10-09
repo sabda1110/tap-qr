@@ -6,6 +6,7 @@ import { toOutletSlug } from "../../lib/validation/outlet-slug";
 import type { OutletDetail } from "../../server/outlets/outlet.types";
 import { updateOutletSchema, type OutletEditValues } from "../../server/outlets/outlet.schemas";
 import { checkAdminOutletSlug, updateAdminOutlet } from "../../server/outlets/outlet.functions";
+import { uploadAdminImage } from "../../server/uploads/image-upload.functions";
 import { useDebouncedAvailability } from "../../hooks/use-debounced-availability";
 import { CustomInputText } from "../elements/custom-input-text";
 import { OutletSlugInput } from "../elements/outlet-slug-input";
@@ -30,6 +31,9 @@ type Props = {
   onSaved: () => Promise<void>;
   onCancel: () => void;
   onBusyChange: (busy: boolean) => void;
+  saveOutlet?: typeof updateAdminOutlet;
+  checkOutletSlug?: typeof checkAdminOutletSlug;
+  uploadImage?: typeof uploadAdminImage;
 };
 
 function defaults(outlet: OutletDetail): OutletEditValues {
@@ -51,6 +55,9 @@ export function OutletEditForm({
   onSaved,
   onCancel,
   onBusyChange,
+  saveOutlet = updateAdminOutlet,
+  checkOutletSlug = checkAdminOutletSlug,
+  uploadImage = uploadAdminImage,
 }: Props) {
   const { showToast } = useToast();
   const [uploadingLogo, setUploadingLogo] = useState(false);
@@ -64,8 +71,8 @@ export function OutletEditForm({
   const slug = form.watch("slug").trim();
   const checkSlug = useCallback(
     (value: string) =>
-      checkAdminOutletSlug({ data: { id: outlet.id, slug: value } }),
-    [outlet.id],
+      checkOutletSlug({ data: { id: outlet.id, slug: value } }),
+    [outlet.id, checkOutletSlug],
   );
   const slugStatus = useDebouncedAvailability(
     slug,
@@ -89,7 +96,7 @@ export function OutletEditForm({
       return;
     onBusyChange(true);
     try {
-      await updateAdminOutlet({ data: values });
+      await saveOutlet({ data: values });
       showToast(content.success, "success");
       await onSaved();
     } catch (error) {
@@ -119,13 +126,14 @@ export function OutletEditForm({
             <p className="rounded-xl border border-[#bce8ef] bg-[#e8f8fb] p-4 text-sm leading-6 text-[#087e91]">
               {content.syncHelp}
             </p>
-            <section className="rounded-2xl border border-black/8 bg-white p-5">
+            <section className="rounded-2xl border border-black/8 bg-white p-3 sm:p-5">
               <h2 className="mb-5 font-bold">{content.information}</h2>
               <FormField
                 control={form.control}
                 name="logoUrl"
                 render={({ field }) => (
                   <ImageUploadField
+                    uploadImage={uploadImage}
                     value={field.value}
                     onChange={field.onChange}
                     onBusyChange={(uploading) => {
@@ -148,6 +156,7 @@ export function OutletEditForm({
                       <WhatsAppNumberInput
                         {...field}
                         label={activation.onboarding.fields[name]}
+                        helpText={content.phoneHelp}
                         reserveMessageSpace
                         error={fieldState.error ? content.invalid : undefined}
                       />

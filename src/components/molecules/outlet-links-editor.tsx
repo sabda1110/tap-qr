@@ -68,7 +68,7 @@ export function OutletLinksEditor({
     facebook: "Facebook",
   };
   return (
-    <section className="rounded-2xl border border-black/8 bg-white p-5 sm:p-6">
+    <section className="rounded-2xl border border-black/8 bg-white p-3 sm:p-6">
       <h2 className="text-lg font-bold">{activation.onboarding.linksTitle}</h2>
       <p className="mt-2 text-sm leading-6 text-[#69737d]">
         {activation.onboarding.dragHelp}

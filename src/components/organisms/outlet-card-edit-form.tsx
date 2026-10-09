@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import type { ReactNode } from "react";
 import type { Messages } from "../../i18n";
 import type { OutletDetail } from "../../server/outlets/outlet.types";
 import {
@@ -21,6 +22,9 @@ export function OutletCardEditForm({
   onBusyChange,
   onCancel,
   onSaved,
+  saveCardLinks = updateAdminOutletCardLinks,
+  googleReviewInput = "search",
+  placeIdGuide,
 }: {
   outletId: string;
   card: OutletDetail["cards"][number];
@@ -29,6 +33,9 @@ export function OutletCardEditForm({
   onBusyChange: (busy: boolean) => void;
   onCancel: () => void;
   onSaved: () => Promise<void>;
+  saveCardLinks?: typeof updateAdminOutletCardLinks;
+  googleReviewInput?: "search" | "placeId";
+  placeIdGuide?: ReactNode;
 }) {
   const { showToast } = useToast();
   const form = useForm<CardLinksEditValues>({
@@ -60,7 +67,7 @@ export function OutletCardEditForm({
   async function save(values: CardLinksEditValues) {
     onBusyChange(true);
     try {
-      await updateAdminOutletCardLinks({ data: values });
+      await saveCardLinks({ data: values });
       showToast(content.cardSuccess, "success");
       await onSaved();
     } catch {
@@ -87,6 +94,8 @@ export function OutletCardEditForm({
               form={form}
               content={content}
               activation={activation}
+              googleReviewInput={googleReviewInput}
+              placeIdGuide={placeIdGuide}
             />
           </fieldset>
         </DialogBody>

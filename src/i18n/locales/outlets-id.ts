@@ -38,6 +38,7 @@ export const outletsId = {
   updated: "Diperbarui",
   email: "Email",
   phone: "Nomor HP",
+  phoneHelp: "Opsional. Isi untuk menambahkan nomor kontak outlet.",
   slug: "Slug",
   address: "Alamat",
   previous: "Halaman awal",

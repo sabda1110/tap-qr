@@ -33,17 +33,18 @@ import {
 
 type OutletOption = { id: string; name: string };
 
-export function CardClaimDialog({ cardId, messages, onSaved, outlets }: {
+export function CardClaimDialog({ cardId, messages, onSaved, outlets, onClose, initialOutletId, initialMode }: {
   cardId?: string; messages: Messages; onSaved: () => Promise<void>; outlets: OutletOption[];
+  onClose: () => void; initialOutletId?: string; initialMode?: "new" | "existing";
 }) {
   const content = messages.cardClaim;
   const { language } = useI18n();
   const [card, setCard] = useState(cardId ?? "");
   const [step, setStep] = useState<1 | 2>(1);
   const [outletMode, setOutletMode] = useState<"new" | "existing">(
-    outlets.length ? "existing" : "new",
+    initialMode ?? (outlets.length ? "existing" : "new"),
   );
-  const [selectedOutletId, setSelectedOutletId] = useState("");
+  const [selectedOutletId, setSelectedOutletId] = useState(initialOutletId ?? outlets[0]?.id ?? "");
   const [outlet, setOutlet] = useState({ outletName: "", slug: "", address: "" });
   const hasManualSlug = useRef(false);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
@@ -110,7 +111,7 @@ export function CardClaimDialog({ cardId, messages, onSaved, outlets }: {
       setError(message); showToast(message, "error");
     }
   }
-  return <Dialog title={content.title} description={content.description} closeLabel={content.cancel} onClose={() => {}} busy={busy} dismissible={false}>
+  return <Dialog title={content.title} description={content.description} closeLabel={content.cancel} onClose={onClose} busy={busy} dismissOnOutsidePress={false}>
     <Form {...form}>
       <form noValidate onSubmit={form.handleSubmit(save)} className="flex min-h-0 flex-1 flex-col" aria-busy={busy}>
         <DialogBody>

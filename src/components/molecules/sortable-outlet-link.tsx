@@ -66,7 +66,7 @@ export function SortableOutletLink({
         transition,
         zIndex: isDragging ? 10 : undefined,
       }}
-      className={`relative rounded-2xl border bg-[#f8fafc] p-4 ${isDragging ? "border-[#0798ad] shadow-xl" : "border-black/8"}`}
+      className={`relative rounded-2xl border bg-[#f8fafc] p-3 sm:p-4 ${isDragging ? "border-[#0798ad] shadow-xl" : "border-black/8"}`}
     >
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
@@ -79,7 +79,7 @@ export function SortableOutletLink({
             size="icon"
             disabled={busy}
             aria-label={activation.onboarding.dragHelp}
-            className="touch-none cursor-grab text-[#087e91] active:cursor-grabbing"
+            className="size-11 touch-none cursor-grab text-[#087e91] active:cursor-grabbing sm:size-8"
           >
             <GripVertical />
           </Button>
@@ -94,6 +94,7 @@ export function SortableOutletLink({
             size="icon"
             variant="outline"
             aria-label={content.moveUp}
+            className="size-11 sm:size-8"
             disabled={busy || index === 0}
             onClick={() => move(index, index - 1)}
           >
@@ -104,6 +105,7 @@ export function SortableOutletLink({
             size="icon"
             variant="outline"
             aria-label={content.moveDown}
+            className="size-11 sm:size-8"
             disabled={busy || index === count - 1}
             onClick={() => move(index, index + 1)}
           >
@@ -114,6 +116,7 @@ export function SortableOutletLink({
             size="icon"
             variant="destructive"
             aria-label={content.remove}
+            className="size-11 sm:size-8"
             disabled={busy}
             onClick={() => setPendingRemoval(link.fieldKey)}
           >

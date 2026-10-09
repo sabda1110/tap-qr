@@ -48,6 +48,7 @@ export const updateOutletSchema = ownerActivationSchema
     phone: true,
   })
   .extend({
+    phone: ownerActivationSchema.shape.phone.or(z.literal("")),
     id: z.string().min(1).max(150),
     status: z.enum(["active", "disabled"]),
   });

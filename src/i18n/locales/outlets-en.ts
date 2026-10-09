@@ -37,6 +37,7 @@ export const outletsEn = {
   updated: "Updated",
   email: "Email",
   phone: "Phone number",
+  phoneHelp: "Optional. Add a contact number for this outlet if needed.",
   slug: "Slug",
   address: "Address",
   previous: "First page",

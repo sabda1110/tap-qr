@@ -5,6 +5,7 @@ import { getCurrentAuthenticatedUser } from "../server/auth/auth.functions";
 
 export const Route = createFileRoute("/$locale/dashboard/user")({
   validateSearch: cardSearchSchema,
+  loaderDeps: ({ search }) => ({ cardId: search.cardId }),
   loader: async ({ params, location }) => {
     const user = await getCurrentAuthenticatedUser();
     if (!user) {
@@ -16,7 +17,10 @@ export const Route = createFileRoute("/$locale/dashboard/user")({
       });
     }
 
-    if (user.role === "admin" && !cardSearchSchema.parse(location.search).cardId) {
+    if (
+      user.role === "admin" &&
+      !cardSearchSchema.parse(location.search).cardId
+    ) {
       throw redirect({
         to: "/$locale/dashboard/admin",
         params: { locale: params.locale },
