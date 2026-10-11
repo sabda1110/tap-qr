@@ -3,6 +3,7 @@ import { FieldValue } from "firebase-admin/firestore";
 
 import type { CardMaterial, CardRecord } from "../../lib/firebase/firestore-schema";
 import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
+import type { CardClaimFilter } from "./card.schemas";
 
 const pageSize = 10;
 
@@ -42,19 +43,63 @@ export async function createCardBatch(quantity: number, material: CardMaterial) 
   });
 }
 
-export async function listMasterCards({ cursor, query }: { cursor?: string; query: string }) {
+export async function listMasterCards({
+  cursor,
+  query,
+  status = "all",
+}: {
+  cursor?: string;
+  query: string;
+  status?: CardClaimFilter;
+}) {
   const database = getFirebaseAdminFirestore();
   const normalizedQuery = query.toUpperCase();
-  let request = database.collection("cards").orderBy("cardId").limit(pageSize + 1);
+  let request: FirebaseFirestore.Query = database.collection("cards");
+
+  if (status && status !== "all") {
+    request = request.where("claimStatus", "==", status);
+  }
 
   if (normalizedQuery) {
     request = request.where("cardId", ">=", normalizedQuery).where("cardId", "<=", `${normalizedQuery}\uf8ff`);
   }
+  request = request.orderBy("cardId").limit(pageSize + 1);
   if (cursor) request = request.startAfter(cursor);
 
-  const snapshot = await request.get();
-  const cards = snapshot.docs.slice(0, pageSize).map((document) => toMasterCard(document.id, document.data()));
-  return { cards, nextCursor: snapshot.docs.length > pageSize ? cards.at(-1)?.cardId : undefined };
+  try {
+    const snapshot = await request.get();
+    const cards = snapshot.docs.slice(0, pageSize).map((document) => toMasterCard(document.id, document.data()));
+    return { cards, nextCursor: snapshot.docs.length > pageSize ? cards.at(-1)?.cardId : undefined };
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorCode = (error as { code?: number })?.code;
+
+    if (errorMessage.includes("index") || errorCode === 9) {
+      console.warn("Firestore index missing for card query, using fallback:", errorMessage);
+      let fallbackRequest: FirebaseFirestore.Query = database.collection("cards");
+      if (status && status !== "all") {
+        fallbackRequest = fallbackRequest.where("claimStatus", "==", status);
+      }
+      const snapshot = await fallbackRequest.get();
+      let allCards = snapshot.docs.map((doc) => toMasterCard(doc.id, doc.data()));
+      if (normalizedQuery) {
+        allCards = allCards.filter((card) => card.cardId.includes(normalizedQuery));
+      }
+      allCards.sort((a, b) => a.cardId.localeCompare(b.cardId));
+
+      let startIndex = 0;
+      if (cursor) {
+        const foundIndex = allCards.findIndex((card) => card.cardId === cursor);
+        if (foundIndex !== -1) {
+          startIndex = foundIndex + 1;
+        }
+      }
+      const pageCards = allCards.slice(startIndex, startIndex + pageSize);
+      const nextCursor = allCards.length > startIndex + pageSize ? pageCards.at(-1)?.cardId : undefined;
+      return { cards: pageCards, nextCursor };
+    }
+    throw error;
+  }
 }
 
 export async function removeUnusedCards(ids: string[]) {

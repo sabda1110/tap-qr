@@ -14,8 +14,9 @@ export function Dialog({
   dismissible = true,
   description,
   icon: Icon = PanelTop,
+  headerExtra,
 }: {
-  title: string;
+  title: ReactNode;
   closeLabel: string;
   onClose: () => void;
   children: ReactNode;
@@ -24,6 +25,7 @@ export function Dialog({
   dismissible?: boolean;
   description?: string;
   icon?: LucideIcon;
+  headerExtra?: ReactNode;
 }) {
   return (
     <DialogPrimitive.Root
@@ -52,18 +54,21 @@ export function Dialog({
                 )}
               </div>
             </div>
-            {dismissible && (
-              <Button
-                size="icon"
-                variant="ghost"
-                className="shrink-0 rounded-xl border border-black/8 bg-[#f8fafc] text-[#69737d] hover:bg-black/5 hover:text-[#172029]"
-                aria-label={closeLabel}
-                disabled={busy}
-                onClick={onClose}
-              >
-                <X />
-              </Button>
-            )}
+            <div className="flex items-center gap-3">
+              {headerExtra}
+              {dismissible && (
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="shrink-0 rounded-xl border border-black/8 bg-[#f8fafc] text-[#69737d] hover:bg-black/5 hover:text-[#172029]"
+                  aria-label={closeLabel}
+                  disabled={busy}
+                  onClick={onClose}
+                >
+                  <X />
+                </Button>
+              )}
+            </div>
           </div>
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
             {children}

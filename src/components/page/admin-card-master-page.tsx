@@ -5,14 +5,20 @@ import { useDashboardSession } from "../../hooks/use-dashboard-session";
 import { AdminDashboardLayout } from "../layouts/admin-dashboard-layout";
 import { CardMasterSection } from "../organisms/card-master-section";
 
+import type { CardClaimFilter } from "../../server/cards/card.schemas";
+
 type AdminCardMasterPageProps = {
   initialPage: { cards: MasterCard[]; nextCursor?: string };
   profile: UserProfile;
+  initialStatus?: CardClaimFilter;
+  initialQuery?: string;
 };
 
 export function AdminCardMasterPage({
   initialPage,
   profile,
+  initialStatus = "all",
+  initialQuery = "",
 }: AdminCardMasterPageProps) {
   const { language, messages } = useI18n();
   const signOut = useDashboardSession(profile, language);
@@ -27,6 +33,8 @@ export function AdminCardMasterPage({
       <CardMasterSection
         content={messages.adminDashboard.cards}
         initialPage={initialPage}
+        initialStatus={initialStatus}
+        initialQuery={initialQuery}
       />
     </AdminDashboardLayout>
   );

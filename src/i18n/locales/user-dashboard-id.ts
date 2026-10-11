@@ -7,13 +7,23 @@ export const cardClaimId = {
     outlet: "Buat atau pilih outlet",
     links: "Tautkan & konfigurasi kartu",
   },
+  mascotBadge: "Mudah, cepat, siap digunakan!",
+  outletSelectTitle: "Pilih outlet yang akan menggunakan kartu ini",
   newOutlet: "Buat outlet baru",
+  newOutletDesc: "Mulai dari awal dan daftarkan outlet baru Anda.",
   existingOutlet: "Pilih outlet yang sudah ada",
+  existingOutletDesc: "Gunakan outlet yang sudah terdaftar sebelumnya.",
   selectOutlet: "Pilih outlet",
   noOutlets:
     "Belum ada outlet yang terdaftar. Buat outlet baru untuk melanjutkan.",
   outletDescription:
     "Pilih outlet yang akan menggunakan kartu ini, atau buat outlet baru terlebih dahulu.",
+  logoTitle: "Logo outlet (opsional)",
+  logoSubtitle:
+    "Tambahkan logo outlet Anda untuk tampilan yang lebih profesional.",
+  chooseFile: "Pilih File",
+  noFileChosen: "Tidak ada file yang dipilih",
+  fileUploaded: "Logo berhasil dipilih",
   linksDescription:
     "Masukkan Google Place ID untuk tombol review, lalu tambahkan tautan sosial bila diperlukan.",
   next: "Lanjut ke langkah 2",

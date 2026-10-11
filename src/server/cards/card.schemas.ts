@@ -1,8 +1,15 @@
 import { z } from "zod";
 
+export const cardClaimFilterSchema = z
+  .enum(["all", "unclaimed", "claimed"])
+  .default("all");
+
+export type CardClaimFilter = z.infer<typeof cardClaimFilterSchema>;
+
 export const listCardsSchema = z.object({
   cursor: z.string().optional(),
   query: z.string().trim().max(40).default(""),
+  status: cardClaimFilterSchema,
 });
 
 export const generateCardsSchema = z.object({
