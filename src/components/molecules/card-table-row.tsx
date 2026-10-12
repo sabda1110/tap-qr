@@ -9,6 +9,8 @@ export type CardTableRowContent = {
   unclaimed: string;
   enabled: string;
   disabled: string;
+  printed: string;
+  unprinted: string;
   delete: string;
   selectCard: string;
 };
@@ -55,6 +57,12 @@ export function CardTableRow({
         <StatusBadge
           label={card.isEnabled ? content.enabled : content.disabled}
           muted={!card.isEnabled}
+        />
+      </td>
+      <td className="px-5 py-4">
+        <StatusBadge
+          label={card.printStatus === "printed" ? content.printed : content.unprinted}
+          muted={card.printStatus === "unprinted"}
         />
       </td>
       <td className="px-5 py-4 text-right">

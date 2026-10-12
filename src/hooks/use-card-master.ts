@@ -3,12 +3,14 @@ import { useState, type FormEvent } from "react";
 import type { CardMaterial } from "../lib/firebase/firestore-schema";
 import type { MasterCard } from "../server/cards/card.repository.server";
 import type { CardClaimFilter } from "../server/cards/card.schemas";
+import { downloadCardsCsv } from "../lib/card-csv-export";
 import {
   deleteAdminCard,
   deleteAdminCards,
   deleteAllUnusedAdminCards,
   generateAdminCards,
   getAdminCardMaster,
+  updateAdminCardsPrintStatus,
 } from "../server/cards/card.functions";
 import { useToast } from "../components/ui/toaster";
 
@@ -22,6 +24,8 @@ type UseCardMasterOptions = {
   generatedText: string;
   deleteSuccessText: string;
   deleteNoopText: string;
+  exportSuccessText: string;
+  printStatusSuccessText: string;
 };
 
 export function useCardMaster({
@@ -32,6 +36,8 @@ export function useCardMaster({
   generatedText,
   deleteSuccessText,
   deleteNoopText,
+  exportSuccessText,
+  printStatusSuccessText,
 }: UseCardMasterOptions) {
   const { showToast } = useToast();
   const [draftQuery, setDraftQuery] = useState(initialQuery);
@@ -144,6 +150,31 @@ export function useCardMaster({
     }
   }
 
+  function exportSelectedCards() {
+    const selectedCards = page.cards.filter(
+      (card) => selectedIds.has(card.id) && card.claimStatus === "unclaimed",
+    );
+    if (selectedCards.length === 0) return;
+    downloadCardsCsv(selectedCards);
+    showToast(exportSuccessText, "success");
+  }
+
+  async function setSelectedCardsPrintStatus(printStatus: "unprinted" | "printed") {
+    setPending(true);
+    setNotice(undefined);
+    try {
+      const updated = await updateAdminCardsPrintStatus({
+        data: { ids: [...selectedIds], status: printStatus },
+      });
+      await loadCards(query, currentCursor, previousCursors, status);
+      showToast(updated ? printStatusSuccessText : deleteNoopText, updated ? "success" : "warning");
+    } catch {
+      setNotice(requestErrorText);
+      showToast(requestErrorText, "error");
+      setPending(false);
+    }
+  }
+
   function toggleCard(id: string) {
     setSelectedIds((current) => {
       const next = new Set(current);
@@ -203,5 +234,7 @@ export function useCardMaster({
     handleConfirmDelete,
     handlePreviousPage,
     handleNextPage,
+    exportSelectedCards,
+    setSelectedCardsPrintStatus,
   };
 }

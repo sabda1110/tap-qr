@@ -27,7 +27,7 @@ Tombol hapus logo menghapus pilihan dari form, bukan aset Cloudinary.
 
 ## Kartu
 
-Kartu baru selalu memiliki `claimStatus: "unclaimed"`, `ownerId: null`, `outletId: null`, `isEnabled: true`, dan konfigurasi Google/social kosong. Master kartu menambah field `material` agar inventaris PVC dan akrilik dapat dibedakan.
+Kartu baru selalu memiliki `claimStatus: "unclaimed"`, `ownerId: null`, `outletId: null`, `isEnabled: true`, dan konfigurasi Google/social kosong. Master kartu menambah field `material` agar inventaris PVC dan akrilik dapat dibedakan. Status produksi fisik disimpan terpisah pada `print.status` (`unprinted`/`printed`), `print.printedAt`, dan `print.printedBy`; dokumen lama tanpa field `print` dianggap belum dicetak. Hanya kartu belum diklaim yang dapat diubah status cetaknya dari master kartu.
 
 `cardId` dibuat acak dengan entropi 128-bit, misalnya `TQR-7B83...`, sehingga tidak dapat ditebak dari urutan kartu lain. Setiap kartu juga memiliki token klaim acak 256-bit. Token tersebut nantinya menjadi isi QR/NFC untuk proses claim; Firestore hanya menyimpan hash SHA-256-nya pada `claim.claimTokenHash`.
 

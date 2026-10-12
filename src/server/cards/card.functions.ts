@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 
 import { requireAdmin } from "../auth/authorization.server";
-import { createCardBatch, listMasterCards, removeAllUnusedCards, removeUnusedCards } from "./card.repository.server";
-import { deleteAllUnusedCardsSchema, deleteCardSchema, deleteCardsSchema, generateCardsSchema, listCardsSchema } from "./card.schemas";
+import { createCardBatch, listMasterCards, removeAllUnusedCards, removeUnusedCards, updateCardsPrintStatus } from "./card.repository.server";
+import { deleteAllUnusedCardsSchema, deleteCardSchema, deleteCardsSchema, generateCardsSchema, listCardsSchema, updateCardsPrintStatusSchema } from "./card.schemas";
 
 export const getAdminCardMaster = createServerFn({ method: "GET" })
   .validator(listCardsSchema)
@@ -38,4 +38,11 @@ export const deleteAllUnusedAdminCards = createServerFn({ method: "POST" })
   .handler(async () => {
     await requireAdmin();
     return removeAllUnusedCards();
+  });
+
+export const updateAdminCardsPrintStatus = createServerFn({ method: "POST" })
+  .validator(updateCardsPrintStatusSchema)
+  .handler(async ({ data }) => {
+    const admin = await requireAdmin();
+    return updateCardsPrintStatus(data.ids, data.status, admin.uid);
   });

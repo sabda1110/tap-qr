@@ -9,6 +9,7 @@ const pageSize = 10;
 
 export type MasterCard = Pick<CardRecord, "cardId" | "claimStatus" | "isEnabled" | "material"> & {
   id: string;
+  printStatus: CardRecord["print"]["status"];
 };
 
 export async function createCardBatch(quantity: number, material: CardMaterial) {
@@ -25,6 +26,7 @@ export async function createCardBatch(quantity: number, material: CardMaterial) 
         ownerId: null,
         outletId: null,
         claim: { claimTokenHash: hashClaimToken(claimToken), claimedAt: null, claimedBy: null },
+        print: { status: "unprinted", printedAt: null, printedBy: null },
         config: {
           type: "google_review",
           google: { placeId: null, reviewUrl: null, verificationStatus: null, verifiedAt: null },
@@ -128,6 +130,34 @@ export async function removeAllUnusedCards() {
   return deletedCount;
 }
 
+export async function updateCardsPrintStatus(
+  ids: string[],
+  status: CardRecord["print"]["status"],
+  adminId: string,
+) {
+  const database = getFirebaseAdminFirestore();
+  return database.runTransaction(async (transaction) => {
+    const references = ids.map((id) => database.collection("cards").doc(id));
+    const snapshots = await Promise.all(references.map((reference) => transaction.get(reference)));
+    const printableCards = snapshots.filter(
+      (snapshot) => snapshot.exists && snapshot.data()?.claimStatus === "unclaimed",
+    );
+    const timestamp = FieldValue.serverTimestamp();
+
+    printableCards.forEach((snapshot) => {
+      transaction.update(snapshot.ref, {
+        print: {
+          status,
+          printedAt: status === "printed" ? timestamp : null,
+          printedBy: status === "printed" ? adminId : null,
+        },
+        updatedAt: timestamp,
+      });
+    });
+    return printableCards.length;
+  });
+}
+
 function toMasterCard(id: string, data: FirebaseFirestore.DocumentData): MasterCard {
   return {
     id,
@@ -135,6 +165,7 @@ function toMasterCard(id: string, data: FirebaseFirestore.DocumentData): MasterC
     claimStatus: data.claimStatus === "claimed" ? "claimed" : "unclaimed",
     isEnabled: Boolean(data.isEnabled),
     material: data.material === "pvc" ? "pvc" : "acrylic",
+    printStatus: data.print?.status === "printed" ? "printed" : "unprinted",
   };
 }
 

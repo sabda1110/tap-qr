@@ -24,7 +24,7 @@ export type CardMasterContent = CardTableRowContent &
     filterClaimed: string;
     generateAction: string;
     generatorTitle: string;
-    table: { cardId: string; material: string; claimStatus: string; enabled: string; action: string };
+    table: { cardId: string; material: string; claimStatus: string; enabled: string; printStatus: string; action: string };
     selectedCount: string;
     deleteSelected: string;
     deleteAllUnused: string;
@@ -41,6 +41,11 @@ export type CardMasterContent = CardTableRowContent &
     loading: string;
     requestError: string;
     generated: string;
+    exportCsv: string;
+    exportSuccess: string;
+    markPrinted: string;
+    markUnprinted: string;
+    printStatusSuccess: string;
   };
 
 type CardPage = { cards: MasterCard[]; nextCursor?: string };
@@ -84,6 +89,8 @@ export function CardMasterSection({
     handleConfirmDelete,
     handlePreviousPage,
     handleNextPage,
+    exportSelectedCards,
+    setSelectedCardsPrintStatus,
   } = useCardMaster({
     initialPage,
     initialStatus,
@@ -92,10 +99,12 @@ export function CardMasterSection({
     generatedText: content.generated,
     deleteSuccessText: content.deleteSuccess,
     deleteNoopText: content.deleteNoop,
+    exportSuccessText: content.exportSuccess,
+    printStatusSuccessText: content.printStatusSuccess,
   });
 
   return (
-    <section className={`mx-auto max-w-6xl ${selectedIds.size > 1 ? "pb-32" : ""}`}>
+    <section className={`mx-auto max-w-6xl ${selectedIds.size > 0 ? "pb-48 sm:pb-32" : ""}`}>
       <div className="flex flex-col gap-5 border-b border-black/8 pb-7 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs font-bold tracking-[0.16em] text-[#0798ad] uppercase">{content.kicker}</p>
@@ -184,7 +193,7 @@ export function CardMasterSection({
       <p aria-live="polite" className="mt-4 min-h-5 text-sm font-medium text-[#087e91]">{isPending ? content.loading : notice}</p>
       <div className="mt-2 overflow-hidden rounded-2xl border border-black/8 bg-white">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[740px] text-left text-sm">
+          <table className="w-full min-w-[860px] text-left text-sm">
             <thead className="bg-[#f5f8fa] text-xs font-bold tracking-[0.08em] text-[#69737d] uppercase">
               <tr>
                 <th className="px-5 py-4">
@@ -200,6 +209,7 @@ export function CardMasterSection({
                 <th className="px-5 py-4">{content.table.material}</th>
                 <th className="px-5 py-4">{content.table.claimStatus}</th>
                 <th className="px-5 py-4">{content.table.enabled}</th>
+                <th className="px-5 py-4">{content.table.printStatus}</th>
                 <th className="px-5 py-4 text-right">{content.table.action}</th>
               </tr>
             </thead>
@@ -230,7 +240,16 @@ export function CardMasterSection({
           </Button>
         </div>
       </div>
-      <CardSelectionActions count={selectedIds.size} pending={isPending} content={content} onDelete={() => setDeleteTarget("selected")} onCancel={() => setSelectedIds(new Set())} />
+      <CardSelectionActions
+        count={selectedIds.size}
+        pending={isPending}
+        content={content}
+        onDelete={() => setDeleteTarget("selected")}
+        onCancel={() => setSelectedIds(new Set())}
+        onExport={exportSelectedCards}
+        onMarkPrinted={() => void setSelectedCardsPrintStatus("printed")}
+        onMarkUnprinted={() => void setSelectedCardsPrintStatus("unprinted")}
+      />
       <AlertDialog cancelLabel={content.cancel} confirmLabel={content.delete} description={deleteTarget === "all" ? content.confirmDeleteAllUnused : content.confirmDeleteSelected} onConfirm={handleConfirmDelete} onOpenChange={(open) => !open && setDeleteTarget(undefined)} open={Boolean(deleteTarget)} title={deleteTarget === "all" ? content.deleteAllUnusedTitle : content.deleteSelectedTitle} />
     </section>
   );

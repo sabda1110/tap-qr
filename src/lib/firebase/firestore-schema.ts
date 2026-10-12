@@ -2,6 +2,7 @@ export type UserRole = "owner" | "admin";
 export type AccountStatus = "active" | "disabled";
 export type CardMaterial = "acrylic" | "pvc";
 export type CardClaimStatus = "unclaimed" | "claimed";
+export type CardPrintStatus = "unprinted" | "printed";
 export type CardConfigType = "google_review" | "social";
 export type NfcType = "tapqr" | "google_review" | "custom";
 
@@ -33,6 +34,7 @@ export type CardRecord = {
   ownerId: string | null;
   outletId: string | null;
   claim: { claimTokenHash: string | null; claimedAt: unknown | null; claimedBy: string | null };
+  print: { status: CardPrintStatus; printedAt: unknown | null; printedBy: string | null };
   config: {
     type: CardConfigType;
     google: { placeId: string | null; reviewUrl: string | null; verificationStatus: "pending" | "verified" | "invalid" | null; verifiedAt: unknown | null };
