@@ -14,6 +14,7 @@ export function Dialog({
   dismissible = true,
   description,
   icon: Icon = PanelTop,
+  iconClassName,
   headerExtra,
 }: {
   title: ReactNode;
@@ -25,6 +26,7 @@ export function Dialog({
   dismissible?: boolean;
   description?: string;
   icon?: LucideIcon;
+  iconClassName?: string;
   headerExtra?: ReactNode;
 }) {
   return (
@@ -40,7 +42,12 @@ export function Dialog({
         <DialogPrimitive.Popup className="fixed top-1/2 left-1/2 z-50 flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-white/70 bg-[#f8fafc] shadow-[0_30px_100px_rgba(23,32,41,0.3)] sm:max-h-[90dvh] sm:rounded-3xl">
           <div className="flex shrink-0 items-start justify-between gap-4 border-b border-black/8 bg-white p-5 sm:px-6 sm:py-5">
             <div className="flex min-w-0 items-start gap-3 sm:gap-4">
-              <span className="grid size-11 shrink-0 place-items-center rounded-2xl border border-[#bce8ef] bg-[#e8f8fb] text-[#087e91]">
+              <span
+                className={cn(
+                  "grid size-11 shrink-0 place-items-center rounded-2xl border border-[#bce8ef] bg-[#e8f8fb] text-[#087e91]",
+                  iconClassName,
+                )}
+              >
                 <Icon aria-hidden="true" className="size-5" />
               </span>
               <div className="min-w-0">

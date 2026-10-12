@@ -50,9 +50,8 @@ export function CardClaimOutletStep({
 }: CardClaimOutletStepProps) {
   return (
     <div className="flex flex-col gap-4">
-      {/* Section Header */}
       <div className="flex items-center gap-2.5">
-        <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-[#e8f8fb] text-[#087e91]">
+        <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-[#eaf3ff] text-[#155ee8]">
           <Store className="size-4" />
         </span>
         <div>
@@ -63,7 +62,6 @@ export function CardClaimOutletStep({
         </div>
       </div>
 
-      {/* Choice Cards */}
       <CardClaimChoiceCards
         content={content}
         onModeChange={onModeChange}
@@ -71,7 +69,7 @@ export function CardClaimOutletStep({
       />
 
       {outletMode === "existing" ? (
-        <div className="grid gap-2 rounded-2xl border border-slate-200 bg-white p-4">
+        <div className="grid gap-2 rounded-xl border border-slate-200 bg-slate-50/70 p-4">
           <label className="text-xs font-bold text-slate-700" id="claim-outlet">
             {content.selectOutlet}
           </label>
@@ -93,7 +91,7 @@ export function CardClaimOutletStep({
               </SelectContent>
             </Select>
           ) : (
-            <p className="rounded-xl border border-[#bce8ef] bg-[#e8f8fb] p-3 text-xs text-[#087e91]">
+            <p className="rounded-xl border border-blue-200 bg-blue-50 p-3 text-xs text-blue-800">
               {content.noOutlets}
             </p>
           )}
@@ -104,12 +102,11 @@ export function CardClaimOutletStep({
       ) : (
         <>
           {outlets.length === 0 && (
-            <p className="rounded-xl border border-[#bce8ef] bg-[#e8f8fb] p-3 text-xs text-[#087e91]">
+            <p className="rounded-xl border border-blue-200 bg-blue-50 p-3 text-xs text-blue-800">
               {content.noOutlets}
             </p>
           )}
 
-          {/* Logo Upload Card */}
           <CardClaimLogoCard
             content={content}
             logoUrl={logoUrl}
@@ -118,71 +115,67 @@ export function CardClaimOutletStep({
             onboardingLogo={onboarding.logo}
           />
 
-          {/* Form Fields: Perfectly Aligned Grid */}
           <div className="grid gap-4 sm:grid-cols-2">
-            {/* Nama outlet */}
             <div className="flex flex-col">
               <label className="mb-1.5 flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                <Store className="size-3.5 text-[#0798ad]" />
+                <Store className="size-3.5 text-[#155ee8]" />
                 <span>{onboarding.fields.outletName}</span>
               </label>
               <input
                 type="text"
-                placeholder="Masukkan nama outlet"
+                placeholder={content.namePlaceholder}
                 value={outlet.outletName}
                 onChange={(e) => onOutletChange("outletName", e.target.value)}
                 className={cn(
-                  "h-11 w-full rounded-xl border bg-white px-3.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-[#0798ad] focus:ring-2 focus:ring-[#0798ad]/15",
+                  "h-11 w-full rounded-xl border bg-white px-3.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-[#155ee8] focus:ring-2 focus:ring-blue-600/15",
                   invalidFields.includes("outletName") ? "border-red-500 ring-1 ring-red-500/20" : "border-slate-200"
                 )}
               />
               {invalidFields.includes("outletName") && (
-                <p className="mt-1 text-xs text-red-600 font-medium">Nama outlet wajib diisi.</p>
+                <p className="mt-1 text-xs font-medium text-red-600">{content.nameRequired}</p>
               )}
             </div>
 
-            {/* Slug outlet */}
             <div className="flex flex-col">
               <label className="mb-1.5 flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                <Link2 className="size-3.5 text-[#0798ad]" />
+                <Link2 className="size-3.5 text-[#155ee8]" />
                 <span>{onboarding.fields.slug}</span>
               </label>
               <input
                 type="text"
                 maxLength={80}
-                placeholder="Contoh: nama-outlet"
+                placeholder={content.slugPlaceholder}
                 value={outlet.slug}
                 onChange={(e) => onSlugChange(toOutletSlug(e.target.value))}
                 className={cn(
-                  "h-11 w-full rounded-xl border bg-white px-3.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-[#0798ad] focus:ring-2 focus:ring-[#0798ad]/15",
+                  "h-11 w-full rounded-xl border bg-white px-3.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-[#155ee8] focus:ring-2 focus:ring-blue-600/15",
                   invalidFields.includes("slug") ? "border-red-500 ring-1 ring-red-500/20" : "border-slate-200"
                 )}
               />
               {invalidFields.includes("slug") ? (
-                <p className="mt-1 text-xs text-red-600 font-medium">Slug profil wajib diisi.</p>
+                <p className="mt-1 text-xs font-medium text-red-600">{content.slugRequired}</p>
               ) : (
                 <p className="mt-1 text-[11px] text-slate-400">{content.help}</p>
               )}
             </div>
 
-            {/* Alamat operasional */}
             <div className="flex flex-col sm:col-span-2">
               <label className="mb-1.5 flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                <MapPin className="size-3.5 text-[#0798ad]" />
+                <MapPin className="size-3.5 text-[#155ee8]" />
                 <span>{onboarding.fields.address}</span>
               </label>
               <input
                 type="text"
-                placeholder="Contoh: Jl. Sudirman No. 123, Jakarta"
+                placeholder={content.addressPlaceholder}
                 value={outlet.address}
                 onChange={(e) => onOutletChange("address", e.target.value)}
                 className={cn(
-                  "h-11 w-full rounded-xl border bg-white px-3.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-[#0798ad] focus:ring-2 focus:ring-[#0798ad]/15",
+                  "h-11 w-full rounded-xl border bg-white px-3.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-[#155ee8] focus:ring-2 focus:ring-blue-600/15",
                   invalidFields.includes("address") ? "border-red-500 ring-1 ring-red-500/20" : "border-slate-200"
                 )}
               />
               {invalidFields.includes("address") && (
-                <p className="mt-1 text-xs text-red-600 font-medium">Alamat operasional wajib diisi.</p>
+                <p className="mt-1 text-xs font-medium text-red-600">{content.addressRequired}</p>
               )}
             </div>
           </div>

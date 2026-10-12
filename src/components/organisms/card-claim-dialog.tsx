@@ -1,4 +1,4 @@
-import { ChevronRight, CreditCard } from "lucide-react";
+import { ChevronLeft, ChevronRight, ContactRound } from "lucide-react";
 
 import type { Messages } from "../../i18n";
 import { useI18n } from "../../i18n";
@@ -78,14 +78,16 @@ export function CardClaimDialog({
   const titleNode = (
     <span>
       {content.title.replace("TapQR", "").trim()}{" "}
-      <span className="text-[#0798ad]">TapQR</span>
+      <span className="bg-gradient-to-r from-[#155ee8] to-[#3288f5] bg-clip-text text-transparent">
+        TapQR
+      </span>
     </span>
   );
 
   const headerExtra = (
     <CardClaimMascot
-      badgeText={language === "id" ? "Mudah & Cepat!" : "Quick & Easy!"}
-      subText={language === "id" ? "Siap digunakan ✨" : "Ready to use ✨"}
+      badgeText={content.mascotBadge}
+      alt={content.mascotAlt}
     />
   );
 
@@ -93,7 +95,8 @@ export function CardClaimDialog({
     <Dialog
       title={titleNode}
       description={content.description}
-      icon={CreditCard}
+      icon={ContactRound}
+      iconClassName="border-blue-100 bg-[#eaf3ff] text-[#155ee8]"
       headerExtra={headerExtra}
       closeLabel={content.cancel}
       onClose={onClose}
@@ -107,7 +110,7 @@ export function CardClaimDialog({
           className="flex min-h-0 flex-1 flex-col"
           aria-busy={busy}
         >
-          <DialogBody>
+          <DialogBody className="bg-white sm:px-7 sm:py-5">
             <CardClaimStepIndicator content={content} step={step} />
             <fieldset disabled={busy} className="grid gap-5 border-0 p-0">
               {step === 1 ? (
@@ -220,22 +223,16 @@ export function CardClaimDialog({
               )}
             </fieldset>
           </DialogBody>
-          <DialogFooter className="relative overflow-hidden">
-            {/* Subtle decorative confetti corner */}
-            <div className="absolute left-4 bottom-3 hidden sm:flex items-center gap-1.5 opacity-60 pointer-events-none select-none">
-              <span className="h-2.5 w-0.5 rotate-45 rounded-full bg-[#0798ad]" />
-              <span className="h-3 w-0.5 -rotate-12 rounded-full bg-[#087e91]" />
-              <span className="h-2 w-0.5 rotate-30 rounded-full bg-sky-400" />
-            </div>
-
+          <DialogFooter>
             {step === 2 && (
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setStep(1)}
                 disabled={busy}
-                className="rounded-xl border-slate-200"
+                className="rounded-xl border-slate-200 px-5"
               >
+                <ChevronLeft className="size-4" />
                 {content.back}
               </Button>
             )}
@@ -244,7 +241,7 @@ export function CardClaimDialog({
                 type="button"
                 onClick={nextStep}
                 disabled={busy}
-                className="bg-[#0798ad] hover:bg-[#087e91] text-white font-bold px-6 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition-all cursor-pointer"
+                className="cursor-pointer gap-1.5 rounded-xl bg-[#155ee8] px-6 py-2.5 font-bold text-white shadow-md shadow-blue-600/15 transition hover:bg-[#0f4dcc]"
               >
                 <span>{content.next}</span>
                 <ChevronRight className="size-4" />
@@ -253,7 +250,7 @@ export function CardClaimDialog({
               <Button
                 type="submit"
                 disabled={busy}
-                className="bg-[#0798ad] hover:bg-[#087e91] text-white font-bold px-6 py-2.5 rounded-xl shadow-md transition-all cursor-pointer"
+                className="cursor-pointer rounded-xl bg-[#155ee8] px-6 py-2.5 font-bold text-white shadow-md shadow-blue-600/15 transition hover:bg-[#0f4dcc]"
               >
                 {busy ? content.saving : content.save}
               </Button>

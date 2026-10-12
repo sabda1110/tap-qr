@@ -8,19 +8,18 @@ type Props = {
 
 export function CardClaimStepIndicator({ content, step }: Props) {
   return (
-    <div className="mb-5">
-      <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
-        {/* Step 1 */}
+    <div className="mb-5" aria-label={content.step.replace("{current}", String(step))}>
+      <div className="grid gap-2.5 sm:grid-cols-[minmax(0,1fr)_minmax(5rem,1fr)_minmax(0,1fr)] sm:items-center">
         <div
-          className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+          className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
             step === 1
-              ? "bg-[#0798ad] text-white shadow-xs"
-              : "bg-[#e8f8fb] text-[#087e91]"
+              ? "bg-[#eaf3ff] text-slate-950"
+              : "bg-blue-50 text-[#155ee8]"
           }`}
         >
           <span
             className={`grid size-5 place-items-center rounded-full text-xs font-bold ${
-              step === 1 ? "bg-white text-[#0798ad]" : "bg-[#0798ad] text-white"
+              step === 1 ? "bg-[#155ee8] text-white" : "bg-[#155ee8] text-white"
             }`}
           >
             1
@@ -28,34 +27,32 @@ export function CardClaimStepIndicator({ content, step }: Props) {
           <span>{content.steps.outlet}</span>
         </div>
 
-        {/* Divider line */}
-        <div className="hidden h-0.5 flex-1 bg-slate-200 sm:block mx-3" />
+        <div className="hidden h-px bg-slate-200 sm:block" aria-hidden="true" />
 
         {/* Step 2 */}
         <div
-          className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+          className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
             step === 2
-              ? "bg-[#0798ad] text-white shadow-xs"
-              : "text-slate-400 bg-slate-50 border border-slate-200/60"
+              ? "bg-[#eaf3ff] text-slate-950"
+              : "text-slate-500"
           }`}
         >
           <span
             className={`grid size-5 place-items-center rounded-full text-xs font-bold ${
               step === 2
-                ? "bg-white text-[#0798ad]"
-                : "bg-slate-200 text-slate-500"
+              ? "bg-[#155ee8] text-white"
+              : "bg-slate-100 text-slate-500"
             }`}
           >
             2
           </span>
-          <span className={step === 2 ? "text-white" : "text-slate-500 font-medium"}>
+          <span className={step === 2 ? "text-slate-950" : "font-medium text-slate-500"}>
             {content.steps.links}
           </span>
         </div>
       </div>
 
-      {/* Clock subrow */}
-      <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-slate-400">
+      <div className="mt-2.5 flex items-center gap-1.5 text-xs font-medium text-slate-500">
         <Clock className="size-3.5" />
         <span>{content.step.replace("{current}", String(step))}</span>
       </div>

@@ -17,21 +17,20 @@ export function CardClaimChoiceCards({
 }: Props) {
   return (
     <div className="grid gap-3 sm:grid-cols-2">
-      {/* Card 1: Buat outlet baru */}
       <button
         type="button"
         onClick={() => onModeChange("new")}
         className={cn(
-          "group relative flex items-center gap-3.5 rounded-2xl p-3.5 text-left transition-all cursor-pointer",
+          "group relative flex min-h-24 cursor-pointer items-center gap-3.5 rounded-xl p-3.5 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#155ee8] focus-visible:ring-offset-2",
           outletMode === "new"
-            ? "border-2 border-[#0798ad] bg-[#f7fdfe] shadow-xs ring-4 ring-[#0798ad]/10"
-            : "border border-slate-200 bg-white hover:border-slate-300"
+            ? "border-2 border-[#2f80ed] bg-[#f7fbff] shadow-[0_8px_24px_rgba(47,128,237,0.10)]"
+            : "border border-slate-200 bg-white hover:border-blue-200"
         )}
       >
         <img
           src={newStoreImage}
           alt=""
-          className="size-14 shrink-0 rounded-xl object-contain bg-slate-50 border border-slate-100 p-0.5"
+          className="size-16 shrink-0 rounded-xl object-contain"
         />
         <div className="min-w-0 flex-1">
           <p className="text-sm font-bold text-slate-900">{content.newOutlet}</p>
@@ -41,28 +40,27 @@ export function CardClaimChoiceCards({
         </div>
         <div className="shrink-0">
           {outletMode === "new" ? (
-            <CheckCircle2 className="size-5 text-[#0798ad] fill-[#0798ad] text-white" />
+            <CheckCircle2 className="size-5 fill-[#155ee8] text-white" />
           ) : (
             <div className="size-5 rounded-full border-2 border-slate-300" />
           )}
         </div>
       </button>
 
-      {/* Card 2: Pilih outlet yang sudah ada */}
       <button
         type="button"
         onClick={() => onModeChange("existing")}
         className={cn(
-          "group relative flex items-center gap-3.5 rounded-2xl p-3.5 text-left transition-all cursor-pointer",
+          "group relative flex min-h-24 cursor-pointer items-center gap-3.5 rounded-xl p-3.5 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#155ee8] focus-visible:ring-offset-2",
           outletMode === "existing"
-            ? "border-2 border-[#0798ad] bg-[#f7fdfe] shadow-xs ring-4 ring-[#0798ad]/10"
-            : "border border-slate-200 bg-white hover:border-slate-300"
+            ? "border-2 border-[#2f80ed] bg-[#f7fbff] shadow-[0_8px_24px_rgba(47,128,237,0.10)]"
+            : "border border-slate-200 bg-white hover:border-blue-200"
         )}
       >
         <img
           src={existingStoreImage}
           alt=""
-          className="size-14 shrink-0 rounded-xl object-contain bg-slate-50 border border-slate-100 p-0.5"
+          className="size-16 shrink-0 rounded-xl object-contain"
         />
         <div className="min-w-0 flex-1">
           <p className="text-sm font-bold text-slate-900">{content.existingOutlet}</p>
@@ -72,7 +70,7 @@ export function CardClaimChoiceCards({
         </div>
         <div className="shrink-0">
           {outletMode === "existing" ? (
-            <CheckCircle2 className="size-5 text-[#0798ad] fill-[#0798ad] text-white" />
+            <CheckCircle2 className="size-5 fill-[#155ee8] text-white" />
           ) : (
             <div className="size-5 rounded-full border-2 border-slate-300" />
           )}
