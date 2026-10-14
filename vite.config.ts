@@ -12,15 +12,10 @@ const config = defineConfig({
   plugins: [
     devtools(),
     nitro({
-      // Firebase's CommonJS dependencies resolve bundled proto files via __dirname.
       rollupConfig: {
-        external: [
-          /^@sentry\//,
-          /^firebase-admin(?:\/|$)/,
-          /^@google-cloud\/firestore(?:\/|$)/,
-        ],
+        external: [/^@sentry\//],
       },
-      traceDeps: ["firebase-admin", "@google-cloud/firestore*"],
+      traceDeps: ["firebase-admin*", "@google-cloud/firestore*"],
     }),
     tailwindcss(),
     tanstackStart(),
