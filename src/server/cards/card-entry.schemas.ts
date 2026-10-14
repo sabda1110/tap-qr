@@ -3,7 +3,10 @@ import { ownerActivationSchema } from "../../lib/validation/owner-activation-sch
 import { updateOutletCardLinksSchema } from "../outlets/outlet.schemas";
 
 export const cardIdSchema = z.string().trim().regex(/^TQR-[A-F0-9]{32}$/i).transform((id) => id.toUpperCase());
-export const cardSearchSchema = z.object({ cardId: cardIdSchema.optional().catch(undefined) });
+export const cardSearchSchema = z.object({
+  cardId: cardIdSchema.optional().catch(undefined),
+  reason: z.string().optional().catch(undefined),
+});
 export const userOutletCardsSchema = z.object({ outletId: z.string().min(1).max(150) });
 export const newClaimOutletSchema = ownerActivationSchema.pick({
   outletName: true,

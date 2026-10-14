@@ -24,5 +24,12 @@ export const Route = createFileRoute("/$locale/auth/$mode")({
 
 function AuthRoute() {
   const { mode } = Route.useParams();
-  return <AuthPage cardId={Route.useSearch().cardId} mode={isAuthMode(mode) ? mode : "login"} />;
+  const search = Route.useSearch();
+  return (
+    <AuthPage
+      cardId={search.cardId}
+      mode={isAuthMode(mode) ? mode : "login"}
+      reason={search.reason}
+    />
+  );
 }

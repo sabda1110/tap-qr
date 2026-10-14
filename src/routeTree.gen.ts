@@ -20,6 +20,7 @@ import { Route as LocalePIdRouteImport } from './routes/$locale.p.$id'
 import { Route as LocaleTutorialGooglePlaceIdRouteImport } from './routes/$locale.tutorial.google-place-id'
 import { Route as LocaleDashboardAdminIndexRouteImport } from './routes/$locale.dashboard.admin.index'
 import { Route as LocaleDashboardAdminActivationRouteImport } from './routes/$locale.dashboard.admin.activation'
+import { Route as LocaleDashboardAdminAnalyticsRouteImport } from './routes/$locale.dashboard.admin.analytics'
 import { Route as LocaleDashboardAdminCardsRouteImport } from './routes/$locale.dashboard.admin.cards'
 import { Route as LocaleDashboardAdminOutletsRouteImport } from './routes/$locale.dashboard.admin.outlets'
 import { Route as LocaleDashboardUserIndexRouteImport } from './routes/$locale.dashboard.user.index'
@@ -83,6 +84,12 @@ const LocaleDashboardAdminActivationRoute =
     path: '/activation',
     getParentRoute: () => LocaleDashboardAdminRoute,
   } as any)
+const LocaleDashboardAdminAnalyticsRoute =
+  LocaleDashboardAdminAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => LocaleDashboardAdminRoute,
+  } as any)
 const LocaleDashboardAdminCardsRoute =
   LocaleDashboardAdminCardsRouteImport.update({
     id: '/cards',
@@ -119,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/$locale/p/$id': typeof LocalePIdRoute
   '/$locale/tutorial/google-place-id': typeof LocaleTutorialGooglePlaceIdRoute
   '/$locale/dashboard/admin/activation': typeof LocaleDashboardAdminActivationRoute
+  '/$locale/dashboard/admin/analytics': typeof LocaleDashboardAdminAnalyticsRoute
   '/$locale/dashboard/admin/cards': typeof LocaleDashboardAdminCardsRoute
   '/$locale/dashboard/admin/outlets': typeof LocaleDashboardAdminOutletsRoute
   '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
@@ -133,6 +141,7 @@ export interface FileRoutesByTo {
   '/$locale/p/$id': typeof LocalePIdRoute
   '/$locale/tutorial/google-place-id': typeof LocaleTutorialGooglePlaceIdRoute
   '/$locale/dashboard/admin/activation': typeof LocaleDashboardAdminActivationRoute
+  '/$locale/dashboard/admin/analytics': typeof LocaleDashboardAdminAnalyticsRoute
   '/$locale/dashboard/admin/cards': typeof LocaleDashboardAdminCardsRoute
   '/$locale/dashboard/admin/outlets': typeof LocaleDashboardAdminOutletsRoute
   '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
@@ -151,6 +160,7 @@ export interface FileRoutesById {
   '/$locale/p/$id': typeof LocalePIdRoute
   '/$locale/tutorial/google-place-id': typeof LocaleTutorialGooglePlaceIdRoute
   '/$locale/dashboard/admin/activation': typeof LocaleDashboardAdminActivationRoute
+  '/$locale/dashboard/admin/analytics': typeof LocaleDashboardAdminAnalyticsRoute
   '/$locale/dashboard/admin/cards': typeof LocaleDashboardAdminCardsRoute
   '/$locale/dashboard/admin/outlets': typeof LocaleDashboardAdminOutletsRoute
   '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
     | '/$locale/p/$id'
     | '/$locale/tutorial/google-place-id'
     | '/$locale/dashboard/admin/activation'
+    | '/$locale/dashboard/admin/analytics'
     | '/$locale/dashboard/admin/cards'
     | '/$locale/dashboard/admin/outlets'
     | '/$locale/dashboard/user/account'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/$locale/p/$id'
     | '/$locale/tutorial/google-place-id'
     | '/$locale/dashboard/admin/activation'
+    | '/$locale/dashboard/admin/analytics'
     | '/$locale/dashboard/admin/cards'
     | '/$locale/dashboard/admin/outlets'
     | '/$locale/dashboard/user/account'
@@ -201,6 +213,7 @@ export interface FileRouteTypes {
     | '/$locale/p/$id'
     | '/$locale/tutorial/google-place-id'
     | '/$locale/dashboard/admin/activation'
+    | '/$locale/dashboard/admin/analytics'
     | '/$locale/dashboard/admin/cards'
     | '/$locale/dashboard/admin/outlets'
     | '/$locale/dashboard/user/account'
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleDashboardAdminActivationRouteImport
       parentRoute: typeof LocaleDashboardAdminRoute
     }
+    '/$locale/dashboard/admin/analytics': {
+      id: '/$locale/dashboard/admin/analytics'
+      path: '/analytics'
+      fullPath: '/$locale/dashboard/admin/analytics'
+      preLoaderRoute: typeof LocaleDashboardAdminAnalyticsRouteImport
+      parentRoute: typeof LocaleDashboardAdminRoute
+    }
     '/$locale/dashboard/admin/cards': {
       id: '/$locale/dashboard/admin/cards'
       path: '/cards'
@@ -325,6 +345,7 @@ declare module '@tanstack/react-router' {
 
 interface LocaleDashboardAdminRouteChildren {
   LocaleDashboardAdminActivationRoute: typeof LocaleDashboardAdminActivationRoute
+  LocaleDashboardAdminAnalyticsRoute: typeof LocaleDashboardAdminAnalyticsRoute
   LocaleDashboardAdminCardsRoute: typeof LocaleDashboardAdminCardsRoute
   LocaleDashboardAdminOutletsRoute: typeof LocaleDashboardAdminOutletsRoute
   LocaleDashboardAdminIndexRoute: typeof LocaleDashboardAdminIndexRoute
@@ -332,6 +353,7 @@ interface LocaleDashboardAdminRouteChildren {
 
 const LocaleDashboardAdminRouteChildren: LocaleDashboardAdminRouteChildren = {
   LocaleDashboardAdminActivationRoute: LocaleDashboardAdminActivationRoute,
+  LocaleDashboardAdminAnalyticsRoute: LocaleDashboardAdminAnalyticsRoute,
   LocaleDashboardAdminCardsRoute: LocaleDashboardAdminCardsRoute,
   LocaleDashboardAdminOutletsRoute: LocaleDashboardAdminOutletsRoute,
   LocaleDashboardAdminIndexRoute: LocaleDashboardAdminIndexRoute,

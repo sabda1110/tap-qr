@@ -1,4 +1,5 @@
 import { adminDashboardId } from "./admin-dashboard-id";
+import { authId } from "./auth-id";
 import { cardClaimId, userDashboardId } from "./user-dashboard-id";
 export const id = {
   outletProfile: {
@@ -32,67 +33,7 @@ export const id = {
     openMenu: "Buka menu navigasi",
     closeMenu: "Tutup menu navigasi",
   },
-  auth: {
-    backHome: "Kembali ke beranda",
-    languageLabel: "Pilih bahasa",
-    google: "Lanjutkan dengan Google",
-    divider: "atau gunakan email",
-    nameLabel: "Nama lengkap",
-    namePlaceholder: "Masukkan nama lengkap",
-    emailLabel: "Email",
-    emailPlaceholder: "nama@bisnisanda.com",
-    passwordLabel: "Kata sandi",
-    passwordPlaceholder: "Minimal 8 karakter",
-    confirmPasswordLabel: "Ulangi kata sandi",
-    confirmPasswordPlaceholder: "Masukkan kembali kata sandi",
-    validation: {
-      nameMin: "Nama minimal 2 karakter.",
-      email: "Masukkan alamat email yang valid.",
-      passwordMin: "Kata sandi minimal 8 karakter.",
-      passwordsMismatch: "Kata sandi belum sama.",
-    },
-    errors: {
-      emailInUse: "Email ini sudah terdaftar. Silakan masuk ke akun Anda.",
-      googleCancelled: "Proses masuk dengan Google dibatalkan.",
-      invalidCredential: "Email atau kata sandi tidak sesuai.",
-      unavailable: "Autentikasi belum dapat diproses. Coba lagi beberapa saat.",
-      weakPassword: "Kata sandi terlalu lemah. Gunakan setidaknya 8 karakter.",
-    },
-    login: {
-      kicker: "Selamat datang kembali",
-      title: "Masuk ke TapQR",
-      description:
-        "Kelola tautan, pantau setiap tap, dan bantu bisnis Anda mendapatkan lebih banyak review.",
-      submit: "Masuk",
-      switchPrompt: "Belum punya akun?",
-      switchAction: "Daftar sekarang",
-      showcaseKicker: "Satu tap, dampak nyata",
-      showcaseTitle: "Hubungkan pelanggan dengan bisnis Anda.",
-      showcaseDescription:
-        "Satu halaman ringkas untuk Google Review, WhatsApp, WiFi, menu, dan kanal penting lainnya.",
-      benefits: [
-        "Siap dipakai dalam hitungan menit",
-        "Tautan dapat diubah kapan saja",
-      ],
-    },
-    register: {
-      kicker: "Mulai bersama TapQR",
-      title: "Buat akun baru",
-      description:
-        "Siapkan pengalaman tap dan scan pertama untuk bisnis Anda tanpa proses yang rumit.",
-      submit: "Buat akun",
-      switchPrompt: "Sudah punya akun?",
-      switchAction: "Masuk ke akun",
-      showcaseKicker: "Dibuat untuk UMKM",
-      showcaseTitle: "Ubah setiap kunjungan menjadi koneksi baru.",
-      showcaseDescription:
-        "Permudah pelanggan menemukan bisnis, meninggalkan review, dan kembali terhubung setelah transaksi.",
-      benefits: [
-        "QR dan NFC dalam satu pengalaman",
-        "Insight tap dan scan yang mudah dipahami",
-      ],
-    },
-  },
+  auth: authId,
   cardClaim: cardClaimId,
   googlePlaceIdTutorial: {
     title: "Cara menemukan Google Place ID",

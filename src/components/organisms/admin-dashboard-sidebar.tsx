@@ -1,11 +1,19 @@
 import { Link } from "@tanstack/react-router";
-import { CreditCard, Link2, LogOut, ShieldCheck, Store } from "lucide-react";
+import { BarChart3, CreditCard, Link2, LogOut, ShieldCheck, Store } from "lucide-react";
 
 import type { Language } from "../../i18n";
 import { BrandLogo } from "../elements/brand-logo";
 
 type AdminDashboardSidebarProps = {
-  content: { outlets: string; activation: string; cards: string; logout: string; navigationLabel: string; roleLabel: string };
+  content: {
+    analytics?: string;
+    outlets: string;
+    activation: string;
+    cards: string;
+    logout: string;
+    navigationLabel: string;
+    roleLabel: string;
+  };
   homeLabel: string;
   language: Language;
   onSignOut: () => void;
@@ -17,6 +25,17 @@ export function AdminDashboardSidebar({ content, homeLabel, language, onSignOut 
       <div className="lg:block">
         <BrandLogo homeLabel={homeLabel} language={language} to="/$locale/dashboard/admin" />
         <nav aria-label={content.navigationLabel} className="mt-4 grid gap-2 lg:mt-12">
+          {content.analytics && (
+            <Link
+              activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}
+              className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32] lg:w-full"
+              params={{ locale: language }}
+              to="/$locale/dashboard/admin/analytics"
+            >
+              <BarChart3 className="size-4" />
+              {content.analytics}
+            </Link>
+          )}
           <Link activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }} className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32]" params={{ locale: language }} to="/$locale/dashboard/admin/outlets"><Store className="size-4" />{content.outlets}</Link>
           <Link
             activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}

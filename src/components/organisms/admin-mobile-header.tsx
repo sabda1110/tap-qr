@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Dialog } from "@base-ui/react/dialog";
 import {
+  BarChart3,
   CreditCard,
   Link2,
   LogOut,
@@ -16,6 +17,7 @@ import { BrandLogo } from "../elements/brand-logo";
 
 type AdminMobileHeaderProps = {
   content: {
+    analytics?: string;
     outlets: string;
     activation: string;
     cards: string;
@@ -77,6 +79,28 @@ export function AdminMobileHeader({
               aria-label={content.navigationLabel}
               className="mt-6 grid gap-2"
             >
+              {content.analytics && (
+                <Link
+                  activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}
+                  className="flex items-center gap-3 rounded-2xl px-4 py-4 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32]"
+                  onClick={closeMenu}
+                  params={{ locale: language }}
+                  to="/$locale/dashboard/admin/analytics"
+                >
+                  <BarChart3 className="size-5" />
+                  {content.analytics}
+                </Link>
+              )}
+              <Link
+                activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}
+                className="flex items-center gap-3 rounded-2xl px-4 py-4 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32]"
+                onClick={closeMenu}
+                params={{ locale: language }}
+                to="/$locale/dashboard/admin/outlets"
+              >
+                <Store className="size-5" />
+                {content.outlets}
+              </Link>
               <Link
                 activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}
                 className="flex items-center gap-3 rounded-2xl px-4 py-4 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32]"
@@ -96,16 +120,6 @@ export function AdminMobileHeader({
               >
                 <Link2 className="size-5" />
                 {content.activation}
-              </Link>
-              <Link
-                activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}
-                className="flex items-center gap-3 rounded-2xl px-4 py-4 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32]"
-                onClick={closeMenu}
-                params={{ locale: language }}
-                to="/$locale/dashboard/admin/outlets"
-              >
-                <Store className="size-5" />
-                {content.outlets}
               </Link>
             </nav>
             <button

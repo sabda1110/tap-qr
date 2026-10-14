@@ -7,9 +7,10 @@ import { AuthShowcase } from "../organisms/auth-showcase";
 type AuthPageProps = {
   mode: AuthMode;
   cardId?: string;
+  reason?: string;
 };
 
-export function AuthPage({ mode, cardId }: AuthPageProps) {
+export function AuthPage({ mode, cardId, reason }: AuthPageProps) {
   const { language, messages } = useI18n();
   const authContent = messages.auth[mode];
   return (
@@ -40,6 +41,7 @@ export function AuthPage({ mode, cardId }: AuthPageProps) {
           feedback={messages.auth}
           language={language}
           mode={mode}
+          reason={reason}
         />
       }
     />

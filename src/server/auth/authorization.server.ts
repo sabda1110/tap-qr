@@ -1,19 +1,25 @@
 import type { UserProfile } from "../../lib/auth/user-profile";
-import { getAuthenticationSessionUserId } from "./session.server";
-import { findUserProfile } from "../users/user.repository.server";
-
-export async function requireAdmin(): Promise<UserProfile> {
-  const uid = await getAuthenticationSessionUserId();
-  if (!uid) throw new Error("Sesi autentikasi tidak ditemukan.");
-
-  const user = await findUserProfile(uid);
-  if (!user || user.role !== "admin") throw new Error("Akses admin diperlukan.");
-  return user;
-}
+import { clearAuthenticationSession, getAuthenticationSession } from "./session.server";
+import { findAuthenticatedUserWithSession } from "../users/user.repository.server";
 
 export async function requireAuthenticatedUser(): Promise<UserProfile> {
-  const uid = await getAuthenticationSessionUserId();
-  const user = uid ? await findUserProfile(uid) : null;
-  if (!user) throw new Error("AUTH_REQUIRED");
+  const session = await getAuthenticationSession();
+  if (!session) throw new Error("AUTH_REQUIRED");
+
+  const result = await findAuthenticatedUserWithSession(session.uid, session.sessionId);
+  if (!result.success) {
+    clearAuthenticationSession();
+    if (result.reason === "concurrent_login") {
+      throw new Error("CONCURRENT_LOGIN");
+    }
+    throw new Error("AUTH_REQUIRED");
+  }
+
+  return result.user;
+}
+
+export async function requireAdmin(): Promise<UserProfile> {
+  const user = await requireAuthenticatedUser();
+  if (user.role !== "admin") throw new Error("Akses admin diperlukan.");
   return user;
 }

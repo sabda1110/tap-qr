@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
+import { CircleAlert } from "lucide-react";
 
 import type { Language, Messages } from "../../i18n";
 import { useFirebaseAuthentication } from "../../hooks/use-firebase-authentication";
@@ -16,9 +17,10 @@ type AuthFormProps = {
   language: Language;
   mode: AuthMode;
   cardId?: string;
+  reason?: string;
 };
 
-export function AuthForm({ content, feedback, language, mode, cardId }: AuthFormProps) {
+export function AuthForm({ content, feedback, language, mode, cardId, reason }: AuthFormProps) {
   const navigate = useNavigate();
   const isRegister = mode === "register";
   const nextMode: AuthMode = isRegister ? "login" : "register";
@@ -62,6 +64,20 @@ export function AuthForm({ content, feedback, language, mode, cardId }: AuthForm
           {content.title}
         </h1>
         <p className="mt-3 text-sm leading-6 text-[#6b7079]">{content.description}</p>
+
+        {reason === "concurrent_login" && (
+          <div
+            aria-live="polite"
+            className="mt-4 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-3.5 text-amber-900"
+            role="status"
+          >
+            <CircleAlert className="mt-0.5 size-4 shrink-0 text-amber-600" />
+            <div className="text-xs leading-relaxed">
+              <p className="font-bold">{feedback.concurrentNotice.title}</p>
+              <p className="mt-0.5 text-amber-800">{feedback.concurrentNotice.description}</p>
+            </div>
+          </div>
+        )}
 
         <button
           className={`${isRegister ? "mt-5" : "mt-7"} flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-black/10 bg-white text-sm font-semibold text-[#252a32] shadow-sm hover:border-black/25 hover:bg-[#f8fafc]`}
