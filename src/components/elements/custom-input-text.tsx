@@ -31,11 +31,11 @@ const CustomInputText = forwardRef<HTMLInputElement, CustomInputTextProps>(
     const message = error ?? helpText;
 
     return (
-      <div className="grid gap-2">
+      <div className="grid w-full min-w-0 gap-2">
         <label className="text-sm font-semibold text-[#252a32]" htmlFor={inputId}>
           {label}
         </label>
-        <div className="relative flex items-center">
+        <div className="relative flex w-full min-w-0 items-center">
           {Icon ? <Icon aria-hidden="true" className="pointer-events-none absolute left-4 size-4 text-[#7a838d]" /> : null}
           {prefix ? (
             <span className="pointer-events-none absolute left-4 text-sm font-semibold text-[#68717b]">

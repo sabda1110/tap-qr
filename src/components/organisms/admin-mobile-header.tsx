@@ -38,6 +38,7 @@ export function AdminMobileHeader({
 }: AdminMobileHeaderProps) {
   const [open, setOpen] = useState(false);
   const closeMenu = () => setOpen(false);
+
   return (
     <header className="sticky top-0 z-40 flex items-center justify-between border-b border-black/8 bg-white/95 px-5 py-4 backdrop-blur lg:hidden">
       <BrandLogo
@@ -48,14 +49,17 @@ export function AdminMobileHeader({
       <Dialog.Root onOpenChange={setOpen} open={open}>
         <Dialog.Trigger
           aria-label={content.openMenu}
-          className="rounded-xl border border-black/10 p-2 text-[#252a32]"
+          className="rounded-xl border border-black/10 p-2 text-[#252a32] hover:bg-black/5"
           type="button"
         >
           <Menu className="size-5" />
         </Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/35 backdrop-blur-sm transition-opacity duration-300 ease-out motion-reduce:transition-none data-ending-style:opacity-0 data-starting-style:opacity-0" />
-          <Dialog.Popup className="fixed right-0 bottom-0 left-0 z-50 translate-y-0 rounded-t-3xl bg-white p-6 shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none data-ending-style:translate-y-[110%] data-starting-style:translate-y-[110%]">
+          <Dialog.Popup
+            initialFocus={false}
+            className="fixed right-0 bottom-0 left-0 z-50 translate-y-0 rounded-t-3xl bg-white p-6 shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none data-ending-style:translate-y-[110%] data-starting-style:translate-y-[110%]"
+          >
             <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-black/10" />
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-2 text-sm font-bold text-[#8b6a20]">
@@ -105,7 +109,7 @@ export function AdminMobileHeader({
               </Link>
             </nav>
             <button
-              className="mt-4 flex w-full items-center gap-3 rounded-2xl border border-black/8 px-4 py-4 text-left text-sm font-semibold text-[#646b75]"
+              className="mt-4 flex w-full items-center gap-3 rounded-2xl border border-black/8 px-4 py-4 text-left text-sm font-semibold text-[#646b75] hover:bg-black/4 hover:text-black"
               onClick={onSignOut}
               type="button"
             >

@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import type { MasterCard } from "../../server/cards/card.repository.server";
 import { Button } from "../ui/button";
 
@@ -12,6 +12,7 @@ export type CardTableRowContent = {
   printed: string;
   unprinted: string;
   delete: string;
+  detail: string;
   selectCard: string;
 };
 
@@ -21,6 +22,7 @@ type CardTableRowProps = {
   disabled: boolean;
   isSelected: boolean;
   onDelete: (id: string) => void;
+  onDetail?: (id: string) => void;
   onToggle: (id: string) => void;
 };
 
@@ -30,9 +32,12 @@ export function CardTableRow({
   disabled,
   isSelected,
   onDelete,
+  onDetail,
   onToggle,
 }: CardTableRowProps) {
   const isUnused = card.claimStatus === "unclaimed";
+  const isDetailAvailable = card.claimStatus === "claimed";
+
   return (
     <tr className="border-t border-black/6">
       <td className="px-5 py-4">
@@ -66,16 +71,32 @@ export function CardTableRow({
         />
       </td>
       <td className="px-5 py-4 text-right">
-        <Button
-          aria-label={`${content.delete} ${card.cardId}`}
-          disabled={disabled || !isUnused}
-          onClick={() => void onDelete(card.id)}
-          size="icon-sm"
-          type="button"
-          variant="destructive"
-        >
-          <Trash2 />
-        </Button>
+        <div className="flex items-center justify-end gap-2">
+          {isDetailAvailable && onDetail && (
+            <Button
+              aria-label={`${content.detail} ${card.cardId}`}
+              disabled={disabled}
+              onClick={() => onDetail(card.id)}
+              size="sm"
+              type="button"
+              variant="outline"
+              className="h-8 gap-1.5 border-[#bce8ef] bg-[#e8f8fb] px-2.5 text-xs font-semibold text-[#087e91] hover:bg-[#d8f3f8] hover:text-[#066373]"
+            >
+              <Eye className="size-3.5" />
+              <span>{content.detail}</span>
+            </Button>
+          )}
+          <Button
+            aria-label={`${content.delete} ${card.cardId}`}
+            disabled={disabled || !isUnused}
+            onClick={() => void onDelete(card.id)}
+            size="icon-sm"
+            type="button"
+            variant="destructive"
+          >
+            <Trash2 />
+          </Button>
+        </div>
       </td>
     </tr>
   );

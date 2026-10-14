@@ -1,27 +1,25 @@
-import { ChevronLeft, ChevronRight, Plus, Search, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { ChevronLeft, ChevronRight, Plus, Trash2 } from "lucide-react";
 
-import type { MasterCard } from "../../server/cards/card.repository.server";
+import type { AdminCardDetail, MasterCard } from "../../server/cards/card.repository.server";
 import type { CardClaimFilter } from "../../server/cards/card.schemas";
+import { getAdminCardDetail } from "../../server/cards/card.functions";
 import { useCardMaster } from "../../hooks/use-card-master";
 import { CardSelectionActions } from "../molecules/card-selection-actions";
 import { CardTableRow, type CardTableRowContent } from "../molecules/card-table-row";
 import { CardGeneratorForm, type CardGeneratorFormContent } from "../molecules/card-generator-form";
+import { CardMasterToolbar, type CardMasterToolbarContent } from "../molecules/card-master-toolbar";
+import { CardDetailDialog } from "../molecules/card-detail-dialog";
 import { Button } from "../ui/button";
-import { CustomInputText } from "../elements/custom-input-text";
 import { AlertDialog } from "../ui/alert-dialog";
+import { useToast } from "../ui/toaster";
 
 export type CardMasterContent = CardTableRowContent &
-  CardGeneratorFormContent & {
+  CardGeneratorFormContent &
+  CardMasterToolbarContent & {
     kicker: string;
     title: string;
     description: string;
-    searchLabel: string;
-    searchPlaceholder: string;
-    searchAction: string;
-    filterLabel: string;
-    filterAll: string;
-    filterUnclaimed: string;
-    filterClaimed: string;
     generateAction: string;
     generatorTitle: string;
     table: { cardId: string; material: string; claimStatus: string; enabled: string; printStatus: string; action: string };
@@ -46,6 +44,29 @@ export type CardMasterContent = CardTableRowContent &
     markPrinted: string;
     markUnprinted: string;
     printStatusSuccess: string;
+    scanSuccess: string;
+    detail: string;
+    detailModal: {
+      title: string;
+      description: string;
+      cardInfo: string;
+      outletInfo: string;
+      ownerInfo: string;
+      linksInfo: string;
+      noOutlet: string;
+      noOwner: string;
+      noLinks: string;
+      googleReviewLabel: string;
+      googlePlaceId: string;
+      verified: string;
+      pending: string;
+      unverified: string;
+      openPublicPage: string;
+      manageInOutlet: string;
+      close: string;
+      loading: string;
+      error: string;
+    };
   };
 
 type CardPage = { cards: MasterCard[]; nextCursor?: string };
@@ -55,6 +76,7 @@ type CardMasterSectionProps = {
   initialPage: CardPage;
   initialStatus?: CardClaimFilter;
   initialQuery?: string;
+  locale?: string;
 };
 
 export function CardMasterSection({
@@ -62,6 +84,7 @@ export function CardMasterSection({
   initialPage,
   initialStatus = "all",
   initialQuery = "",
+  locale = "id",
 }: CardMasterSectionProps) {
   const {
     draftQuery,
@@ -83,6 +106,7 @@ export function CardMasterSection({
     setDeleteTarget,
     handleFilterChange,
     submitSearch,
+    handleScanCard,
     submitGeneration,
     toggleCard,
     toggleAllVisibleCards,
@@ -101,7 +125,31 @@ export function CardMasterSection({
     deleteNoopText: content.deleteNoop,
     exportSuccessText: content.exportSuccess,
     printStatusSuccessText: content.printStatusSuccess,
+    scanSuccessText: content.scanSuccess,
   });
+
+  const { showToast } = useToast();
+  const [detailTargetId, setDetailTargetId] = useState<string | null>(null);
+  const [detailData, setDetailData] = useState<AdminCardDetail | null>(null);
+  const [isDetailLoading, setDetailLoading] = useState(false);
+
+  async function handleOpenDetail(id: string) {
+    setDetailTargetId(id);
+    setDetailLoading(true);
+    try {
+      const response = await getAdminCardDetail({ data: { id } });
+      setDetailData(response);
+    } catch {
+      showToast(content.detailModal.error, "error");
+    } finally {
+      setDetailLoading(false);
+    }
+  }
+
+  function handleCloseDetail() {
+    setDetailTargetId(null);
+    setDetailData(null);
+  }
 
   return (
     <section className={`mx-auto max-w-6xl ${selectedIds.size > 0 ? "pb-48 sm:pb-32" : ""}`}>
@@ -130,58 +178,16 @@ export function CardMasterSection({
         />
       ) : null}
 
-      <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <form className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row" onSubmit={submitSearch}>
-          <div className="min-w-0 flex-1">
-            <CustomInputText
-              icon={Search}
-              label={content.searchLabel}
-              onChange={(event) => setDraftQuery(event.target.value)}
-              placeholder={content.searchPlaceholder}
-              value={draftQuery}
-            />
-          </div>
-          <Button className="h-10 self-end px-4" disabled={isPending} type="submit" variant="outline">
-            {content.searchAction}
-          </Button>
-        </form>
-
-        <div className="flex flex-col gap-1.5">
-          <span className="text-xs font-semibold text-[#646b75]">{content.filterLabel}</span>
-          <div className="flex flex-wrap items-center gap-1.5 rounded-xl border border-black/8 bg-[#f5f8fa] p-1">
-            <button
-              type="button"
-              disabled={isPending}
-              onClick={() => handleFilterChange("all")}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
-                status === "all" ? "bg-white text-black shadow-xs" : "text-[#646b75] hover:text-black"
-              }`}
-            >
-              {content.filterAll}
-            </button>
-            <button
-              type="button"
-              disabled={isPending}
-              onClick={() => handleFilterChange("unclaimed")}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
-                status === "unclaimed" ? "bg-[#0798ad] text-white shadow-xs" : "text-[#646b75] hover:text-[#0798ad]"
-              }`}
-            >
-              {content.filterUnclaimed}
-            </button>
-            <button
-              type="button"
-              disabled={isPending}
-              onClick={() => handleFilterChange("claimed")}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
-                status === "claimed" ? "bg-[#087e91] text-white shadow-xs" : "text-[#646b75] hover:text-[#087e91]"
-              }`}
-            >
-              {content.filterClaimed}
-            </button>
-          </div>
-        </div>
-      </div>
+      <CardMasterToolbar
+        content={content}
+        draftQuery={draftQuery}
+        isPending={isPending}
+        onDraftQueryChange={setDraftQuery}
+        onFilterChange={handleFilterChange}
+        onScanCard={handleScanCard}
+        onSubmitSearch={submitSearch}
+        status={status}
+      />
 
       <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-end">
         <Button disabled={isPending} onClick={() => setDeleteTarget("all")} type="button" variant="destructive">
@@ -222,6 +228,7 @@ export function CardMasterSection({
                   isSelected={selectedIds.has(card.id)}
                   key={card.id}
                   onDelete={(id) => setDeleteTarget(id)}
+                  onDetail={handleOpenDetail}
                   onToggle={toggleCard}
                 />
               ))}
@@ -251,6 +258,24 @@ export function CardMasterSection({
         onMarkUnprinted={() => void setSelectedCardsPrintStatus("unprinted")}
       />
       <AlertDialog cancelLabel={content.cancel} confirmLabel={content.delete} description={deleteTarget === "all" ? content.confirmDeleteAllUnused : content.confirmDeleteSelected} onConfirm={handleConfirmDelete} onOpenChange={(open) => !open && setDeleteTarget(undefined)} open={Boolean(deleteTarget)} title={deleteTarget === "all" ? content.deleteAllUnusedTitle : content.deleteSelectedTitle} />
+      <CardDetailDialog
+        cardDetail={detailData}
+        content={{
+          ...content.detailModal,
+          pvc: content.pvc,
+          acrylic: content.acrylic,
+          claimed: content.claimed,
+          unclaimed: content.unclaimed,
+          enabled: content.enabled,
+          disabled: content.disabled,
+          printed: content.printed,
+          unprinted: content.unprinted,
+        }}
+        isLoading={isDetailLoading}
+        locale={locale}
+        onClose={handleCloseDetail}
+        open={Boolean(detailTargetId)}
+      />
     </section>
   );
 }

@@ -35,6 +35,7 @@ export function AdminCardMasterPage({
         initialPage={initialPage}
         initialStatus={initialStatus}
         initialQuery={initialQuery}
+        locale={language}
       />
     </AdminDashboardLayout>
   );

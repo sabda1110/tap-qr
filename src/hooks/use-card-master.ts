@@ -4,6 +4,7 @@ import type { CardMaterial } from "../lib/firebase/firestore-schema";
 import type { MasterCard } from "../server/cards/card.repository.server";
 import type { CardClaimFilter } from "../server/cards/card.schemas";
 import { downloadCardsCsv } from "../lib/card-csv-export";
+import { extractCardIdFromQr } from "../lib/card-id";
 import {
   deleteAdminCard,
   deleteAdminCards,
@@ -26,6 +27,7 @@ type UseCardMasterOptions = {
   deleteNoopText: string;
   exportSuccessText: string;
   printStatusSuccessText: string;
+  scanSuccessText?: string;
 };
 
 export function useCardMaster({
@@ -38,6 +40,7 @@ export function useCardMaster({
   deleteNoopText,
   exportSuccessText,
   printStatusSuccessText,
+  scanSuccessText,
 }: UseCardMasterOptions) {
   const { showToast } = useToast();
   const [draftQuery, setDraftQuery] = useState(initialQuery);
@@ -89,6 +92,17 @@ export function useCardMaster({
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     void loadCards(draftQuery.trim(), undefined, [], status);
+  }
+
+  function handleScanCard(scannedValue: string): boolean {
+    const cardId = extractCardIdFromQr(scannedValue);
+    if (!cardId) return false;
+    setDraftQuery(cardId);
+    void loadCards(cardId, undefined, [], status);
+    if (scanSuccessText) {
+      showToast(scanSuccessText, "success");
+    }
+    return true;
   }
 
   async function submitGeneration(event: FormEvent<HTMLFormElement>) {
@@ -228,6 +242,7 @@ export function useCardMaster({
     setDeleteTarget,
     handleFilterChange,
     submitSearch,
+    handleScanCard,
     submitGeneration,
     toggleCard,
     toggleAllVisibleCards,

@@ -16,10 +16,10 @@ const outletFields = ["outletName", "slug", "address"] as const;
 
 export function ActivationOwnerFields({ form, content, emailStatus, slugStatus, onUploadBusyChange }: { form: UseFormReturn<OwnerActivationValues>; content: Content; emailStatus: AvailabilityStatus; slugStatus: AvailabilityStatus; onUploadBusyChange: (busy: boolean) => void }) {
   const hasManualSlug = useRef(false);
-  return <>{[accountFields, outletFields].map((fields, index) => <section className="rounded-2xl border border-black/8 bg-white p-5 sm:p-6" key={index}>
+  return <>{[accountFields, outletFields].map((fields, index) => <section className="w-full min-w-0 rounded-2xl border border-black/8 bg-white p-5 sm:p-6" key={index}>
     <h2 className="mb-5 text-lg font-bold">{index === 0 ? content.accountTitle : content.outletTitle}</h2>
     {index === 1 && <FormField control={form.control} name="logoUrl" render={({ field }) => <ImageUploadField value={field.value} onChange={field.onChange} onBusyChange={onUploadBusyChange} content={content.logo} disabled={form.formState.isSubmitting} />} />}
-    <div className="grid items-start gap-x-5 gap-y-2 sm:grid-cols-2">{fields.map((name) => <FormField key={name} control={form.control} name={name} render={({ field, fieldState }) => name === "phone" ? <WhatsAppNumberInput {...field}
+    <div className="grid w-full grid-cols-1 items-start gap-x-5 gap-y-2 sm:grid-cols-2">{fields.map((name) => <FormField key={name} control={form.control} name={name} render={({ field, fieldState }) => name === "phone" ? <WhatsAppNumberInput {...field}
       label={content.fields[name]} error={fieldState.error ? content.invalid : undefined} reserveMessageSpace
     /> : name === "slug" ? <OutletSlugInput {...field}
       label={content.fields[name]} error={slugStatus === "used" ? content.slugUsed : slugStatus === "error" ? content.slugCheckError : fieldState.error ? content.invalid : undefined} reserveMessageSpace

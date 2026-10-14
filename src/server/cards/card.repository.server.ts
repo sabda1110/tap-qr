@@ -1,7 +1,12 @@
 import { createHash, randomBytes } from "node:crypto";
 import { FieldValue } from "firebase-admin/firestore";
 
-import type { CardMaterial, CardRecord } from "../../lib/firebase/firestore-schema";
+import type {
+  CardClaimStatus,
+  CardMaterial,
+  CardRecord,
+  SocialLink,
+} from "../../lib/firebase/firestore-schema";
 import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
 import type { CardClaimFilter } from "./card.schemas";
 
@@ -179,4 +184,103 @@ function isUnusedCard(data: FirebaseFirestore.DocumentData | undefined) {
 
 function splitIntoChunks<T>(items: T[], size: number) {
   return Array.from({ length: Math.ceil(items.length / size) }, (_, index) => items.slice(index * size, (index + 1) * size));
+}
+
+export type AdminCardDetail = {
+  id: string;
+  cardId: string;
+  material: CardMaterial;
+  claimStatus: CardClaimStatus;
+  printStatus: CardRecord["print"]["status"];
+  isEnabled: boolean;
+  outlet: {
+    id: string;
+    name: string;
+    slug: string;
+    address: string;
+    phone: string;
+    logoUrl: string | null;
+  } | null;
+  owner: {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+  } | null;
+  config: {
+    type: "google_review" | "social";
+    google: {
+      placeId: string | null;
+      reviewUrl: string | null;
+      verificationStatus: "pending" | "verified" | "invalid" | null;
+    };
+    social: {
+      profileName: string | null;
+      description: string | null;
+      avatarUrl: string | null;
+      links: SocialLink[];
+    };
+  };
+};
+
+export async function getMasterCardDetail(id: string): Promise<AdminCardDetail> {
+  const database = getFirebaseAdminFirestore();
+  const cardSnapshot = await database.collection("cards").doc(id).get();
+  if (!cardSnapshot.exists) throw new Error("CARD_NOT_FOUND");
+  const cardData = cardSnapshot.data() as CardRecord;
+
+  const [outletSnapshot, ownerSnapshot] = await Promise.all([
+    cardData.outletId
+      ? database.collection("outlets").doc(cardData.outletId).get()
+      : Promise.resolve(null),
+    cardData.ownerId
+      ? database.collection("users").doc(cardData.ownerId).get()
+      : Promise.resolve(null),
+  ]);
+
+  const outletData = outletSnapshot?.exists ? outletSnapshot.data() : null;
+  const ownerData = ownerSnapshot?.exists ? ownerSnapshot.data() : null;
+
+  return {
+    id: cardSnapshot.id,
+    cardId: cardData.cardId,
+    material: cardData.material,
+    claimStatus: cardData.claimStatus,
+    printStatus: cardData.print?.status ?? "unprinted",
+    isEnabled: Boolean(cardData.isEnabled),
+    outlet: outletData
+      ? {
+          id: cardData.outletId!,
+          name: outletData.name ?? "",
+          slug: outletData.slug ?? "",
+          address: outletData.address ?? "",
+          phone: outletData.phone ?? "",
+          logoUrl: outletData.logoUrl ?? null,
+        }
+      : null,
+    owner: ownerData
+      ? {
+          id: cardData.ownerId!,
+          name: ownerData.name ?? ownerData.displayName ?? "",
+          email: ownerData.email ?? "",
+          phone: ownerData.phone ?? "",
+        }
+      : null,
+    config: {
+      type: cardData.config?.type ?? "google_review",
+      google: {
+        placeId: cardData.config?.google?.placeId ?? null,
+        reviewUrl: cardData.config?.google?.reviewUrl ?? null,
+        verificationStatus: cardData.config?.google?.verificationStatus ?? null,
+      },
+      social: {
+        profileName: cardData.config?.social?.profileName ?? null,
+        description: cardData.config?.social?.description ?? null,
+        avatarUrl: cardData.config?.social?.avatarUrl ?? null,
+        links: Array.isArray(cardData.config?.social?.links)
+          ? cardData.config.social.links
+          : [],
+      },
+    },
+  };
 }

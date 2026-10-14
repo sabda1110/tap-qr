@@ -22,7 +22,7 @@ export function ActivationLinksEditor({ form, content }: { form: UseFormReturn<O
   const channelItems = Object.fromEntries(
     Object.entries(content.channels).map(([key, channel]) => [key, channel.title]),
   );
-  return <section className="rounded-2xl border border-black/8 bg-white p-5 sm:p-6">
+  return <section className="w-full min-w-0 rounded-2xl border border-black/8 bg-white p-5 sm:p-6">
     <h2 className="text-lg font-bold">{content.onboarding.linksTitle}</h2>
     <p className="mt-2 text-sm leading-6 text-[#69737d]">{content.onboarding.dragHelp}</p>
     <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -44,7 +44,7 @@ export function ActivationLinksEditor({ form, content }: { form: UseFormReturn<O
       const to = fields.findIndex((link) => link.fieldKey === over.id);
       if (from >= 0 && to >= 0) move(from, to);
     }}><SortableContext items={fields.map((link) => link.fieldKey)} strategy={verticalListSortingStrategy}>
-      <div className="mt-5 grid gap-4">{fields.map((link, index) => <SortableActivationLink key={link.fieldKey} link={link} index={index} count={fields.length} form={form} content={content} move={move} remove={remove} disabled={disabled} />)}</div>
+      <div className="mt-5 grid w-full grid-cols-1 min-w-0 gap-4">{fields.map((link, index) => <SortableActivationLink key={link.fieldKey} link={link} index={index} count={fields.length} form={form} content={content} move={move} remove={remove} disabled={disabled} />)}</div>
     </SortableContext></DndContext>
     {form.formState.errors.links?.root && <p className="mt-3 text-sm text-red-600">{content.onboarding.requiredLink}</p>}
     {fields.length === 0 && <p className="mt-4 text-sm text-[#69737d]">{content.onboarding.requiredLink}</p>}
