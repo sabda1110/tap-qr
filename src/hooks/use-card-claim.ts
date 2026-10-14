@@ -36,7 +36,7 @@ export function useCardClaim({
 }: UseCardClaimOptions) {
   const { showToast } = useToast();
   const [card, setCard] = useState(cardId ?? "");
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [outletMode, setOutletMode] = useState<"new" | "existing">(
     initialMode ?? (outlets.length ? "existing" : "new")
   );
@@ -87,6 +87,15 @@ export function useCardClaim({
       return;
     }
     setStep(2);
+  }
+
+  function nextToDetails() {
+    setError("");
+    if (form.getValues("links").length === 0) {
+      setError(content.noSelection);
+      return;
+    }
+    setStep(3);
   }
 
   async function save(values: CardLinksEditValues) {
@@ -140,6 +149,7 @@ export function useCardClaim({
     form,
     busy,
     nextStep,
+    nextToDetails,
     save,
   };
 }

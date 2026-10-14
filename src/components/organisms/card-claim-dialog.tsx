@@ -1,9 +1,7 @@
 import { ChevronLeft, ChevronRight, ContactRound } from "lucide-react";
 
 import type { Messages } from "../../i18n";
-import { useI18n } from "../../i18n";
 import { extractCardIdFromQr } from "../../lib/card-id";
-import { copySocialLinks } from "../../lib/outlet-link-copy";
 import { toOutletSlug } from "../../lib/validation/outlet-slug";
 import { useCardClaim } from "../../hooks/use-card-claim";
 import { CardClaimMascot } from "../molecules/card-claim-mascot";
@@ -14,12 +12,11 @@ import {
   type OutletOption,
 } from "../molecules/card-claim-outlet-step";
 import { CardClaimStepIndicator } from "../molecules/card-claim-step-indicator";
-import { OutletLinksEditor } from "../molecules/outlet-links-editor";
-import { UserCardCopyPicker } from "../molecules/user-card-copy-picker";
+import { CardClaimChannelStep } from "../molecules/card-claim-channel-step";
+import { CardClaimLinkDetails } from "../molecules/card-claim-link-details";
 import { Button } from "../ui/button";
 import { Dialog, DialogBody, DialogFooter } from "../ui/dialog";
 import { Form } from "../ui/form";
-import { useToast } from "../ui/toaster";
 
 export function CardClaimDialog({
   cardId,
@@ -39,9 +36,7 @@ export function CardClaimDialog({
   initialMode?: "new" | "existing";
 }) {
   const content = messages.cardClaim;
-  const { language } = useI18n();
   const onboarding = messages.adminDashboard.activation.onboarding;
-  const { showToast } = useToast();
 
   const {
     card,
@@ -64,6 +59,7 @@ export function CardClaimDialog({
     form,
     busy,
     nextStep,
+    nextToDetails,
     save,
   } = useCardClaim({
     cardId,
@@ -142,6 +138,12 @@ export function CardClaimDialog({
                     setOutlet((current) => ({ ...current, slug: value }));
                   }}
                 />
+              ) : step === 2 ? (
+                <CardClaimChannelStep
+                  form={form}
+                  content={content}
+                  channels={messages.adminDashboard.activation.channels}
+                />
               ) : (
                 <>
                   <p className="text-sm leading-6 text-[#69737d]">
@@ -166,53 +168,10 @@ export function CardClaimDialog({
                       }}
                     />
                   )}
-                  <OutletLinksEditor
+                  <CardClaimLinkDetails
                     form={form}
-                    content={messages.adminDashboard.outlets}
+                    content={content}
                     activation={messages.adminDashboard.activation}
-                    googleReviewInput="placeId"
-                    placeIdGuide={
-                      <p className="text-xs leading-5 text-[#69737d]">
-                        {content.placeIdGuide.quick}{" "}
-                        <a
-                          href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="font-semibold text-[#087e91] underline"
-                        >
-                          {content.placeIdGuide.googleDocs}
-                        </a>
-                        .{" "}
-                        <a
-                          href={`/${language}/tutorial/google-place-id`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="font-semibold text-[#087e91] underline"
-                        >
-                          {content.placeIdGuide.tutorial}
-                        </a>
-                        .
-                      </p>
-                    }
-                  />
-                  <UserCardCopyPicker
-                    outlets={outlets}
-                    content={content.copy}
-                    channels={messages.adminDashboard.activation.channels}
-                    disabled={busy}
-                    onCopy={(links) => {
-                      const current = form.getValues("links");
-                      const copied = copySocialLinks(links);
-                      if (current.length + copied.length > 20) {
-                        showToast(content.copy.tooMany, "warning");
-                        return;
-                      }
-                      form.setValue("links", [...current, ...copied], {
-                        shouldDirty: true,
-                        shouldValidate: true,
-                      });
-                      showToast(content.copy.copied, "success");
-                    }}
                   />
                 </>
               )}
@@ -224,11 +183,11 @@ export function CardClaimDialog({
             </fieldset>
           </DialogBody>
           <DialogFooter>
-            {step === 2 && (
+            {step > 1 && (
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setStep(1)}
+                onClick={() => setStep(step === 3 ? 2 : 1)}
                 disabled={busy}
                 className="rounded-xl border-slate-200 px-5"
               >
@@ -236,10 +195,10 @@ export function CardClaimDialog({
                 {content.back}
               </Button>
             )}
-            {step === 1 ? (
+            {step < 3 ? (
               <Button
                 type="button"
-                onClick={nextStep}
+                onClick={step === 1 ? nextStep : nextToDetails}
                 disabled={busy}
                 className="cursor-pointer gap-1.5 rounded-xl bg-[#155ee8] px-6 py-2.5 font-bold text-white shadow-md shadow-blue-600/15 transition hover:bg-[#0f4dcc]"
               >

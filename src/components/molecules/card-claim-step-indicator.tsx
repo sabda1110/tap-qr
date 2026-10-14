@@ -3,13 +3,13 @@ import type { Messages } from "../../i18n";
 
 type Props = {
   content: Messages["cardClaim"];
-  step: 1 | 2;
+  step: 1 | 2 | 3;
 };
 
 export function CardClaimStepIndicator({ content, step }: Props) {
   return (
     <div className="mb-5" aria-label={content.step.replace("{current}", String(step))}>
-      <div className="grid gap-2.5 sm:grid-cols-[minmax(0,1fr)_minmax(5rem,1fr)_minmax(0,1fr)] sm:items-center">
+      <div className="grid gap-2 sm:grid-cols-3">
         <div
           className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
             step === 1
@@ -27,9 +27,6 @@ export function CardClaimStepIndicator({ content, step }: Props) {
           <span>{content.steps.outlet}</span>
         </div>
 
-        <div className="hidden h-px bg-slate-200 sm:block" aria-hidden="true" />
-
-        {/* Step 2 */}
         <div
           className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
             step === 2
@@ -47,8 +44,12 @@ export function CardClaimStepIndicator({ content, step }: Props) {
             2
           </span>
           <span className={step === 2 ? "text-slate-950" : "font-medium text-slate-500"}>
-            {content.steps.links}
+            {content.steps.channels}
           </span>
+        </div>
+        <div className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold ${step === 3 ? "bg-[#eaf3ff] text-slate-950" : "text-slate-500"}`}>
+          <span className={`grid size-5 place-items-center rounded-full text-xs font-bold ${step === 3 ? "bg-[#155ee8] text-white" : "bg-slate-100 text-slate-500"}`}>3</span>
+          <span className={step === 3 ? "text-slate-950" : "font-medium text-slate-500"}>{content.steps.links}</span>
         </div>
       </div>
 
