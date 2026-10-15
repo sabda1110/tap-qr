@@ -6,6 +6,7 @@ import {
   Loader2,
   MapPin,
   Phone,
+  Printer,
   Store,
   User,
 } from "lucide-react";
@@ -274,6 +275,14 @@ export function CardDetailDialog({
             <Button type="button" variant="outline" className="border-[#087e91] text-[#087e91] hover:bg-[#e8f8fb]">
               <Store className="size-4" />
               <span>{content.manageInOutlet}</span>
+            </Button>
+          </Link>
+        )}
+        {cardDetail && (
+          <Link className="inline-flex" params={{ locale }} search={{ cardId: cardDetail.cardId }} to="/$locale/dashboard/admin/print">
+            <Button className="border-[#ffb332] bg-[#fff8eb] text-[#9a6507] hover:bg-[#ffefd1]" type="button" variant="outline">
+              <Printer className="size-4" />
+              <span>{locale === "id" ? "Cetak Desain" : "Print Template"}</span>
             </Button>
           </Link>
         )}

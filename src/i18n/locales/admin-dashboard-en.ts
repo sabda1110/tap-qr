@@ -2,6 +2,7 @@ import { outletsEn } from "./outlets-en";
 import { outletCreateEn } from "./outlet-create-en";
 import { activationPreviewEn } from "./activation-preview-en";
 import { activationOnboardingEn } from "./activation-onboarding-en";
+import { printStudioEn } from "./print-studio-en";
 
 export const adminDashboardEn = {
   outletCreate: outletCreateEn,
@@ -11,12 +12,14 @@ export const adminDashboardEn = {
     outlets: "Outlets",
     cards: "Card master",
     activation: "QR activation",
+    print: "Print Studio",
     openMenu: "Open dashboard menu",
     closeMenu: "Close dashboard menu",
     logout: "Log out",
     navigationLabel: "Admin navigation",
     roleLabel: "Administrator",
   },
+  printStudio: printStudioEn,
   analytics: {
     kicker: "Platform Analytics",
     title: "Growth & Usage Overview",

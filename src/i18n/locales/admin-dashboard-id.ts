@@ -2,6 +2,7 @@ import { outletsId } from "./outlets-id";
 import { outletCreateId } from "./outlet-create-id";
 import { activationPreviewId } from "./activation-preview-id";
 import { activationOnboardingId } from "./activation-onboarding-id";
+import { printStudioId } from "./print-studio-id";
 
 export const adminDashboardId = {
   outletCreate: outletCreateId,
@@ -11,12 +12,14 @@ export const adminDashboardId = {
     outlets: "Outlet",
     cards: "Master kartu",
     activation: "Aktivasi QR",
+    print: "Studio Cetak",
     openMenu: "Buka menu dashboard",
     closeMenu: "Tutup menu dashboard",
     logout: "Keluar",
     navigationLabel: "Navigasi admin",
     roleLabel: "Administrator",
   },
+  printStudio: printStudioId,
   analytics: {
     kicker: "Analisa Platform",
     title: "Ringkasan Pertumbuhan & Penggunaan",

@@ -1,11 +1,10 @@
 import type { MasterCard } from "../server/cards/card.repository.server";
-
-const cardUrlBase = "https://tapqr.id/id";
+import { getCardUrl } from "./app-url";
 
 export function createCardsCsv(cards: MasterCard[]) {
   const rows = cards.map((card, index) => [
     card.cardId,
-    `${cardUrlBase}/${encodeURIComponent(card.cardId)}`,
+    getCardUrl("id", card.cardId),
     `=IMAGE("https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" & ENCODEURL(B${index + 2}))`,
     card.material,
   ]);

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BarChart3, CreditCard, Link2, LogOut, ShieldCheck, Store } from "lucide-react";
+import { BarChart3, CreditCard, Link2, LogOut, Printer, ShieldCheck, Store } from "lucide-react";
 
 import type { Language } from "../../i18n";
 import { BrandLogo } from "../elements/brand-logo";
@@ -7,6 +7,7 @@ import { BrandLogo } from "../elements/brand-logo";
 type AdminDashboardSidebarProps = {
   content: {
     analytics?: string;
+    print?: string;
     outlets: string;
     activation: string;
     cards: string;
@@ -55,6 +56,17 @@ export function AdminDashboardSidebar({ content, homeLabel, language, onSignOut 
             <Link2 className="size-4" />
             {content.activation}
           </Link>
+          {content.print && (
+            <Link
+              activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}
+              className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32] lg:w-full"
+              params={{ locale: language }}
+              to="/$locale/dashboard/admin/print"
+            >
+              <Printer className="size-4" />
+              {content.print}
+            </Link>
+          )}
         </nav>
       </div>
       <div className="mt-5 flex items-center justify-between gap-3 border-t border-black/8 pt-4 lg:mt-auto lg:block lg:border-0 lg:pt-0">

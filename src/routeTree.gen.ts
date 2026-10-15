@@ -23,6 +23,7 @@ import { Route as LocaleDashboardAdminActivationRouteImport } from './routes/$lo
 import { Route as LocaleDashboardAdminAnalyticsRouteImport } from './routes/$locale.dashboard.admin.analytics'
 import { Route as LocaleDashboardAdminCardsRouteImport } from './routes/$locale.dashboard.admin.cards'
 import { Route as LocaleDashboardAdminOutletsRouteImport } from './routes/$locale.dashboard.admin.outlets'
+import { Route as LocaleDashboardAdminPrintRouteImport } from './routes/$locale.dashboard.admin.print'
 import { Route as LocaleDashboardUserIndexRouteImport } from './routes/$locale.dashboard.user.index'
 import { Route as LocaleDashboardUserAccountRouteImport } from './routes/$locale.dashboard.user.account'
 
@@ -102,6 +103,12 @@ const LocaleDashboardAdminOutletsRoute =
     path: '/outlets',
     getParentRoute: () => LocaleDashboardAdminRoute,
   } as any)
+const LocaleDashboardAdminPrintRoute =
+  LocaleDashboardAdminPrintRouteImport.update({
+    id: '/print',
+    path: '/print',
+    getParentRoute: () => LocaleDashboardAdminRoute,
+  } as any)
 const LocaleDashboardUserIndexRoute =
   LocaleDashboardUserIndexRouteImport.update({
     id: '/',
@@ -129,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/$locale/dashboard/admin/analytics': typeof LocaleDashboardAdminAnalyticsRoute
   '/$locale/dashboard/admin/cards': typeof LocaleDashboardAdminCardsRoute
   '/$locale/dashboard/admin/outlets': typeof LocaleDashboardAdminOutletsRoute
+  '/$locale/dashboard/admin/print': typeof LocaleDashboardAdminPrintRoute
   '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
   '/$locale/dashboard/admin/': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user/': typeof LocaleDashboardUserIndexRoute
@@ -144,6 +152,7 @@ export interface FileRoutesByTo {
   '/$locale/dashboard/admin/analytics': typeof LocaleDashboardAdminAnalyticsRoute
   '/$locale/dashboard/admin/cards': typeof LocaleDashboardAdminCardsRoute
   '/$locale/dashboard/admin/outlets': typeof LocaleDashboardAdminOutletsRoute
+  '/$locale/dashboard/admin/print': typeof LocaleDashboardAdminPrintRoute
   '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
   '/$locale/dashboard/admin': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user': typeof LocaleDashboardUserIndexRoute
@@ -163,6 +172,7 @@ export interface FileRoutesById {
   '/$locale/dashboard/admin/analytics': typeof LocaleDashboardAdminAnalyticsRoute
   '/$locale/dashboard/admin/cards': typeof LocaleDashboardAdminCardsRoute
   '/$locale/dashboard/admin/outlets': typeof LocaleDashboardAdminOutletsRoute
+  '/$locale/dashboard/admin/print': typeof LocaleDashboardAdminPrintRoute
   '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
   '/$locale/dashboard/admin/': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user/': typeof LocaleDashboardUserIndexRoute
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/admin/analytics'
     | '/$locale/dashboard/admin/cards'
     | '/$locale/dashboard/admin/outlets'
+    | '/$locale/dashboard/admin/print'
     | '/$locale/dashboard/user/account'
     | '/$locale/dashboard/admin/'
     | '/$locale/dashboard/user/'
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/admin/analytics'
     | '/$locale/dashboard/admin/cards'
     | '/$locale/dashboard/admin/outlets'
+    | '/$locale/dashboard/admin/print'
     | '/$locale/dashboard/user/account'
     | '/$locale/dashboard/admin'
     | '/$locale/dashboard/user'
@@ -216,6 +228,7 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/admin/analytics'
     | '/$locale/dashboard/admin/cards'
     | '/$locale/dashboard/admin/outlets'
+    | '/$locale/dashboard/admin/print'
     | '/$locale/dashboard/user/account'
     | '/$locale/dashboard/admin/'
     | '/$locale/dashboard/user/'
@@ -326,6 +339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleDashboardAdminOutletsRouteImport
       parentRoute: typeof LocaleDashboardAdminRoute
     }
+    '/$locale/dashboard/admin/print': {
+      id: '/$locale/dashboard/admin/print'
+      path: '/print'
+      fullPath: '/$locale/dashboard/admin/print'
+      preLoaderRoute: typeof LocaleDashboardAdminPrintRouteImport
+      parentRoute: typeof LocaleDashboardAdminRoute
+    }
     '/$locale/dashboard/user/': {
       id: '/$locale/dashboard/user/'
       path: '/'
@@ -348,6 +368,7 @@ interface LocaleDashboardAdminRouteChildren {
   LocaleDashboardAdminAnalyticsRoute: typeof LocaleDashboardAdminAnalyticsRoute
   LocaleDashboardAdminCardsRoute: typeof LocaleDashboardAdminCardsRoute
   LocaleDashboardAdminOutletsRoute: typeof LocaleDashboardAdminOutletsRoute
+  LocaleDashboardAdminPrintRoute: typeof LocaleDashboardAdminPrintRoute
   LocaleDashboardAdminIndexRoute: typeof LocaleDashboardAdminIndexRoute
 }
 
@@ -356,6 +377,7 @@ const LocaleDashboardAdminRouteChildren: LocaleDashboardAdminRouteChildren = {
   LocaleDashboardAdminAnalyticsRoute: LocaleDashboardAdminAnalyticsRoute,
   LocaleDashboardAdminCardsRoute: LocaleDashboardAdminCardsRoute,
   LocaleDashboardAdminOutletsRoute: LocaleDashboardAdminOutletsRoute,
+  LocaleDashboardAdminPrintRoute: LocaleDashboardAdminPrintRoute,
   LocaleDashboardAdminIndexRoute: LocaleDashboardAdminIndexRoute,
 }
 

@@ -7,6 +7,7 @@ import {
   Link2,
   LogOut,
   Menu,
+  Printer,
   ShieldCheck,
   Store,
   X,
@@ -18,6 +19,7 @@ import { BrandLogo } from "../elements/brand-logo";
 type AdminMobileHeaderProps = {
   content: {
     analytics?: string;
+    print?: string;
     outlets: string;
     activation: string;
     cards: string;
@@ -121,6 +123,18 @@ export function AdminMobileHeader({
                 <Link2 className="size-5" />
                 {content.activation}
               </Link>
+              {content.print && (
+                <Link
+                  activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}
+                  className="flex items-center gap-3 rounded-2xl px-4 py-4 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32]"
+                  onClick={closeMenu}
+                  params={{ locale: language }}
+                  to="/$locale/dashboard/admin/print"
+                >
+                  <Printer className="size-5" />
+                  {content.print}
+                </Link>
+              )}
             </nav>
             <button
               className="mt-4 flex w-full items-center gap-3 rounded-2xl border border-black/8 px-4 py-4 text-left text-sm font-semibold text-[#646b75] hover:bg-black/4 hover:text-black"
