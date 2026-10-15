@@ -1,6 +1,11 @@
 import { FieldValue } from "firebase-admin/firestore";
 import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
-import type { CardRecord, SocialLink } from "../../lib/firebase/firestore-schema";
+import type {
+  CardRecord,
+  OutletProfileTheme,
+  OutletPublicProfileSettings,
+  SocialLink,
+} from "../../lib/firebase/firestore-schema";
 import type { PublicOutletProfile } from "./public-profile.types";
 
 function publicUrl(value: string | null | undefined): string | null {
@@ -11,6 +16,35 @@ function publicUrl(value: string | null | undefined): string | null {
   } catch {
     return null;
   }
+}
+
+function optionalText(value: unknown, maximum = 160): string | null {
+  if (typeof value !== "string") return null;
+  const text = value.trim();
+  return text ? text.slice(0, maximum) : null;
+}
+
+function publicSettings(value: unknown): OutletPublicProfileSettings {
+  const settings = value && typeof value === "object"
+    ? value as Partial<OutletPublicProfileSettings>
+    : {};
+  const theme: OutletProfileTheme = ["coffee", "barbershop", "general"].includes(
+    String(settings.theme),
+  ) ? settings.theme as OutletProfileTheme : "general";
+  const hours = settings.hours && typeof settings.hours === "object"
+    ? settings.hours
+    : null;
+  return {
+    theme,
+    tagline: optionalText(settings.tagline),
+    greeting: optionalText(settings.greeting),
+    hours: hours && optionalText(hours.today, 80) ? {
+      isOpen: hours.isOpen === true,
+      today: optionalText(hours.today, 80)!,
+      closesAt: optionalText(hours.closesAt, 24),
+      allHoursUrl: publicUrl(hours.allHoursUrl),
+    } : null,
+  };
 }
 
 export async function getPublicOutletProfile(id: string): Promise<PublicOutletProfile | null> {
@@ -46,6 +80,7 @@ export async function getPublicOutletProfile(id: string): Promise<PublicOutletPr
   // Reviews remain the primary action; other links retain their configured order.
   links.sort((a, b) => Number(b.type === "google_review") - Number(a.type === "google_review"));
   const social = cards[0]?.record.config?.social;
+  const presentation = publicSettings(outlet.publicProfile);
   return {
     id: outletDocument.id,
     name: outlet.name ?? "",
@@ -53,6 +88,7 @@ export async function getPublicOutletProfile(id: string): Promise<PublicOutletPr
     location: outlet.address ?? "",
     description: social?.description ?? null,
     avatarUrl: publicUrl(outlet.logoUrl) ?? publicUrl(social?.avatarUrl),
+    ...presentation,
     links,
   };
 }
@@ -65,6 +101,27 @@ export async function recordPublicProfileView(outletId: string) {
     event: "profile_view",
     actionType: "profile_view",
     source: "direct",
+    timestamp: FieldValue.serverTimestamp(),
+  });
+}
+
+export async function recordPublicProfileAction(
+  outletId: string,
+  channel: SocialLink["type"],
+) {
+  const outlet = await getFirebaseAdminFirestore()
+    .collection("outlets")
+    .doc(outletId)
+    .get();
+  if (!outlet.exists || outlet.data()?.status !== "active") return;
+  await getFirebaseAdminFirestore().collection("scanEvents").add({
+    business_id: outletId,
+    outletId,
+    cardId: null,
+    event: "link_click",
+    actionType: "link_click",
+    channel,
+    source: "public_profile",
     timestamp: FieldValue.serverTimestamp(),
   });
 }

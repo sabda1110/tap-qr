@@ -1,0 +1,56 @@
+.outlet-info a {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 4px;
+  margin: 4px 0 -9px 24px;
+  font-size: 10px;
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-transform: uppercase;
+}
+
+.outlet-info a svg { width: 14px; height: 14px; }
+
+.outlet-footer {
+  padding-top: 24px;
+  text-align: center;
+}
+
+.outlet-footer p { font-size: 11px; font-weight: 700; }
+.outlet-footer small { display: block; margin-top: 5px; font-size: 9px; font-weight: 800; opacity: 0.68; }
+
+@keyframes outlet-marquee {
+  to { transform: translateX(-50%); }
+}
+
+@keyframes outlet-pulse {
+  50% { transform: scale(1.012); }
+}
+
+@keyframes outlet-star-wiggle {
+  8%, 16% { transform: rotate(-8deg) translateY(-2px); }
+  12%, 20% { transform: rotate(8deg) translateY(-2px); }
+}
+
+@keyframes outlet-sticker-wiggle {
+  50% { transform: rotate(2deg) translateY(1px); }
+}
+
+@media (min-width: 391px) {
+  .outlet-profile { border-inline: 4px solid var(--ink); }
+}
+
+.outlet-review-button:active { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .outlet-marquee__track,
+  .outlet-review-button,
+  .outlet-stars span,
+  .outlet-review-sticker { animation: none; }
+
+  .outlet-marquee__track { max-width: 100%; }
+  .outlet-marquee__track span:first-child { overflow: hidden; text-overflow: ellipsis; }
+  .outlet-marquee__track span[aria-hidden="true"] { display: none; }
+}

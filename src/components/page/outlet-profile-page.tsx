@@ -1,30 +1,66 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useI18n } from "../../i18n";
-import { trackOutletProfileView } from "../../server/outlets/public-profile.functions";
+import {
+  trackOutletProfileAction,
+  trackOutletProfileView,
+} from "../../server/outlets/public-profile.functions";
 import type { PublicOutletProfile } from "../../server/outlets/public-profile.types";
 import { OutletProfileSection } from "../organisms/outlet-profile-section";
+import {
+  createOutletProfileConfig,
+  type OutletProfileAction,
+} from "./outlet-profile-config";
 
-export function OutletProfilePage({ profile, failed = false }: {
+export function OutletProfilePage({
+  profile,
+  failed = false,
+}: {
   profile: PublicOutletProfile | null;
   failed?: boolean;
 }) {
   const { messages } = useI18n();
   const content = messages.outletProfile;
   const trackedOutlet = useRef<string | null>(null);
+  const config = useMemo(
+    () => profile ? createOutletProfileConfig(profile, content) : null,
+    [content, profile],
+  );
+
   useEffect(() => {
     if (!profile || trackedOutlet.current === profile.id) return;
     trackedOutlet.current = profile.id;
     void trackOutletProfileView({ data: { id: profile.id } }).catch(() => {});
   }, [profile]);
+
+  function trackAction(action: OutletProfileAction) {
+    if (!profile) return;
+    void trackOutletProfileAction({
+      data: { id: profile.id, channel: action.channel },
+    }).catch(() => {});
+  }
+
+  if (config) {
+    return (
+      <main className="min-h-dvh bg-[#171717]">
+        <OutletProfileSection
+          config={config}
+          content={content}
+          onAction={trackAction}
+        />
+      </main>
+    );
+  }
+
   return (
-    <main className="flex min-h-dvh flex-col items-center bg-muted/40 px-4 py-8 text-foreground sm:py-12">
-      {profile ? <OutletProfileSection profile={profile} content={content} /> : (
-        <section className="w-full max-w-md rounded-3xl border bg-background px-6 py-12 text-center">
-          <h1 className="text-xl font-bold">{failed ? content.error : content.unavailable}</h1>
-          <p className="mt-3 text-sm leading-6 text-muted-foreground">{failed ? content.errorDescription : content.unavailableDescription}</p>
-        </section>
-      )}
-      <p className="mt-8 text-xs text-muted-foreground">{content.poweredBy} <span className="font-bold text-foreground">Tap<span className="text-[#d08b16]">QR</span></span></p>
+    <main className="flex min-h-dvh items-center justify-center bg-[#fff4a8] px-4 text-[#111]">
+      <section className="w-full max-w-sm border-[4px] border-[#111] bg-[#fffdf4] px-6 py-12 text-center shadow-[7px_7px_0_#111]">
+        <h1 className="text-xl font-black uppercase tracking-tight">
+          {failed ? content.error : content.unavailable}
+        </h1>
+        <p className="mt-3 text-sm font-medium leading-6">
+          {failed ? content.errorDescription : content.unavailableDescription}
+        </p>
+      </section>
     </main>
   );
 }

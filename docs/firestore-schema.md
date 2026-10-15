@@ -7,7 +7,7 @@ Schema ini adalah kontrak data proyek. Semua akses aplikasi berjalan melalui Fir
 | Koleksi | Field utama |
 | --- | --- |
 | `users/{uid}` | `role` (`owner`/`admin`), nama, email, telepon, status, waktu dibuat/diubah |
-| `outlets/{outletId}` | `ownerId`, nama, slug, `logoUrl`, alamat, telepon, status, waktu dibuat/diubah |
+| `outlets/{outletId}` | `ownerId`, nama, slug, `logoUrl`, alamat, telepon, status, konfigurasi profil publik opsional, waktu dibuat/diubah |
 | `cards/{cardId}` | ID kartu, material (`acrylic`/`pvc`), status klaim, owner/outlet, konfigurasi, NFC, status aktif, waktu dibuat/diubah |
 | `scanEvents/{eventId}` | `cardId`, event, sumber QR/NFC, waktu, user agent. Koleksi ini dipakai saat analitik dibuat. |
 
@@ -94,6 +94,13 @@ Kunjungan halaman mencatat `profile_view` melalui server function POST ke
 `scanEvents`, dengan `business_id`/`outletId`, timestamp, `cardId: null`, dan
 `source: "direct"`. Event ini adalah kunjungan profil, bukan bukti scan QR/NFC
 atau ulasan yang telah dikirim.
+
+Field opsional `outlets.publicProfile` menyimpan presentasi link-in-bio dalam
+satu objek: preset `theme` (`coffee`, `barbershop`, atau `general`), `tagline`,
+`greeting`, dan ringkasan `hours`. Jika belum tersedia, profil memakai tema dan
+copy bawaan serta tidak menebak status buka/tutup. Klik tautan publik dicatat
+sebagai `link_click` dengan kanal tujuan; event ini bukan bukti bahwa pelanggan
+menyelesaikan review atau tindakan di situs tujuan.
 
 ## Akses
 

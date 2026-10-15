@@ -1,33 +1,162 @@
-import { ArrowUpRight, Link2, MapPin, Store } from "lucide-react";
+import { ArrowUpRight, Clock3, MapPin, Store } from "lucide-react";
+import { useState, type CSSProperties } from "react";
 import type { Messages } from "../../i18n";
-import type { PublicOutletProfile } from "../../server/outlets/public-profile.types";
-import { SocialBrandMark } from "../elements/social-brand-mark";
+import type {
+  OutletProfileAction,
+  OutletProfileConfig,
+} from "../page/outlet-profile-config";
+import { OutletActionIcon } from "../elements/outlet-action-icon";
+import "./outlet-profile.css";
 
-export function OutletProfileSection({ profile, content }: {
-  profile: PublicOutletProfile;
+export function OutletProfileSection({
+  config,
+  content,
+  onAction,
+}: {
+  config: OutletProfileConfig;
   content: Messages["outletProfile"];
+  onAction: (action: OutletProfileAction) => void;
 }) {
+  const [activeActionIds, setActiveActionIds] = useState<ReadonlySet<string>>(
+    () => new Set(),
+  );
+
+  function activateAction(action: OutletProfileAction) {
+    setActiveActionIds((current) => new Set(current).add(action.id));
+    onAction(action);
+  }
+
   return (
-    <section className="w-full max-w-md overflow-hidden rounded-3xl border border-black/5 bg-white shadow-sm">
-      <div className="h-24 bg-accent sm:h-32" />
-      <div className="px-5 pb-8 sm:px-8">
-        <div className="relative mx-auto -mt-10 flex size-20 items-center justify-center overflow-hidden rounded-2xl border-4 border-white bg-primary text-primary-foreground">
-          {profile.avatarUrl ? <img src={profile.avatarUrl} alt="" className="size-full object-cover" width={80} height={80} /> : <Store aria-hidden="true" className="size-8" />}
+    <section className="outlet-profile" style={config.theme}>
+      <div className="outlet-profile__pattern" aria-hidden="true" />
+      <div className="outlet-marquee" aria-label={config.marquee}>
+        <div className="outlet-marquee__track">
+          <span>{config.marquee}</span>
+          <span aria-hidden="true">{config.marquee}</span>
         </div>
-        <h1 className="mt-4 break-words text-center text-2xl font-extrabold tracking-tight">{profile.name}</h1>
-        {profile.slug && <p className="mt-1 break-all text-center text-sm text-muted-foreground">@{profile.slug}</p>}
-        {profile.location && <p className="mt-3 flex justify-center gap-2 text-center text-xs leading-5 text-muted-foreground"><MapPin aria-hidden="true" className="mt-1 size-3 shrink-0" />{profile.location}</p>}
-        <p className="mt-4 whitespace-pre-line break-words text-center text-sm leading-6 text-muted-foreground">{profile.description || content.welcome}</p>
-        <nav aria-label={content.linksLabel} className="mt-6 grid gap-3">
-          {profile.links.map((link) => (
-            <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className={`flex min-h-16 items-center gap-3 rounded-2xl border p-3 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring ${link.type === "google_review" ? "border-primary bg-primary text-primary-foreground hover:opacity-90" : "border-border bg-background hover:bg-muted"}`}>
-              {link.type === "facebook" ? <Link2 aria-hidden="true" className="size-10 shrink-0 p-2" /> : <SocialBrandMark type={link.type} />}
-              <span className="min-w-0 flex-1 break-words text-sm font-bold">{link.label.trim() || content.channels[link.type]}</span>
-              <ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
-            </a>
-          ))}
+      </div>
+
+      <div className="outlet-profile__content">
+        <header className="outlet-header">
+          <div className="outlet-avatar">
+            {config.avatarUrl ? (
+              <img
+                src={config.avatarUrl}
+                alt={`${content.outletLogo}: ${config.name}`}
+                width={92}
+                height={92}
+              />
+            ) : (
+              <Store aria-hidden="true" strokeWidth={2.75} />
+            )}
+          </div>
+          <div className="outlet-header__copy">
+            <h1>{config.name}</h1>
+            <p>{config.tagline}</p>
+            {config.status && (
+              <span className={`outlet-status outlet-status--${config.status.tone}`}>
+                <span aria-hidden="true" />
+                {config.status.label}
+              </span>
+            )}
+          </div>
+        </header>
+
+        <div className="outlet-greeting">
+          <span aria-hidden="true">↗</span>
+          <p>{config.greeting}</p>
+        </div>
+
+        {config.reviewAction && (
+          <a
+            className="outlet-review-button outlet-pressable"
+            href={config.reviewAction.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => onAction(config.reviewAction!)}
+          >
+            <span className="outlet-review-button__label">★ {config.reviewAction.label}</span>
+            <span className="outlet-stars" aria-label={content.ratingLabel}>
+              {[0, 1, 2, 3, 4].map((star) => (
+                <span
+                  key={star}
+                  aria-hidden="true"
+                  style={{ "--star-index": star } as CSSProperties}
+                >
+                  ★
+                </span>
+              ))}
+            </span>
+            <span className="outlet-review-sticker">{content.reviewTime}</span>
+          </a>
+        )}
+
+        <nav aria-label={content.linksLabel} className="outlet-actions">
+          {config.secondaryActions.map((action) => {
+            const isActive = activeActionIds.has(action.id);
+            return (
+              <a
+                key={action.id}
+                className="outlet-action outlet-pressable"
+                href={action.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-active={isActive || undefined}
+                style={{
+                  "--action-bg": isActive ? action.activeColor : action.color,
+                  "--action-fg": isActive
+                    ? action.activeForeground
+                    : action.foreground,
+                } as CSSProperties}
+                onClick={() => activateAction(action)}
+              >
+                <span className="outlet-action__icon">
+                  <OutletActionIcon kind={action.kind} />
+                </span>
+                <span>{action.label}</span>
+                <ArrowUpRight
+                  aria-hidden="true"
+                  className="outlet-action__arrow"
+                  strokeWidth={3}
+                />
+              </a>
+            );
+          })}
         </nav>
-        {profile.links.length === 0 && <p className="mt-6 rounded-2xl border border-dashed p-6 text-center text-sm text-muted-foreground">{content.empty}</p>}
+
+        {!config.reviewAction && config.secondaryActions.length === 0 && (
+          <p className="outlet-empty">{content.empty}</p>
+        )}
+
+        <aside className="outlet-info">
+          {config.address && (
+            <p>
+              <MapPin aria-hidden="true" />
+              <span>
+                <span className="sr-only">{content.addressLabel}: </span>
+                {config.address}
+              </span>
+            </p>
+          )}
+          <p>
+            <Clock3 aria-hidden="true" />
+            <span>{config.todayHours}</span>
+          </p>
+          {config.allHoursUrl && (
+            <a
+              href={config.allHoursUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {content.viewAllHours} <ArrowUpRight aria-hidden="true" />
+            </a>
+          )}
+        </aside>
+
+        <footer className="outlet-footer">
+          <p>{content.madeFor} <strong>{config.name}</strong></p>
+          <small>{content.poweredBy}</small>
+        </footer>
       </div>
     </section>
   );

@@ -5,6 +5,19 @@ export type CardClaimStatus = "unclaimed" | "claimed";
 export type CardPrintStatus = "unprinted" | "printed";
 export type CardConfigType = "google_review" | "social";
 export type NfcType = "tapqr" | "google_review" | "custom";
+export type OutletProfileTheme = "coffee" | "barbershop" | "general";
+
+export type OutletPublicProfileSettings = {
+  theme: OutletProfileTheme;
+  tagline: string | null;
+  greeting: string | null;
+  hours: {
+    isOpen: boolean;
+    today: string;
+    closesAt: string | null;
+    allHoursUrl: string | null;
+  } | null;
+};
 
 export type OutletRecord = {
   ownerId: string;
@@ -14,6 +27,7 @@ export type OutletRecord = {
   address: string;
   phone: string;
   status: AccountStatus;
+  publicProfile?: OutletPublicProfileSettings;
   createdAt: unknown;
   updatedAt: unknown;
 };
