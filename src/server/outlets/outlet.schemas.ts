@@ -17,6 +17,7 @@ const outletLinkSchema = z
     ]),
     label: z.string().trim().min(1).max(100),
     value: z.string().trim().min(1).max(2000),
+    message: z.string().trim().max(500).optional(),
     isActive: z.boolean(),
   })
   .superRefine((link, context) => {

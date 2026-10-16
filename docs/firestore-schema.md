@@ -34,11 +34,15 @@ Kartu baru selalu memiliki `claimStatus: "unclaimed"`, `ownerId: null`, `outletI
 
 `cardId` dibuat acak dengan entropi 128-bit, misalnya `TQR-7B83...`, sehingga tidak dapat ditebak dari urutan kartu lain. Setiap kartu juga memiliki token klaim acak 256-bit. Token tersebut nantinya menjadi isi QR/NFC untuk proses claim; Firestore hanya menyimpan hash SHA-256-nya pada `claim.claimTokenHash`.
 
-`config.social.links` menyimpan `id`, tipe, label, URL, status aktif, dan urutan. `claim.claimTokenHash` hanya menyimpan hash token klaim; token mentah tidak disimpan di Firestore.
+`config.social.links` menyimpan `id`, tipe, label, URL, status aktif, dan urutan.
+Tautan WhatsApp dapat memiliki field opsional `message` yang menyimpan template
+pesan pembuka per kartu; URL `wa.me` juga memuat parameter `text` yang sudah
+di-encode. Dokumen lama tanpa `message` tetap valid. `claim.claimTokenHash` hanya
+menyimpan hash token klaim; token mentah tidak disimpan di Firestore.
 
 Aktivasi Sosmed oleh admin membuat akun Firebase Authentication dengan role `owner`, profil `users/{uid}`, dan outlet baru. Password awal default `12345678` dapat diubah sebelum submit dan tidak disimpan di Firestore. Kartu diklaim dengan `ownerId`, `outletId`, waktu klaim, serta UID admin. Hash token klaim dihapus setelah kartu digunakan.
 
-`config.social.links` memuat semua tautan pilihan admin; `order` mengikuti urutan drag-and-drop. Google Review menggunakan Place ID pilihan autocomplete dan URL resmi `https://search.google.com/local/writereview?placeid=...`. Nomor WhatsApp dikonversi menjadi URL `wa.me`. Konfigurasi NFC direset menjadi `tapqr`, tanpa mengklaim bahwa NFC fisik telah ditulis.
+`config.social.links` memuat semua tautan pilihan admin; `order` mengikuti urutan drag-and-drop. Google Review menggunakan Place ID dan URL resmi `https://search.google.com/local/writereview?placeid=...`. Nomor WhatsApp dikonversi menjadi URL `wa.me`; username Instagram dan TikTok dikonversi menjadi URL profil resminya. Konfigurasi NFC direset menjadi `tapqr`, tanpa mengklaim bahwa NFC fisik telah ditulis.
 
 `outletSlugs/{slug}` memesan slug unik dalam transaksi yang sama dengan pembuatan profil, outlet, dan pembaruan kartu. Jika transaksi gagal, akun Authentication yang baru dibuat dibatalkan. Email yang sudah terdaftar tidak digunakan ulang atau ditimpa.
 

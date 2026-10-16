@@ -67,7 +67,8 @@ export function CardClaimDialog({
     initialMode,
     outlets,
     content,
-    googleReviewTitle: messages.adminDashboard.activation.channels.google_review.title,
+    googleReviewTitle:
+      messages.adminDashboard.activation.channels.google_review.title,
     onSaved,
   });
 
@@ -81,10 +82,7 @@ export function CardClaimDialog({
   );
 
   const headerExtra = (
-    <CardClaimMascot
-      badgeText={content.mascotBadge}
-      alt={content.mascotAlt}
-    />
+    <CardClaimMascot badgeText={content.mascotBadge} alt={content.mascotAlt} />
   );
 
   return (
@@ -108,7 +106,7 @@ export function CardClaimDialog({
         >
           <DialogBody className="bg-white sm:px-7 sm:py-5">
             <CardClaimStepIndicator content={content} step={step} />
-            <fieldset disabled={busy} className="grid gap-5 border-0 p-0">
+            <fieldset disabled={busy} className="grid gap-4 border-0 p-0">
               {step === 1 ? (
                 <CardClaimOutletStep
                   content={content}
@@ -131,7 +129,9 @@ export function CardClaimDialog({
                         ? { slug: toOutletSlug(value) }
                         : {}),
                     }));
-                    setInvalidFields((current) => current.filter((field) => field !== name));
+                    setInvalidFields((current) =>
+                      current.filter((field) => field !== name),
+                    );
                   }}
                   onSlugChange={(value) => {
                     hasManualSlug.current = true;
@@ -146,14 +146,16 @@ export function CardClaimDialog({
                 />
               ) : (
                 <>
-                  <p className="text-sm leading-6 text-[#69737d]">
-                    {content.linksDescription}
-                  </p>
                   <CustomInputText
                     label={content.card}
                     value={card}
+                    className="h-10"
                     readOnly={Boolean(cardId)}
-                    error={invalidFields.includes("cardId") ? content.invalid : undefined}
+                    error={
+                      invalidFields.includes("cardId")
+                        ? content.invalid
+                        : undefined
+                    }
                     onChange={(event) => setCard(event.target.value)}
                   />
                   {!cardId && (
@@ -163,7 +165,9 @@ export function CardClaimDialog({
                         const scannedCardId = extractCardIdFromQr(value);
                         if (!scannedCardId) return false;
                         setCard(scannedCardId);
-                        setInvalidFields((current) => current.filter((field) => field !== "cardId"));
+                        setInvalidFields((current) =>
+                          current.filter((field) => field !== "cardId"),
+                        );
                         return true;
                       }}
                     />

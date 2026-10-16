@@ -45,11 +45,15 @@ export function OutletCardEditForm({
       cardId: card.id,
       links: card.links.map((link) => {
         let value = link.url;
+        let message = link.message ?? undefined;
         try {
           if (link.type === "google_review")
             value = new URL(link.url).searchParams.get("placeid") ?? "";
-          if (link.type === "whatsapp")
-            value = new URL(link.url).pathname.replace(/\D/g, "");
+          if (link.type === "whatsapp") {
+            const destination = new URL(link.url);
+            value = destination.pathname.replace(/\D/g, "");
+            message ??= destination.searchParams.get("text") ?? undefined;
+          }
         } catch {
           value = "";
         }
@@ -58,6 +62,7 @@ export function OutletCardEditForm({
           type: link.type,
           label: link.label,
           value,
+          message,
           isActive: link.isActive,
         };
       }),

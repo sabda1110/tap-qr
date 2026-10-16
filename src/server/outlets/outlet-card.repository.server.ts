@@ -1,7 +1,7 @@
 import { FieldValue } from "firebase-admin/firestore";
 import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
 import { getGoogleReviewUrl } from "../../lib/google-review";
-import { toWhatsAppInternationalNumber } from "../../lib/validation/whatsapp-number";
+import { toStoredSocialLink } from "../../lib/social-link";
 import type {
   CardRecord,
   SocialLink,
@@ -9,7 +9,10 @@ import type {
 import type { CardLinksEditValues } from "./outlet.schemas";
 import { assertOutletOwner } from "./outlet-ownership";
 
-export async function updateOutletCardLinks(input: CardLinksEditValues, ownerId?: string) {
+export async function updateOutletCardLinks(
+  input: CardLinksEditValues,
+  ownerId?: string,
+) {
   const database = getFirebaseAdminFirestore();
   const reference = database.collection("cards").doc(input.cardId);
   await database.runTransaction(async (transaction) => {
@@ -29,19 +32,7 @@ export async function updateOutletCardLinks(input: CardLinksEditValues, ownerId?
       assertOutletOwner(outlet.data()?.ownerId, ownerId);
       assertOutletOwner(card.ownerId, ownerId);
     }
-    const links: SocialLink[] = input.links.map((link, order) => ({
-      id: link.id,
-      type: link.type,
-      label: link.label,
-      isActive: link.isActive,
-      order,
-      url:
-        link.type === "google_review"
-          ? getGoogleReviewUrl(link.value)
-          : link.type === "whatsapp"
-            ? `https://wa.me/${toWhatsAppInternationalNumber(link.value)}`
-            : link.value,
-    }));
+    const links: SocialLink[] = input.links.map(toStoredSocialLink);
     const google = input.links.find(
       (link) => link.type === "google_review" && link.isActive,
     );

@@ -42,6 +42,7 @@ test("copied WhatsApp and Google URLs become editable destination inputs", () =>
       type: "whatsapp",
       label: "WhatsApp",
       url: "https://wa.me/628123456789",
+      message: "Halo dari TapQR",
       isActive: true,
       order: 0,
     },
@@ -56,6 +57,7 @@ test("copied WhatsApp and Google URLs become editable destination inputs", () =>
   ];
   const copied = copySocialLinks(source);
   assert.equal(copied[0].value, "628123456789");
+  assert.equal(copied[0].message, "Halo dari TapQR");
   assert.equal(copied[1].value, "ChIJExample");
   assert.equal("sourceCardId" in copied[0], false);
   assert.equal("sourceOutletId" in copied[0], false);

@@ -1,11 +1,12 @@
 export const cardClaimEn = {
   title: "Activate your TapQR card",
-  description: "Complete three quick steps to get your card ready for customers.",
+  description:
+    "Complete three quick steps to get your card ready for customers.",
   step: "Step {current} of 3",
   steps: {
     outlet: "Create or choose an outlet",
     channels: "Choose social media",
-    links: "Add your links",
+    links: "Add details",
   },
   mascotBadge: "Easy, fast, ready to use!",
   mascotAlt: "TapQR mascot holding a phone with a QR code",
@@ -29,15 +30,28 @@ export const cardClaimEn = {
   nameRequired: "Outlet name is required.",
   slugRequired: "Profile slug is required.",
   addressRequired: "Operational address is required.",
-  linksDescription: "Complete the destination for every selected social channel.",
+  linksDescription: "Complete the details for every selected channel.",
   channelTitle: "Choose links for your customers",
-  channelDescription: "Select the social channels you want to show. You can update them at any time.",
+  channelDescription:
+    "Select the social channels you want to show. You can update them at any time.",
   channelSelected: "Selected",
   additionalLink: "Additional link",
   addAdditionalLink: "Add another link",
   detailsTitle: "Add your links",
-  detailsDescription: "Complete the fields below to add content to your TapQR page.",
+  detailsDescription:
+    "Enter each channel destination. TapQR will build the links automatically.",
   yourSelections: "Your selections",
+  instagramUsername: "Instagram username",
+  tiktokUsername: "TikTok username",
+  usernamePlaceholder: "businessname",
+  googlePlaceId: "Google Place ID",
+  googlePlaceIdPlaceholder: "Example: ChIJ...",
+  whatsappMessage: "Message template",
+  whatsappMessagePlaceholder: "Write the opening WhatsApp message",
+  whatsappMessageHelp:
+    "This message is filled automatically when a customer opens WhatsApp.",
+  whatsappMessageDefault:
+    "Hi, I found your business through TapQR and would like to ask a question.",
   noSelection: "Choose at least one link to continue.",
   next: "Continue",
   back: "Back",
@@ -56,8 +70,8 @@ export const cardClaimEn = {
     "Enter the outlet name, profile address, and operational address.",
   outletRequired: "Choose an outlet to continue.",
   placeIdGuide: {
-    quick: "Find your business Place ID with the",
-    googleDocs: "Google guide",
+    quick: "Don't have a Place ID?",
+    googleDocs: "Click here to get it",
     tutorial: "View the complete TapQR tutorial",
   },
   scanner: {

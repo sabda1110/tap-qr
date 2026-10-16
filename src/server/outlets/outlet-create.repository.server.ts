@@ -1,7 +1,7 @@
 import { FieldValue } from "firebase-admin/firestore";
 import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
 import { getGoogleReviewUrl } from "../../lib/google-review";
-import { toWhatsAppInternationalNumber } from "../../lib/validation/whatsapp-number";
+import { toStoredSocialLink } from "../../lib/social-link";
 import type {
   CardRecord,
   OutletRecord,
@@ -95,19 +95,7 @@ export async function createOwnerOutlet(
       throw new Error("CARD_ALREADY_ASSIGNED");
     if (slug.exists || !duplicates.empty) throw new Error("SLUG_ALREADY_USED");
     const now = FieldValue.serverTimestamp();
-    const links: SocialLink[] = input.links.map((link, order) => ({
-      id: link.id,
-      type: link.type,
-      label: link.label,
-      order,
-      isActive: link.isActive,
-      url:
-        link.type === "google_review"
-          ? getGoogleReviewUrl(link.value)
-          : link.type === "whatsapp"
-            ? `https://wa.me/${toWhatsAppInternationalNumber(link.value)}`
-            : link.value,
-    }));
+    const links: SocialLink[] = input.links.map(toStoredSocialLink);
     const google = input.links.find(
       (link) => link.type === "google_review" && link.isActive,
     );

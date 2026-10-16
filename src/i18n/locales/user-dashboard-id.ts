@@ -1,11 +1,12 @@
 export const cardClaimId = {
   title: "Aktifkan kartu TapQR",
-  description: "Selesaikan tiga langkah singkat agar kartu siap dipakai pelanggan.",
+  description:
+    "Selesaikan tiga langkah singkat agar kartu siap dipakai pelanggan.",
   step: "Langkah {current} dari 3",
   steps: {
     outlet: "Buat atau pilih outlet",
     channels: "Pilih media sosial",
-    links: "Isi tautan",
+    links: "Isi detail",
   },
   mascotBadge: "Mudah, cepat, siap digunakan!",
   mascotAlt: "Maskot TapQR memegang ponsel dengan kode QR",
@@ -31,15 +32,28 @@ export const cardClaimId = {
   nameRequired: "Nama outlet wajib diisi.",
   slugRequired: "Slug profil wajib diisi.",
   addressRequired: "Alamat operasional wajib diisi.",
-  linksDescription: "Lengkapi tujuan untuk setiap media sosial yang dipilih.",
+  linksDescription: "Lengkapi detail untuk setiap kanal yang dipilih.",
   channelTitle: "Pilih tautan untuk pelanggan",
-  channelDescription: "Pilih media sosial yang ingin ditampilkan. Anda dapat memperbaruinya kapan saja.",
+  channelDescription:
+    "Pilih media sosial yang ingin ditampilkan. Anda dapat memperbaruinya kapan saja.",
   channelSelected: "Dipilih",
   additionalLink: "Tautan lain",
   addAdditionalLink: "Tambah tautan lain",
   detailsTitle: "Tambahkan tautan Anda",
-  detailsDescription: "Lengkapi field di bawah untuk menambahkan konten ke halaman TapQR Anda.",
+  detailsDescription:
+    "Isi tujuan tiap kanal. TapQR akan membuat tautannya otomatis.",
   yourSelections: "Pilihan Anda",
+  instagramUsername: "Username Instagram",
+  tiktokUsername: "Username TikTok",
+  usernamePlaceholder: "namausaha",
+  googlePlaceId: "Place ID Google",
+  googlePlaceIdPlaceholder: "Contoh: ChIJ...",
+  whatsappMessage: "Template pesan",
+  whatsappMessagePlaceholder: "Tulis pesan pembuka WhatsApp",
+  whatsappMessageHelp:
+    "Pesan ini akan terisi otomatis saat pelanggan membuka WhatsApp.",
+  whatsappMessageDefault:
+    "Halo, saya menemukan bisnis Anda melalui TapQR dan ingin bertanya.",
   noSelection: "Pilih minimal satu tautan untuk melanjutkan.",
   next: "Lanjut",
   back: "Kembali",
@@ -58,8 +72,8 @@ export const cardClaimId = {
   outletInvalid: "Lengkapi nama outlet, alamat profil, dan alamat operasional.",
   outletRequired: "Pilih outlet untuk melanjutkan.",
   placeIdGuide: {
-    quick: "Cari Place ID bisnis Anda melalui",
-    googleDocs: "panduan Google",
+    quick: "Belum punya Place ID?",
+    googleDocs: "Klik di sini untuk mendapatkannya",
     tutorial: "Atau lihat tutorial TapQR lengkap",
   },
   scanner: {
