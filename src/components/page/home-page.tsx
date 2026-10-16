@@ -60,8 +60,9 @@ export function HomePage() {
                 content: messages.pricing.qrBoard,
                 icon: ScanLine,
                 featured: true,
+                order: true,
               },
-              { content: messages.pricing.nfcBundle, icon: Nfc },
+              { content: messages.pricing.nfcBundle, icon: Nfc, order: true },
             ]}
           />
           <TestimonialsSection

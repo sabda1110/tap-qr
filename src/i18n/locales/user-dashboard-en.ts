@@ -93,6 +93,7 @@ export const userDashboardEn = {
   greeting: "Hello",
   description: "Manage your outlet details and card links here.",
   sidebar: {
+    orders: "My orders",
     dashboard: "Outlets & cards",
     logout: "Log out",
     navigationLabel: "Dashboard navigation",

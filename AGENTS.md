@@ -205,6 +205,37 @@ ditangguhkan.
   per jaringan, dan mencetak QR koneksi langsung. Draft WiFi hanya berada di
   state lokal halaman; jangan menyimpan kredensial WiFi ke database, URL,
   penyimpanan browser, atau analitik. WiFi tidak memerlukan kartu inventaris.
+- Pemesanan kartu tersedia tanpa login di `/$locale/order`, dengan konfirmasi
+  harga, ongkir, dan pembayaran manual melalui WhatsApp admin dari env server
+  `ORDER_WHATSAPP_NUMBER`. Pesanan dibuat sebelum pembeli mengirim chat;
+  aplikasi tidak mengirim WhatsApp atau email otomatis.
+- Tamu melacak status melalui tautan token acak 256-bit di `/$locale/orders/$token`.
+  Simpan hanya hash token sebagai ID dokumen, dan jangan tampilkan kontak atau
+  alamat pemesan melalui endpoint pelacakan publik. Kode pesanan bukan autentikasi.
+- Menu Cek pesanan menerima nomor HP tanpa login melalui POST, bukan query URL.
+  Hasil berisi kode, produk, tema, jumlah, tanggal, status, serta kurir/resi untuk
+  status dikirim/selesai; jangan kembalikan kontak, alamat, token, atau akses akun.
+  Wilayah pengiriman disimpan di `orders.shippingRegion` (provinsi, kota,
+  kecamatan, kelurahan); ketentuan ini tidak mengubah struktur alamat outlet.
+- Dashboard owner menyediakan Beli kartu dan Pesanan saya. Pesanan dari sesi
+  owner terhubung otomatis; tidak ada form klaim/penghubungan pesanan tamu.
+  Pesanan tamu dicek melalui nomor HP atau tautan pribadi, dan jangan otomatis
+  menghubungkan pesanan berdasarkan email saja.
+- Pembelian owner memakai `/$locale/dashboard/user/buy`, tetap di layout akun,
+  dan endpoint yang mewajibkan sesi owner. Setelah submit kembali ke Pesanan saya.
+- Status maju `on_progress` → `confirmed` → `shipped` → `completed`; pembatalan
+  memakai `cancelled`. Owner hanya bisa edit/batal saat Diproses, belum dibayar,
+  dan produksi belum dimulai. Tamu meminta perubahan lewat WhatsApp tanpa akun.
+- Admin mencatat pembayaran `unpaid`/`paid`/`refunded` dan mulai produksi setelah
+  dikonfirmasi/dibayar. Pembatalan berbayar harus didahului refund tercatat.
+  Setelah dikirim, hanya resi yang dapat dikoreksi; arsip hanya selesai/dibatalkan.
+  Tidak ada hapus permanen. Semua perubahan memeriksa revision dalam transaksi
+  dan mencatat before/after pada subkoleksi `orders/{id}/events`, khusus admin.
+  Pengiriman wajib memiliki kurir, resi, pembayaran, dan produksi tercatat.
+  Daftar admin memakai tabel ringkas; detail/edit berada di dialog. Aksi Hapus
+  pada tabel berarti arsip transaksi selesai/dibatalkan dengan konfirmasi.
+  Pesanan tidak membuat akun, inventaris, atau klaim kartu otomatis; kredensial
+  WiFi tidak boleh disimpan dalam dokumen pesanan.
 - Simpan state sedekat mungkin dengan pemakainya. Gunakan URL untuk state
   navigasi, loader/server function untuk data server, dan Zustand hanya untuk
   client state yang benar-benar digunakan lintas komponen atau route.

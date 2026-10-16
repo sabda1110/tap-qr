@@ -12,7 +12,7 @@ export const Route = createFileRoute("/$locale/dashboard/user")({
       throw redirect({
         to: "/$locale/auth/$mode",
         params: { locale: params.locale, mode: "login" },
-        search: { cardId: cardSearchSchema.parse(location.search).cardId },
+        search: { cardId: cardSearchSchema.parse(location.search).cardId, destination: location.pathname.endsWith("/buy") ? "buy" : location.pathname.endsWith("/orders") ? "orders" : undefined },
         replace: true,
       });
     }

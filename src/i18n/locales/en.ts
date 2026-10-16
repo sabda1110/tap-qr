@@ -3,8 +3,10 @@ import { authEn } from "./auth-en";
 import { cardClaimEn, userDashboardEn } from "./user-dashboard-en";
 import { outletProfileEn } from "./outlet-profile-en";
 import type { id } from "./id";
+import { ordersEn } from "./orders-en";
 
 export const en: typeof id = {
+  orders: ordersEn,
   outletProfile: outletProfileEn,
   header: {
     brandHomeLabel: "TapQR home",
@@ -14,6 +16,8 @@ export const en: typeof id = {
     testimonials: "Testimonials",
     login: "Log in",
     register: "Sign up",
+    buy: "Buy cards",
+    checkOrder: "Check order",
     languageLabel: "Choose language",
     openMenu: "Open navigation menu",
     closeMenu: "Close navigation menu",

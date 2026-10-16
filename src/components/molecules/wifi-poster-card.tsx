@@ -28,7 +28,7 @@ export function WifiPosterCard({ job, title, footer, content, id }: Props) {
         <span className="text-[8px] font-black uppercase">{content.or}</span>
         <div className="flex min-w-0 flex-col items-center">
           <div className="size-[124px] shrink-0 border-[3px] border-[#174780] bg-white p-2 shadow-[3px_3px_0_#174780]">
-            <img alt={content.qrAlt.replace("{ssid}", job.ssid)} src={job.qrDataUrl} className="size-full object-contain" />
+            {job.qrDataUrl ? <img alt={content.qrAlt.replace("{ssid}", job.ssid)} src={job.qrDataUrl} className="size-full object-contain" /> : <div className="size-full bg-[#f3f5f7]" />}
           </div>
           <p className="mt-2 flex items-center gap-1 text-[9px] font-black uppercase"><ScanLine aria-hidden="true" className="size-3 shrink-0" />{content.scan}</p>
         </div>

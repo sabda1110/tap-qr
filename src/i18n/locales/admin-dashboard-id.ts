@@ -8,6 +8,7 @@ export const adminDashboardId = {
   outletCreate: outletCreateId,
   outlets: outletsId,
   sidebar: {
+    orders: "Pesanan kartu",
     analytics: "Analisa",
     outlets: "Outlet",
     cards: "Master kartu",

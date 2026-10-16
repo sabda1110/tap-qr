@@ -4,7 +4,7 @@ import type { Language, Messages } from "../../i18n";
 import { LanguageSwitcher } from "../elements/language-switcher";
 
 type HeaderActionsProps = {
-  labels: Pick<Messages["header"], "languageLabel" | "login" | "register">;
+  labels: Pick<Messages["header"], "languageLabel" | "login" | "register" | "buy" | "checkOrder">;
   language: Language;
   mobile?: boolean;
 };
@@ -36,11 +36,12 @@ export function HeaderActions({
             ? "flex h-11 w-full items-center justify-center rounded-md bg-black px-7 text-[12px] font-medium text-white no-underline hover:bg-black/80 hover:text-white"
             : "flex h-11 items-center justify-center rounded-md bg-black px-7 text-[12px] font-medium text-white no-underline hover:bg-black/80 hover:text-white"
         }
-        to="/$locale/auth/$mode"
-        params={{ locale: language, mode: "register" }}
+        to="/$locale/order"
+        params={{ locale: language }}
       >
-        {labels.register}
+        {labels.buy}
       </Link>
+      <Link className={`${mobile ? "block" : "hidden lg:block"} text-xs font-semibold text-black/70`} to="/$locale/orders" params={{ locale: language }}>{labels.checkOrder}</Link>
     </div>
   );
 }

@@ -11,6 +11,7 @@ type PricingPlan = {
   content: PricingCardContent;
   icon: LucideIcon;
   featured?: boolean;
+  order?: boolean;
 };
 
 type PricingSectionProps = {

@@ -18,6 +18,7 @@ type PricingCardProps = {
   icon: LucideIcon;
   language: Language;
   featured?: boolean;
+  order?: boolean;
 };
 
 export function PricingCard({
@@ -25,6 +26,7 @@ export function PricingCard({
   icon: Icon,
   language,
   featured,
+  order = false,
 }: PricingCardProps) {
   return (
     <article
@@ -77,7 +79,7 @@ export function PricingCard({
             ? "bg-black text-white hover:bg-black/80 hover:text-white"
             : "border border-black/15 bg-white text-black hover:border-black hover:text-black"
         }`}
-        to="/$locale/auth/$mode"
+        to={order ? "/$locale/order" : "/$locale/auth/$mode"}
         params={{ locale: language, mode: "register" }}
       >
         {content.cta}

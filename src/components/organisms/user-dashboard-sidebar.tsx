@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, Settings } from "lucide-react";
+import { LayoutDashboard, LogOut, Settings, ShoppingBag } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { BrandLogo } from "../elements/brand-logo";
 import type { Language, Messages } from "../../i18n";
 
 type UserDashboardSidebarProps = {
-  activeItem: "dashboard" | "accountSettings";
+  activeItem: "dashboard" | "accountSettings" | "orders";
   content: Messages["userDashboard"]["sidebar"];
   homeLabel: string;
   language: Language;
@@ -37,6 +37,7 @@ export function UserDashboardSidebar({
           >
             <LayoutDashboard className="size-4" />
           </SidebarLink>
+          <SidebarLink active={activeItem === "orders"} label={content.orders} language={language} to="/$locale/dashboard/user/orders"><ShoppingBag className="size-4" /></SidebarLink>
           <SidebarLink
             active={activeItem === "accountSettings"}
             label={content.accountSettings}
@@ -70,7 +71,7 @@ function SidebarLink({
   children: ReactNode;
   language: Language;
   label: string;
-  to: "/$locale/dashboard/user" | "/$locale/dashboard/user/account";
+  to: "/$locale/dashboard/user" | "/$locale/dashboard/user/account" | "/$locale/dashboard/user/orders";
 }) {
   return (
     <Link

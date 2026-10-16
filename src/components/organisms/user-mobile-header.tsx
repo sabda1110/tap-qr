@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, Settings } from "lucide-react";
+import { LayoutDashboard, LogOut, Settings, ShoppingBag } from "lucide-react";
 import type { Language, Messages } from "../../i18n";
 import { BrandLogo } from "../elements/brand-logo";
 import { Button } from "../ui/button";
@@ -11,7 +11,7 @@ export function UserMobileHeader({
   language,
   onSignOut,
 }: {
-  activeItem: "dashboard" | "accountSettings";
+  activeItem: "dashboard" | "accountSettings" | "orders";
   content: Messages["userDashboard"]["sidebar"];
   homeLabel: string;
   language: Language;
@@ -36,7 +36,7 @@ export function UserMobileHeader({
       </div>
       <nav
         aria-label={content.navigationLabel}
-        className="mt-2 grid grid-cols-2 gap-2"
+        className="mt-2 grid grid-cols-3 gap-2"
       >
         {[
           {
@@ -44,6 +44,12 @@ export function UserMobileHeader({
             label: content.dashboard,
             to: "/$locale/dashboard/user",
             icon: LayoutDashboard,
+          },
+          {
+            key: "orders",
+            label: content.orders,
+            to: "/$locale/dashboard/user/orders",
+            icon: ShoppingBag,
           },
           {
             key: "accountSettings",
@@ -57,7 +63,7 @@ export function UserMobileHeader({
             to={to}
             params={{ locale: language }}
             aria-current={activeItem === key ? "page" : undefined}
-            className={`flex min-h-11 items-center justify-center gap-2 rounded-xl px-2 text-sm font-semibold no-underline focus-visible:outline-2 focus-visible:outline-ring ${activeItem === key ? "bg-[#e8f8fb] text-[#087e91]" : "bg-[#f7f9fb] text-[#69737d] hover:bg-black/5"}`}
+            className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-center text-[10px] font-semibold no-underline focus-visible:outline-2 focus-visible:outline-ring sm:flex-row sm:gap-2 sm:text-xs ${activeItem === key ? "bg-[#e8f8fb] text-[#087e91]" : "bg-[#f7f9fb] text-[#69737d] hover:bg-black/5"}`}
           >
             <Icon aria-hidden="true" className="size-4 shrink-0" />
             {label}

@@ -6,6 +6,7 @@ export const cardIdSchema = z.string().trim().regex(/^TQR-[A-F0-9]{32}$/i).trans
 export const cardSearchSchema = z.object({
   cardId: cardIdSchema.optional().catch(undefined),
   reason: z.string().optional().catch(undefined),
+  destination: z.enum(["orders", "buy"]).optional().catch(undefined),
 });
 export const userOutletCardsSchema = z.object({ outletId: z.string().min(1).max(150) });
 export const newClaimOutletSchema = ownerActivationSchema.pick({

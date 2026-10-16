@@ -53,7 +53,7 @@ export function WifiPrintCard({ job, theme, title, footer, content, id }: WifiPr
           </div>
           <div className="flex min-w-0 flex-col items-center">
             <div className="size-[136px] shrink-0 rounded-lg border-[3px] border-[#172029] bg-white p-2 shadow-[4px_4px_0_#172029]">
-              <img className="size-full object-contain" src={job.qrDataUrl} alt={content.qrAlt.replace("{ssid}", job.ssid)} />
+              {job.qrDataUrl ? <img className="size-full object-contain" src={job.qrDataUrl} alt={content.qrAlt.replace("{ssid}", job.ssid)} /> : <div className="size-full bg-[#f3f5f7]" />}
             </div>
             <p className="mt-3 flex items-center gap-1 text-[10px] font-black uppercase"><ScanLine aria-hidden="true" className="size-3.5" />{content.scan}</p>
           </div>

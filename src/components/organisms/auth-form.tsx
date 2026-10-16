@@ -18,9 +18,10 @@ type AuthFormProps = {
   mode: AuthMode;
   cardId?: string;
   reason?: string;
+  destination?: "orders" | "buy";
 };
 
-export function AuthForm({ content, feedback, language, mode, cardId, reason }: AuthFormProps) {
+export function AuthForm({ content, feedback, language, mode, cardId, reason, destination }: AuthFormProps) {
   const navigate = useNavigate();
   const isRegister = mode === "register";
   const nextMode: AuthMode = isRegister ? "login" : "register";
@@ -29,7 +30,7 @@ export function AuthForm({ content, feedback, language, mode, cardId, reason }: 
       messages: feedback,
       onAuthenticated: (profile) =>
         navigate({
-          to: profile.role === "admin" && !cardId ? "/$locale/dashboard/admin" : "/$locale/dashboard/user",
+          to: profile.role === "admin" && !cardId ? "/$locale/dashboard/admin" : destination === "buy" && !cardId ? "/$locale/dashboard/user/buy" : destination === "orders" && !cardId ? "/$locale/dashboard/user/orders" : "/$locale/dashboard/user",
           params: { locale: language },
           search: { cardId },
         }),
@@ -54,7 +55,7 @@ export function AuthForm({ content, feedback, language, mode, cardId, reason }: 
               className="shrink-0 text-xs font-bold text-black underline decoration-[#ffb332] decoration-2 underline-offset-4 hover:text-[#0798ad] aria-disabled:pointer-events-none aria-disabled:opacity-40"
               to="/$locale/auth/$mode"
               params={{ locale: language, mode: nextMode }}
-              search={{ cardId }}
+              search={{ cardId, destination }}
             >
               {content.switchAction}
             </Link>
@@ -122,7 +123,7 @@ export function AuthForm({ content, feedback, language, mode, cardId, reason }: 
               className="font-bold text-black underline decoration-[#ffb332] decoration-2 underline-offset-4 hover:text-[#0798ad] aria-disabled:pointer-events-none aria-disabled:opacity-40"
               to="/$locale/auth/$mode"
               params={{ locale: language, mode: nextMode }}
-              search={{ cardId }}
+              search={{ cardId, destination }}
             >
               {content.switchAction}
             </Link>

@@ -30,6 +30,7 @@ function AuthRoute() {
       cardId={search.cardId}
       mode={isAuthMode(mode) ? mode : "login"}
       reason={search.reason}
+      destination={search.destination}
     />
   );
 }

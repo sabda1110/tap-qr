@@ -8,9 +8,10 @@ type AuthPageProps = {
   mode: AuthMode;
   cardId?: string;
   reason?: string;
+  destination?: "orders" | "buy";
 };
 
-export function AuthPage({ mode, cardId, reason }: AuthPageProps) {
+export function AuthPage({ mode, cardId, reason, destination }: AuthPageProps) {
   const { language, messages } = useI18n();
   const authContent = messages.auth[mode];
   return (
@@ -42,6 +43,7 @@ export function AuthPage({ mode, cardId, reason }: AuthPageProps) {
           language={language}
           mode={mode}
           reason={reason}
+          destination={destination}
         />
       }
     />

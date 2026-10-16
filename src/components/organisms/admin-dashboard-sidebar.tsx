@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { BarChart3, CreditCard, Link2, LogOut, Printer, ShieldCheck, Store } from "lucide-react";
+import { BarChart3, CreditCard, Link2, LogOut, Printer, ShieldCheck, ShoppingBag, Store } from "lucide-react";
 
 import type { Language } from "../../i18n";
 import { BrandLogo } from "../elements/brand-logo";
 
 type AdminDashboardSidebarProps = {
   content: {
+    orders: string;
     analytics?: string;
     print?: string;
     outlets: string;
@@ -38,6 +39,7 @@ export function AdminDashboardSidebar({ content, homeLabel, language, onSignOut 
             </Link>
           )}
           <Link activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }} className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32]" params={{ locale: language }} to="/$locale/dashboard/admin/outlets"><Store className="size-4" />{content.outlets}</Link>
+          <Link activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }} className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32]" params={{ locale: language }} to="/$locale/dashboard/admin/orders"><ShoppingBag className="size-4" />{content.orders}</Link>
           <Link
             activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}
             className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32] lg:w-full"

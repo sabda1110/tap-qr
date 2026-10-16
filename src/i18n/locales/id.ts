@@ -2,7 +2,9 @@ import { adminDashboardId } from "./admin-dashboard-id";
 import { authId } from "./auth-id";
 import { cardClaimId, userDashboardId } from "./user-dashboard-id";
 import { outletProfileId } from "./outlet-profile-id";
+import { ordersId } from "./orders-id";
 export const id = {
+  orders: ordersId,
   outletProfile: outletProfileId,
   header: {
     brandHomeLabel: "Beranda TapQR",
@@ -12,6 +14,8 @@ export const id = {
     testimonials: "Testimoni",
     login: "Masuk",
     register: "Daftar",
+    buy: "Beli kartu",
+    checkOrder: "Cek pesanan",
     languageLabel: "Pilih bahasa",
     openMenu: "Buka menu navigasi",
     closeMenu: "Tutup menu navigasi",

@@ -96,6 +96,7 @@ export const userDashboardId = {
   greeting: "Halo",
   description: "Kelola informasi outlet dan tautan kartu Anda dari sini.",
   sidebar: {
+    orders: "Pesanan saya",
     dashboard: "Outlet & kartu",
     logout: "Keluar",
     navigationLabel: "Navigasi dashboard",

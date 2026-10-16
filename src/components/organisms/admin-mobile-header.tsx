@@ -9,6 +9,7 @@ import {
   Menu,
   Printer,
   ShieldCheck,
+  ShoppingBag,
   Store,
   X,
 } from "lucide-react";
@@ -18,6 +19,7 @@ import { BrandLogo } from "../elements/brand-logo";
 
 type AdminMobileHeaderProps = {
   content: {
+    orders: string;
     analytics?: string;
     print?: string;
     outlets: string;
@@ -62,7 +64,7 @@ export function AdminMobileHeader({
           <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/35 backdrop-blur-sm transition-opacity duration-300 ease-out motion-reduce:transition-none data-ending-style:opacity-0 data-starting-style:opacity-0" />
           <Dialog.Popup
             initialFocus={false}
-            className="fixed right-0 bottom-0 left-0 z-50 translate-y-0 rounded-t-3xl bg-white p-6 shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none data-ending-style:translate-y-[110%] data-starting-style:translate-y-[110%]"
+            className="fixed right-0 bottom-0 left-0 z-50 max-h-[90dvh] translate-y-0 overflow-y-auto rounded-t-3xl bg-white p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none data-ending-style:translate-y-[110%] data-starting-style:translate-y-[110%]"
           >
             <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-black/10" />
             <div className="flex items-center justify-between">
@@ -113,6 +115,7 @@ export function AdminMobileHeader({
                 <CreditCard className="size-5" />
                 {content.cards}
               </Link>
+              <Link activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }} className="flex items-center gap-3 rounded-2xl px-4 py-4 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32]" onClick={closeMenu} params={{ locale: language }} to="/$locale/dashboard/admin/orders"><ShoppingBag className="size-5" />{content.orders}</Link>
               <Link
                 activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}
                 className="flex items-center gap-3 rounded-2xl px-4 py-4 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4 hover:text-[#252a32]"

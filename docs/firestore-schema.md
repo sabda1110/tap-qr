@@ -10,6 +10,9 @@ Schema ini adalah kontrak data proyek. Semua akses aplikasi berjalan melalui Fir
 | `outlets/{outletId}` | `ownerId`, nama, slug, `logoUrl`, alamat, telepon, status, konfigurasi profil publik opsional, waktu dibuat/diubah |
 | `cards/{cardId}` | ID kartu, material (`acrylic`/`pvc`), status klaim, owner/outlet, konfigurasi, NFC, status aktif, waktu dibuat/diubah |
 | `scanEvents/{eventId}` | `cardId`, event, sumber QR/NFC, waktu, user agent. Koleksi ini dipakai saat analitik dibuat. |
+| `orders/{sha256(token)}` | kode pesanan, ownerId opsional, kontak/alamat penerima, produk, material, tema, jumlah, status, pengiriman, riwayat, waktu ISO UTC |
+| `orderRateLimits/{hash}` | hitungan pembuatan pesanan per IP/email per 15 menit, `expiresAt` untuk TTL |
+| `orders/{orderId}/events/{eventId}` | aksi pengelolaan, timestamp ISO UTC, UID/nama pelaku, alasan, perubahan field before/after; hanya endpoint admin |
 
 ## Outlet dan logo
 
@@ -105,6 +108,17 @@ menyelesaikan review atau tindakan di situs tujuan.
 ## Akses
 
 `admin` dapat membuat, melihat, dan menghapus master kartu. `owner` adalah pengguna bisnis biasa. Ubah dokumen `users/{uid}.role` menjadi `admin` untuk memberi akses admin.
+
+## Pemesanan kartu
+
+Pesanan tamu/owner disimpan terpisah dari inventaris dan akun. Kontrak kontak,
+token pelacakan, akses owner/admin, transisi status, indeks, dan konfirmasi
+WhatsApp dijelaskan di [Pemesanan kartu manual](manual-card-orders.md).
+Form pesanan tidak menerima atau menyimpan payload/password WiFi.
+Pembayaran manual, produksi, pembatalan, revision, dan arsip juga disimpan pada
+pesanan. Tidak ada penghapusan transaksi; perubahan dan event audit berjalan
+dalam transaksi yang sama. Owner hanya mengubah pesanan miliknya yang belum
+dibayar/dikonfirmasi/produksi. Nilai default menjaga dokumen lama dapat dibaca.
 
 ## Studio cetak WiFi
 

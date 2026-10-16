@@ -9,7 +9,7 @@ type AdminDashboardLayoutProps = {
   children: ReactNode;
   homeLabel: string;
   language: Language;
-  navigation: { analytics?: string; print?: string; outlets: string; activation: string; cards: string; closeMenu: string; logout: string; navigationLabel: string; openMenu: string; roleLabel: string };
+  navigation: { analytics?: string; print?: string; orders: string; outlets: string; activation: string; cards: string; closeMenu: string; logout: string; navigationLabel: string; openMenu: string; roleLabel: string };
   onSignOut: () => void;
 };
 
