@@ -60,6 +60,12 @@ export const printStudioEn: typeof printStudioId = {
   toastPrintSuccess: "{count} cards successfully printed & status updated!",
   toastPrintFailure: "Failed to update print status on server.",
   themes: {
+    "review-poster": {
+      title: "Review Poster", subtitle: "Blue and white poster, expressive lettering, and hand-drawn accents",
+      defaultPreHeadline: "Stopped by? Share your story!",
+      defaultHeadline: "Leave a Review",
+      defaultFooter: "Your story matters to us. Thank you!",
+    },
     "google-classic": {
       title: "Google Bold", subtitle: "Google colors, thick black outlines, and contrasting blocks",
       defaultPreHeadline: "Your experience matters",

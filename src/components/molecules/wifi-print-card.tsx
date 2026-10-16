@@ -6,8 +6,9 @@ import monsterBarber from "../assets/images/monsters/monster-barber.jpg";
 import { VintageCoffeeMascot } from "../elements/vintage-coffee-mascot";
 import { MonsterAvatar } from "../elements/monster-avatar";
 import { WifiPrintDecorations, wifiThemeVisuals } from "./wifi-print-decorations";
+import { WifiPosterCard } from "./wifi-poster-card";
 
-type Props = {
+export type WifiPrintCardProps = {
   job: WifiPrintJob;
   theme: WifiPrintTheme;
   title: string;
@@ -16,7 +17,10 @@ type Props = {
   id?: string;
 };
 
-export function WifiPrintCard({ job, theme, title, footer, content, id }: Props) {
+export function WifiPrintCard({ job, theme, title, footer, content, id }: WifiPrintCardProps) {
+  if (theme === "poster") {
+    return <WifiPosterCard job={job} title={title} footer={footer} content={content} id={id} />;
+  }
   const visual = wifiThemeVisuals[theme];
   return (
     <article id={id} className={`print-canvas-root relative flex h-[550px] w-[380px] flex-col overflow-hidden rounded-[16px] border-4 border-[#172029] text-center ${visual.surface}`} style={{ boxSizing: "border-box" }}>

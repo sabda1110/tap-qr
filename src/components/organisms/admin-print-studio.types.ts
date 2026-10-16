@@ -55,6 +55,7 @@ export type AdminPrintStudioContent = {
   toastPrintSuccess: string;
   toastPrintFailure: string;
   themes: {
+    "review-poster": { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };
     "google-classic": { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };
     minimal: { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };
     natural: { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };

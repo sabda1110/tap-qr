@@ -1,4 +1,4 @@
-import { Coffee, Leaf, Scissors, Sparkles, Square, Waves } from "lucide-react";
+import { Coffee, Leaf, Scissors, Sparkles, Square, Type, Waves } from "lucide-react";
 import type { wifiPrintId } from "../../i18n/locales/wifi-print-id";
 import type { WifiPrintTheme } from "../../hooks/use-wifi-print";
 import { ThemePickerButton } from "../elements/theme-picker-button";
@@ -10,6 +10,7 @@ const themeIcons = {
   coffee: Coffee,
   barbershop: Scissors,
   kraken: Waves,
+  poster: Type,
 };
 
 export function WifiPrintThemePicker({ theme, onChange, content }: {

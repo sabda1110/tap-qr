@@ -18,7 +18,7 @@ export type ReviewCardLabels = {
 type Props = {
   monster?: boolean;
   showMonster?: boolean;
-  theme: ClassicPrintTheme;
+  theme: Exclude<ClassicPrintTheme, "review-poster">;
   cardId: string;
   preHeadline?: string;
   headline?: string;

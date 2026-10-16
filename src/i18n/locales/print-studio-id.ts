@@ -59,6 +59,12 @@ export const printStudioId = {
   toastPrintSuccess: "{count} kartu berhasil dicetak & diperbarui statusnya!",
   toastPrintFailure: "Gagal memperbarui status cetak kartu di server.",
   themes: {
+    "review-poster": {
+      title: "Review Poster", subtitle: "Poster biru putih, huruf ekspresif, dan aksen coretan",
+      defaultPreHeadline: "Sudah mampir? Yuk, cerita!",
+      defaultHeadline: "Beri Ulasan",
+      defaultFooter: "Cerita Anda berarti untuk kami. Terima kasih!",
+    },
     "google-classic": {
       title: "Google Bold", subtitle: "Warna Google, garis hitam tebal, dan blok kontras",
       defaultPreHeadline: "Pengalaman Anda berarti",

@@ -56,6 +56,7 @@ type PrintCardFormControlsProps = {
     copySectionTitle: string;
     copySectionDescription: string;
     themes: {
+      "review-poster": { title: string; subtitle: string };
       google: { title: string; subtitle: string };
       coffee: { title: string; subtitle: string };
       barbershop: { title: string; subtitle: string };
@@ -147,6 +148,7 @@ export function PrintCardFormControls({
           <ThemePickerButton active={theme === "google-classic"} icon={<GoogleMark />} onClick={() => onSelectTheme("google-classic")} {...labels.themes["google-classic"]} />
           <ThemePickerButton active={theme === "minimal"} icon={<LayoutTemplate className="size-4.5" />} onClick={() => onSelectTheme("minimal")} {...labels.themes.minimal} />
           <ThemePickerButton active={theme === "natural"} icon={<Leaf className="size-4.5" />} onClick={() => onSelectTheme("natural")} {...labels.themes.natural} />
+          <ThemePickerButton active={theme === "review-poster"} icon={<Type className="size-4.5" />} onClick={() => onSelectTheme("review-poster")} {...labels.themes["review-poster"]} />
           <ThemePickerButton
             active={theme === "google"}
             icon={<Sparkles className="size-4.5" />}
@@ -176,7 +178,7 @@ export function PrintCardFormControls({
             title={labels.themes.modern.title}
           />
         </div>
-        {theme !== "google-classic" && theme !== "minimal" && theme !== "natural" && (
+        {theme !== "google-classic" && theme !== "minimal" && theme !== "natural" && theme !== "review-poster" && (
         <div className="mt-4 flex items-center justify-between gap-4 border-t border-black/6 pt-4">
           <div className="flex min-w-0 items-start gap-3">
             <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-[#fff4dd] text-[#9a6200]">

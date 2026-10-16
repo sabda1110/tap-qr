@@ -10,6 +10,7 @@ export const wifiPrintId = {
   copies: "Salinan per jaringan", generate: "Siapkan preview", generating: "Menyiapkan QR…",
   themeTitle: "Tema WiFi", monster: "WiFi Monster", mono: "Mono Brutal", natural: "Natural Bold",
   coffee: "Coffee Shop", barbershop: "Barbershop", kraken: "Kraken Neon",
+  poster: "WiFi Poster",
   themeDescriptions: {
     monster: "Monster oranye, cyan, dan cakar di sisi kartu",
     mono: "Hitam putih dengan tipografi besar dan tegas",
@@ -17,6 +18,7 @@ export const wifiPrintId = {
     coffee: "Maskot kopi vintage, karamel, dan pola halftone",
     barbershop: "Maskot barber, garis barber pole, dan aksen emas",
     kraken: "Tentakel hijau neon di atas latar gelap",
+    poster: "Poster biru putih, huruf ekspresif, dan aksen coretan",
   },
   tap: "Tap NFC", tapHelp: "Tempelkan ponsel di sini", or: "atau",
   nfcNote: "Area Tap NFC adalah penanda pada desain. Isi tag NFC secara terpisah sebelum digunakan.",

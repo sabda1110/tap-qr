@@ -1,7 +1,7 @@
 import type { WifiPrintTheme } from "../../hooks/use-wifi-print";
 import { KrakenTentaclesOverlay, OrangeMonsterClawsOverlay } from "./print-card-monster-graphics";
 
-export const wifiThemeVisuals: Record<WifiPrintTheme, {
+export const wifiThemeVisuals: Record<Exclude<WifiPrintTheme, "poster">, {
   surface: string; header: string; footer: string; target: string; divider: string;
 }> = {
   monster: { surface: "bg-white text-[#172029]", header: "bg-[#27b9cf]", footer: "bg-[#ffb332]", target: "bg-[#fff4dd] border-[#172029] shadow-[4px_4px_0_#172029]", divider: "bg-[#172029]" },

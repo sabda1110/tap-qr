@@ -9,6 +9,7 @@ import {
 } from "./print-card-monster-graphics";
 import { CoffeeMonsterCard } from "./coffee-monster-card";
 import { BarberMonsterCard } from "./barber-monster-card";
+import { PosterReviewCard } from "./poster-review-card";
 
 export type PrintCardCanvasProps = {
   labels: ReviewCardLabels;
@@ -99,6 +100,9 @@ export function PrintCardCanvas({
   className = "",
   id,
 }: PrintCardCanvasProps) {
+  if (theme === "review-poster") {
+    return <PosterReviewCard cardId={cardId} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrDataUrl} labels={labels} className={className} id={id} />;
+  }
   if (theme === "google") {
     return <ClassicReviewCard theme="google-classic" monster showMonster={showMonster} cardId={cardId} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrDataUrl} labels={labels} className={className} id={id} />;
   }

@@ -12,6 +12,7 @@ export const wifiPrintEn: typeof wifiPrintId = {
   copies: "Copies per network", generate: "Prepare preview", generating: "Preparing QR codes…",
   themeTitle: "WiFi theme", monster: "WiFi Monster", mono: "Mono Brutal", natural: "Natural Bold",
   coffee: "Coffee Shop", barbershop: "Barbershop", kraken: "Kraken Neon",
+  poster: "WiFi Poster",
   themeDescriptions: {
     monster: "Orange monster, cyan, and claws on the card edges",
     mono: "Black and white with large, bold typography",
@@ -19,6 +20,7 @@ export const wifiPrintEn: typeof wifiPrintId = {
     coffee: "Vintage coffee mascot, caramel, and halftone pattern",
     barbershop: "Barber mascot, barber pole stripes, and gold accents",
     kraken: "Neon green tentacles on a dark background",
+    poster: "Blue and white poster, expressive lettering, and hand-drawn accents",
   },
   tap: "Tap NFC", tapHelp: "Hold your phone here", or: "or",
   nfcNote: "The Tap NFC area marks the tap location in the design. Program the NFC tag separately before use.",

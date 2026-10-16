@@ -7,7 +7,7 @@ import type { wifiPrintId } from "../i18n/locales/wifi-print-id";
 import { useToast } from "../components/ui/toaster";
 
 export type WifiPrintJob = { id: string; ssid: string; qrDataUrl: string };
-export type WifiPrintTheme = "monster" | "mono" | "natural" | "coffee" | "barbershop" | "kraken";
+export type WifiPrintTheme = "monster" | "mono" | "natural" | "coffee" | "barbershop" | "kraken" | "poster";
 
 export function useWifiPrint(content: typeof wifiPrintId) {
   const [mode, setMode] = useState<"single" | "bulk">("single");
