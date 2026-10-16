@@ -1,4 +1,5 @@
-export type PrintThemeKey = "google" | "coffee" | "barbershop" | "modern";
+export type ClassicPrintTheme = "google-classic" | "minimal" | "natural";
+export type PrintThemeKey = "google" | "coffee" | "barbershop" | "modern" | ClassicPrintTheme;
 
 type NfcTapTargetProps = {
   theme: PrintThemeKey;
@@ -8,7 +9,7 @@ type NfcTapTargetProps = {
 };
 
 const themeStyles: Record<
-  PrintThemeKey,
+  Exclude<PrintThemeKey, ClassicPrintTheme>,
   {
     outerRing: string;
     innerBorder: string;
@@ -58,7 +59,7 @@ export function NfcTapTarget({
   sublabel = "Tempelkan ponsel Anda",
   className = "",
 }: NfcTapTargetProps) {
-  const styles = themeStyles[theme];
+  const styles = themeStyles[theme === "google-classic" || theme === "minimal" || theme === "natural" ? "google" : theme];
 
   return (
     <div

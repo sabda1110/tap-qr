@@ -4,8 +4,10 @@ import type { PrintDimensions } from "../elements/print-size-selector";
 import { PrintCardScaledFrame } from "../elements/print-card-scaled-frame";
 import { PrintCropMarks } from "../elements/print-crop-marks";
 import { PrintCardCanvas } from "./print-card-canvas";
+import type { ReviewCardLabels } from "./classic-review-card";
 
 type AdminPrintPreviewProps = {
+  labels: ReviewCardLabels;
   cardId: string;
   footerNote: string;
   headline: string;
@@ -19,6 +21,7 @@ type AdminPrintPreviewProps = {
 };
 
 export function AdminPrintPreview({
+  labels,
   cardId,
   footerNote,
   headline,
@@ -51,6 +54,7 @@ export function AdminPrintPreview({
         {showCropMarks && <PrintCropMarks />}
         <PrintCardScaledFrame targetWidth={340}>
           <PrintCardCanvas
+            labels={labels}
             id="tapqr-print-card"
             cardId={cardId}
             footerNote={footerNote}

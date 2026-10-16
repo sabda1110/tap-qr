@@ -1,4 +1,5 @@
-import { SlidersHorizontal } from "lucide-react";
+import { Crop, Ruler } from "lucide-react";
+import { Input } from "../ui/input";
 
 export type PrintSizePreset = "a7" | "a6" | "a5" | "custom";
 
@@ -28,6 +29,8 @@ type PrintSizeSelectorProps = {
     customWidthLabel: string;
     customHeightLabel: string;
     cropMarksLabel: string;
+    cropMarksHelp: string;
+    sizeHelp: string;
   };
 };
 
@@ -74,31 +77,35 @@ export function PrintSizeSelector({
   };
 
   return (
-    <div className="space-y-3 rounded-2xl border border-black/8 bg-[#f8fafc] p-4">
-      <div className="flex items-center justify-between">
-        <label className="text-xs font-bold uppercase tracking-wider text-[#172029]">
-          {labels.sizeLabel}
-        </label>
-        <span className="rounded-full bg-black/5 px-2 py-0.5 text-[11px] font-bold text-[#087e91]">
+    <fieldset className="space-y-4 rounded-2xl border border-black/8 bg-white p-4 sm:p-5">
+      <legend className="sr-only">{labels.sizeLabel}</legend>
+      <div className="flex items-start gap-3">
+        <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-[#e8f8fb] text-[#087e91]">
+          <Ruler aria-hidden="true" className="size-4.5" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-bold text-[#172029]">{labels.sizeLabel}</p>
+          <p className="mt-0.5 text-xs leading-5 text-[#69737d]">{labels.sizeHelp}</p>
+        </div>
+        <span className="shrink-0 rounded-lg bg-[#f3f5f7] px-2.5 py-1.5 text-xs font-bold text-[#087e91]">
           {dimensions.widthMm} × {dimensions.heightMm} mm
         </span>
       </div>
 
-      {/* Preset Pill Buttons */}
-      <div className="grid grid-cols-4 gap-1.5">
+      <div className="grid grid-cols-2 gap-2">
         {(["a7", "a6", "a5", "custom"] as const).map((p) => {
           const isSelected = dimensions.preset === p;
           const name = {
             a7: "A7",
             a6: "A6",
             a5: "A5",
-            custom: "Kustom",
+            custom: labels.sizePresetCustom.split(" ")[0],
           }[p];
           const sub = {
             a7: "74×105",
             a6: "105×148",
             a5: "148×210",
-            custom: "Bebas",
+            custom: "mm",
           }[p];
 
           return (
@@ -106,36 +113,36 @@ export function PrintSizeSelector({
               key={p}
               type="button"
               onClick={() => handleSelectPreset(p)}
-              className={`flex flex-col items-center justify-center rounded-xl border py-2 px-1 text-center transition-all ${
+              aria-pressed={isSelected}
+              className={`flex min-h-16 flex-col items-start justify-center rounded-xl border px-3 py-2 text-left outline-none transition-all focus-visible:ring-3 focus-visible:ring-[#087e91]/20 ${
                 isSelected
-                  ? "border-[#087e91] bg-white text-[#087e91] shadow-xs font-bold ring-2 ring-[#087e91]/20"
-                  : "border-black/10 bg-white/70 text-neutral-600 hover:bg-white hover:text-black font-medium"
+                  ? "border-[#087e91] bg-[#e8f8fb] text-[#087e91] shadow-[0_0_0_1px_#087e91]"
+                  : "border-black/8 bg-[#f8fafc] text-[#4f5964] hover:border-[#087e91]/40 hover:bg-white"
               }`}
             >
-              <span className="text-xs">{name}</span>
-              <span className="text-[10px] text-neutral-400 font-normal leading-none mt-0.5">{sub}</span>
+              <span className="text-sm font-bold">{name}</span>
+              <span className="mt-0.5 text-xs font-medium text-[#7a838d]">{sub}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Custom Width & Height Inputs */}
       {dimensions.preset === "custom" && (
-        <div className="pt-1 grid grid-cols-2 gap-3 border-t border-black/5">
+        <div className="grid grid-cols-2 gap-3 rounded-xl bg-[#f8fafc] p-3">
           <div>
             <label className="text-[11px] font-semibold text-neutral-600">
               {labels.customWidthLabel}
             </label>
             <div className="relative mt-1">
-              <input
+              <Input
                 type="number"
                 min={30}
                 max={600}
                 value={dimensions.widthMm}
                 onChange={(e) => handleWidthChange(parseInt(e.target.value, 10))}
-                className="w-full rounded-lg border border-black/15 bg-white px-3 py-1.5 text-xs font-bold text-neutral-900 focus:border-[#087e91] focus:outline-hidden"
+                className="h-10 bg-white pr-10 text-sm font-bold"
               />
-              <span className="absolute right-2.5 top-2 text-[10px] text-neutral-400">mm</span>
+              <span className="absolute top-1/2 right-3 -translate-y-1/2 text-xs text-[#69737d]">mm</span>
             </div>
           </div>
           <div>
@@ -143,44 +150,45 @@ export function PrintSizeSelector({
               {labels.customHeightLabel}
             </label>
             <div className="relative mt-1">
-              <input
+              <Input
                 type="number"
                 min={30}
                 max={600}
                 value={dimensions.heightMm}
                 onChange={(e) => handleHeightChange(parseInt(e.target.value, 10))}
-                className="w-full rounded-lg border border-black/15 bg-white px-3 py-1.5 text-xs font-bold text-neutral-900 focus:border-[#087e91] focus:outline-hidden"
+                className="h-10 bg-white pr-10 text-sm font-bold"
               />
-              <span className="absolute right-2.5 top-2 text-[10px] text-neutral-400">mm</span>
+              <span className="absolute top-1/2 right-3 -translate-y-1/2 text-xs text-[#69737d]">mm</span>
             </div>
           </div>
         </div>
       )}
 
-      {/* Crop Marks Toggle (for printing shops) */}
-      <div className="flex items-center justify-between pt-1 border-t border-black/5">
-        <div className="flex items-center gap-2">
-          <SlidersHorizontal className="size-3.5 text-[#087e91]" />
-          <span className="text-[11px] font-semibold text-neutral-700">
-            {labels.cropMarksLabel}
-          </span>
+      <div className="flex items-center justify-between gap-4 border-t border-black/6 pt-4">
+        <div className="flex min-w-0 items-start gap-3">
+          <Crop aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-[#087e91]" />
+          <div>
+            <p className="text-xs font-bold text-[#172029]">{labels.cropMarksLabel}</p>
+            <p className="mt-0.5 text-[11px] leading-4 text-[#69737d]">{labels.cropMarksHelp}</p>
+          </div>
         </div>
         <button
           type="button"
           role="switch"
           aria-checked={showCropMarks}
           onClick={() => onToggleCropMarks(!showCropMarks)}
-          className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+          aria-label={labels.cropMarksLabel}
+          className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent outline-none transition-colors focus-visible:ring-3 focus-visible:ring-[#087e91]/20 ${
             showCropMarks ? "bg-[#087e91]" : "bg-gray-300"
           }`}
         >
           <span
-            className={`pointer-events-none inline-block size-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-              showCropMarks ? "translate-x-4" : "translate-x-0"
+            className={`pointer-events-none inline-block size-5 transform rounded-full bg-white shadow-sm transition duration-200 ${
+              showCropMarks ? "translate-x-5" : "translate-x-0"
             }`}
           />
         </button>
       </div>
-    </div>
+    </fieldset>
   );
 }

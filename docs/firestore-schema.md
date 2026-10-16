@@ -106,6 +106,25 @@ menyelesaikan review atau tindakan di situs tujuan.
 
 `admin` dapat membuat, melihat, dan menghapus master kartu. `owner` adalah pengguna bisnis biasa. Ubah dokumen `users/{uid}.role` menjadi `admin` untuk memberi akses admin.
 
+## Studio cetak WiFi
+
+Studio cetak admin membedakan tab Sosmed dan WiFi melalui search URL `studio`.
+Tab WiFi menerima satu payload `WIFI:...` per baris, dengan validasi WPA, WEP,
+atau jaringan tanpa password (`nopass`). QR menyimpan payload masukan secara
+langsung, termasuk escape karakter khusus, tanpa URL perantara TapQR.
+Cetak massal mendukung salinan per jaringan, maksimal 100 kartu per pekerjaan.
+Nama jaringan diambil dari field `S` untuk tampilan kartu; password tidak dicetak
+sebagai teks. Tema WiFi menggunakan copy koneksi WiFi, bukan ajakan review.
+Semua desain WiFi menyediakan penanda Tap NFC di samping QR; penanda ini tidak
+menulis atau memverifikasi isi tag fisik. Penulisan NFC dilakukan terpisah.
+Pilihan tema mencakup Monster, Mono Brutal, Natural Bold, Coffee Shop,
+Barbershop, dan Kraken Neon, dengan tampilan yang sama pada satuan dan massal.
+
+Draft dan QR hanya berada di state lokal halaman. Alur ini tidak membuat
+dokumen Firestore, tidak mencatat kredensial di analitik, dan tidak mengubah
+status cetak inventaris kartu. Tidak ada perubahan kontrak koleksi kartu atau
+outlet untuk fitur ini.
+
 ## Klaim mandiri melalui URL kartu
 
 Route `/$locale/$cardId` memeriksa kartu aktif di server. Kartu `unclaimed`

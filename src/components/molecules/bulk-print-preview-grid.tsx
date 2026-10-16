@@ -6,10 +6,12 @@ import type { PrintDimensions } from "../elements/print-size-selector";
 import { PrintCardScaledFrame } from "../elements/print-card-scaled-frame";
 import { PrintCropMarks } from "../elements/print-crop-marks";
 import { PrintCardCanvas } from "./print-card-canvas";
+import type { ReviewCardLabels } from "./classic-review-card";
 import { Button } from "../ui/button";
 import { getCardUrl } from "../../lib/app-url";
 
 type BulkPrintPreviewGridProps = {
+  labels: ReviewCardLabels;
   cardIds: string[];
   theme: PrintThemeKey;
   dimensions: PrintDimensions;
@@ -24,6 +26,7 @@ type BulkPrintPreviewGridProps = {
 };
 
 export function BulkPrintPreviewGrid({
+  labels,
   cardIds,
   theme,
   dimensions,
@@ -136,6 +139,7 @@ export function BulkPrintPreviewGrid({
                 {showCropMarks && <PrintCropMarks />}
                 <PrintCardScaledFrame>
                   <PrintCardCanvas
+                    labels={labels}
                     cardId={id}
                     theme={theme}
                     showMonster={showMonster}
@@ -165,6 +169,7 @@ export function BulkPrintPreviewGrid({
             <div className="bulk-print-scaler-wrapper">
               {showCropMarks && <PrintCropMarks />}
               <PrintCardCanvas
+                labels={labels}
                 cardId={id}
                 theme={theme}
                 showMonster={showMonster}

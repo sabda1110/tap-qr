@@ -1,20 +1,17 @@
 import { ScanLine } from "lucide-react";
-import { type PrintThemeKey, NfcTapTarget } from "../elements/nfc-tap-target";
+import { type ClassicPrintTheme, type PrintThemeKey, NfcTapTarget } from "../elements/nfc-tap-target";
+import { ClassicReviewCard, type ReviewCardLabels } from "./classic-review-card";
 import { GoogleBrandText } from "../elements/google-brand-text";
 import { FiveStarRating } from "../elements/five-star-rating";
 import { MonsterAvatar } from "../elements/monster-avatar";
 import {
-  GoogleColorBar,
-  GoogleCornerAccents,
-} from "./print-card-decorations";
-import {
   KrakenTentaclesOverlay,
-  OrangeMonsterClawsOverlay,
 } from "./print-card-monster-graphics";
 import { CoffeeMonsterCard } from "./coffee-monster-card";
 import { BarberMonsterCard } from "./barber-monster-card";
 
 export type PrintCardCanvasProps = {
+  labels: ReviewCardLabels;
   theme: PrintThemeKey;
   cardId: string;
   preHeadline?: string;
@@ -42,22 +39,7 @@ type CanvasThemeVisual = {
   footerClass: string;
 };
 
-const canvasThemeVisuals: Record<PrintThemeKey, CanvasThemeVisual> = {
-  google: {
-    cardBg: "bg-white",
-    cardBorder: "border-[#f97316]/50 shadow-xl",
-    textColor: "text-[#111827]",
-    preHeadlineClass: "text-[#f97316] font-black",
-    badgeBg: "bg-[#eef5fe]",
-    badgeBorder: "border-[#d2e3fc]",
-    badgeTextColor: "text-[#1a73e8]",
-    tapTextColor: "text-[#1a73e8]",
-    qrBorder: "border-[#4285f4]",
-    qrPillBg: "bg-[#1a73e8]",
-    qrPillText: "text-white",
-    dividerLine: "bg-[#e5e7eb]",
-    footerClass: "text-[#374151] font-medium italic",
-  },
+const canvasThemeVisuals: Record<Exclude<PrintThemeKey, ClassicPrintTheme | "google">, CanvasThemeVisual> = {
   coffee: {
     cardBg: "bg-[#fbf7f0]",
     cardBorder: "border-[#5c3a21] shadow-xl",
@@ -106,6 +88,7 @@ const canvasThemeVisuals: Record<PrintThemeKey, CanvasThemeVisual> = {
 };
 
 export function PrintCardCanvas({
+  labels,
   theme,
   cardId,
   preHeadline,
@@ -116,6 +99,12 @@ export function PrintCardCanvas({
   className = "",
   id,
 }: PrintCardCanvasProps) {
+  if (theme === "google") {
+    return <ClassicReviewCard theme="google-classic" monster showMonster={showMonster} cardId={cardId} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrDataUrl} labels={labels} className={className} id={id} />;
+  }
+  if (theme === "google-classic" || theme === "minimal" || theme === "natural") {
+    return <ClassicReviewCard theme={theme} cardId={cardId} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrDataUrl} labels={labels} className={className} id={id} />;
+  }
   if (theme === "coffee") {
     return (
       <CoffeeMonsterCard
@@ -154,26 +143,16 @@ export function PrintCardCanvas({
     >
       {/* Monster Full-Card Graphic Overlays (Tentacles, Claws, Paws, Fur) */}
       {showMonster && theme === "modern" && <KrakenTentaclesOverlay />}
-      {showMonster && theme === "google" && <OrangeMonsterClawsOverlay />}
-
-      {/* Top Background Ornaments */}
-      {theme === "google" && <GoogleCornerAccents />}
 
       {/* TOP HEADER SECTION */}
       <header className="relative z-10 space-y-1.5 pt-0.5">
-        {/* Top Decorative Ribbon or Bar */}
-        {theme === "google" && <GoogleColorBar className="mb-1.5" />}
 
         {/* Mascot Monster or Classic Emblem */}
         {showMonster ? (
           <div className="flex justify-center py-0.5">
             <MonsterAvatar theme={theme} size="md" />
           </div>
-        ) : (
-          <div className="flex justify-center py-0.5">
-            {theme === "google" && <GoogleColorBar className="my-1" />}
-          </div>
-        )}
+        ) : null}
 
         {/* Pre-headline question if present */}
         {preHeadline ? (
@@ -200,9 +179,6 @@ export function PrintCardCanvas({
 
         {/* Callout Badge: Cukup TAP atau SCAN */}
         <div className="pt-1 flex items-center justify-center gap-1.5">
-          {theme === "google" && (
-            <span className="text-xs font-black text-[#4285f4]">‹</span>
-          )}
           <div
             className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-1 text-xs sm:text-[13px] font-bold shadow-2xs ${visual.badgeBg} ${visual.badgeBorder}`}
           >
@@ -211,9 +187,6 @@ export function PrintCardCanvas({
             <span className={theme === "modern" ? "text-slate-300" : "text-[#374151]"}>atau</span>
             <span className={`font-black ${visual.tapTextColor}`}>SCAN</span>
           </div>
-          {theme === "google" && (
-            <span className="text-xs font-black text-[#34a853]">›</span>
-          )}
         </div>
       </header>
 
@@ -272,7 +245,6 @@ export function PrintCardCanvas({
           {footerNote || "Terima kasih atas dukungan Anda!"}
         </p>
 
-        {theme === "google" && <GoogleColorBar className="mt-1" />}
       </footer>
     </div>
   );

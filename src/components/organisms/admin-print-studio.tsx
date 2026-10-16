@@ -167,7 +167,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
       />
 
       <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
-        <div className="space-y-5 rounded-3xl border border-black/8 bg-white p-6 shadow-xs lg:col-span-5 xl:col-span-4">
+        <div className="space-y-4 rounded-3xl border border-black/8 bg-[#f5f7f8] p-3 shadow-xs sm:p-4 lg:col-span-5 xl:col-span-4">
           <PrintSizeSelector
             dimensions={dimensions}
             onChangeDimensions={setDimensions}
@@ -182,6 +182,8 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
               customWidthLabel: content.customWidthLabel,
               customHeightLabel: content.customHeightLabel,
               cropMarksLabel: content.cropMarksLabel,
+              cropMarksHelp: content.cropMarksHelp,
+              sizeHelp: content.sizeHelp,
             }}
           />
 
@@ -225,6 +227,12 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
               headlineLabel: content.headlineLabel,
               footerNoteLabel: content.footerNoteLabel,
               resetDefaults: content.resetDefaults,
+              cardStatusUnprinted: content.cardStatusUnprinted,
+              emptyCardLabel: content.emptyCardLabel,
+              themeHelp: content.themeHelp,
+              mascotHelp: content.mascotHelp,
+              copySectionTitle: content.copySectionTitle,
+              copySectionDescription: content.copySectionDescription,
               themes: content.themes,
             }}
           />
@@ -233,6 +241,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
         <div className="lg:col-span-7 xl:col-span-8">
           {activeTab === "single" ? (
             <AdminPrintPreview
+              labels={content.printLabels}
               cardId={selectedCardId}
               dimensions={dimensions}
               showCropMarks={showCropMarks}
@@ -246,6 +255,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
             />
           ) : (
             <BulkPrintPreviewGrid
+              labels={content.printLabels}
               cardIds={selectedBulkCardIds}
               theme={theme}
               dimensions={dimensions}

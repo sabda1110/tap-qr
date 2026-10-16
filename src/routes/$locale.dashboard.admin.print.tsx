@@ -6,6 +6,7 @@ import { getAdminPrintData } from "../server/print/admin-print.functions";
 
 const printSearchSchema = z.object({
   cardId: z.string().optional(),
+  studio: z.enum(["social", "wifi"]).optional(),
 });
 
 export const Route = createFileRoute("/$locale/dashboard/admin/print")({
@@ -17,5 +18,5 @@ export const Route = createFileRoute("/$locale/dashboard/admin/print")({
 
 function AdminPrintRoute() {
   const { cards, initialCard, user } = Route.useLoaderData();
-  return <AdminPrintPage cards={cards} initialCard={initialCard} profile={user} />;
+  return <AdminPrintPage studio={Route.useSearch().studio ?? "social"} cards={cards} initialCard={initialCard} profile={user} />;
 }

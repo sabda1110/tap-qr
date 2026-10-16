@@ -1,14 +1,17 @@
-export function GoogleCornerAccents() {
+export function GoogleCornerAccents({ bold = false }: { bold?: boolean }) {
+  const shape = bold
+    ? "size-24 rounded-full border-[3px] border-[#172029] shadow-[4px_4px_0_#172029]"
+    : "size-28 rounded-full opacity-95";
   return (
     <>
       {/* Top-left Google Blue curve */}
-      <div className="pointer-events-none absolute -top-8 -left-8 size-28 rounded-full bg-[#4285f4] opacity-95" />
+      <div className={`pointer-events-none absolute -top-8 -left-8 bg-[#4285f4] ${shape}`} />
       {/* Top-right Google Red curve */}
-      <div className="pointer-events-none absolute -top-8 -right-8 size-28 rounded-full bg-[#ea4335] opacity-95" />
+      <div className={`pointer-events-none absolute -top-8 -right-8 bg-[#ea4335] ${shape}`} />
       {/* Bottom-left Google Yellow curve */}
-      <div className="pointer-events-none absolute -bottom-8 -left-8 size-28 rounded-full bg-[#fbbc05] opacity-95" />
+      <div className={`pointer-events-none absolute -bottom-8 -left-8 bg-[#fbbc05] ${shape}`} />
       {/* Bottom-right Google Green curve */}
-      <div className="pointer-events-none absolute -bottom-8 -right-8 size-28 rounded-full bg-[#34a853] opacity-95" />
+      <div className={`pointer-events-none absolute -bottom-8 -right-8 bg-[#34a853] ${shape}`} />
     </>
   );
 }

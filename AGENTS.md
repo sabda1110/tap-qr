@@ -197,6 +197,14 @@ ditangguhkan.
   dan toast berwarna: hijau untuk sukses, merah untuk error, kuning untuk
   peringatan, serta cyan untuk informasi.
 - Gunakan aset SVG atau gambar yang sudah tersedia jika sesuai kebutuhan.
+- Desain kartu dan standee cetak mengikuti gaya brutalism: garis tebal,
+  tipografi besar dan tegas, blok warna kontras, serta bayangan solid.
+  Panel kontrol Studio Cetak tetap mengikuti pola dashboard yang sederhana.
+- Studio Cetak admin memiliki tab Sosmed dan WiFi. WiFi menerima payload
+  `WIFI:...` dari input pengguna, mendukung satuan serta massal dengan salinan
+  per jaringan, dan mencetak QR koneksi langsung. Draft WiFi hanya berada di
+  state lokal halaman; jangan menyimpan kredensial WiFi ke database, URL,
+  penyimpanan browser, atau analitik. WiFi tidak memerlukan kartu inventaris.
 - Simpan state sedekat mungkin dengan pemakainya. Gunakan URL untuk state
   navigasi, loader/server function untuk data server, dan Zustand hanya untuk
   client state yang benar-benar digunakan lintas komponen atau route.
