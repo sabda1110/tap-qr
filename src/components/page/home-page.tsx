@@ -1,5 +1,5 @@
 import { Nfc, Printer, ScanLine } from "lucide-react";
-import heroShot from "../assets/images/heroshot.svg";
+import heroShot from "../assets/images/heroshot-feature-style-v2.webp";
 import customerHubImage from "../assets/images/features/customer-hub.png";
 import flexibleNfcQrImage from "../assets/images/features/flexible-nfc-qr.png";
 import reviewGrowthImage from "../assets/images/features/review-growth.png";

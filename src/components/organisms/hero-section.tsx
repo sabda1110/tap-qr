@@ -70,6 +70,11 @@ export function HeroSection({ content, imageSrc, language }: HeroSectionProps) {
             className="mt-9 h-auto w-[min(760px,96vw)] select-none sm:mt-7 md:w-[min(720px,75vw)]"
             src={imageSrc}
             alt={content.illustrationAlt}
+            width={1536}
+            height={1024}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
             draggable={false}
           />
         </MotionReveal>
