@@ -7,6 +7,7 @@ import { updateCardOrder } from "../../server/orders/order.functions";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/toaster";
+import { OrderCarrierSelect } from "./order-carrier-select";
 
 export function OrderAdminActions({ order }: { order: OrderDetail }) {
   const { messages } = useI18n();
@@ -30,7 +31,7 @@ export function OrderAdminActions({ order }: { order: OrderDetail }) {
     finally { setBusy(false); }
   }}>
     <fieldset disabled={busy}>
-      {next === "shipped" ? <div className="grid gap-3 sm:grid-cols-2"><div><label htmlFor={`carrier-${order.id}`} className="mb-2 block text-xs font-semibold">{content.carrier}</label><Input id={`carrier-${order.id}`} value={carrier} onChange={(event) => setCarrier(event.target.value)} maxLength={60} required /></div><div><label htmlFor={`tracking-${order.id}`} className="mb-2 block text-xs font-semibold">{content.trackingNumber}</label><Input id={`tracking-${order.id}`} value={trackingNumber} onChange={(event) => setTrackingNumber(event.target.value)} maxLength={100} required /></div></div> : <p className="text-xs leading-5 text-[#69737d]">{next === "confirmed" ? content.confirmationNote : content.completedNote}</p>}
+      {next === "shipped" ? <div className="grid gap-8 sm:grid-cols-2"><OrderCarrierSelect id={`carrier-${order.id}`} label={content.carrier} placeholder={content.carrierPlaceholder} value={carrier} labelClassName="text-xs" onValueChange={setCarrier} /><div><label htmlFor={`tracking-${order.id}`} className="mb-2 block text-xs font-semibold">{content.trackingNumber}</label><Input id={`tracking-${order.id}`} value={trackingNumber} onChange={(event) => setTrackingNumber(event.target.value)} maxLength={100} required /></div></div> : <p className="text-xs leading-5 text-[#69737d]">{next === "confirmed" ? content.confirmationNote : content.completedNote}</p>}
       {next === "shipped" && (order.paymentStatus !== "paid" || !order.productionStarted) && <p className="mt-3 text-xs text-amber-800">{content.management.shippingLocked}</p>}
       <Button className="mt-3 w-full" type="submit" disabled={busy || (next === "shipped" && (order.paymentStatus !== "paid" || !order.productionStarted))}>{busy ? content.saving : next === "confirmed" ? content.confirm : next === "shipped" ? content.send : content.complete}</Button>
     </fieldset>

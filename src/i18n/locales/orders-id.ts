@@ -21,7 +21,7 @@ export const ordersId = {
   created: "Pesanan berhasil dibuat", whatsapp: "Lanjutkan ke WhatsApp admin", whatsappHelp: "Tekan tombol lalu kirim pesannya agar admin menerima kode dan detail pesanan. Pesan tidak terkirim otomatis.",
   whatsappMessage: "Halo TapQR, saya ingin mengonfirmasi pesanan {code}.\nProduk: {product}\nBahan: {material}\nTema: {theme}\nJumlah: {quantity}\nMohon info harga, ongkir, pembayaran, dan proses selanjutnya.",
   trackingMessage: "\nPelacakan: {url}", copyLink: "Salin tautan pelacakan", copied: "Tautan berhasil disalin.", copyFailed: "Tautan belum dapat disalin. Salin alamat halaman ini secara manual.",
-  refresh: "Perbarui status", status: "Status pesanan", date: "Dibuat", orderCode: "Kode pesanan", shipping: "Pengiriman", carrier: "Kurir", trackingNumber: "Nomor resi",
+  refresh: "Perbarui status", status: "Status pesanan", date: "Dibuat", orderCode: "Kode pesanan", shipping: "Pengiriman", carrier: "Kurir", carrierPlaceholder: "Pilih ekspedisi", trackingNumber: "Nomor resi",
   noShipping: "Resi akan tampil setelah pesanan dikirim.", done: "Pesanan selesai", timeline: "Perjalanan pesanan",
   statuses: { on_progress: "Diproses", confirmed: "Dikonfirmasi admin", shipped: "Dikirim", completed: "Selesai", cancelled: "Dibatalkan" },
   statusHelp: {
