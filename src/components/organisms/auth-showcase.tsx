@@ -11,9 +11,10 @@ export type AuthShowcaseContent = {
 
 type AuthShowcaseProps = {
   content: AuthShowcaseContent;
+  imageSrc: string;
 };
 
-export function AuthShowcase({ content }: AuthShowcaseProps) {
+export function AuthShowcase({ content, imageSrc }: AuthShowcaseProps) {
   return (
     <section className="relative flex h-full flex-col justify-between overflow-hidden p-7 sm:p-10 lg:p-12">
       <span className="absolute -right-16 -top-14 size-44 rounded-full border border-[#0798ad]/20" />
@@ -31,8 +32,8 @@ export function AuthShowcase({ content }: AuthShowcaseProps) {
         </p>
       </div>
 
-      <div className="relative z-10 mx-auto -mb-7 mt-2 w-[82%] max-w-[360px] sm:-mb-10 lg:my-0 lg:w-full">
-        <AuthIllustration />
+      <div className="relative z-10 mx-auto my-5 w-full max-w-[300px] sm:max-w-[360px] lg:my-3 lg:max-w-[390px]">
+        <AuthIllustration src={imageSrc} />
       </div>
 
       <ul className="relative z-10 hidden gap-3 lg:grid">

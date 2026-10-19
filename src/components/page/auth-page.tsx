@@ -1,4 +1,5 @@
 import { useI18n } from "../../i18n";
+import authIllustration from "../assets/images/auth-feature-style.webp";
 import { AuthLayout, type AuthMode } from "../layouts/auth-layout";
 import { AuthForm } from "../organisms/auth-form";
 import { AuthHeader } from "../organisms/auth-header";
@@ -27,6 +28,7 @@ export function AuthPage({ mode, cardId, reason, destination }: AuthPageProps) {
       }
       showcase={
         <AuthShowcase
+          imageSrc={authIllustration}
           content={{
             kicker: authContent.showcaseKicker,
             title: authContent.showcaseTitle,
