@@ -7,6 +7,7 @@ import { Dialog, DialogBody, DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useToast } from "../ui/toaster";
+import { OrderCarrierSelect } from "./order-carrier-select";
 
 export type OrderManagementMode = "cancel" | "paid" | "refunded" | "production" | "archive" | "restore" | "shipping" | "delete";
 
@@ -41,7 +42,7 @@ export function OrderManagementDialog({ order, mode, onClose }: { order: OrderDe
         await router.invalidate(); showToast(messages.orders.updated, "success"); onClose();
       } catch { showToast(content.error, "error"); }
       finally { setBusy(false); }
-    }}>{mode === "shipping" && <div className="mb-4 grid gap-3"><label className="text-sm font-semibold">{messages.orders.carrier}<Input value={carrier} onChange={(event) => setCarrier(event.target.value)} disabled={busy} maxLength={60} required className="mt-2" /></label><label className="text-sm font-semibold">{messages.orders.trackingNumber}<Input value={trackingNumber} onChange={(event) => setTrackingNumber(event.target.value)} disabled={busy} maxLength={100} required className="mt-2" /></label></div>}{needsReason && <><label htmlFor="order-change-reason" className="mb-2 block text-sm font-semibold">{content.reason}</label><Input id="order-change-reason" value={reason} onChange={(event) => setReason(event.target.value)} disabled={busy} maxLength={500} aria-invalid={invalid} /><p className={`mt-2 text-xs leading-5 ${invalid ? "text-red-700" : "text-[#69737d]"}`}>{content.reasonHelp}</p></>}</form></DialogBody>
+    }}>{mode === "shipping" && <div className="mb-4 grid gap-3"><OrderCarrierSelect id={`correct-carrier-${order.id}`} label={messages.orders.carrier} placeholder={messages.orders.carrierPlaceholder} value={carrier} disabled={busy} onValueChange={setCarrier} /><label className="text-sm font-semibold">{messages.orders.trackingNumber}<Input value={trackingNumber} onChange={(event) => setTrackingNumber(event.target.value)} disabled={busy} maxLength={100} required className="mt-2" /></label></div>}{needsReason && <><label htmlFor="order-change-reason" className="mb-2 block text-sm font-semibold">{content.reason}</label><Input id="order-change-reason" value={reason} onChange={(event) => setReason(event.target.value)} disabled={busy} maxLength={500} aria-invalid={invalid} /><p className={`mt-2 text-xs leading-5 ${invalid ? "text-red-700" : "text-[#69737d]"}`}>{content.reasonHelp}</p></>}</form></DialogBody>
     <DialogFooter><Button variant="outline" onClick={onClose} disabled={busy}>{content.close}</Button><Button form={formId} type="submit" disabled={busy} variant={mode === "cancel" || mode === "delete" ? "destructive" : "default"}>{busy ? messages.orders.saving : mode === "delete" ? content.delete : content.confirm}</Button></DialogFooter>
   </Dialog>;
 }
