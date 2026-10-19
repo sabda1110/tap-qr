@@ -30,41 +30,41 @@ export function PricingCard({
 }: PricingCardProps) {
   return (
     <article
-      className={`group relative flex h-full flex-col rounded-3xl border bg-white p-7 transition-[transform,box-shadow,border-color] duration-300 ease-out motion-safe:hover:-translate-y-2 sm:p-8 ${
+      className={`group relative flex h-full min-w-0 flex-col rounded-[2rem] border p-7 shadow-[0_16px_36px_rgba(20,24,32,0.12)] transition-transform duration-300 ease-out motion-safe:hover:-translate-y-1 sm:p-8 md:p-5 lg:p-8 ${
         featured
-          ? "border-black shadow-[0_20px_60px_rgba(20,24,32,0.12)] hover:border-[#0798ad] hover:shadow-[0_28px_70px_rgba(7,152,173,0.18)]"
-          : "border-black/10 shadow-[0_12px_40px_rgba(20,24,32,0.06)] hover:border-[#0798ad]/60 hover:shadow-[0_28px_70px_rgba(7,152,173,0.14)]"
+          ? "border-[#ffb332] bg-[#ffb332] text-[#171b22]"
+          : "border-[#242424] bg-[#242424] text-white"
       }`}
     >
       {content.badge ? (
-        <span className="absolute top-0 right-7 -translate-y-1/2 rounded-full bg-[#ffb332] px-3 py-1 text-[10px] font-bold tracking-[0.12em] text-black uppercase">
+        <span className={`absolute left-1/2 top-0 max-w-[90%] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full px-4 py-2 text-[10px] font-bold tracking-[0.1em] uppercase ${featured ? "bg-[#171b22] text-white" : "bg-[#e7f7fb] text-[#171b22]"}`}>
           {content.badge}
         </span>
       ) : null}
 
-      <span className="flex size-12 items-center justify-center rounded-2xl bg-[#e7f7fb] text-[#0798ad] transition-[transform,background-color,color] duration-300 motion-safe:group-hover:rotate-3 motion-safe:group-hover:scale-110 group-hover:bg-[#ffb332]/25 group-hover:text-black">
+      <span className={`flex size-12 items-center justify-center rounded-2xl ${featured ? "bg-[#171b22] text-[#ffb332]" : "bg-white/10 text-[#ffb332]"}`}>
         <Icon className="size-6" strokeWidth={1.8} aria-hidden="true" />
       </span>
 
-      <h3 className="mt-6 text-2xl font-semibold tracking-[-0.035em] text-[#161a22]">
+      <h3 className="mt-6 text-2xl font-bold tracking-[-0.035em]">
         {content.name}
       </h3>
-      <p className="mt-3 min-h-14 text-sm leading-6 text-[#6f7280]">
+      <p className={`mt-4 min-h-14 border-t pt-4 text-sm leading-6 ${featured ? "border-black/20 text-[#303740]" : "border-white/20 text-white/75"}`}>
         {content.description}
       </p>
 
-      <p className="mt-7 flex items-end gap-2 text-black">
+      <p className="mt-8 flex flex-wrap items-baseline gap-x-2 gap-y-1">
         <span className="text-[clamp(2rem,3vw,2.75rem)] leading-none font-bold tracking-[-0.05em]">
           {content.price}
         </span>
-        <span className="pb-1 text-xs text-black/45">{content.priceDetail}</span>
+        <span className={`text-xs ${featured ? "text-black/65" : "text-white/65"}`}>{content.priceDetail}</span>
       </p>
 
       <ul className="mt-7 flex flex-1 flex-col gap-3">
         {content.features.map((feature) => (
-          <li key={feature} className="flex gap-3 text-sm leading-6 text-[#444854]">
+          <li key={feature} className={`flex gap-3 text-sm leading-6 ${featured ? "text-[#303740]" : "text-white/90"}`}>
             <Check
-              className="mt-1 size-4 shrink-0 text-[#0798ad] transition-transform duration-300 motion-safe:group-hover:scale-110"
+              className={`mt-1 size-4 shrink-0 rounded-full p-0.5 ${featured ? "bg-[#171b22] text-[#ffb332]" : "bg-[#ffb332] text-[#171b22]"}`}
               strokeWidth={2.4}
               aria-hidden="true"
             />
@@ -74,10 +74,10 @@ export function PricingCard({
       </ul>
 
       <Link
-        className={`mt-8 inline-flex h-12 items-center justify-center rounded-xl px-5 text-sm font-semibold no-underline ${
+        className={`mt-9 inline-flex min-h-12 items-center justify-center rounded-full px-4 py-3 text-center text-sm font-bold no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0798ad] ${
           featured
-            ? "bg-black text-white hover:bg-black/80 hover:text-white"
-            : "border border-black/15 bg-white text-black hover:border-black hover:text-black"
+            ? "bg-[#171b22] text-white hover:bg-[#303740] hover:text-white"
+            : "bg-[#ffb332] text-[#171b22] hover:bg-[#ffc45c] hover:text-[#171b22]"
         }`}
         to={order ? "/$locale/order" : "/$locale/auth/$mode"}
         params={{ locale: language, mode: "register" }}

@@ -1,4 +1,6 @@
-import { Quote, Star } from "lucide-react";
+import { MessageCircle, Quote, Star } from "lucide-react";
+
+import { TestimonialDecorations } from "../elements/testimonial-decorations";
 
 export type TestimonialCardContent = {
   quote: string;
@@ -15,55 +17,81 @@ type TestimonialCardProps = {
   ratingLabel: string;
 };
 
-const accentClasses: Record<TestimonialAccent, string> = {
-  cyan: "from-[#bcecf2] to-[#58c7d6] text-[#075e6c]",
-  yellow: "from-[#ffe3a0] to-[#ffb332] text-[#6f4500]",
-  coral: "from-[#ffd0c4] to-[#ff856e] text-[#7a281c]",
-};
+const accentClasses = {
+  cyan: { pattern: "text-[#0798ad]", surface: "bg-[#bcecf2]" },
+  yellow: { pattern: "text-[#c88412]", surface: "bg-[#ffb332]" },
+  coral: { pattern: "text-[#d77961]", surface: "bg-[#ffd0c4]" },
+} satisfies Record<TestimonialAccent, { pattern: string; surface: string }>;
+
+const corners = [
+  "-left-[5px] -top-[5px]",
+  "-right-[5px] -top-[5px]",
+  "-bottom-[5px] -left-[5px]",
+  "-bottom-[5px] -right-[5px]",
+];
 
 export function TestimonialCard({
   content,
   accent,
   ratingLabel,
 }: TestimonialCardProps) {
-  return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-white/80 bg-white/95 p-7 shadow-[0_18px_50px_rgba(37,48,68,0.08)] backdrop-blur-sm transition-[transform,box-shadow,border-color] duration-300 motion-safe:hover:-translate-y-2 hover:border-[#ffb332]/60 hover:shadow-[0_28px_70px_rgba(37,48,68,0.15)] sm:p-8">
-      <span className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#ffb332] to-transparent opacity-70" />
+  const colors = accentClasses[accent];
 
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex gap-1" aria-label={ratingLabel}>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <Star
-              key={index}
-              className="size-4 fill-[#ffb332] text-[#ffb332] transition-transform duration-300 motion-safe:group-hover:-translate-y-0.5"
-              style={{ transitionDelay: `${index * 35}ms` }}
-              aria-hidden="true"
-            />
-          ))}
+  return (
+    <article className={`relative h-full p-4 pb-6 ${colors.pattern}`}>
+      <TestimonialDecorations />
+
+      <div className="relative flex h-full flex-col border-2 border-[#171b22] bg-white px-5 pb-9 pt-10 text-[#171b22] shadow-[4px_4px_0_#171b22] sm:px-6">
+        {corners.map((position) => (
+          <span
+            key={position}
+            aria-hidden="true"
+            className={`pointer-events-none absolute size-2 border border-[#171b22] bg-white ${position}`}
+          />
+        ))}
+
+        <span className={`absolute left-1/2 top-0 max-w-[90%] -translate-x-1/2 -translate-y-1/2 border-2 border-[#171b22] px-3 py-1 text-center text-[11px] font-bold leading-4 ${colors.surface}`}>
+          {content.role}
+        </span>
+
+        <header className="flex items-center gap-3">
+          <span
+            className={`flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-[#171b22] text-sm font-bold ${colors.surface}`}
+            aria-hidden="true"
+          >
+            {content.initials}
+          </span>
+          <div className="min-w-0">
+            <h3 className="text-sm font-bold">{content.name}</h3>
+            <div className="mt-2 flex gap-0.5" role="img" aria-label={ratingLabel}>
+              {Array.from({ length: 5 }, (_, index) => (
+                <Star
+                  key={index}
+                  className="size-3.5 fill-[#ffb332] text-[#996000]"
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                />
+              ))}
+            </div>
+          </div>
+        </header>
+
+        <blockquote className="mt-6 flex-1 text-[15px] leading-7 text-[#303740]">
+          “{content.quote}”
+        </blockquote>
+
+        <div className="mt-6 flex items-center gap-4" aria-hidden="true">
+          <span className={`h-px flex-1 bg-current opacity-30 ${colors.pattern}`} />
+          <Quote className={`size-8 fill-current ${colors.pattern}`} strokeWidth={1} />
         </div>
-        <span className="flex size-10 items-center justify-center rounded-full bg-[#f4f8fc] text-[#0798ad] transition-transform duration-300 motion-safe:group-hover:rotate-6 motion-safe:group-hover:scale-110">
-          <Quote className="size-5 fill-current" strokeWidth={1.6} aria-hidden="true" />
+
+        <span
+          aria-hidden="true"
+          className={`absolute bottom-0 left-1/2 grid size-10 -translate-x-1/2 translate-y-1/2 place-items-center rounded-full border-2 border-[#171b22] shadow-[2px_2px_0_#171b22] ${colors.surface}`}
+        >
+          <MessageCircle className="size-5 fill-white" strokeWidth={1.8} />
         </span>
       </div>
-
-      <blockquote className="mt-7 flex-1 text-[15px] leading-[1.85] font-medium text-[#30343d] sm:text-base">
-        “{content.quote}”
-      </blockquote>
-
-      <footer className="mt-8 flex items-center gap-4 border-t border-black/8 pt-6">
-        <span
-          className={`flex size-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-sm font-bold shadow-sm ${accentClasses[accent]}`}
-          aria-hidden="true"
-        >
-          {content.initials}
-        </span>
-        <span>
-          <span className="block text-sm font-semibold text-[#161a22]">
-            {content.name}
-          </span>
-          <span className="mt-1 block text-xs text-black/40">{content.role}</span>
-        </span>
-      </footer>
     </article>
   );
 }
