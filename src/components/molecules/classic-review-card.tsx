@@ -79,7 +79,7 @@ export function ClassicReviewCard({
           ) : theme === "natural" ? (
             <Leaf aria-hidden="true" className="size-8 text-[#283d32]" />
           ) : (
-            <span className="[&_svg]:size-10"><GoogleMark /></span>
+            <span className="text-[#172029] [&_svg]:size-10"><GoogleMark monochrome={theme === "minimal"} /></span>
           )}
         </div>
         <p className={`text-[10px] font-extrabold tracking-[0.1em] uppercase ${monster ? "text-[#c2410c]" : ""}`}>{preHeadline}</p>

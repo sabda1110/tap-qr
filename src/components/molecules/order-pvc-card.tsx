@@ -1,4 +1,4 @@
-import { Leaf, Nfc, QrCode, Sparkles, Star, Wifi } from "lucide-react";
+import { Leaf, Nfc, QrCode, Star, Wifi } from "lucide-react";
 import type { ReactNode } from "react";
 import type { OrderDraft } from "../../server/orders/order.schemas";
 import monsterBarber from "../assets/images/monsters/monster-barber.jpg";
@@ -61,7 +61,7 @@ function ThemeMark({ product, theme, showMonster }: Pick<OrderDraft, "product" |
   if (product === "wifi") return <Wifi className="size-10" strokeWidth={3} />;
   if (theme === "google-classic") return <span className="[&_svg]:size-10"><GoogleMark /></span>;
   if (theme === "natural") return <Leaf className="size-10" strokeWidth={3} />;
-  if (theme === "minimal") return <Sparkles className="size-10" strokeWidth={3} />;
+  if (theme === "minimal") return <span className="text-[#172029] [&_svg]:size-10"><GoogleMark monochrome /></span>;
   return <Star className="size-10 fill-current" strokeWidth={2.5} />;
 }
 
