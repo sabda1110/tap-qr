@@ -9,6 +9,7 @@ export const ordersId = {
   regionRequired: "Lengkapi wilayah pengiriman ini.",
   emailHelp: "Gunakan email akun Anda jika sudah punya akun. Status pesanan bisa dicek menggunakan nomor HP; email belum dikirim otomatis.",
   product: "Kegunaan kartu", social: "Sosmed / Google Review", wifi: "Koneksi WiFi", material: "Bentuk / bahan", acrylic: "Standee akrilik", pvc: "Kartu PVC",
+  materialSizes: { acrylic: "A7 · 74 × 105 mm · Vertikal", pvc: "Name tag · 86 × 64 mm · Horizontal" },
   quantity: "Jumlah kartu", design: "Pilih tema", preview: "Contoh desain", previewHelp: "Contoh tampilan tema. QR dan isi akhir disiapkan admin setelah dikonfirmasi lewat WhatsApp.",
   wifiHelp: "Jangan masukkan password WiFi di formulir pesanan. Pengisian QR dan NFC dikoordinasikan terpisah dengan admin.",
   socialHelp: "Kartu dapat diarahkan ke Google Review atau tautan sosmed. Detail tujuan dan aktivasi dikoordinasikan dengan admin.",

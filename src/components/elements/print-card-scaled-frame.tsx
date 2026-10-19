@@ -5,6 +5,9 @@ export const BASE_CARD_HEIGHT = 550;
 
 type PrintCardScaledFrameProps = {
   targetWidth?: number;
+  canvasWidth?: number;
+  canvasHeight?: number;
+  maxWidth?: number;
   className?: string;
   children: ReactNode;
 };
@@ -15,11 +18,14 @@ type PrintCardScaledFrameProps = {
  */
 export function PrintCardScaledFrame({
   targetWidth,
+  canvasWidth = BASE_CARD_WIDTH,
+  canvasHeight = BASE_CARD_HEIGHT,
+  maxWidth = BASE_CARD_WIDTH,
   className = "",
   children,
 }: PrintCardScaledFrameProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [computedWidth, setComputedWidth] = useState<number>(targetWidth || BASE_CARD_WIDTH);
+  const [computedWidth, setComputedWidth] = useState<number>(targetWidth ?? maxWidth);
 
   useEffect(() => {
     if (targetWidth) {
@@ -50,23 +56,24 @@ export function PrintCardScaledFrame({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [targetWidth]);
+  }, [targetWidth, maxWidth]);
 
-  const scale = computedWidth / BASE_CARD_WIDTH;
-  const computedHeight = Math.round(computedWidth * (BASE_CARD_HEIGHT / BASE_CARD_WIDTH));
+  const scale = computedWidth / canvasWidth;
+  const computedHeight = Math.round(computedWidth * (canvasHeight / canvasWidth));
 
   return (
     <div
       ref={containerRef}
-      className={`relative w-full max-w-[380px] overflow-hidden rounded-2xl mx-auto ${className}`}
+      className={`relative mx-auto w-full overflow-hidden rounded-2xl ${className}`}
       style={{
         height: computedHeight,
+        maxWidth: targetWidth ?? maxWidth,
       }}
     >
       <div
         style={{
-          width: BASE_CARD_WIDTH,
-          height: BASE_CARD_HEIGHT,
+          width: canvasWidth,
+          height: canvasHeight,
           transform: `scale(${scale})`,
           transformOrigin: "top left",
         }}

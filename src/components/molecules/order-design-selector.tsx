@@ -5,9 +5,11 @@ import { ThemePickerButton } from "../elements/theme-picker-button";
 import { WifiPrintThemePicker } from "./wifi-print-theme-picker";
 import { PrintCardCanvas } from "./print-card-canvas";
 import { WifiPrintCard } from "./wifi-print-card";
+import { PrintCardScaledFrame } from "../elements/print-card-scaled-frame";
+import { OrderPvcCard, PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "./order-pvc-card";
 
 export function OrderDesignSelector({ value, onChange, messages }: {
-  value: Pick<OrderDraft, "product" | "theme">;
+  value: Pick<OrderDraft, "product" | "theme" | "material">;
   onChange: (theme: OrderDraft["theme"]) => void;
   messages: Messages;
 }) {
@@ -28,12 +30,28 @@ export function OrderDesignSelector({ value, onChange, messages }: {
         </div>
       )}
       <div className="rounded-2xl border border-black/8 bg-[#f3f5f7] p-5">
-        <h2 className="text-sm font-bold">{content.preview}</h2>
-        <p className="mt-1 text-xs leading-5 text-[#69737d]">{content.previewHelp}</p>
-        <div aria-hidden="true" className="mx-auto mt-5 h-[330px] w-[228px]">
-          <div className="origin-top-left scale-[0.6]">
-            {value.product === "wifi" ? <WifiPrintCard job={{ id: "preview", ssid: "TapQR WiFi", qrDataUrl: "" }} theme={wifi} title={studio.wifi.defaultHeadline} footer={studio.wifi.defaultFooter} content={studio.wifi} /> : <PrintCardCanvas theme={social} cardId="" labels={studio.printLabels} qrDataUrl="" preHeadline={defaults.defaultPreHeadline} headline={defaults.defaultHeadline} footerNote={defaults.defaultFooter} />}
-          </div>
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <div><h2 className="text-sm font-bold">{content.preview}</h2><p className="mt-1 text-xs leading-5 text-[#69737d]">{content.previewHelp}</p></div>
+          <span className="rounded-full bg-white px-3 py-1 text-[10px] font-bold text-[#087e91] shadow-xs">{content.materialSizes[value.material]}</span>
+        </div>
+        <div aria-hidden="true" className="mx-auto mt-5 w-full">
+          {value.material === "pvc" ? (
+            <PrintCardScaledFrame canvasWidth={PVC_CARD_WIDTH} canvasHeight={PVC_CARD_HEIGHT} maxWidth={430}>
+              <OrderPvcCard value={value} copy={value.product === "wifi" ? {
+                headline: studio.wifi.defaultHeadline, footer: studio.wifi.defaultFooter, action: content.wifi,
+                tap: studio.wifi.tap, tapHelp: studio.wifi.tapHelp, scan: studio.wifi.scan, scanHelp: studio.printLabels.scanHelp,
+                or: studio.wifi.or, network: studio.wifi.network,
+              } : {
+                preHeadline: defaults.defaultPreHeadline, headline: defaults.defaultHeadline, footer: defaults.defaultFooter,
+                action: studio.printLabels.review, tap: studio.printLabels.tap, tapHelp: studio.printLabels.tapHelp,
+                scan: studio.printLabels.scan, scanHelp: studio.printLabels.scanHelp, or: studio.printLabels.or,
+              }} />
+            </PrintCardScaledFrame>
+          ) : (
+            <PrintCardScaledFrame maxWidth={228}>
+              {value.product === "wifi" ? <WifiPrintCard job={{ id: "preview", ssid: "TapQR WiFi", qrDataUrl: "" }} theme={wifi} title={studio.wifi.defaultHeadline} footer={studio.wifi.defaultFooter} content={studio.wifi} /> : <PrintCardCanvas theme={social} cardId="" labels={studio.printLabels} qrDataUrl="" preHeadline={defaults.defaultPreHeadline} headline={defaults.defaultHeadline} footerNote={defaults.defaultFooter} />}
+            </PrintCardScaledFrame>
+          )}
         </div>
       </div>
     </section>
