@@ -14,49 +14,50 @@ import { BulkPrintPreviewGrid } from "../molecules/bulk-print-preview-grid";
 import { PrintCardFormControls } from "../molecules/print-card-form-controls";
 import { PrintConfirmationDialog } from "../molecules/print-confirmation-dialog";
 import type { AdminPrintStudioProps } from "./admin-print-studio.types";
-
+import type { CardMaterial } from "../../lib/firebase/firestore-schema";
 export type { AdminPrintStudioContent, AdminPrintStudioProps } from "./admin-print-studio.types";
-
+function getMaterialDimensions(material: CardMaterial): PrintDimensions {
+  return material === "pvc"
+    ? { preset: "custom", widthMm: 86, heightMm: 64 }
+    : { preset: "a7", widthMm: 74, heightMm: 105 };
+}
 export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminPrintStudioProps) {
   const router = useRouter();
   const { showToast } = useToast();
-
   const [activeTab, setActiveTab] = useState<"single" | "bulk">("single");
   const [selectedCardId, setSelectedCardId] = useState(
     initialCard?.cardId || cards[0]?.cardId || "",
   );
+  const initialMaterial = initialCard?.material ?? cards[0]?.material ?? "acrylic";
   const [selectedBulkCardIds, setSelectedBulkCardIds] = useState<string[]>(
     cards.slice(0, 6).map((c) => c.cardId),
   );
   const [theme, setTheme] = useState<PrintThemeKey>("google");
   const [showMonster, setShowMonster] = useState(true);
   const [showCropMarks, setShowCropMarks] = useState(false);
-  const [dimensions, setDimensions] = useState<PrintDimensions>({
-    preset: "a6",
-    widthMm: 105,
-    heightMm: 148,
-  });
-
+  const [dimensions, setDimensions] = useState<PrintDimensions>(() => getMaterialDimensions(initialMaterial));
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
-
   const [preHeadline, setPreHeadline] = useState(content.themes.google.defaultPreHeadline);
   const [headline, setHeadline] = useState(content.themes.google.defaultHeadline);
   const [footerNote, setFooterNote] = useState(content.themes.google.defaultFooter);
   const [qrDataUrl, setQrDataUrl] = useState<string>("");
-
+  const selectedCard = cards.find((card) => card.cardId === selectedCardId)
+    ?? (initialCard?.cardId === selectedCardId ? initialCard : null);
+  const selectedMaterial = selectedCard?.material ?? "acrylic";
   useEffect(() => {
     if (cards.length > 0 && !cards.some((c) => c.cardId === selectedCardId)) {
       setSelectedCardId(cards[0].cardId);
     }
   }, [cards, selectedCardId]);
-
   useEffect(() => {
     setSelectedBulkCardIds((prev) =>
       prev.filter((id) => cards.some((c) => c.cardId === id)),
     );
   }, [cards]);
-
+  useEffect(() => {
+    setDimensions(getMaterialDimensions(selectedMaterial));
+  }, [selectedMaterial]);
   const handleSelectTheme = (newTheme: PrintThemeKey) => {
     setTheme(newTheme);
     const defaults = content.themes[newTheme];
@@ -151,7 +152,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
 
   return (
     <section className="space-y-6">
-      <PrintStudioStyles activeTab={activeTab} dimensions={dimensions} />
+      <PrintStudioStyles activeTab={activeTab} dimensions={dimensions} material={selectedMaterial} />
 
       <AdminPrintStudioHeader
         kicker={content.kicker}
@@ -248,7 +249,8 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
               footerNote={footerNote}
               headline={headline}
               preHeadline={preHeadline}
-              previewTitle={content.previewTitle}
+              previewTitle={selectedMaterial === "pvc" ? content.pvcPreviewTitle : content.previewTitle}
+              material={selectedMaterial}
               qrDataUrl={qrDataUrl}
               showMonster={showMonster}
               theme={theme}
@@ -257,6 +259,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
             <BulkPrintPreviewGrid
               labels={content.printLabels}
               cardIds={selectedBulkCardIds}
+              cardMaterials={Object.fromEntries(cards.map((card) => [card.cardId, card.material]))}
               theme={theme}
               dimensions={dimensions}
               showMonster={showMonster}

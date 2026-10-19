@@ -1,15 +1,18 @@
 import type { PrintDimensions } from "./print-size-selector";
+import type { CardMaterial } from "../../lib/firebase/firestore-schema";
 
 type PrintStudioStylesProps = {
   activeTab: "single" | "bulk";
   dimensions: PrintDimensions;
+  material?: CardMaterial;
 };
 
-export function PrintStudioStyles({ activeTab, dimensions }: PrintStudioStylesProps) {
+export function PrintStudioStyles({ activeTab, dimensions, material }: PrintStudioStylesProps) {
   const { widthMm, heightMm } = dimensions;
-  // Calculate proportional scale to safely fit the 100mm x 145mm card on the selected paper size
+  const canvasWidthMm = material === "pvc" ? 86 : material === "acrylic" ? 74 : 100;
+  const canvasHeightMm = material === "pvc" ? 64 : material === "acrylic" ? 105 : 145;
   const scaleRatio = Number(
-    Math.min((widthMm - 2) / 100, (heightMm - 2) / 145).toFixed(3),
+    Math.min((widthMm - 2) / canvasWidthMm, (heightMm - 2) / canvasHeightMm).toFixed(3),
   );
 
   return (
@@ -34,10 +37,10 @@ export function PrintStudioStyles({ activeTab, dimensions }: PrintStudioStylesPr
             top: 50% !important;
             transform: translate(-50%, -50%) scale(${scaleRatio}) !important;
             transform-origin: center center !important;
-            width: 100mm !important;
-            height: 145mm !important;
-            max-width: 100mm !important;
-            max-height: 145mm !important;
+            width: ${canvasWidthMm}mm !important;
+            height: ${canvasHeightMm}mm !important;
+            max-width: ${canvasWidthMm}mm !important;
+            max-height: ${canvasHeightMm}mm !important;
             margin: 0 !important;
             box-shadow: none !important;
             page-break-inside: avoid !important;
@@ -99,6 +102,12 @@ export function PrintStudioStyles({ activeTab, dimensions }: PrintStudioStylesPr
             max-width: 100mm !important;
             max-height: 145mm !important;
             box-shadow: none !important;
+          }
+          .bulk-print-scaler-wrapper .pvc-print-canvas {
+            width: 86mm !important;
+            height: 64mm !important;
+            max-width: 86mm !important;
+            max-height: 64mm !important;
           }
         `
         }

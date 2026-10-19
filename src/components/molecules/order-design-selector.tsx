@@ -40,11 +40,11 @@ export function OrderDesignSelector({ value, onChange, messages }: {
               <OrderPvcCard value={value} copy={value.product === "wifi" ? {
                 headline: studio.wifi.defaultHeadline, footer: studio.wifi.defaultFooter, action: content.wifi,
                 tap: studio.wifi.tap, tapHelp: studio.wifi.tapHelp, scan: studio.wifi.scan, scanHelp: studio.printLabels.scanHelp,
-                or: studio.wifi.or, network: studio.wifi.network,
+                or: studio.wifi.or, network: studio.wifi.network, qrAlt: studio.wifi.qrAlt,
               } : {
                 preHeadline: defaults.defaultPreHeadline, headline: defaults.defaultHeadline, footer: defaults.defaultFooter,
                 action: studio.printLabels.review, tap: studio.printLabels.tap, tapHelp: studio.printLabels.tapHelp,
-                scan: studio.printLabels.scan, scanHelp: studio.printLabels.scanHelp, or: studio.printLabels.or,
+                scan: studio.printLabels.scan, scanHelp: studio.printLabels.scanHelp, or: studio.printLabels.or, qrAlt: studio.printLabels.qrAlt,
               }} />
             </PrintCardScaledFrame>
           ) : (

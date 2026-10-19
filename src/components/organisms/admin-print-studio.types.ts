@@ -26,6 +26,7 @@ export type AdminPrintStudioContent = {
   copySectionDescription: string;
   printNow: string;
   previewTitle: string;
+  pvcPreviewTitle: string;
   dimensionsNote: string;
   tabSingle: string;
   tabBulk: string;

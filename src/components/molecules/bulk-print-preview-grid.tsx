@@ -9,10 +9,13 @@ import { PrintCardCanvas } from "./print-card-canvas";
 import type { ReviewCardLabels } from "./classic-review-card";
 import { Button } from "../ui/button";
 import { getCardUrl } from "../../lib/app-url";
+import type { CardMaterial } from "../../lib/firebase/firestore-schema";
+import { OrderPvcCard, PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "./order-pvc-card";
 
 type BulkPrintPreviewGridProps = {
   labels: ReviewCardLabels;
   cardIds: string[];
+  cardMaterials: Record<string, CardMaterial>;
   theme: PrintThemeKey;
   dimensions: PrintDimensions;
   showMonster: boolean;
@@ -25,9 +28,35 @@ type BulkPrintPreviewGridProps = {
   printHint: string;
 };
 
+type MaterialCardCanvasProps = {
+  cardId: string;
+  material: CardMaterial;
+  labels: ReviewCardLabels;
+  theme: PrintThemeKey;
+  showMonster: boolean;
+  preHeadline?: string;
+  headline?: string;
+  footerNote?: string;
+  qrDataUrl: string;
+};
+
+function MaterialCardCanvas({ cardId, material, labels, theme, showMonster, preHeadline, headline, footerNote, qrDataUrl }: MaterialCardCanvasProps) {
+  if (material === "pvc") return (
+    <OrderPvcCard
+      cardId={cardId}
+      copy={{ preHeadline, headline: headline ?? "", footer: footerNote ?? "", action: labels.review, tap: labels.tap, tapHelp: labels.tapHelp, scan: labels.scan, scanHelp: labels.scanHelp, or: labels.or, qrAlt: labels.qrAlt }}
+      qrDataUrl={qrDataUrl}
+      showMonster={showMonster}
+      value={{ product: "social", theme }}
+    />
+  );
+  return <PrintCardCanvas labels={labels} cardId={cardId} theme={theme} showMonster={showMonster} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrDataUrl} />;
+}
+
 export function BulkPrintPreviewGrid({
   labels,
   cardIds,
+  cardMaterials,
   theme,
   dimensions,
   showMonster,
@@ -123,6 +152,7 @@ export function BulkPrintPreviewGrid({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {cardIds.map((id, index) => {
           const qrDataUrl = qrMap[id] || "";
+          const material = cardMaterials[id] ?? "acrylic";
           return (
             <div
               key={id}
@@ -131,23 +161,14 @@ export function BulkPrintPreviewGrid({
               {/* Card Index & ID Tag */}
               <div className="mb-2 flex w-full items-center justify-between text-[11px] font-bold text-neutral-500">
                 <span className="rounded-md bg-black/5 px-2 py-0.5">#{index + 1}</span>
-                <span className="font-mono text-neutral-700 truncate max-w-[140px]">{id}</span>
+                <span className="flex min-w-0 items-center gap-2"><span className="rounded-md bg-[#e8f8fb] px-1.5 py-0.5 text-[9px] uppercase text-[#087e91]">{material}</span><span className="max-w-[140px] truncate font-mono text-neutral-700">{id}</span></span>
               </div>
 
               {/* Card Canvas Preview - Dynamically auto-fitted to column width */}
               <div className="relative w-full flex flex-col items-center justify-center p-2.5">
                 {showCropMarks && <PrintCropMarks />}
-                <PrintCardScaledFrame>
-                  <PrintCardCanvas
-                    labels={labels}
-                    cardId={id}
-                    theme={theme}
-                    showMonster={showMonster}
-                    preHeadline={preHeadline}
-                    headline={headline}
-                    footerNote={footerNote}
-                    qrDataUrl={qrDataUrl}
-                  />
+                <PrintCardScaledFrame {...(material === "pvc" ? { canvasWidth: PVC_CARD_WIDTH, canvasHeight: PVC_CARD_HEIGHT, maxWidth: PVC_CARD_WIDTH } : {})}>
+                  <MaterialCardCanvas cardId={id} material={material} labels={labels} theme={theme} showMonster={showMonster} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrDataUrl} />
                 </PrintCardScaledFrame>
               </div>
             </div>
@@ -168,16 +189,7 @@ export function BulkPrintPreviewGrid({
           >
             <div className="bulk-print-scaler-wrapper">
               {showCropMarks && <PrintCropMarks />}
-              <PrintCardCanvas
-                labels={labels}
-                cardId={id}
-                theme={theme}
-                showMonster={showMonster}
-                preHeadline={preHeadline}
-                headline={headline}
-                footerNote={footerNote}
-                qrDataUrl={qrMap[id] || ""}
-              />
+              <MaterialCardCanvas cardId={id} material={cardMaterials[id] ?? "acrylic"} labels={labels} theme={theme} showMonster={showMonster} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrMap[id] || ""} />
             </div>
           </div>
         ))}

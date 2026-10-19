@@ -21,6 +21,7 @@ type PvcCardCopy = {
   scanHelp: string;
   or: string;
   network?: string;
+  qrAlt: string;
 };
 
 type PvcCardVisual = {
@@ -52,11 +53,11 @@ function getVisual(product: OrderDraft["product"], theme: OrderDraft["theme"]): 
   return visuals.google;
 }
 
-function ThemeMark({ product, theme }: Pick<OrderDraft, "product" | "theme">) {
-  if (theme === "coffee") return <VintageCoffeeMascot size="sm" className="size-12!" />;
-  if (theme === "barbershop") return <img alt="" src={monsterBarber} className="size-full rounded-lg object-cover" />;
-  if (theme === "modern" || theme === "kraken") return <MonsterAvatar theme="modern" size="sm" className="size-12!" />;
-  if (theme === "google" || theme === "monster") return <img alt="" src={monsterOrange} className="size-full object-contain p-1" />;
+function ThemeMark({ product, theme, showMonster }: Pick<OrderDraft, "product" | "theme"> & { showMonster: boolean }) {
+  if (theme === "coffee" && showMonster) return <VintageCoffeeMascot size="sm" className="size-12!" />;
+  if (theme === "barbershop" && showMonster) return <img alt="" src={monsterBarber} className="size-full rounded-lg object-cover" />;
+  if ((theme === "modern" || theme === "kraken") && showMonster) return <MonsterAvatar theme="modern" size="sm" className="size-12!" />;
+  if ((theme === "google" || theme === "monster") && showMonster) return <img alt="" src={monsterOrange} className="size-full object-contain p-1" />;
   if (product === "wifi") return <Wifi className="size-10" strokeWidth={3} />;
   if (theme === "google-classic") return <span className="[&_svg]:size-10"><GoogleMark /></span>;
   if (theme === "natural") return <Leaf className="size-10" strokeWidth={3} />;
@@ -74,16 +75,23 @@ function ActionTile({ children, label, help, className }: { children: ReactNode;
   );
 }
 
-export function OrderPvcCard({ value, copy }: { value: Pick<OrderDraft, "product" | "theme">; copy: PvcCardCopy }) {
+export function OrderPvcCard({ value, copy, cardId = "", qrDataUrl = "", showMonster = true, id }: {
+  value: Pick<OrderDraft, "product" | "theme">;
+  copy: PvcCardCopy;
+  cardId?: string;
+  qrDataUrl?: string;
+  showMonster?: boolean;
+  id?: string;
+}) {
   const visual = getVisual(value.product, value.theme);
   return (
-    <article className={`print-canvas-root relative h-[384px] w-[516px] overflow-hidden rounded-[24px] border-4 ${visual.surface}`} style={{ boxSizing: "border-box" }}>
+    <article id={id} className={`print-canvas-root pvc-print-canvas relative h-[384px] w-[516px] overflow-hidden rounded-[24px] border-4 ${visual.surface}`} style={{ boxSizing: "border-box" }}>
       <div aria-hidden="true" className={`absolute inset-x-0 top-0 h-3 ${visual.marker}`} />
       <div aria-hidden="true" className="absolute -right-9 -top-9 size-28 rotate-12 border-4 border-current opacity-10" />
       <div className="grid h-full grid-cols-[235px_1fr]">
         <header className={`relative flex min-w-0 flex-col border-r-4 border-[#172029] px-6 pb-5 pt-7 ${visual.panel}`}>
           <div className={`grid size-16 shrink-0 -rotate-3 place-items-center rounded-xl border-[3px] border-[#172029] shadow-[4px_4px_0_#172029] ${visual.accent}`}>
-            <ThemeMark product={value.product} theme={value.theme} />
+            <ThemeMark product={value.product} theme={value.theme} showMonster={showMonster} />
           </div>
           {copy.preHeadline && <p className={`mt-5 text-[10px] font-extrabold tracking-[0.08em] uppercase ${visual.muted}`}>{copy.preHeadline}</p>}
           <h1 className="mt-2 text-[28px] leading-[1.04] font-black tracking-tight uppercase">{copy.headline}</h1>
@@ -95,7 +103,9 @@ export function OrderPvcCard({ value, copy }: { value: Pick<OrderDraft, "product
           <div className="grid grid-cols-[1fr_18px_1fr] items-center gap-2">
             <ActionTile label={copy.tap} help={copy.tapHelp} className={visual.action}><Nfc className="size-11" strokeWidth={2.6} /></ActionTile>
             <span className="text-[9px] font-black uppercase opacity-60">{copy.or}</span>
-            <ActionTile label={copy.scan} help={copy.scanHelp} className={`${visual.action} bg-white text-[#172029]`}><QrCode className="size-17" strokeWidth={1.8} /></ActionTile>
+            <ActionTile label={copy.scan} help={copy.scanHelp} className={`${visual.action} bg-white text-[#172029]`}>
+              {qrDataUrl ? <img alt={copy.qrAlt.replace("{cardId}", cardId)} className="size-[82px] object-contain" src={qrDataUrl} /> : <QrCode className="size-17" strokeWidth={1.8} />}
+            </ActionTile>
           </div>
         </section>
       </div>
