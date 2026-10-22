@@ -121,6 +121,8 @@ stiker akan lebih sulit dirasakan.
   reseller atau agency.
 - Media fisik NFC atau QR dijual terpisah dengan pembayaran satu kali agar tidak
   menambah hambatan untuk mencoba layanan.
+- Harga landing: PVC NFC + QR Rp79.000/unit, akrilik NFC + QR Rp69.000/unit;
+  Paket Bisnis Rp499.000, atau dengan domain mulai Rp799.000. QR Mandiri dihapus.
 
 ### Kepatuhan Google Review
 
@@ -199,6 +201,7 @@ ditangguhkan.
 - Gunakan aset SVG atau gambar yang sudah tersedia jika sesuai kebutuhan.
 - Desain kartu dan standee cetak mengikuti gaya brutalism: garis tebal,
   tipografi besar dan tegas, blok warna kontras, serta bayangan solid.
+  Kartu PVC horizontal berukuran 86 × 54 mm pada order, preview, dan hasil cetak.
   Panel kontrol Studio Cetak tetap mengikuti pola dashboard yang sederhana.
 - Studio Cetak admin memiliki tab Sosmed dan WiFi. WiFi menerima payload
   `WIFI:...` dari input pengguna, mendukung satuan serta massal dengan salinan

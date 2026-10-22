@@ -1,4 +1,4 @@
-import { Nfc, Printer, ScanLine } from "lucide-react";
+import { CreditCard, Nfc, ScanLine } from "lucide-react";
 import heroShot from "../assets/images/heroshot-feature-style-v2.webp";
 import customerHubImage from "../assets/images/features/customer-hub.png";
 import flexibleNfcQrImage from "../assets/images/features/flexible-nfc-qr.png";
@@ -55,14 +55,14 @@ export function HomePage() {
             language={language}
             note={messages.pricing.note}
             plans={[
-              { content: messages.pricing.selfPrint, icon: Printer },
+              { content: messages.pricing.pvcCard, icon: CreditCard, order: true },
               {
-                content: messages.pricing.qrBoard,
+                content: messages.pricing.acrylicBoard,
                 icon: ScanLine,
                 featured: true,
                 order: true,
               },
-              { content: messages.pricing.nfcBundle, icon: Nfc, order: true },
+              { content: messages.pricing.businessBundle, icon: Nfc, order: true },
             ]}
           />
           <TestimonialsSection

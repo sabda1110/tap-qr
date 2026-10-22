@@ -69,7 +69,7 @@ export function PricingSection({
           {plans.map((plan, index) => (
             <MotionReveal
               key={plan.content.name}
-              className={`h-full ${plan.featured ? "md:pb-8" : "md:pt-8"}`}
+              className={`h-full md:order-none ${plan.featured ? "order-first md:pb-8" : "md:pt-8"}`}
               delay={index * 110}
             >
               <PricingCard {...plan} language={language} />

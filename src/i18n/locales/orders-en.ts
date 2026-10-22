@@ -11,7 +11,7 @@ export const ordersEn: typeof ordersId = {
   regionRequired: "Complete this shipping area.",
   emailHelp: "Use your account email if you have one. Check order status using your phone number; email delivery is not automated yet.",
   product: "Card purpose", social: "Social / Google Review", wifi: "WiFi connection", material: "Format / material", acrylic: "Acrylic standee", pvc: "PVC card",
-  materialSizes: { acrylic: "A7 · 74 × 105 mm · Portrait", pvc: "Name tag · 86 × 64 mm · Landscape" },
+  materialSizes: { acrylic: "A7 · 74 × 105 mm · Portrait", pvc: "Name tag · 86 × 54 mm · Landscape" },
   quantity: "Number of cards", design: "Choose a theme", preview: "Design example", previewHelp: "A sample of the theme. Admin prepares the final QR and content after confirmation through WhatsApp.",
   wifiHelp: "Do not enter WiFi passwords in the order form. Arrange QR and NFC configuration separately with admin.",
   socialHelp: "Cards can open Google Review or social links. Coordinate the destinations and activation with admin.",

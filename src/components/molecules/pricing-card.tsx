@@ -11,6 +11,7 @@ export type PricingCardContent = {
   priceDetail: string;
   features: string[];
   cta: string;
+  note?: string;
 };
 
 type PricingCardProps = {
@@ -53,8 +54,8 @@ export function PricingCard({
         {content.description}
       </p>
 
-      <p className="mt-8 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-        <span className="text-[clamp(2rem,3vw,2.75rem)] leading-none font-bold tracking-[-0.05em]">
+      <p className="mt-8 flex items-baseline gap-2 whitespace-nowrap">
+        <span className="text-[clamp(2rem,3vw,2.75rem)] leading-none font-bold tracking-[-0.05em] md:text-[clamp(1.5rem,3vw,2.75rem)]">
           {content.price}
         </span>
         <span className={`text-xs ${featured ? "text-black/65" : "text-white/65"}`}>{content.priceDetail}</span>
@@ -84,6 +85,13 @@ export function PricingCard({
       >
         {content.cta}
       </Link>
+      {content.note ? (
+        <p className="mt-3 text-xs leading-5 text-white/75 md:min-h-20">
+          {content.note}
+        </p>
+      ) : (
+        <span aria-hidden="true" className="mt-3 hidden md:block md:min-h-20" />
+      )}
     </article>
   );
 }

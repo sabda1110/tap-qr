@@ -187,7 +187,7 @@ export function BulkPrintPreviewGrid({
               height: `${dimensions.heightMm}mm`,
             }}
           >
-            <div className="bulk-print-scaler-wrapper">
+            <div className="bulk-print-scaler-wrapper" data-material={cardMaterials[id] ?? "acrylic"}>
               {showCropMarks && <PrintCropMarks />}
               <MaterialCardCanvas cardId={id} material={cardMaterials[id] ?? "acrylic"} labels={labels} theme={theme} showMonster={showMonster} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrMap[id] || ""} />
             </div>

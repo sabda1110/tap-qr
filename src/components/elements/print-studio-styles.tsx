@@ -1,5 +1,6 @@
 import type { PrintDimensions } from "./print-size-selector";
 import type { CardMaterial } from "../../lib/firebase/firestore-schema";
+import { PVC_WIDTH_MM, PVC_HEIGHT_MM, PVC_CARD_WIDTH, PVC_CARD_HEIGHT, PVC_PRINT_SCALE } from "../../lib/print-dimensions";
 
 type PrintStudioStylesProps = {
   activeTab: "single" | "bulk";
@@ -9,11 +10,15 @@ type PrintStudioStylesProps = {
 
 export function PrintStudioStyles({ activeTab, dimensions, material }: PrintStudioStylesProps) {
   const { widthMm, heightMm } = dimensions;
-  const canvasWidthMm = material === "pvc" ? 86 : material === "acrylic" ? 74 : 100;
-  const canvasHeightMm = material === "pvc" ? 64 : material === "acrylic" ? 105 : 145;
+  const canvasWidthMm = material === "pvc" ? PVC_WIDTH_MM : material === "acrylic" ? 74 : 100;
+  const canvasHeightMm = material === "pvc" ? PVC_HEIGHT_MM : material === "acrylic" ? 105 : 145;
   const scaleRatio = Number(
     Math.min((widthMm - 2) / canvasWidthMm, (heightMm - 2) / canvasHeightMm).toFixed(3),
   );
+  const pvcScaleRatio = Math.min(widthMm / PVC_WIDTH_MM, heightMm / PVC_HEIGHT_MM);
+  const canvasWidth = material === "pvc" ? `${PVC_CARD_WIDTH}px` : `${canvasWidthMm}mm`;
+  const canvasHeight = material === "pvc" ? `${PVC_CARD_HEIGHT}px` : `${canvasHeightMm}mm`;
+  const singleScale = material === "pvc" ? pvcScaleRatio * PVC_PRINT_SCALE : scaleRatio;
 
   return (
     <style>{`
@@ -28,6 +33,14 @@ export function PrintStudioStyles({ activeTab, dimensions, material }: PrintStud
         ${
           activeTab === "single"
             ? `
+          ${material === "pvc" ? `
+          .print-card-scaled-frame:has(#tapqr-print-card),
+          .print-card-scale-layer:has(#tapqr-print-card) {
+            transform: none !important;
+            overflow: visible !important;
+            position: static !important;
+          }
+          ` : ""}
           #tapqr-print-card, #tapqr-print-card * {
             visibility: visible;
           }
@@ -35,12 +48,12 @@ export function PrintStudioStyles({ activeTab, dimensions, material }: PrintStud
             position: fixed !important;
             left: 50% !important;
             top: 50% !important;
-            transform: translate(-50%, -50%) scale(${scaleRatio}) !important;
+            transform: translate(-50%, -50%) scale(${singleScale}) !important;
             transform-origin: center center !important;
-            width: ${canvasWidthMm}mm !important;
-            height: ${canvasHeightMm}mm !important;
-            max-width: ${canvasWidthMm}mm !important;
-            max-height: ${canvasHeightMm}mm !important;
+            width: ${canvasWidth} !important;
+            height: ${canvasHeight} !important;
+            max-width: ${canvasWidth} !important;
+            max-height: ${canvasHeight} !important;
             margin: 0 !important;
             box-shadow: none !important;
             page-break-inside: avoid !important;
@@ -103,11 +116,20 @@ export function PrintStudioStyles({ activeTab, dimensions, material }: PrintStud
             max-height: 145mm !important;
             box-shadow: none !important;
           }
+          .bulk-print-scaler-wrapper[data-material="pvc"] {
+            width: ${PVC_WIDTH_MM}mm !important;
+            height: ${PVC_HEIGHT_MM}mm !important;
+            max-width: ${PVC_WIDTH_MM}mm !important;
+            max-height: ${PVC_HEIGHT_MM}mm !important;
+            transform: scale(${pvcScaleRatio}) !important;
+          }
           .bulk-print-scaler-wrapper .pvc-print-canvas {
-            width: 86mm !important;
-            height: 64mm !important;
-            max-width: 86mm !important;
-            max-height: 64mm !important;
+            width: ${PVC_CARD_WIDTH}px !important;
+            height: ${PVC_CARD_HEIGHT}px !important;
+            max-width: ${PVC_CARD_WIDTH}px !important;
+            max-height: ${PVC_CARD_HEIGHT}px !important;
+            transform: scale(${PVC_PRINT_SCALE}) !important;
+            transform-origin: center center !important;
           }
         `
         }

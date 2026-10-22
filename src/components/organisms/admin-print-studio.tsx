@@ -15,10 +15,11 @@ import { PrintCardFormControls } from "../molecules/print-card-form-controls";
 import { PrintConfirmationDialog } from "../molecules/print-confirmation-dialog";
 import type { AdminPrintStudioProps } from "./admin-print-studio.types";
 import type { CardMaterial } from "../../lib/firebase/firestore-schema";
+import { PVC_WIDTH_MM, PVC_HEIGHT_MM } from "../../lib/print-dimensions";
 export type { AdminPrintStudioContent, AdminPrintStudioProps } from "./admin-print-studio.types";
 function getMaterialDimensions(material: CardMaterial): PrintDimensions {
   return material === "pvc"
-    ? { preset: "custom", widthMm: 86, heightMm: 64 }
+    ? { preset: "custom", widthMm: PVC_WIDTH_MM, heightMm: PVC_HEIGHT_MM }
     : { preset: "a7", widthMm: 74, heightMm: 105 };
 }
 export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminPrintStudioProps) {

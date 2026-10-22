@@ -1,14 +1,14 @@
 import { Leaf, Nfc, QrCode, Star, Wifi } from "lucide-react";
 import type { ReactNode } from "react";
 import type { OrderDraft } from "../../server/orders/order.schemas";
+import { PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "../../lib/print-dimensions";
 import monsterBarber from "../assets/images/monsters/monster-barber.jpg";
 import monsterOrange from "../assets/images/monsters/monster-orange.png";
 import { GoogleMark } from "../elements/google-mark";
 import { MonsterAvatar } from "../elements/monster-avatar";
 import { VintageCoffeeMascot } from "../elements/vintage-coffee-mascot";
 
-export const PVC_CARD_WIDTH = 516;
-export const PVC_CARD_HEIGHT = 384;
+export { PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "../../lib/print-dimensions";
 
 type PvcCardCopy = {
   preHeadline?: string;
@@ -54,9 +54,9 @@ function getVisual(product: OrderDraft["product"], theme: OrderDraft["theme"]): 
 }
 
 function ThemeMark({ product, theme, showMonster }: Pick<OrderDraft, "product" | "theme"> & { showMonster: boolean }) {
-  if (theme === "coffee" && showMonster) return <VintageCoffeeMascot size="sm" className="size-12!" />;
+  if (theme === "coffee" && showMonster) return <VintageCoffeeMascot size="sm" className="size-9!" />;
   if (theme === "barbershop" && showMonster) return <img alt="" src={monsterBarber} className="size-full rounded-lg object-cover" />;
-  if ((theme === "modern" || theme === "kraken") && showMonster) return <MonsterAvatar theme="modern" size="sm" className="size-12!" />;
+  if ((theme === "modern" || theme === "kraken") && showMonster) return <MonsterAvatar theme="modern" size="sm" className="size-9!" />;
   if ((theme === "google" || theme === "monster") && showMonster) return <img alt="" src={monsterOrange} className="size-full object-contain p-1" />;
   if (product === "wifi") return <Wifi className="size-10" strokeWidth={3} />;
   if (theme === "google-classic") return <span className="[&_svg]:size-10"><GoogleMark /></span>;
@@ -69,7 +69,7 @@ function ActionTile({ children, label, help, className }: { children: ReactNode;
   return (
     <div className="flex min-w-0 flex-col items-center">
       <div className={`grid size-[100px] place-items-center rounded-2xl border-[3px] shadow-[5px_5px_0_#172029] ${className}`}>{children}</div>
-      <p className="mt-3 text-[13px] font-black uppercase">{label}</p>
+      <p className="mt-3 text-center text-[12px] leading-4 font-black uppercase">{label}</p>
       <p className="mt-1 text-center text-[9px] leading-3 opacity-70">{help}</p>
     </div>
   );
@@ -85,20 +85,20 @@ export function OrderPvcCard({ value, copy, cardId = "", qrDataUrl = "", showMon
 }) {
   const visual = getVisual(value.product, value.theme);
   return (
-    <article id={id} className={`print-canvas-root pvc-print-canvas relative h-[384px] w-[516px] overflow-hidden rounded-[24px] border-4 ${visual.surface}`} style={{ boxSizing: "border-box" }}>
+    <article id={id} className={`print-canvas-root pvc-print-canvas relative shrink-0 overflow-hidden rounded-[24px] border-4 ${visual.surface}`} style={{ boxSizing: "border-box", width: PVC_CARD_WIDTH, height: PVC_CARD_HEIGHT }}>
       <div aria-hidden="true" className={`absolute inset-x-0 top-0 h-3 ${visual.marker}`} />
       <div aria-hidden="true" className="absolute -right-9 -top-9 size-28 rotate-12 border-4 border-current opacity-10" />
-      <div className="grid h-full grid-cols-[235px_1fr]">
-        <header className={`relative flex min-w-0 flex-col border-r-4 border-[#172029] px-6 pb-5 pt-7 ${visual.panel}`}>
-          <div className={`grid size-16 shrink-0 -rotate-3 place-items-center rounded-xl border-[3px] border-[#172029] shadow-[4px_4px_0_#172029] ${visual.accent}`}>
+      <div className="grid h-full grid-cols-[210px_1fr]">
+        <header className={`relative flex min-w-0 flex-col border-r-4 border-[#172029] px-5 pb-4 pt-6 ${visual.panel}`}>
+          <div className={`grid size-12 shrink-0 -rotate-3 place-items-center rounded-lg border-[3px] border-[#172029] shadow-[4px_4px_0_#172029] ${visual.accent}`}>
             <ThemeMark product={value.product} theme={value.theme} showMonster={showMonster} />
           </div>
-          {copy.preHeadline && <p className={`mt-5 text-[10px] font-extrabold tracking-[0.08em] uppercase ${visual.muted}`}>{copy.preHeadline}</p>}
-          <h1 className="mt-2 text-[28px] leading-[1.04] font-black tracking-tight uppercase">{copy.headline}</h1>
-          <div className={`mt-4 w-fit -rotate-1 border-2 border-[#172029] px-3 py-1.5 text-[9px] font-black uppercase shadow-[3px_3px_0_#172029] ${visual.accent}`}>{copy.action}</div>
-          <p className={`mt-auto pt-4 text-[10px] leading-4 font-bold ${visual.muted}`}>{copy.footer}</p>
+          {copy.preHeadline && <p className={`mt-3 text-[9px] leading-3 font-extrabold tracking-[0.04em] uppercase ${visual.muted}`}>{copy.preHeadline}</p>}
+          <h1 className="mt-2 break-words text-[24px] leading-[1.04] font-black tracking-tight uppercase">{copy.headline}</h1>
+          <div className={`mt-3 w-fit -rotate-1 border-2 border-[#172029] px-2 py-1 text-[9px] leading-3 font-black uppercase shadow-[3px_3px_0_#172029] ${visual.accent}`}>{copy.action}</div>
+          <p className={`mt-auto pt-3 text-[9px] leading-3.5 font-bold ${visual.muted}`}>{copy.footer}</p>
         </header>
-        <section className="relative flex min-w-0 flex-col justify-center px-5 py-6 text-center">
+        <section className="relative flex min-w-0 flex-col justify-center px-5 py-5 text-center">
           {copy.network && <div className={`mb-4 rounded-lg border-2 border-current px-3 py-2 ${visual.accent}`}><p className="text-[8px] font-bold tracking-widest uppercase">{copy.network}</p><p className="mt-0.5 text-sm font-black">TapQR WiFi</p></div>}
           <div className="grid grid-cols-[1fr_18px_1fr] items-center gap-2">
             <ActionTile label={copy.tap} help={copy.tapHelp} className={visual.action}><Nfc className="size-11" strokeWidth={2.6} /></ActionTile>

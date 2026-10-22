@@ -64,13 +64,14 @@ export function PrintCardScaledFrame({
   return (
     <div
       ref={containerRef}
-      className={`relative mx-auto w-full overflow-hidden rounded-2xl ${className}`}
+      className={`print-card-scaled-frame relative mx-auto w-full overflow-hidden rounded-2xl ${className}`}
       style={{
         height: computedHeight,
         maxWidth: targetWidth ?? maxWidth,
       }}
     >
       <div
+        className="print-card-scale-layer"
         style={{
           width: canvasWidth,
           height: canvasHeight,
