@@ -180,6 +180,8 @@ export const id = {
       ],
       cta: "Pilih Paket Bisnis",
       note: "Domain dibayar terpisah (±Rp200-300 rb/tahun), kami bantu pilih dan daftarkan.",
+      whatsappMessage:
+        "Halo TapQR, saya tertarik membeli Paket Bisnis seharga Rp499.000.\n\nNama: \nNama bisnis: \nJenis usaha: \nKota: \n\nSaya membutuhkan:\n- Papan akrilik NFC + QR\n- Setup Google Business Profile dan link review\n- Landing page bisnis (revisi 2 kali)\n\nPilihan domain:\n[ ] Saya sudah memiliki domain\n[ ] Saya ingin dibantu memilih dan mendaftarkan domain\n[ ] Saya belum membutuhkan domain\n\nMohon informasi langkah pemesanan selanjutnya. Terima kasih.",
     },
     note: "Butuh domain sekalian? Paket Bisnis + Domain mulai Rp799.000. Hubungi kami.",
   },

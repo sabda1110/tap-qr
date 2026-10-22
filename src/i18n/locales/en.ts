@@ -166,6 +166,8 @@ export const en: typeof id = {
       ],
       cta: "Choose Business Package",
       note: "Domain billed separately (approx. Rp200–300k/year). We help you choose and register it.",
+      whatsappMessage:
+        "Hello TapQR, I am interested in purchasing the Business Package for Rp499.000.\n\nName: \nBusiness name: \nBusiness type: \nCity: \n\nI need:\n- Acrylic NFC + QR board\n- Google Business Profile and review link setup\n- Business landing page (2 revisions)\n\nDomain preference:\n[ ] I already have a domain\n[ ] I would like help choosing and registering a domain\n[ ] I do not need a domain yet\n\nPlease share the next steps for ordering. Thank you.",
     },
     note:
       "Need a domain too? Business Package + Domain starts at Rp799.000. Contact us.",

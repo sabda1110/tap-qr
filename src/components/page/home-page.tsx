@@ -65,7 +65,11 @@ export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) 
               {
                 content: messages.pricing.businessBundle,
                 icon: Nfc,
-                externalHref: whatsappNumber ? `https://wa.me/${whatsappNumber}` : null,
+                externalHref: whatsappNumber
+                  ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+                      messages.pricing.businessBundle.whatsappMessage,
+                    )}`
+                  : null,
               },
             ]}
           />
