@@ -12,6 +12,7 @@ type PricingPlan = {
   icon: LucideIcon;
   featured?: boolean;
   order?: boolean;
+  externalHref?: string | null;
 };
 
 type PricingSectionProps = {

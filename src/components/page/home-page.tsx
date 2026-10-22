@@ -13,7 +13,7 @@ import { SiteHeader } from "../organisms/site-header";
 import { TestimonialsSection } from "../organisms/testimonials-section";
 import { useI18n } from "../../i18n";
 
-export function HomePage() {
+export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) {
   const { language, messages } = useI18n();
 
   return (
@@ -62,7 +62,11 @@ export function HomePage() {
                 featured: true,
                 order: true,
               },
-              { content: messages.pricing.businessBundle, icon: Nfc, order: true },
+              {
+                content: messages.pricing.businessBundle,
+                icon: Nfc,
+                externalHref: whatsappNumber ? `https://wa.me/${whatsappNumber}` : null,
+              },
             ]}
           />
           <TestimonialsSection

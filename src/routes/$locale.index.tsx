@@ -1,11 +1,11 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { HomePage } from "../components/page/home-page";
-import { getCurrentAuthenticatedUser } from "../server/auth/auth.functions";
+import { getOrderCheckout } from "../server/orders/order.functions";
 
 export const Route = createFileRoute("/$locale/")({
   loader: async ({ params }) => {
-    const user = await getCurrentAuthenticatedUser();
+    const { user, whatsappNumber } = await getOrderCheckout();
     if (user) {
       throw redirect({
         to: user.role === "admin" ? "/$locale/dashboard/admin" : "/$locale/dashboard/user",
@@ -14,7 +14,11 @@ export const Route = createFileRoute("/$locale/")({
       });
     }
 
-    return null;
+    return { whatsappNumber };
   },
-  component: HomePage,
+  component: HomeRoute,
 });
+
+function HomeRoute() {
+  return <HomePage whatsappNumber={Route.useLoaderData().whatsappNumber} />;
+}

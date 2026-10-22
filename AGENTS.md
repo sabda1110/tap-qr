@@ -122,7 +122,7 @@ stiker akan lebih sulit dirasakan.
 - Media fisik NFC atau QR dijual terpisah dengan pembayaran satu kali agar tidak
   menambah hambatan untuk mencoba layanan.
 - Harga landing: PVC NFC + QR Rp79.000/unit, akrilik NFC + QR Rp69.000/unit;
-  Paket Bisnis Rp499.000, atau dengan domain mulai Rp799.000. QR Mandiri dihapus.
+  Paket Bisnis Rp499.000, atau dengan domain mulai Rp799.000; CTA ke WhatsApp admin. QR Mandiri dihapus.
 
 ### Kepatuhan Google Review
 

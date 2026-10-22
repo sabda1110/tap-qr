@@ -20,6 +20,7 @@ type PricingCardProps = {
   language: Language;
   featured?: boolean;
   order?: boolean;
+  externalHref?: string | null;
 };
 
 export function PricingCard({
@@ -28,7 +29,13 @@ export function PricingCard({
   language,
   featured,
   order = false,
+  externalHref,
 }: PricingCardProps) {
+  const ctaClassName = `mt-9 inline-flex min-h-12 items-center justify-center rounded-full px-4 py-3 text-center text-sm font-bold no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0798ad] ${
+    featured
+      ? "bg-[#171b22] text-white hover:bg-[#303740] hover:text-white"
+      : "bg-[#ffb332] text-[#171b22] hover:bg-[#ffc45c] hover:text-[#171b22]"
+  }`;
   return (
     <article
       className={`group relative flex h-full min-w-0 flex-col rounded-[2rem] border p-7 shadow-[0_16px_36px_rgba(20,24,32,0.12)] transition-transform duration-300 ease-out motion-safe:hover:-translate-y-1 sm:p-8 md:p-5 lg:p-8 ${
@@ -74,17 +81,23 @@ export function PricingCard({
         ))}
       </ul>
 
-      <Link
-        className={`mt-9 inline-flex min-h-12 items-center justify-center rounded-full px-4 py-3 text-center text-sm font-bold no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0798ad] ${
-          featured
-            ? "bg-[#171b22] text-white hover:bg-[#303740] hover:text-white"
-            : "bg-[#ffb332] text-[#171b22] hover:bg-[#ffc45c] hover:text-[#171b22]"
-        }`}
-        to={order ? "/$locale/order" : "/$locale/auth/$mode"}
-        params={{ locale: language, mode: "register" }}
-      >
-        {content.cta}
-      </Link>
+      {externalHref ? (
+        <a className={ctaClassName} href={externalHref} target="_blank" rel="noopener noreferrer">
+          {content.cta}
+        </a>
+      ) : externalHref === null ? (
+        <button className={`${ctaClassName} cursor-not-allowed opacity-50`} type="button" disabled>
+          {content.cta}
+        </button>
+      ) : (
+        <Link
+          className={ctaClassName}
+          to={order ? "/$locale/order" : "/$locale/auth/$mode"}
+          params={{ locale: language, mode: "register" }}
+        >
+          {content.cta}
+        </Link>
+      )}
       {content.note ? (
         <p className="mt-3 text-xs leading-5 text-white/75 md:min-h-20">
           {content.note}
