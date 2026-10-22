@@ -1,16 +1,13 @@
-import { Link } from "@tanstack/react-router";
-
-import type { Language, Messages } from "../../i18n";
+import type { Messages } from "../../i18n";
 import { HeroDecorations } from "../elements/hero-decorations";
 import { MotionReveal } from "../elements/motion-reveal";
 
 type HeroSectionProps = {
   content: Messages["home"];
   imageSrc: string;
-  language: Language;
 };
 
-export function HeroSection({ content, imageSrc, language }: HeroSectionProps) {
+export function HeroSection({ content, imageSrc }: HeroSectionProps) {
   return (
     <section className="relative isolate overflow-hidden bg-white pb-14 pt-8 sm:pb-20 sm:pt-12 lg:pb-24">
       <HeroDecorations />
@@ -49,13 +46,12 @@ export function HeroSection({ content, imageSrc, language }: HeroSectionProps) {
           </p>
 
           <div className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:gap-8">
-            <Link
+            <a
               className="inline-flex h-11 items-center justify-center rounded-md bg-black px-6 text-[12px] font-medium text-white no-underline hover:bg-black/80 hover:text-white"
-              to="/$locale/auth/$mode"
-              params={{ locale: language, mode: "register" }}
+              href="#pricing"
             >
               {content.getStarted}
-            </Link>
+            </a>
             <a
               className="text-[12px] font-medium text-black underline decoration-black/50 underline-offset-4 hover:text-black/65"
               href="#features"

@@ -37,7 +37,7 @@ export function PricingSection({
   return (
     <section
       id="pricing"
-      className="relative isolate overflow-hidden bg-[#f5f8fb] py-20 sm:py-24 lg:py-28"
+      className="relative isolate scroll-mt-24 overflow-hidden bg-[#f5f8fb] py-20 sm:py-24 lg:py-28"
     >
       <div
         aria-hidden="true"

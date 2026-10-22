@@ -4,8 +4,12 @@ import { cardClaimEn, userDashboardEn } from "./user-dashboard-en";
 import { outletProfileEn } from "./outlet-profile-en";
 import type { id } from "./id";
 import { ordersEn } from "./orders-en";
+import { landingFaqEn } from "./landing-details-en";
+import { productShowcaseEn } from "./product-showcase-en";
 
 export const en: typeof id = {
+  productShowcase: productShowcaseEn,
+  faq: landingFaqEn,
   orders: ordersEn,
   outletProfile: outletProfileEn,
   header: {
@@ -73,8 +77,8 @@ export const en: typeof id = {
     titleEnd: "& Returning Customers",
     description:
       "Help customers leave a Google review, connect to WiFi, open WhatsApp, browse your menu, and follow your social media—all from a single tap or scan.",
-    getStarted: "Start Free",
-    tryDemo: "See how it works",
+    getStarted: "Choose Your TapQR Card",
+    tryDemo: "Explore TapQR features",
     illustrationAlt:
       "Customers connecting with a business through their digital devices",
   },
@@ -208,6 +212,7 @@ export const en: typeof id = {
       "One tap to help small businesses earn more reviews, connect with customers, and grow with better insight.",
     navigationLabel: "Footer navigation",
     navigationTitle: "Explore",
+    faq: "Frequently asked questions",
     home: "Home",
     features: "Features",
     pricing: "Pricing",

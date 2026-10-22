@@ -15,6 +15,7 @@ export function SiteFooter({ content, language }: SiteFooterProps) {
     { label: content.features, href: "#features" },
     { label: content.pricing, href: "#pricing" },
     { label: content.testimonials, href: "#testimonials" },
+    { label: content.faq, href: "#faq" },
   ];
 
   return (

@@ -11,6 +11,9 @@ import { PricingSection } from "../organisms/pricing-section";
 import { SiteFooter } from "../organisms/site-footer";
 import { SiteHeader } from "../organisms/site-header";
 import { TestimonialsSection } from "../organisms/testimonials-section";
+import { LandingFaqSection } from "../organisms/landing-faq-section";
+import { ProductShowcaseSection } from "../organisms/product-showcase-section";
+import { ProductDisplay } from "../molecules/product-display";
 import { useI18n } from "../../i18n";
 
 export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) {
@@ -23,12 +26,15 @@ export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) 
         <HeroSection
           content={messages.home}
           imageSrc={heroShot}
-          language={language}
         />
       }
       footer={<SiteFooter content={messages.footer} language={language} />}
       content={
         <>
+          <ProductShowcaseSection
+            content={messages.productShowcase}
+            preview={<ProductDisplay content={messages.adminDashboard.printStudio} />}
+          />
           <KeyFeaturesSection
             heading={messages.features.heading}
             features={[
@@ -81,6 +87,10 @@ export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) 
               messages.testimonials.barbershop,
               messages.testimonials.laundry,
             ]}
+          />
+          <LandingFaqSection
+            content={messages.faq}
+            contactHref={whatsappNumber ? `https://wa.me/${whatsappNumber}` : null}
           />
         </>
       }

@@ -3,7 +3,11 @@ import { authId } from "./auth-id";
 import { cardClaimId, userDashboardId } from "./user-dashboard-id";
 import { outletProfileId } from "./outlet-profile-id";
 import { ordersId } from "./orders-id";
+import { landingFaqId } from "./landing-details-id";
+import { productShowcaseId } from "./product-showcase-id";
 export const id = {
+  productShowcase: productShowcaseId,
+  faq: landingFaqId,
   orders: ordersId,
   outletProfile: outletProfileId,
   header: {
@@ -87,8 +91,8 @@ export const id = {
     titleEnd: "& Pelanggan Kembali",
     description:
       "Bantu pelanggan memberi ulasan Google, terhubung ke WiFi, membuka WhatsApp, melihat menu, dan mengikuti media sosial Anda—semuanya dalam satu tap atau scan.",
-    getStarted: "Mulai Gratis",
-    tryDemo: "Lihat cara kerjanya",
+    getStarted: "Pilih Kartu TapQR",
+    tryDemo: "Lihat fitur TapQR",
     illustrationAlt:
       "Ilustrasi pelanggan terhubung dengan bisnis melalui perangkat digital",
   },
@@ -221,6 +225,7 @@ export const id = {
       "Satu tap untuk membantu UMKM mendapatkan lebih banyak review, terhubung dengan pelanggan, dan bertumbuh lebih cerdas.",
     navigationLabel: "Navigasi footer",
     navigationTitle: "Jelajahi",
+    faq: "Pertanyaan umum",
     home: "Beranda",
     features: "Fitur",
     pricing: "Harga",
