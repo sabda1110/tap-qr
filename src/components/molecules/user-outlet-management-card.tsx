@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { Link } from "@tanstack/react-router";
 import { CreditCard, ExternalLink, Images, MapPin, Pencil, Plus } from "lucide-react";
 import type { Language, Messages } from "../../i18n";
@@ -28,7 +29,11 @@ export function UserOutletManagementCard({
   onEditCard,
   onAddCard,
 }: Props) {
+  const galleryTooltipId = useId();
   const outletActive = outlet.status === "active";
+  const canManageGallery = outlet.cards.some(
+    (card) => card.links.filter((link) => link.isActive).length > 1,
+  );
   return (
     <article className="min-w-0 overflow-hidden rounded-2xl border border-black/8 bg-white">
       <div className="p-4 sm:p-5">
@@ -85,14 +90,30 @@ export function UserOutletManagementCard({
               {content.viewProfile}
             </Button>
           )}
-          <Button
-            className="col-span-2 h-11 px-3 sm:col-span-1"
-            variant="outline"
-            onClick={onManageGallery}
+          <span
+            className="group relative col-span-2 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#087e91] sm:col-span-1"
+            tabIndex={canManageGallery ? undefined : 0}
+            aria-describedby={canManageGallery ? undefined : galleryTooltipId}
           >
-            <Images aria-hidden="true" />
-            {galleryContent.manage}
-          </Button>
+            <Button
+              className="h-11 w-full px-3"
+              variant="outline"
+              onClick={onManageGallery}
+              disabled={!canManageGallery}
+            >
+              <Images aria-hidden="true" />
+              {galleryContent.manage}
+            </Button>
+            {!canManageGallery && (
+              <span
+                id={galleryTooltipId}
+                role="tooltip"
+                className="pointer-events-none absolute right-0 bottom-full z-10 mb-2 w-max max-w-64 rounded-lg bg-[#172029] px-3 py-2 text-xs leading-5 font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus:opacity-100"
+              >
+                {galleryContent.disabledHelp}
+              </span>
+            )}
+          </span>
         </div>
         {!outletActive && (
           <p className="mt-2 text-xs leading-5 text-amber-800">

@@ -1,5 +1,6 @@
 export const outletGalleryId = {
   manage: "Kelola galeri",
+  disabledHelp: "Kartu harus memiliki lebih dari 1 link aktif.",
   dashboardTitle: "Galeri highlight",
   dashboardDescription:
     "Tampilkan cerita singkat outlet pada profil publik. Maksimal 3 highlight dan 5 gambar per highlight.",

@@ -2,6 +2,7 @@ import type { outletGalleryId } from "./outlet-gallery-id";
 
 export const outletGalleryEn: typeof outletGalleryId = {
   manage: "Manage gallery",
+  disabledHelp: "The card must have more than 1 active link.",
   dashboardTitle: "Highlight gallery",
   dashboardDescription:
     "Share short outlet stories on the public profile. Up to 3 highlights and 5 images per highlight.",
