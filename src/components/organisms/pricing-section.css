@@ -1,0 +1,35 @@
+@media (prefers-reduced-motion: no-preference) {
+  .pricing-artwork,
+  .pricing-spark,
+  .pricing-background-spark,
+  .pricing-cta-arrow {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 350ms ease;
+  }
+
+  .pricing-plan:is(:hover, :focus-within) .pricing-artwork {
+    transform: translateY(-3px) rotate(-5deg);
+  }
+
+  .pricing-plan:is(:hover, :focus-within) .pricing-spark {
+    transform: rotate(30deg) scale(1.15);
+  }
+
+  .pricing-plan:is(:hover, :focus-within) .pricing-action-line {
+    animation: pricing-doodle-draw 650ms ease-out both;
+  }
+
+  .pricing-section:is(:hover, :focus-within) .pricing-background-spark {
+    transform: rotate(12deg);
+  }
+
+  .pricing-cta:is(:hover, :focus-visible) .pricing-cta-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  @keyframes pricing-doodle-draw {
+    from { stroke-dasharray: 180; stroke-dashoffset: 180; }
+    to { stroke-dasharray: 180; stroke-dashoffset: 0; }
+  }
+}

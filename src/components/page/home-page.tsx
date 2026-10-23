@@ -1,4 +1,4 @@
-import { CreditCard, Nfc, ScanLine } from "lucide-react";
+import { CreditCard, Crown, ScanLine } from "lucide-react";
 import heroShot from "../assets/images/heroshot-feature-style-v2.webp";
 import cloudMascot from "../assets/images/tapqr-cloud-mascot.webp";
 import customerHubImage from "../assets/images/features/customer-hub.png";
@@ -71,7 +71,8 @@ export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) 
               },
               {
                 content: messages.pricing.businessBundle,
-                icon: Nfc,
+                icon: Crown,
+                royal: true,
                 externalHref: whatsappNumber
                   ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
                       messages.pricing.businessBundle.whatsappMessage,
