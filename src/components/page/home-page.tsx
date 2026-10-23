@@ -1,5 +1,6 @@
 import { CreditCard, Nfc, ScanLine } from "lucide-react";
 import heroShot from "../assets/images/heroshot-feature-style-v2.webp";
+import cloudMascot from "../assets/images/tapqr-cloud-mascot.webp";
 import customerHubImage from "../assets/images/features/customer-hub.png";
 import flexibleNfcQrImage from "../assets/images/features/flexible-nfc-qr.png";
 import reviewGrowthImage from "../assets/images/features/review-growth.png";
@@ -31,10 +32,6 @@ export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) 
       footer={<SiteFooter content={messages.footer} language={language} />}
       content={
         <>
-          <ProductShowcaseSection
-            content={messages.productShowcase}
-            preview={<ProductDisplay content={messages.adminDashboard.printStudio} />}
-          />
           <KeyFeaturesSection
             heading={messages.features.heading}
             features={[
@@ -55,6 +52,10 @@ export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) 
                 imageSrc: scanAnalyticsImage,
               },
             ]}
+          />
+          <ProductShowcaseSection
+            content={messages.productShowcase}
+            preview={<ProductDisplay content={messages.adminDashboard.printStudio} mascotSrc={cloudMascot} benefits={messages.productShowcase.mascotBenefits} />}
           />
           <PricingSection
             heading={messages.pricing.heading}

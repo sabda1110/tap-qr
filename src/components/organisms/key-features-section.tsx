@@ -26,7 +26,7 @@ export function KeyFeaturesSection({
   features,
 }: KeyFeaturesSectionProps) {
   return (
-    <section id="features" className="bg-white py-20 sm:py-24 lg:py-28">
+    <section id="features" className="bg-white pb-0 pt-20 sm:pt-24 lg:pt-28">
       <div className="mx-auto w-[calc(100%-2rem)] max-w-6xl sm:w-[calc(100%-4rem)]">
         <MotionReveal>
           <header className="mx-auto max-w-[850px] text-center">
