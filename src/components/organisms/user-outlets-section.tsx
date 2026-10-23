@@ -16,8 +16,10 @@ type Props = {
   outlets: OutletDetail[];
   language: Language;
   content: Messages["userDashboard"];
+  galleryContent: Messages["outletGallery"];
   materials: Messages["adminDashboard"]["outlets"];
   onEditOutlet: (outletId: string) => void;
+  onManageGallery: (outletId: string) => void;
   onEditCard: (outletId: string, cardId: string) => void;
   onAddCard: (outletId?: string) => void;
 };
@@ -26,8 +28,10 @@ export function UserOutletsSection({
   outlets,
   language,
   content,
+  galleryContent,
   materials,
   onEditOutlet,
+  onManageGallery,
   onEditCard,
   onAddCard,
 }: Props) {
@@ -100,8 +104,10 @@ export function UserOutletsSection({
           outlet={selectedOutlet}
           language={language}
           content={content}
+          galleryContent={galleryContent}
           materials={materials}
           onEditOutlet={() => onEditOutlet(selectedOutlet.id)}
+          onManageGallery={() => onManageGallery(selectedOutlet.id)}
           onEditCard={(cardId) => onEditCard(selectedOutlet.id, cardId)}
           onAddCard={() => onAddCard(selectedOutlet.id)}
         />

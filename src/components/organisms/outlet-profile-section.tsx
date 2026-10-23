@@ -6,16 +6,21 @@ import type {
   OutletProfileConfig,
 } from "../page/outlet-profile-config";
 import { OutletActionIcon } from "../elements/outlet-action-icon";
+import { OutletHighlights } from "../molecules/outlet-highlights";
 import "./outlet-profile.css";
 
 export function OutletProfileSection({
   config,
   content,
   onAction,
+  galleryContent,
+  onHighlightOpen,
 }: {
   config: OutletProfileConfig;
   content: Messages["outletProfile"];
   onAction: (action: OutletProfileAction) => void;
+  galleryContent: Messages["outletGallery"];
+  onHighlightOpen: (highlightId: string) => void;
 }) {
   const [activeActionIds, setActiveActionIds] = useState<ReadonlySet<string>>(
     () => new Set(),
@@ -61,6 +66,12 @@ export function OutletProfileSection({
             )}
           </div>
         </header>
+
+        <OutletHighlights
+          highlights={config.highlights}
+          content={galleryContent}
+          onHighlightOpen={onHighlightOpen}
+        />
 
         <div className="outlet-greeting">
           <span aria-hidden="true">↗</span>

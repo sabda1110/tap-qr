@@ -75,6 +75,14 @@ transaksi edit kartu memeriksa kepemilikan outlet dan kartu, hubungan outlet,
 dan status klaim sebelum menulis. Endpoint admin tetap memakai guard admin.
 Menambah outlet baru menggunakan alur klaim kartu yang sudah tersedia.
 
+Pemilik juga dapat mengelola `outlets.publicProfile.highlights` melalui endpoint
+khusus owner. Maksimal terdapat tiga highlight per outlet, judul maksimal 24
+karakter, dan setiap highlight berisi satu sampai lima gambar berurutan. Setiap
+gambar menyimpan ID acak, URL HTTPS Cloudinary, serta `publicId` untuk pembersihan
+aset saat gambar dihapus. Upload JPG/PNG/WebP tetap dibatasi 2 MB dan diperkecil
+hingga maksimal 1080 × 1920 piksel. Server memeriksa kepemilikan outlet serta
+prefix `publicId`; admin tidak memiliki endpoint pengelolaan galeri ini.
+
 ## Tambah outlet dan duplikasi
 
 Admin dapat membuat outlet tambahan untuk owner aktif yang sudah terdaftar,
@@ -104,10 +112,17 @@ atau ulasan yang telah dikirim.
 
 Field opsional `outlets.publicProfile` menyimpan presentasi link-in-bio dalam
 satu objek: preset `theme` (`coffee`, `barbershop`, atau `general`), `tagline`,
-`greeting`, dan ringkasan `hours`. Jika belum tersedia, profil memakai tema dan
-copy bawaan serta tidak menebak status buka/tutup. Klik tautan publik dicatat
+`greeting`, ringkasan `hours`, dan array `highlights`. Respons publik highlight
+hanya memuat ID, judul, dan URL gambar; `publicId` Cloudinary tidak dikirim.
+Jika belum tersedia, profil memakai tema dan copy bawaan serta tidak menebak
+status buka/tutup. Klik tautan publik dicatat
 sebagai `link_click` dengan kanal tujuan; event ini bukan bukti bahwa pelanggan
 menyelesaikan review atau tindakan di situs tujuan.
+
+Pembukaan highlight dicatat ke `scanEvents` sebagai `highlight_open`, dengan
+`business_id`/`outletId`, ID acak highlight, `cardId: null`, timestamp, dan
+`source: "public_profile"`. Event tidak menyimpan judul, URL gambar, identitas
+pelanggan, atau data sensitif lainnya.
 
 ## Akses
 

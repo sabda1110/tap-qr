@@ -23,3 +23,9 @@ export async function requireAdmin(): Promise<UserProfile> {
   if (user.role !== "admin") throw new Error("Akses admin diperlukan.");
   return user;
 }
+
+export async function requireOwner(): Promise<UserProfile> {
+  const user = await requireAuthenticatedUser();
+  if (user.role !== "owner") throw new Error("OWNER_ACCESS_REQUIRED");
+  return user;
+}

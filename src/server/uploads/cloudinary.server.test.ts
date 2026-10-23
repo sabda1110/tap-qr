@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { uploadCloudinaryImage } from "./cloudinary.server";
+import {
+  destroyCloudinaryImages,
+  uploadCloudinaryImage,
+} from "./cloudinary.server";
 import { imageUploadMaxBytes } from "../../lib/validation/image-upload";
 
 const pngHeader = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
@@ -51,4 +54,35 @@ test("Cloudinary uploads authenticate on the server and handle provider failures
   await assert.rejects(uploadCloudinaryImage(file, "logos"), /IMAGE_UPLOAD_FAILED/);
   mode = "invalidResponse";
   await assert.rejects(uploadCloudinaryImage(file, "logos"), /IMAGE_UPLOAD_FAILED/);
+});
+
+test("Cloudinary deletion only targets the requested public IDs", async (context) => {
+  const originalEnv = process.env.CLOUDINARY_ENV;
+  context.after(() => {
+    if (originalEnv === undefined) delete process.env.CLOUDINARY_ENV;
+    else process.env.CLOUDINARY_ENV = originalEnv;
+    context.mock.restoreAll();
+  });
+  process.env.CLOUDINARY_ENV = "cloudinary://test-key:test-secret@test-cloud";
+  context.mock.method(
+    globalThis,
+    "fetch",
+    async (url: URL, request: RequestInit) => {
+      const endpoint = new URL(String(url));
+      assert.equal(
+        endpoint.origin + endpoint.pathname,
+        "https://api.cloudinary.com/v1_1/test-cloud/resources/image/upload",
+      );
+      assert.deepEqual(endpoint.searchParams.getAll("public_ids[]"), [
+        "tapqr/highlights/owner/outlet/one",
+        "tapqr/highlights/owner/outlet/two",
+      ]);
+      assert.equal(request.method, "DELETE");
+      return new Response(null, { status: 200 });
+    },
+  );
+  await destroyCloudinaryImages([
+    "tapqr/highlights/owner/outlet/one",
+    "tapqr/highlights/owner/outlet/two",
+  ]);
 });

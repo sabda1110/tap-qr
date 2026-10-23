@@ -7,6 +7,18 @@ export type CardConfigType = "google_review" | "social";
 export type NfcType = "tapqr" | "google_review" | "custom";
 export type OutletProfileTheme = "coffee" | "barbershop" | "general";
 
+export type OutletHighlightImage = {
+  id: string;
+  url: string;
+  publicId: string;
+};
+
+export type OutletHighlight = {
+  id: string;
+  title: string;
+  images: OutletHighlightImage[];
+};
+
 export type OutletPublicProfileSettings = {
   theme: OutletProfileTheme;
   tagline: string | null;
@@ -17,6 +29,7 @@ export type OutletPublicProfileSettings = {
     closesAt: string | null;
     allHoursUrl: string | null;
   } | null;
+  highlights?: OutletHighlight[];
 };
 
 export type OutletRecord = {

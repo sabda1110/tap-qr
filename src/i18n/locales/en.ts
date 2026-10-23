@@ -6,12 +6,14 @@ import type { id } from "./id";
 import { ordersEn } from "./orders-en";
 import { landingFaqEn } from "./landing-details-en";
 import { productShowcaseEn } from "./product-showcase-en";
+import { outletGalleryEn } from "./outlet-gallery-en";
 
 export const en: typeof id = {
   productShowcase: productShowcaseEn,
   faq: landingFaqEn,
   orders: ordersEn,
   outletProfile: outletProfileEn,
+  outletGallery: outletGalleryEn,
   header: {
     brandHomeLabel: "TapQR home",
     mainNavigationLabel: "Main navigation",

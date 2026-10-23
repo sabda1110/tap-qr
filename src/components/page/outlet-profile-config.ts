@@ -118,6 +118,7 @@ export function createOutletProfileConfig(
     id: profile.id,
     name: profile.name,
     avatarUrl: profile.avatarUrl,
+    highlights: profile.highlights,
     tagline: profile.tagline ?? profile.description ?? content.tagline,
     greeting: profile.greeting ?? content.greeting,
     address: profile.location,

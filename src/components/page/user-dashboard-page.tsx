@@ -1,6 +1,6 @@
 import { lazy, Suspense, useState } from "react";
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
-import { CreditCard, Store } from "lucide-react";
+import { CreditCard, Images, Store } from "lucide-react";
 import { useI18n } from "../../i18n";
 import type { UserProfile } from "../../lib/auth/user-profile";
 import { useDashboardSession } from "../../hooks/use-dashboard-session";
@@ -32,8 +32,13 @@ const OutletCardEditForm = lazy(() =>
     default: module.OutletCardEditForm,
   })),
 );
+const OutletGalleryEditor = lazy(() =>
+  import("../organisms/outlet-gallery-editor").then((module) => ({
+    default: module.OutletGalleryEditor,
+  })),
+);
 
-type Editor = { outletId: string; cardId?: string };
+type Editor = { outletId: string; cardId?: string; gallery?: boolean };
 type Claim = { outletId?: string; mode?: "new" | "existing" };
 
 export function UserDashboardPage({
@@ -54,6 +59,7 @@ export function UserDashboardPage({
   const [busy, setBusy] = useState(false);
   const outlet = outlets.find((outlet) => outlet.id === editor?.outletId);
   const card = outlet?.cards.find((card) => card.id === editor?.cardId);
+  const editingGallery = editor?.gallery === true;
   const content = messages.userDashboard;
   const formContent = messages.adminDashboard.outlets;
   const activeOutlets = outlets.filter((outlet) => outlet.status === "active");
@@ -126,8 +132,10 @@ export function UserDashboardPage({
           outlets={outlets}
           language={language}
           content={content}
+          galleryContent={messages.outletGallery}
           materials={formContent}
           onEditOutlet={(outletId) => setEditor({ outletId })}
+          onManageGallery={(outletId) => setEditor({ outletId, gallery: true })}
           onEditCard={(outletId, cardId) => setEditor({ outletId, cardId })}
           onAddCard={(outletId) =>
             setClaim({ outletId, mode: outletId ? "existing" : undefined })
@@ -167,11 +175,15 @@ export function UserDashboardPage({
       {outlet && (
         <Dialog
           title={
-            (card ? content.editLinks : content.editOutlet) +
+            (editingGallery
+              ? messages.outletGallery.dashboardTitle
+              : card
+                ? content.editLinks
+                : content.editOutlet) +
             " · " +
             outlet.name
           }
-          icon={card ? CreditCard : Store}
+          icon={editingGallery ? Images : card ? CreditCard : Store}
           closeLabel={formContent.close}
           busy={busy}
           dismissOnOutsidePress={false}
@@ -186,7 +198,16 @@ export function UserDashboardPage({
               </DialogBody>
             }
           >
-            {card ? (
+            {editingGallery ? (
+              <OutletGalleryEditor
+                key={outlet.id}
+                outlet={outlet}
+                content={messages.outletGallery}
+                onBusyChange={setBusy}
+                onCancel={() => setEditor(null)}
+                onSaved={saved}
+              />
+            ) : card ? (
               <OutletCardEditForm
                 key={card.id}
                 outletId={outlet.id}

@@ -2,8 +2,12 @@ import { FieldValue, type DocumentData } from "firebase-admin/firestore";
 import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
 import type { CardRecord } from "../../lib/firebase/firestore-schema";
 import type { OutletDetail, OutletList, OutletSummary } from "./outlet.types";
-import type { OutletEditValues } from "./outlet.schemas";
+import type {
+  OutletEditValues,
+  OutletHighlightsValues,
+} from "./outlet.schemas";
 import { assertOutletOwner } from "./outlet-ownership";
+import { parseOutletHighlights } from "./outlet-highlights";
 
 function timestamp(value: unknown): string | null {
   if (
@@ -43,6 +47,7 @@ export function buildOutletSummary(
         links.filter((link) => link.isActive).map((link) => link.type),
       ),
     ],
+    highlights: parseOutletHighlights(outlet.publicProfile?.highlights),
   };
 }
 
@@ -180,5 +185,48 @@ export async function updateOutlet(input: OutletEditValues, ownerId?: string) {
     });
     if (oldSlugReference && oldSlug?.data()?.outletId === input.id)
       transaction.delete(oldSlugReference);
+  });
+}
+
+export async function updateOutletHighlights(
+  input: OutletHighlightsValues,
+  ownerId: string,
+) {
+  const database = getFirebaseAdminFirestore();
+  const reference = database.collection("outlets").doc(input.outletId);
+  return database.runTransaction(async (transaction) => {
+    const snapshot = await transaction.get(reference);
+    if (!snapshot.exists) throw new Error("OUTLET_NOT_FOUND");
+    const outlet = snapshot.data()!;
+    assertOutletOwner(outlet.ownerId, ownerId);
+    const expectedPrefix = `tapqr/highlights/${ownerId}/${input.outletId}/`;
+    for (const highlight of input.highlights) {
+      for (const image of highlight.images) {
+        if (
+          !image.publicId.startsWith(expectedPrefix) ||
+          !image.publicId.endsWith(`/${image.id}`)
+        )
+          throw new Error("INVALID_HIGHLIGHT_IMAGE");
+      }
+    }
+    const previous = parseOutletHighlights(outlet.publicProfile?.highlights);
+    const retainedIds = new Set(
+      input.highlights.flatMap((highlight) =>
+        highlight.images.map((image) => image.publicId),
+      ),
+    );
+    const removedPublicIds = previous
+      .flatMap((highlight) => highlight.images)
+      .map((image) => image.publicId)
+      .filter((publicId) => !retainedIds.has(publicId));
+    const publicProfile =
+      outlet.publicProfile && typeof outlet.publicProfile === "object"
+        ? outlet.publicProfile
+        : {};
+    transaction.update(reference, {
+      publicProfile: { ...publicProfile, highlights: input.highlights },
+      updatedAt: FieldValue.serverTimestamp(),
+    });
+    return removedPublicIds;
   });
 }

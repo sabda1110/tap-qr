@@ -4,6 +4,47 @@ import {
   ownerActivationSchema,
 } from "../../lib/validation/owner-activation-schema";
 
+const cloudinaryUrlSchema = z
+  .url()
+  .startsWith("https://res.cloudinary.com/")
+  .max(2_000);
+
+export const outletHighlightImageSchema = z.object({
+  id: z.uuid(),
+  url: cloudinaryUrlSchema,
+  publicId: z.string().trim().min(1).max(500),
+});
+
+export const outletHighlightSchema = z.object({
+  id: z.uuid(),
+  title: z.string().trim().min(1).max(24),
+  images: z.array(outletHighlightImageSchema).min(1).max(5),
+});
+
+export const updateOutletHighlightsSchema = z
+  .object({
+    outletId: z.string().min(1).max(150),
+    highlights: z.array(outletHighlightSchema).max(3),
+  })
+  .superRefine(({ highlights }, context) => {
+    const highlightIds = highlights.map((highlight) => highlight.id);
+    const imageIds = highlights.flatMap((highlight) =>
+      highlight.images.map((image) => image.id),
+    );
+    if (new Set(highlightIds).size !== highlightIds.length)
+      context.addIssue({
+        code: "custom",
+        path: ["highlights"],
+        message: "DUPLICATE_HIGHLIGHT_ID",
+      });
+    if (new Set(imageIds).size !== imageIds.length)
+      context.addIssue({
+        code: "custom",
+        path: ["highlights"],
+        message: "DUPLICATE_HIGHLIGHT_IMAGE_ID",
+      });
+  });
+
 const outletLinkSchema = z
   .object({
     id: z.string().min(1),
@@ -68,3 +109,6 @@ export const updateOutletCardLinksSchema = z.object({
 export type CardLinksEditValues = z.infer<typeof updateOutletCardLinksSchema>;
 
 export type OutletEditValues = z.infer<typeof updateOutletSchema>;
+export type OutletHighlightsValues = z.infer<
+  typeof updateOutletHighlightsSchema
+>;

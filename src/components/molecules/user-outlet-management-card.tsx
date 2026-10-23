@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { CreditCard, ExternalLink, MapPin, Pencil, Plus } from "lucide-react";
+import { CreditCard, ExternalLink, Images, MapPin, Pencil, Plus } from "lucide-react";
 import type { Language, Messages } from "../../i18n";
 import type { OutletDetail } from "../../server/outlets/outlet.types";
 import { OutletAvatar } from "../elements/outlet-avatar";
@@ -9,8 +9,10 @@ type Props = {
   outlet: OutletDetail;
   language: Language;
   content: Messages["userDashboard"];
+  galleryContent: Messages["outletGallery"];
   materials: Pick<Messages["adminDashboard"]["outlets"], "acrylic" | "pvc">;
   onEditOutlet: () => void;
+  onManageGallery: () => void;
   onEditCard: (cardId: string) => void;
   onAddCard: () => void;
 };
@@ -19,8 +21,10 @@ export function UserOutletManagementCard({
   outlet,
   language,
   content,
+  galleryContent,
   materials,
   onEditOutlet,
+  onManageGallery,
   onEditCard,
   onAddCard,
 }: Props) {
@@ -52,7 +56,7 @@ export function UserOutletManagementCard({
             <span className="break-words">{outlet.address}</span>
           </p>
         )}
-        <div className="mt-4 grid grid-cols-2 gap-2">
+        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
           <Button
             className="h-11 px-3"
             variant="outline"
@@ -81,6 +85,14 @@ export function UserOutletManagementCard({
               {content.viewProfile}
             </Button>
           )}
+          <Button
+            className="col-span-2 h-11 px-3 sm:col-span-1"
+            variant="outline"
+            onClick={onManageGallery}
+          >
+            <Images aria-hidden="true" />
+            {galleryContent.manage}
+          </Button>
         </div>
         {!outletActive && (
           <p className="mt-2 text-xs leading-5 text-amber-800">

@@ -72,3 +72,12 @@ export async function checkUserOutletSlug(
       duplicates.docs.every((document) => document.id === id),
   };
 }
+
+export async function assertUserOutletAccess(uid: string, outletId: string) {
+  const outlet = await getFirebaseAdminFirestore()
+    .collection("outlets")
+    .doc(outletId)
+    .get();
+  if (!outlet.exists) throw new Error("OUTLET_NOT_FOUND");
+  assertOutletOwner(outlet.data()?.ownerId, uid);
+}

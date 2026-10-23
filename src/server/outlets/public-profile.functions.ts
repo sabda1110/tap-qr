@@ -3,6 +3,7 @@ import { z } from "zod";
 import {
   getPublicOutletProfile,
   recordPublicProfileAction,
+  recordPublicHighlightOpen,
   recordPublicProfileView,
 } from "./public-profile.repository.server";
 
@@ -16,6 +17,9 @@ const profileActionSchema = profileIdSchema.extend({
     "google_review",
     "custom",
   ]),
+});
+const highlightOpenSchema = profileIdSchema.extend({
+  highlightId: z.uuid(),
 });
 
 export const getOutletProfile = createServerFn({ method: "GET" })
@@ -37,5 +41,13 @@ export const trackOutletProfileAction = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await recordPublicProfileAction(data.id, data.channel).catch(() =>
       console.error("PROFILE_ACTION_RECORD_FAILED"),
+    );
+  });
+
+export const trackOutletHighlightOpen = createServerFn({ method: "POST" })
+  .validator(highlightOpenSchema)
+  .handler(async ({ data }) => {
+    await recordPublicHighlightOpen(data.id, data.highlightId).catch(() =>
+      console.error("HIGHLIGHT_OPEN_RECORD_FAILED"),
     );
   });

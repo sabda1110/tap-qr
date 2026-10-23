@@ -1,4 +1,7 @@
-import type { SocialLink } from "../../lib/firebase/firestore-schema";
+import type {
+  OutletHighlight,
+  SocialLink,
+} from "../../lib/firebase/firestore-schema";
 
 export type OutletSummary = {
   id: string;
@@ -14,6 +17,7 @@ export type OutletSummary = {
   cardCount: number;
   activeCardCount: number;
   channels: string[];
+  highlights: OutletHighlight[];
 };
 
 export type OutletDetail = OutletSummary & {

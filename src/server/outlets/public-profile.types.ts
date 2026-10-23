@@ -2,6 +2,7 @@ import type {
   OutletProfileTheme,
   SocialLink,
 } from "../../lib/firebase/firestore-schema";
+import type { PublicOutletHighlight } from "./outlet-highlights";
 
 export type PublicOutletProfile = {
   id: string;
@@ -20,4 +21,5 @@ export type PublicOutletProfile = {
     allHoursUrl: string | null;
   } | null;
   links: SocialLink[];
+  highlights: PublicOutletHighlight[];
 };

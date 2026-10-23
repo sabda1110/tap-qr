@@ -5,11 +5,13 @@ import { outletProfileId } from "./outlet-profile-id";
 import { ordersId } from "./orders-id";
 import { landingFaqId } from "./landing-details-id";
 import { productShowcaseId } from "./product-showcase-id";
+import { outletGalleryId } from "./outlet-gallery-id";
 export const id = {
   productShowcase: productShowcaseId,
   faq: landingFaqId,
   orders: ordersId,
   outletProfile: outletProfileId,
+  outletGallery: outletGalleryId,
   header: {
     brandHomeLabel: "Beranda TapQR",
     mainNavigationLabel: "Navigasi utama",

@@ -20,7 +20,11 @@ function cloudinaryCredentials() {
   }
 }
 
-export async function uploadCloudinaryImage(file: File, folder: string) {
+export async function uploadCloudinaryImage(
+  file: File,
+  folder: string,
+  transformation = "c_limit,w_512,h_512",
+) {
   if (validateImageFile(file)) throw new Error("INVALID_IMAGE_FILE");
   const bytes = Buffer.from(await file.arrayBuffer());
   const matchesType = file.type === "image/png"
@@ -33,7 +37,7 @@ export async function uploadCloudinaryImage(file: File, folder: string) {
   const payload = new FormData();
   payload.set("file", file);
   payload.set("public_id", `${folder}/${randomUUID()}`);
-  payload.set("transformation", "c_limit,w_512,h_512");
+  payload.set("transformation", transformation);
   const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
     method: "POST",
     headers: { Authorization: authorization },
@@ -44,4 +48,20 @@ export async function uploadCloudinaryImage(file: File, folder: string) {
   const result = uploadResponseSchema.safeParse(await response.json());
   if (!result.success) throw new Error("IMAGE_UPLOAD_FAILED");
   return { url: result.data.secure_url, publicId: result.data.public_id };
+}
+
+export async function destroyCloudinaryImages(publicIds: string[]) {
+  if (publicIds.length === 0) return;
+  const { cloudName, authorization } = cloudinaryCredentials();
+  const endpoint = new URL(
+    `https://api.cloudinary.com/v1_1/${cloudName}/resources/image/upload`,
+  );
+  for (const publicId of publicIds)
+    endpoint.searchParams.append("public_ids[]", publicId);
+  const response = await fetch(endpoint, {
+    method: "DELETE",
+    headers: { Authorization: authorization },
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (!response.ok) throw new Error("IMAGE_DELETE_FAILED");
 }

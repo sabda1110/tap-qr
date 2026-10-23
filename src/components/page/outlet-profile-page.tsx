@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useI18n } from "../../i18n";
 import {
   trackOutletProfileAction,
+  trackOutletHighlightOpen,
   trackOutletProfileView,
 } from "../../server/outlets/public-profile.functions";
 import type { PublicOutletProfile } from "../../server/outlets/public-profile.types";
@@ -39,6 +40,13 @@ export function OutletProfilePage({
     }).catch(() => {});
   }
 
+  function trackHighlight(highlightId: string) {
+    if (!profile) return;
+    void trackOutletHighlightOpen({
+      data: { id: profile.id, highlightId },
+    }).catch(() => {});
+  }
+
   if (config) {
     return (
       <main className="min-h-dvh bg-[#171717]">
@@ -46,6 +54,8 @@ export function OutletProfilePage({
           config={config}
           content={content}
           onAction={trackAction}
+          galleryContent={messages.outletGallery}
+          onHighlightOpen={trackHighlight}
         />
       </main>
     );

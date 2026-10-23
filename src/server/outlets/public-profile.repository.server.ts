@@ -7,6 +7,10 @@ import type {
   SocialLink,
 } from "../../lib/firebase/firestore-schema";
 import type { PublicOutletProfile } from "./public-profile.types";
+import {
+  parseOutletHighlights,
+  toPublicOutletHighlights,
+} from "./outlet-highlights";
 
 function publicUrl(value: string | null | undefined): string | null {
   if (!value) return null;
@@ -90,6 +94,7 @@ export async function getPublicOutletProfile(id: string): Promise<PublicOutletPr
     avatarUrl: publicUrl(outlet.logoUrl) ?? publicUrl(social?.avatarUrl),
     ...presentation,
     links,
+    highlights: toPublicOutletHighlights(outlet.publicProfile?.highlights),
   };
 }
 
@@ -121,6 +126,35 @@ export async function recordPublicProfileAction(
     event: "link_click",
     actionType: "link_click",
     channel,
+    source: "public_profile",
+    timestamp: FieldValue.serverTimestamp(),
+  });
+}
+
+export async function recordPublicHighlightOpen(
+  outletId: string,
+  highlightId: string,
+) {
+  const outlet = await getFirebaseAdminFirestore()
+    .collection("outlets")
+    .doc(outletId)
+    .get();
+  const highlights = parseOutletHighlights(
+    outlet.data()?.publicProfile?.highlights,
+  );
+  if (
+    !outlet.exists ||
+    outlet.data()?.status !== "active" ||
+    !highlights.some((highlight) => highlight.id === highlightId)
+  )
+    return;
+  await getFirebaseAdminFirestore().collection("scanEvents").add({
+    business_id: outletId,
+    outletId,
+    cardId: null,
+    highlightId,
+    event: "highlight_open",
+    actionType: "highlight_open",
     source: "public_profile",
     timestamp: FieldValue.serverTimestamp(),
   });
