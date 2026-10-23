@@ -11,7 +11,6 @@ export const outletProfileId = {
   closedNow: "Tutup",
   until: "s/d",
   today: "Hari ini",
-  hoursUnavailable: "Jam hari ini belum tersedia",
   viewAllHours: "Lihat semua jam",
   addressLabel: "Alamat outlet",
   outletLogo: "Logo outlet",

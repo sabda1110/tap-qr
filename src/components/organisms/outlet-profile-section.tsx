@@ -149,10 +149,12 @@ export function OutletProfileSection({
               </span>
             </p>
           )}
-          <p>
-            <Clock3 aria-hidden="true" />
-            <span>{config.todayHours}</span>
-          </p>
+          {config.todayHours && (
+            <p>
+              <Clock3 aria-hidden="true" />
+              <span>{config.todayHours}</span>
+            </p>
+          )}
           {config.allHoursUrl && (
             <a
               href={config.allHoursUrl}

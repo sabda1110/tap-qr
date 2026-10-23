@@ -13,7 +13,6 @@ export const outletProfileEn: typeof outletProfileId = {
   closedNow: "Closed",
   until: "until",
   today: "Today",
-  hoursUnavailable: "Today’s hours are unavailable",
   viewAllHours: "View all hours",
   addressLabel: "Outlet address",
   outletLogo: "Outlet logo",

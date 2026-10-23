@@ -130,7 +130,7 @@ export function createOutletProfileConfig(
         ? `${content.openNow}${hours.closesAt ? ` • ${content.until} ${hours.closesAt}` : ""}`
         : content.closedNow,
     } : null,
-    todayHours: hours ? `${content.today}: ${hours.today}` : content.hoursUnavailable,
+    todayHours: hours ? `${content.today}: ${hours.today}` : null,
     allHoursUrl: hours?.allHoursUrl ?? mapsAction?.url ?? null,
     reviewAction: reviewLink ? {
       id: reviewLink.id,
