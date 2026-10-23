@@ -2,9 +2,10 @@ import { ArrowLeft, ArrowRight, Images, Trash2, Upload } from "lucide-react";
 import { useId, useState } from "react";
 import type { Messages } from "../../i18n";
 import type { OutletHighlightImage } from "../../lib/firebase/firestore-schema";
-import { getCloudinaryThumbnailUrl } from "../../lib/cloudinary-image";
-import { validateImageFile } from "../../lib/validation/image-upload";
+import { getCloudinaryStoryPreviewUrl } from "../../lib/cloudinary-image";
+import { validateStoryImageSource } from "../../lib/story-image";
 import { uploadOutletHighlightImage } from "../../server/uploads/image-upload.functions";
+import { StoryImageEditor } from "../organisms/story-image-editor";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/toaster";
 
@@ -31,39 +32,54 @@ export function HighlightImagePicker({
 }: Props) {
   const inputId = useId();
   const [uploading, setUploading] = useState(false);
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const { showToast } = useToast();
 
-  async function upload(files: File[]) {
+  function selectFiles(files: File[]) {
     const remaining = 5 - images.length;
     if (files.length > remaining) showToast(content.tooManyImages, "warning");
     const selected = files.slice(0, remaining);
-    const invalid = selected.map(validateImageFile).find(Boolean);
+    const invalid = selected.map(validateStoryImageSource).find(Boolean);
     if (invalid) {
       showToast(content[invalid], "error");
       return;
     }
-    setUploading(true);
+    setPendingFiles(selected);
     onBusyChange(true);
-    const nextImages = [...images];
+  }
+
+  function finishCurrentFile() {
+    const remainingFiles = pendingFiles.slice(1);
+    setPendingFiles(remainingFiles);
+    if (remainingFiles.length === 0) onBusyChange(false);
+  }
+
+  async function upload(file: File) {
+    setUploading(true);
     try {
-      for (const file of selected) {
-        const payload = new FormData();
-        payload.set("outletId", outletId);
-        payload.set("file", file);
-        const uploaded = await uploadImage({ data: payload });
-        nextImages.push({
+      const payload = new FormData();
+      payload.set("outletId", outletId);
+      payload.set("file", file);
+      const uploaded = await uploadImage({ data: payload });
+      onChange([
+        ...images,
+        {
           id: uploaded.id,
           url: uploaded.url,
           publicId: uploaded.publicId,
-        });
-        onChange([...nextImages]);
-      }
+        },
+      ]);
+      finishCurrentFile();
     } catch {
       showToast(content.uploadFailed, "error");
+      throw new Error("HIGHLIGHT_IMAGE_UPLOAD_FAILED");
     } finally {
       setUploading(false);
-      onBusyChange(false);
     }
+  }
+
+  function cancelCurrentFile() {
+    finishCurrentFile();
   }
 
   function move(imageIndex: number, direction: -1 | 1) {
@@ -90,11 +106,11 @@ export function HighlightImagePicker({
           {images.map((image, imageIndex) => (
             <li key={image.id} className="overflow-hidden rounded-xl border border-black/10 bg-white">
               <img
-                src={getCloudinaryThumbnailUrl(image.url)}
+                src={getCloudinaryStoryPreviewUrl(image.url)}
                 alt=""
                 width={180}
                 height={320}
-                className="aspect-[9/16] w-full object-cover"
+                className="aspect-[9/16] w-full bg-[#111] object-contain"
               />
               <div className="grid grid-cols-3 border-t border-black/8 p-1">
                 <Button
@@ -150,16 +166,27 @@ export function HighlightImagePicker({
             className="sr-only"
             accept="image/png,image/jpeg,image/webp"
             multiple
-            disabled={disabled || uploading || images.length >= 5}
+            disabled={
+              disabled || uploading || pendingFiles.length > 0 || images.length >= 5
+            }
             onChange={(event) => {
               const files = Array.from(event.currentTarget.files ?? []);
               event.currentTarget.value = "";
-              if (files.length > 0) void upload(files);
+              if (files.length > 0) selectFiles(files);
             }}
           />
         </label>
         <p className="text-xs leading-5 text-[#69737d]">{content.uploadHelp}</p>
       </div>
+      {pendingFiles[0] && (
+        <StoryImageEditor
+          key={`${pendingFiles[0].name}-${pendingFiles[0].lastModified}`}
+          file={pendingFiles[0]}
+          content={content}
+          onApply={upload}
+          onCancel={cancelCurrentFile}
+        />
+      )}
     </div>
   );
 }

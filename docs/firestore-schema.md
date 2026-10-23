@@ -79,9 +79,12 @@ Pemilik juga dapat mengelola `outlets.publicProfile.highlights` melalui endpoint
 khusus owner. Maksimal terdapat tiga highlight per outlet, judul maksimal 24
 karakter, dan setiap highlight berisi satu sampai lima gambar berurutan. Setiap
 gambar menyimpan ID acak, URL HTTPS Cloudinary, serta `publicId` untuk pembersihan
-aset saat gambar dihapus. Upload JPG/PNG/WebP tetap dibatasi 2 MB dan diperkecil
-hingga maksimal 1080 × 1920 piksel. Server memeriksa kepemilikan outlet serta
-prefix `publicId`; admin tidak memiliki endpoint pengelolaan galeri ini.
+aset saat gambar dihapus. Editor browser menerima sumber JPG/PNG/WebP maksimal
+10 MB, menampilkan preview 9:16, dan menghasilkan JPEG 1080 × 1920 maksimal
+2 MB sebelum upload. Mode awal mempertahankan seluruh gambar dengan latar blur,
+termasuk untuk sumber landscape; zoom dan posisi dapat diubah owner sebelum
+upload. Server tetap memvalidasi file hasil, kepemilikan outlet, serta prefix
+`publicId`; admin tidak memiliki endpoint pengelolaan galeri ini.
 
 ## Tambah outlet dan duplikasi
 

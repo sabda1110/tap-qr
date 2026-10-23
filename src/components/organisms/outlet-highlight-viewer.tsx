@@ -1,12 +1,13 @@
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play, X } from "lucide-react";
 import {
   useCallback,
   useEffect,
   useRef,
   useState,
-  type PointerEvent,
 } from "react";
 import type { Messages } from "../../i18n";
+import { useHighlightZoom } from "../../hooks/use-highlight-zoom";
+import { getCloudinaryStoryPreviewUrl } from "../../lib/cloudinary-image";
 import type { PublicOutletHighlight } from "../../server/outlets/outlet-highlights";
 
 const storyDuration = 5_000;
@@ -29,7 +30,6 @@ export function OutletHighlightViewer({
   const [progress, setProgress] = useState(0);
   const [paused, setPaused] = useState(false);
   const progressRef = useRef(0);
-  const pointerRef = useRef<{ x: number; startedAt: number } | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const highlight = highlights[highlightIndex]!;
   const image = highlight.images[imageIndex]!;
@@ -64,6 +64,12 @@ export function OutletHighlightViewer({
     }
   }, [highlightIndex, highlights, imageIndex, show]);
 
+  const zoom = useHighlightZoom(previous, next);
+  const stopped = paused || zoom.holding || zoom.view.scale > 1.01;
+  useEffect(() => {
+    zoom.reset();
+  }, [image.id, zoom.reset]);
+
   useEffect(() => {
     const oldOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -87,7 +93,7 @@ export function OutletHighlightViewer({
   }, [highlight.images, highlightIndex, highlights, imageIndex]);
 
   useEffect(() => {
-    if (paused) return;
+    if (stopped) return;
     let previousTick = performance.now();
     const timer = window.setInterval(() => {
       const now = performance.now();
@@ -103,33 +109,7 @@ export function OutletHighlightViewer({
       setProgress(nextProgress);
     }, 50);
     return () => window.clearInterval(timer);
-  }, [highlight.id, image.id, next, paused]);
-
-  function pointerDown(event: PointerEvent<HTMLButtonElement>) {
-    event.currentTarget.setPointerCapture(event.pointerId);
-    pointerRef.current = { x: event.clientX, startedAt: performance.now() };
-    setPaused(true);
-  }
-
-  function pointerUp(
-    event: PointerEvent<HTMLButtonElement>,
-    direction: "previous" | "next",
-  ) {
-    const pointer = pointerRef.current;
-    pointerRef.current = null;
-    setPaused(false);
-    if (!pointer) return;
-    const distance = event.clientX - pointer.x;
-    if (Math.abs(distance) >= 48) {
-      if (distance > 0) previous();
-      else next();
-      return;
-    }
-    if (performance.now() - pointer.startedAt < 450) {
-      if (direction === "previous") previous();
-      else next();
-    }
-  }
+  }, [highlight.id, image.id, next, stopped]);
 
   return (
     <div
@@ -148,15 +128,25 @@ export function OutletHighlightViewer({
       }}
     >
       <div className="outlet-story">
-        <img
-          key={image.id}
-          className="outlet-story__image"
-          src={image.url}
-          alt={content.storyImageAlt
-            .replace("{title}", highlight.title)
-            .replace("{current}", String(imageIndex + 1))
-            .replace("{total}", String(highlight.images.length))}
-        />
+        <div key={image.id} className="outlet-story__media">
+          <img
+            className="outlet-story__background"
+            src={getCloudinaryStoryPreviewUrl(image.url)}
+            alt=""
+            aria-hidden="true"
+          />
+          <img
+            className="outlet-story__image"
+            style={{
+              transform: `translate(${zoom.view.x}px, ${zoom.view.y}px) scale(${zoom.view.scale})`,
+            }}
+            src={image.url}
+            alt={content.storyImageAlt
+              .replace("{title}", highlight.title)
+              .replace("{current}", String(imageIndex + 1))
+              .replace("{total}", String(highlight.images.length))}
+          />
+        </div>
         <div className="outlet-story__shade" aria-hidden="true" />
         <div className="outlet-story__progress" aria-hidden="true">
           {highlight.images.map((storyImage, index) => (
@@ -179,6 +169,21 @@ export function OutletHighlightViewer({
           <strong>{highlight.title}</strong>
         </div>
         <button
+          type="button"
+          className="outlet-story__close outlet-story__pause"
+          aria-label={stopped ? content.playStory : content.pauseStory}
+          onClick={() => {
+            if (stopped) {
+              zoom.reset();
+              setPaused(false);
+            } else {
+              setPaused(true);
+            }
+          }}
+        >
+          {stopped ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}
+        </button>
+        <button
           ref={closeButtonRef}
           type="button"
           className="outlet-story__close"
@@ -187,34 +192,32 @@ export function OutletHighlightViewer({
         >
           <X aria-hidden="true" />
         </button>
-        <button
-          type="button"
-          className="outlet-story__nav outlet-story__nav--previous"
-          aria-label={content.previousImage}
-          onPointerDown={pointerDown}
-          onPointerUp={(event) => pointerUp(event, "previous")}
-          onPointerCancel={() => {
-            pointerRef.current = null;
-            setPaused(false);
-          }}
+        <div
+          className="absolute inset-0 z-20 touch-none"
+          {...zoom.handlers}
           onContextMenu={(event) => event.preventDefault()}
         >
-          <ChevronLeft aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          className="outlet-story__nav outlet-story__nav--next"
-          aria-label={content.nextImage}
-          onPointerDown={pointerDown}
-          onPointerUp={(event) => pointerUp(event, "next")}
-          onPointerCancel={() => {
-            pointerRef.current = null;
-            setPaused(false);
-          }}
-          onContextMenu={(event) => event.preventDefault()}
-        >
-          <ChevronRight aria-hidden="true" />
-        </button>
+          <button
+            type="button"
+            className="outlet-story__nav outlet-story__nav--previous"
+            aria-label={content.previousImage}
+            onClick={(event) => {
+              if (event.detail === 0) previous();
+            }}
+          >
+            <ChevronLeft aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            className="outlet-story__nav outlet-story__nav--next"
+            aria-label={content.nextImage}
+            onClick={(event) => {
+              if (event.detail === 0) next();
+            }}
+          >
+            <ChevronRight aria-hidden="true" />
+          </button>
+        </div>
       </div>
     </div>
   );
