@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import QRCode from "qrcode";
 import { useRouter } from "@tanstack/react-router";
 import { useToast } from "../ui/toaster";
 import { updateAdminCardsPrintStatus } from "../../server/cards/card.functions";
@@ -16,6 +15,7 @@ import { PrintConfirmationDialog } from "../molecules/print-confirmation-dialog"
 import type { AdminPrintStudioProps } from "./admin-print-studio.types";
 import type { CardMaterial } from "../../lib/firebase/firestore-schema";
 import { PVC_WIDTH_MM, PVC_HEIGHT_MM } from "../../lib/print-dimensions";
+import { useBrandedQrDataUrl } from "../../hooks/use-branded-qr-data-url";
 export type { AdminPrintStudioContent, AdminPrintStudioProps } from "./admin-print-studio.types";
 function getMaterialDimensions(material: CardMaterial): PrintDimensions {
   return material === "pvc"
@@ -42,10 +42,12 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
   const [preHeadline, setPreHeadline] = useState(content.themes.google.defaultPreHeadline);
   const [headline, setHeadline] = useState(content.themes.google.defaultHeadline);
   const [footerNote, setFooterNote] = useState(content.themes.google.defaultFooter);
-  const [qrDataUrl, setQrDataUrl] = useState<string>("");
   const selectedCard = cards.find((card) => card.cardId === selectedCardId)
     ?? (initialCard?.cardId === selectedCardId ? initialCard : null);
   const selectedMaterial = selectedCard?.material ?? "acrylic";
+  const qrDataUrl = useBrandedQrDataUrl(
+    selectedCardId ? getCardUrl(locale, selectedCardId) : "",
+  );
   useEffect(() => {
     if (cards.length > 0 && !cards.some((c) => c.cardId === selectedCardId)) {
       setSelectedCardId(cards[0].cardId);
@@ -73,20 +75,6 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
     setHeadline(defaults.defaultHeadline);
     setFooterNote(defaults.defaultFooter);
   };
-
-  useEffect(() => {
-    if (!selectedCardId) {
-      setQrDataUrl("");
-      return;
-    }
-    const cardTargetUrl = getCardUrl(locale, selectedCardId);
-    void QRCode.toDataURL(cardTargetUrl, {
-      margin: 1,
-      width: 320,
-      color: { dark: "#000000", light: "#ffffff" },
-      errorCorrectionLevel: "M",
-    }).then(setQrDataUrl);
-  }, [selectedCardId, locale]);
 
   const handleOpenConfirmDialog = useCallback(() => {
     setConfirmDialogOpen(true);

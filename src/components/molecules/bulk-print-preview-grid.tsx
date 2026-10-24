@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import QRCode from "qrcode";
 import { Layers, Printer } from "lucide-react";
 import type { PrintThemeKey } from "../elements/nfc-tap-target";
 import type { PrintDimensions } from "../elements/print-size-selector";
@@ -11,6 +10,7 @@ import { Button } from "../ui/button";
 import { getCardUrl } from "../../lib/app-url";
 import type { CardMaterial } from "../../lib/firebase/firestore-schema";
 import { OrderPvcCard, PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "./order-pvc-card";
+import { createBrandedQrDataUrl } from "../../lib/branded-qr-code";
 
 type BulkPrintPreviewGridProps = {
   labels: ReviewCardLabels;
@@ -80,12 +80,7 @@ export function BulkPrintPreviewGrid({
         if (isCancelled) return;
         try {
           const url = getCardUrl(locale, id);
-          const dataUrl = await QRCode.toDataURL(url, {
-            margin: 1,
-            width: 320,
-            color: { dark: "#000000", light: "#ffffff" },
-            errorCorrectionLevel: "M",
-          });
+          const dataUrl = await createBrandedQrDataUrl(url, { margin: 1, width: 320 });
           results[id] = dataUrl;
         } catch (err) {
           console.error("Failed to generate QR for", id, err);

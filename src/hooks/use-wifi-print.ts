@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import QRCode from "qrcode";
 import { expandWifiPrintJobs, wifiPrintSchema, type WifiPrintValues } from "../lib/validation/wifi-print-schema";
 import type { wifiPrintId } from "../i18n/locales/wifi-print-id";
 import { useToast } from "../components/ui/toaster";
+import { createBrandedQrDataUrl } from "../lib/branded-qr-code";
 
 export type WifiPrintJob = { id: string; ssid: string; qrDataUrl: string };
 export type WifiPrintTheme = "monster" | "mono" | "natural" | "coffee" | "barbershop" | "kraken" | "poster";
@@ -39,9 +39,9 @@ export function useWifiPrint(content: typeof wifiPrintId) {
       for (const network of expanded) {
         let qrDataUrl = qrCache.get(network.payload);
         if (!qrDataUrl) {
-          qrDataUrl = await QRCode.toDataURL(network.payload, {
-            margin: 4, width: 640, errorCorrectionLevel: "M",
-            color: { dark: "#000000", light: "#ffffff" },
+          qrDataUrl = await createBrandedQrDataUrl(network.payload, {
+            margin: 4,
+            width: 640,
           });
           qrCache.set(network.payload, qrDataUrl);
         }
