@@ -15,9 +15,11 @@ import {
 export function OutletProfilePage({
   profile,
   failed = false,
+  trackProfileView = true,
 }: {
   profile: PublicOutletProfile | null;
   failed?: boolean;
+  trackProfileView?: boolean;
 }) {
   const { messages } = useI18n();
   const content = messages.outletProfile;
@@ -28,10 +30,10 @@ export function OutletProfilePage({
   );
 
   useEffect(() => {
-    if (!profile || trackedOutlet.current === profile.id) return;
+    if (!trackProfileView || !profile || trackedOutlet.current === profile.id) return;
     trackedOutlet.current = profile.id;
     void trackOutletProfileView({ data: { id: profile.id } }).catch(() => {});
-  }, [profile]);
+  }, [profile, trackProfileView]);
 
   function trackAction(action: OutletProfileAction) {
     if (!profile) return;

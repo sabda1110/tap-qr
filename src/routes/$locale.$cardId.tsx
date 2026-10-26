@@ -17,8 +17,14 @@ export const Route = createFileRoute("/$locale/$cardId")({
       throw redirect({ to: "/$locale/dashboard/user", params: { locale: params.locale }, search: { cardId: parsed.data }, replace: true });
     }
     if (entry.url) throw redirect({ href: entry.url });
-    throw redirect({ to: "/$locale/p/$id", params: { locale: params.locale, id: entry.outletId }, replace: true });
+    if (!entry.profile) throw notFound();
+    return entry.profile;
   },
+  component: CardProfileRoute,
   notFoundComponent: () => <OutletProfilePage profile={null} />,
   errorComponent: () => <OutletProfilePage profile={null} failed />,
 });
+
+function CardProfileRoute() {
+  return <OutletProfilePage profile={Route.useLoaderData()} trackProfileView={false} />;
+}

@@ -64,15 +64,19 @@ async function findActivePublicOutlet(id: string) {
   return outletDocument;
 }
 
-export async function getPublicOutletProfile(id: string): Promise<PublicOutletProfile | null> {
+export async function getPublicOutletProfile(id: string, cardId?: string): Promise<PublicOutletProfile | null> {
   const outletDocument = await findActivePublicOutlet(id);
   if (!outletDocument) return null;
   const outlet = outletDocument.data()!;
-  const snapshot = await getFirebaseAdminFirestore().collection("cards").where("outletId", "==", outletDocument.id).get();
+  const collection = getFirebaseAdminFirestore().collection("cards");
+  const snapshot = await (cardId
+    ? collection.where("cardId", "==", cardId).limit(1)
+    : collection.where("outletId", "==", outletDocument.id)).get();
   const cards = snapshot.docs
     .map((document) => ({ id: document.id, record: document.data() as CardRecord }))
     .filter(({ record }) => record.ownerId === outlet.ownerId && record.outletId === outletDocument.id && record.claimStatus === "claimed" && record.isEnabled)
     .sort((a, b) => a.id.localeCompare(b.id));
+  if (cardId && cards.length === 0) return null;
   const links: SocialLink[] = [];
   const seen = new Set<string>();
   for (const { id: cardId, record } of cards) {

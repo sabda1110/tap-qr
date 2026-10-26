@@ -182,7 +182,13 @@ Klaim mandiri menggunakan ID acak kartu sebagai akses klaim sesuai alur URL;
 token klaim terpisah tidak diwajibkan pada alur ini, dan hash dihapus saat klaim.
 
 Kartu `claimed` memakai tautan aktif milik kartu tersebut: satu URL HTTP/HTTPS
-unik diarahkan langsung, sedangkan nol atau banyak URL membuka profil outlet.
+unik diarahkan langsung, sedangkan nol atau banyak URL menampilkan profil pada
+URL kartu yang sama. Nama, logo, tema, dan highlight berasal dari outlet;
+tautan hanya berasal dari kartu yang diakses, setelah memeriksa owner, outlet,
+status klaim, dan status aktif. Jangan redirect ke profil outlet gabungan
+karena konteks kartu akan hilang. Route `/$locale/p/$id` tetap menjadi profil
+umum yang menggabungkan tautan kartu outlet. Tampilan kartu mencatat
+`card_visit` saja, tanpa menambahkan `profile_view` langsung.
 Kartu nonaktif, outlet nonaktif, dan kartu tidak ditemukan tidak diarahkan.
 Kunjungan route mencatat `card_visit`, `cardId`, `business_id`/`outletId`, serta
 timestamp di `scanEvents`. Sumber `unknown` digunakan karena URL tidak membedakan

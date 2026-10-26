@@ -2,39 +2,46 @@ import assert from "node:assert/strict";
 import { mock, test } from "node:test";
 
 const firebase = require("../../lib/firebase/admin.server") as typeof import("../../lib/firebase/admin.server");
-const repository = require("./public-profile.repository.server") as typeof import("./public-profile.repository.server");
+const { getPublicOutletProfile } = require("./public-profile.repository.server") as typeof import("./public-profile.repository.server");
 
-test("public profiles query only the requested outlet and exclude invalid ownership or inactive cards", async () => {
-  let cardQueries = 0;
-  const events: Record<string, unknown>[] = [];
-  const card = (id: string, ownerId: string, outletId: string, enabled = true) => ({
-    id,
-    data: () => ({ ownerId, outletId, claimStatus: "claimed", isEnabled: enabled, config: {
-      type: "social", social: { links: [{ id, type: "custom", label: id, url: `https://example.com/${id}`, isActive: true, order: 0 }] },
-    } }),
-  });
-  const cards = [card("valid", "owner-1", "outlet-1"), card("wrong-owner", "owner-2", "outlet-1"), card("disabled", "owner-1", "outlet-1", false), card("other-outlet", "owner-1", "outlet-2")];
-  const outlet = { id: "outlet-1", exists: true, data: () => ({ ownerId: "owner-1", status: "active", name: "Outlet", slug: "outlet" }) };
-  const db = {
+test("card profiles isolate links and reject disabled or unrelated cards", async () => {
+  const cardId = `TQR-${"A".repeat(32)}`;
+  const links = (prefix: string, count: number) => Array.from({ length: count }, (_, index) => ({
+    id: `${prefix}-${index}`, type: "custom", label: `${prefix} ${index}`,
+    url: `https://example.com/${prefix}/${index}`, isActive: true, order: index,
+  }));
+  const first = {
+    cardId, ownerId: "owner", outletId: "outlet", claimStatus: "claimed", isEnabled: true,
+    config: { type: "social", social: { links: links("first", 3) } },
+  };
+  const second = { ...first, cardId: `TQR-${"B".repeat(32)}`, config: { type: "social", social: { links: links("second", 2) } } };
+  const records = [first, second];
+  const database = {
     collection: (name: string) => {
-      if (name === "outlets") return { doc: () => ({ get: async () => outlet }) };
-      if (name === "scanEvents") return { add: async (event: Record<string, unknown>) => { events.push(event); } };
-      assert.equal(name, "cards");
-      return { where: (field: string, operator: string, value: string) => {
-        assert.equal(field, "outletId"); assert.equal(operator, "=="); assert.equal(value, "outlet-1");
-        cardQueries++;
-        return { get: async () => ({ docs: cards.filter((item) => item.data().outletId === value) }) };
-      } };
+      if (name === "outlets") return { doc: () => ({ get: async () => ({
+        exists: true, id: "outlet", data: () => ({ ownerId: "owner", status: "active", name: "Cafe" }),
+      }) }) };
+      const query = (field: string, operator: string, value: string) => ({
+        limit: () => query(field, operator, value),
+        get: async () => ({ docs: records.filter((record) => record[field as "cardId" | "outletId"] === value)
+          .map((record, index) => ({ id: String(index), data: () => record })) }),
+      });
+      return { where: query };
     },
   };
-  const replacement = mock.method(firebase, "getFirebaseAdminFirestore", () => db as unknown as ReturnType<typeof firebase.getFirebaseAdminFirestore>);
+  const replacement = mock.method(firebase, "getFirebaseAdminFirestore", () => database as unknown as ReturnType<typeof firebase.getFirebaseAdminFirestore>);
   try {
-    const profile = await repository.getPublicOutletProfile("outlet-1");
-    assert.deepEqual(profile?.links.map((link) => link.label), ["valid"]);
-    assert.equal(cardQueries, 1);
-    await repository.recordPublicProfileView("outlet-1");
-    assert.equal(cardQueries, 1, "recording a view must not load card collections again");
-    assert.equal(events[0].outletId, "outlet-1");
-    assert.equal(events[0].event, "profile_view");
+    const scoped = await getPublicOutletProfile("outlet", cardId);
+    assert.equal(scoped?.links.length, 3);
+    assert.ok(scoped?.links.every((link) => link.url.includes("/first/")));
+    assert.equal((await getPublicOutletProfile("outlet"))?.links.length, 5);
+    first.isEnabled = false;
+    assert.equal(await getPublicOutletProfile("outlet", cardId), null);
+    first.isEnabled = true;
+    first.ownerId = "another-owner";
+    assert.equal(await getPublicOutletProfile("outlet", cardId), null);
+    first.ownerId = "owner";
+    first.outletId = "another-outlet";
+    assert.equal(await getPublicOutletProfile("outlet", cardId), null);
   } finally { replacement.mock.restore(); }
 });

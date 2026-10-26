@@ -4,9 +4,17 @@ import { cardIdSchema, claimCardSchema, userOutletCardsSchema } from "./card-ent
 import { resolveCardEntry, claimEntryCard, listUserOutlets, listUserOutletCards, recordCardVisit } from "./card-entry.repository.server";
 import { requireAuthenticatedUser } from "../auth/authorization.server";
 import { recordLimitedPublicEvent } from "../analytics/public-event.server";
+import { getPublicOutletProfile } from "../outlets/public-profile.repository.server";
 
 export const getCardEntry = createServerFn({ method: "GET" }).validator(z.object({ cardId: cardIdSchema }))
-  .handler(({ data }) => resolveCardEntry(data.cardId));
+  .handler(async ({ data }) => {
+    const entry = await resolveCardEntry(data.cardId);
+    if (!entry || entry.kind === "unclaimed") return entry;
+    return {
+      ...entry,
+      profile: entry.url ? null : await getPublicOutletProfile(entry.outletId, data.cardId),
+    };
+  });
 export const claimUserCard = createServerFn({ method: "POST" }).validator(claimCardSchema)
   .handler(async ({ data }) => {
     const user = await requireAuthenticatedUser();
