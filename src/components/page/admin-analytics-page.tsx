@@ -4,10 +4,11 @@ import { useI18n } from "../../i18n";
 import { useDashboardSession } from "../../hooks/use-dashboard-session";
 import { AdminDashboardLayout } from "../layouts/admin-dashboard-layout";
 import { AdminAnalyticsSection } from "../organisms/admin-analytics-section";
+import { AdminAnalyticsUnavailable } from "../organisms/admin-analytics-unavailable";
 
 type AdminAnalyticsPageProps = {
   profile: UserProfile;
-  summary: AdminAnalyticsSummary;
+  summary: AdminAnalyticsSummary | null;
 };
 
 export function AdminAnalyticsPage({ profile, summary }: AdminAnalyticsPageProps) {
@@ -21,11 +22,11 @@ export function AdminAnalyticsPage({ profile, summary }: AdminAnalyticsPageProps
       navigation={messages.adminDashboard.sidebar}
       onSignOut={() => void signOut()}
     >
-      <AdminAnalyticsSection
+      {summary ? <AdminAnalyticsSection
         content={messages.adminDashboard.analytics}
         locale={language}
         summary={summary}
-      />
+      /> : <AdminAnalyticsUnavailable content={messages.adminDashboard.analytics.unavailable} />}
     </AdminDashboardLayout>
   );
 }

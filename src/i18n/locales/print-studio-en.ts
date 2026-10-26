@@ -2,7 +2,12 @@ import type { printStudioId } from "./print-studio-id";
 import { wifiPrintEn } from "./wifi-print-en";
 
 export const printStudioEn: typeof printStudioId = {
+  paper: {
+    title: "Print paper", a4: "A4 paper", artwork: "Match design size",
+    help: "A4 centers the design at its selected size. Print at actual size / 100% scale, not Fit to page. Match design size creates an A7/A6/A5 PDF page; automatic zoom can make them look identical. Designs larger than A4 use their own page size.",
+  },
   wifi: wifiPrintEn,
+  materialSelector: { title: "Print material", acrylic: "Acrylic Stand", pvc: "PVC Card", empty: "No cards of this material are ready to print. You can still preview the design; add stock in Inventory to print." },
   printLabels: {
     tap: "Tap here", tapHelp: "Hold your phone here", scan: "Scan QR", scanHelp: "Open your phone camera", or: "or",
     review: "Share your experience on Google", qrAlt: "QR code for card {cardId}",
@@ -28,7 +33,7 @@ export const printStudioEn: typeof printStudioId = {
   copySectionTitle: "Card copy",
   copySectionDescription: "Adjust the message shown on the printed card.",
   printNow: "Print Now",
-  previewTitle: "A7 Acrylic Standee Preview",
+  previewTitle: "Acrylic Standee Preview",
   pvcPreviewTitle: "Landscape PVC Card Preview",
   dimensionsNote: "Standee dimensions: 74 × 105 mm",
   tabSingle: "Single Card",

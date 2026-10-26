@@ -6,7 +6,11 @@ import { getAdminAnalyticsSummary } from "./admin-analytics.repository.server";
 export const getAdminAnalytics = createServerFn({ method: "GET" }).handler(
   async () => {
     const user = await requireAdmin();
-    const summary = await getAdminAnalyticsSummary();
-    return { summary, user };
+    try {
+      return { summary: await getAdminAnalyticsSummary(), user };
+    } catch (error) {
+      console.error("ADMIN_ANALYTICS_UNAVAILABLE", { message: error instanceof Error ? error.message : "Unknown error" });
+      return { summary: null, user };
+    }
   },
 );

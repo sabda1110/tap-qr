@@ -1,3 +1,5 @@
+import { PrintPaperSelector } from "../molecules/print-paper-selector";
+import type { PrintPaper } from "../../lib/print-dimensions";
 import { useId, useState } from "react";
 import { Printer, Wifi } from "lucide-react";
 import type { AdminPrintStudioContent } from "./admin-print-studio.types";
@@ -14,6 +16,7 @@ export function WifiPrintStudio({ content }: { content: AdminPrintStudioContent 
   const wifi = content.wifi;
   const print = useWifiPrint(wifi);
   const { form, errorMessage } = print;
+  const [paper, setPaper] = useState<PrintPaper>("a4");
   const [dimensions, setDimensions] = useState<PrintDimensions>({ preset: "a6", widthMm: 105, heightMm: 148 });
   const [cropMarks, setCropMarks] = useState(false);
   const fieldId = useId();
@@ -26,7 +29,7 @@ export function WifiPrintStudio({ content }: { content: AdminPrintStudioContent 
 
   return (
     <section className="space-y-6">
-      <PrintStudioStyles activeTab={print.mode} dimensions={dimensions} />
+      <PrintStudioStyles dimensions={dimensions} paper={paper} />
       <AdminPrintStudioHeader
         kicker={wifi.kicker} title={wifi.title} description={wifi.description}
         activeTab={print.mode} onTabChange={print.changeMode}
@@ -35,6 +38,7 @@ export function WifiPrintStudio({ content }: { content: AdminPrintStudioContent 
       />
       <div className="grid min-w-0 items-start gap-6 lg:grid-cols-12">
         <div className="min-w-0 space-y-4 rounded-3xl border border-black/8 bg-[#f5f7f8] p-3 sm:p-4 lg:col-span-5 xl:col-span-4">
+          <PrintPaperSelector value={paper} onChange={setPaper} labels={content.paper} />
           <PrintSizeSelector dimensions={dimensions} onChangeDimensions={setDimensions} showCropMarks={cropMarks} onToggleCropMarks={setCropMarks} labels={content} />
           <form onSubmit={print.generate} noValidate className="space-y-4">
             <fieldset disabled={print.generating} className="space-y-4">

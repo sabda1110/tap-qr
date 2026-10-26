@@ -12,6 +12,7 @@ Schema ini adalah kontrak data proyek. Semua akses aplikasi berjalan melalui Fir
 | `scanEvents/{eventId}` | `cardId`, event, sumber QR/NFC, waktu, user agent. Koleksi ini dipakai saat analitik dibuat. |
 | `orders/{sha256(token)}` | kode pesanan, ownerId opsional, kontak/alamat penerima, produk, material, tema, jumlah, status, pengiriman, riwayat, waktu ISO UTC |
 | `orderRateLimits/{hash}` | hitungan pembuatan pesanan per IP/email per 15 menit, `expiresAt` untuk TTL |
+| `analyticsRateLimits/{hash}` | batas event publik per IP/menit dan deduplikasi browser/event, `expiresAt` untuk TTL; tidak menyimpan IP atau ID browser mentah |
 | `orders/{orderId}/events/{eventId}` | aksi pengelolaan, timestamp ISO UTC, UID/nama pelaku, alasan, perubahan field before/after; hanya endpoint admin |
 
 ## Outlet dan logo
@@ -187,3 +188,21 @@ Kunjungan route mencatat `card_visit`, `cardId`, `business_id`/`outletId`, serta
 timestamp di `scanEvents`. Sumber `unknown` digunakan karena URL tidak membedakan
 QR, NFC, dan kunjungan langsung; event bukan bukti review terkirim. Prefetch
 route tidak mencatat kunjungan.
+
+## Perlindungan dan pembacaan analitik
+
+Endpoint POST event publik menerapkan batas 120 event diterima per IP per menit
+dan deduplikasi kombinasi browser, target, jenis event, serta kanal/highlight
+selama lima detik. Cookie anonim HTTP-only `tapqr_analytics` berlaku satu hari;
+browser yang berbeda tetap dibedakan saat memakai WiFi yang sama. Dokumen limiter
+hanya menyimpan hash kunci, hitungan/waktu, dan `expiresAt` satu hari. Kebijakan
+TTL `analyticsRateLimits.expiresAt` tersedia di `firestore.indexes.json` dan harus
+diaktifkan saat konfigurasi Firestore dideploy. Batas ini mengurangi spam event,
+bukan verifikasi bahwa tap, klik, atau review sungguhan telah terjadi.
+
+Jika limiter atau pencatatan gagal, event dilewati dan navigasi tetap berjalan.
+Query profil publik hanya mengambil kartu dengan `outletId` terkait, kemudian
+tetap memeriksa owner, status klaim, dan status aktif. Pencatatan kunjungan profil
+tidak memuat ulang koleksi kartu. Jika hitungan atau daftar outlet analitik admin
+gagal dimuat, respons statistik bernilai `null`; UI menampilkan kondisi tidak
+tersedia dan tombol coba lagi, bukan angka nol yang menyerupai data valid.

@@ -22,6 +22,12 @@ export const adminDashboardId = {
   },
   printStudio: printStudioId,
   analytics: {
+    unavailable: {
+      title: "Data analitik belum tersedia",
+      description: "Statistik belum berhasil dimuat. Coba lagi untuk mendapatkan data terbaru.",
+      retry: "Coba lagi",
+      retrying: "Memuat ulang…",
+    },
     kicker: "Analisa Platform",
     title: "Ringkasan Pertumbuhan & Penggunaan",
     description:

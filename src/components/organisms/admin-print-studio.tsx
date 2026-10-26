@@ -1,3 +1,5 @@
+import { PrintPaperSelector } from "../molecules/print-paper-selector";
+import type { PrintPaper } from "../../lib/print-dimensions";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "@tanstack/react-router";
 import { useToast } from "../ui/toaster";
@@ -15,6 +17,7 @@ import { PrintConfirmationDialog } from "../molecules/print-confirmation-dialog"
 import type { AdminPrintStudioProps } from "./admin-print-studio.types";
 import type { CardMaterial } from "../../lib/firebase/firestore-schema";
 import { PVC_WIDTH_MM, PVC_HEIGHT_MM } from "../../lib/print-dimensions";
+import { PrintMaterialSelector } from "../molecules/print-material-selector";
 import { useBrandedQrDataUrl } from "../../hooks/use-branded-qr-data-url";
 export type { AdminPrintStudioContent, AdminPrintStudioProps } from "./admin-print-studio.types";
 function getMaterialDimensions(material: CardMaterial): PrintDimensions {
@@ -26,38 +29,32 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
   const router = useRouter();
   const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState<"single" | "bulk">("single");
-  const [selectedCardId, setSelectedCardId] = useState(
+  const [requestedCardId, setSelectedCardId] = useState(
     initialCard?.cardId || cards[0]?.cardId || "",
   );
   const initialMaterial = initialCard?.material ?? cards[0]?.material ?? "acrylic";
-  const [selectedBulkCardIds, setSelectedBulkCardIds] = useState<string[]>(
-    cards.slice(0, 6).map((c) => c.cardId),
+  const [requestedBulkCardIds, setSelectedBulkCardIds] = useState<string[]>(
+    cards.filter((card) => card.material === initialMaterial).slice(0, 6).map((c) => c.cardId),
   );
+  const [selectedMaterial, setSelectedMaterial] = useState<CardMaterial>(initialMaterial);
+  const materialCards = cards.filter((card) => card.material === selectedMaterial);
+  const selectedCardId = materialCards.find((card) => card.cardId === requestedCardId)?.cardId
+    ?? materialCards[0]?.cardId ?? "";
+  const selectedBulkCardIds = requestedBulkCardIds.filter((id) =>
+    materialCards.some((card) => card.cardId === id));
   const [theme, setTheme] = useState<PrintThemeKey>("google");
   const [showMonster, setShowMonster] = useState(true);
   const [showCropMarks, setShowCropMarks] = useState(false);
+  const [paper, setPaper] = useState<PrintPaper>("a4");
   const [dimensions, setDimensions] = useState<PrintDimensions>(() => getMaterialDimensions(initialMaterial));
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const [preHeadline, setPreHeadline] = useState(content.themes.google.defaultPreHeadline);
   const [headline, setHeadline] = useState(content.themes.google.defaultHeadline);
   const [footerNote, setFooterNote] = useState(content.themes.google.defaultFooter);
-  const selectedCard = cards.find((card) => card.cardId === selectedCardId)
-    ?? (initialCard?.cardId === selectedCardId ? initialCard : null);
-  const selectedMaterial = selectedCard?.material ?? "acrylic";
   const qrDataUrl = useBrandedQrDataUrl(
     selectedCardId ? getCardUrl(locale, selectedCardId) : "",
   );
-  useEffect(() => {
-    if (cards.length > 0 && !cards.some((c) => c.cardId === selectedCardId)) {
-      setSelectedCardId(cards[0].cardId);
-    }
-  }, [cards, selectedCardId]);
-  useEffect(() => {
-    setSelectedBulkCardIds((prev) =>
-      prev.filter((id) => cards.some((c) => c.cardId === id)),
-    );
-  }, [cards]);
   useEffect(() => {
     setDimensions(getMaterialDimensions(selectedMaterial));
   }, [selectedMaterial]);
@@ -141,7 +138,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
 
   return (
     <section className="space-y-6">
-      <PrintStudioStyles activeTab={activeTab} dimensions={dimensions} material={selectedMaterial} />
+      <PrintStudioStyles dimensions={dimensions} paper={paper} />
 
       <AdminPrintStudioHeader
         kicker={content.kicker}
@@ -158,6 +155,16 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
 
       <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
         <div className="space-y-4 rounded-3xl border border-black/8 bg-[#f5f7f8] p-3 shadow-xs sm:p-4 lg:col-span-5 xl:col-span-4">
+          <PrintMaterialSelector
+            material={selectedMaterial}
+            onChange={(material) => {
+              setSelectedMaterial(material);
+              setSelectedBulkCardIds(cards.filter((card) => card.material === material).slice(0, 6).map((card) => card.cardId));
+            }}
+            labels={content.materialSelector}
+            isEmpty={materialCards.length === 0}
+          />
+          <PrintPaperSelector value={paper} onChange={setPaper} labels={content.paper} />
           <PrintSizeSelector
             dimensions={dimensions}
             onChangeDimensions={setDimensions}
@@ -179,7 +186,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
 
           {activeTab === "bulk" && (
             <BulkCardSelector
-              cards={cards}
+              cards={materialCards}
               selectedCardIds={selectedBulkCardIds}
               onToggleCard={handleToggleBulkCard}
               onSelectAll={setSelectedBulkCardIds}
@@ -194,7 +201,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
           )}
 
           <PrintCardFormControls
-            cards={cards}
+            cards={materialCards}
             selectedCardId={selectedCardId}
             onSelectCardId={setSelectedCardId}
             hideCardSelect={activeTab === "bulk"}

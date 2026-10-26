@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ShoppingBag, Wifi, Link2 } from "lucide-react";
 import { useI18n } from "../../i18n";
 import type { UserProfile } from "../../lib/auth/user-profile";
+import type { CardMaterial } from "../../lib/firebase/firestore-schema";
 import { orderDraftSchema, type OrderDraft } from "../../server/orders/order.schemas";
 import { submitCardOrder, submitOwnerOrder } from "../../server/orders/order.functions";
 import { Input } from "../ui/input";
@@ -16,7 +17,7 @@ import { useToast } from "../ui/toaster";
 import type { OrderDetail } from "../../server/orders/order.types";
 import { editAdminOrder, editOwnerOrder } from "../../server/orders/order-management.functions";
 
-export function CardOrderForm({ user, available, context = "public", editing }: { user: UserProfile | null; available: boolean; context?: "public" | "owner" | "admin"; editing?: OrderDetail }) {
+export function CardOrderForm({ user, available, context = "public", editing, initialMaterial }: { user: UserProfile | null; available: boolean; context?: "public" | "owner" | "admin"; editing?: OrderDetail; initialMaterial?: CardMaterial }) {
   const { language, messages } = useI18n();
   const content = messages.orders;
   const { showToast } = useToast();
@@ -32,7 +33,7 @@ export function CardOrderForm({ user, available, context = "public", editing }: 
   } : {
     name: user?.name ?? "", email: user?.email ?? "", phone: "", address: "",
     shippingRegion: { province: "", city: "", district: "", village: "" },
-    product: "social", theme: "google", material: "acrylic", quantity: 1,
+    product: "social", theme: "google", material: initialMaterial ?? "acrylic", quantity: 1,
   } });
   const draft = form.watch();
   const busy = form.formState.isSubmitting;

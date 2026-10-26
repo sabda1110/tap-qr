@@ -9,6 +9,7 @@ import {
 type Feature = {
   content: FeatureItemContent;
   imageSrc: string;
+  imageSrcSet?: string;
 };
 
 type KeyFeaturesSectionProps = {
@@ -48,6 +49,7 @@ export function KeyFeaturesSection({
               <FeatureItem
                 content={feature.content}
                 imageSrc={feature.imageSrc}
+                imageSrcSet={feature.imageSrcSet}
                 reverse={index % 2 === 1}
               />
               {index < features.length - 1 ? <FeatureDivider /> : null}

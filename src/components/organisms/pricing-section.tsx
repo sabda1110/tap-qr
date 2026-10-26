@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import type { Language } from "../../i18n";
+import type { CardMaterial } from "../../lib/firebase/firestore-schema";
 import { MotionReveal } from "../elements/motion-reveal";
 import { SectionUnderline } from "../elements/section-underline";
 import { PricingDoodles } from "../elements/pricing-doodles";
@@ -16,6 +17,7 @@ type PricingPlan = {
   featured?: boolean;
   royal?: boolean;
   order?: boolean;
+  material?: CardMaterial;
   externalHref?: string | null;
 };
 

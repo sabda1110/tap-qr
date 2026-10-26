@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { recordLimitedPublicEvent } from "../analytics/public-event.server";
 import {
   getPublicOutletProfile,
   recordPublicProfileAction,
@@ -28,26 +29,12 @@ export const getOutletProfile = createServerFn({ method: "GET" })
 
 export const trackOutletProfileView = createServerFn({ method: "POST" })
   .validator(profileIdSchema)
-  .handler(async ({ data }) => {
-    const profile = await getPublicOutletProfile(data.id);
-    if (profile) {
-      // Analytics failures must not prevent customers from opening the outlet.
-      await recordPublicProfileView(profile.id).catch(() => console.error("PROFILE_VIEW_RECORD_FAILED"));
-    }
-  });
+  .handler(({ data }) => recordLimitedPublicEvent(`profile:${data.id}`, () => recordPublicProfileView(data.id)));
 
 export const trackOutletProfileAction = createServerFn({ method: "POST" })
   .validator(profileActionSchema)
-  .handler(async ({ data }) => {
-    await recordPublicProfileAction(data.id, data.channel).catch(() =>
-      console.error("PROFILE_ACTION_RECORD_FAILED"),
-    );
-  });
+  .handler(({ data }) => recordLimitedPublicEvent(`action:${data.id}:${data.channel}`, () => recordPublicProfileAction(data.id, data.channel)));
 
 export const trackOutletHighlightOpen = createServerFn({ method: "POST" })
   .validator(highlightOpenSchema)
-  .handler(async ({ data }) => {
-    await recordPublicHighlightOpen(data.id, data.highlightId).catch(() =>
-      console.error("HIGHLIGHT_OPEN_RECORD_FAILED"),
-    );
-  });
+  .handler(({ data }) => recordLimitedPublicEvent(`highlight:${data.id}:${data.highlightId}`, () => recordPublicHighlightOpen(data.id, data.highlightId)));

@@ -1,3 +1,4 @@
+import { PrintDocument, PrintSheet } from "../elements/print-document";
 import { Store } from "lucide-react";
 import type { PrintThemeKey } from "../elements/nfc-tap-target";
 import type { PrintDimensions } from "../elements/print-size-selector";
@@ -41,9 +42,30 @@ export function AdminPrintPreview({
     dimensions.preset !== "custom" ? ` (${dimensions.preset.toUpperCase()})` : ""
   }`;
 
+  const artwork = material === "pvc" ? (
+    <OrderPvcCard
+      cardId={cardId}
+      copy={{ preHeadline, headline, footer: footerNote, action: labels.review, tap: labels.tap, tapHelp: labels.tapHelp, scan: labels.scan, scanHelp: labels.scanHelp, or: labels.or, qrAlt: labels.qrAlt }}
+      qrDataUrl={qrDataUrl}
+      showMonster={showMonster}
+      value={{ product: "social", theme }}
+    />
+  ) : (
+    <PrintCardCanvas
+      labels={labels}
+      cardId={cardId}
+      footerNote={footerNote}
+      headline={headline}
+      preHeadline={preHeadline}
+      qrDataUrl={qrDataUrl}
+      showMonster={showMonster}
+      theme={theme}
+    />
+  );
+
   return (
     <div className="flex flex-col items-center justify-center rounded-3xl border border-black/8 bg-gradient-to-b from-[#f8fafc] to-[#eef2f6] p-6 shadow-inner lg:col-span-6 lg:p-8">
-      <div className="mb-4 flex w-full items-center justify-between text-xs font-bold text-[#69737d]">
+      <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-2 text-xs font-bold text-[#69737d]">
         <span className="inline-flex items-center gap-1.5 uppercase">
           <Store className="size-3.5" />
           {previewTitle}
@@ -53,35 +75,18 @@ export function AdminPrintPreview({
         </span>
       </div>
 
+      <PrintDocument>
+        <PrintSheet dimensions={dimensions} cropMarks={showCropMarks}
+          {...(material === "pvc" ? { canvasWidth: PVC_CARD_WIDTH, canvasHeight: PVC_CARD_HEIGHT } : {})}>
+          {artwork}
+        </PrintSheet>
+      </PrintDocument>
       {/* Material-aware card preview */}
-      <div className="relative flex flex-col items-center justify-center p-3">
+      <div className="relative flex w-full min-w-0 flex-col items-center justify-center p-3">
         {showCropMarks && <PrintCropMarks />}
-        {material === "pvc" ? (
-          <PrintCardScaledFrame canvasWidth={PVC_CARD_WIDTH} canvasHeight={PVC_CARD_HEIGHT} maxWidth={516}>
-            <OrderPvcCard
-              id="tapqr-print-card"
-              cardId={cardId}
-              copy={{ preHeadline, headline, footer: footerNote, action: labels.review, tap: labels.tap, tapHelp: labels.tapHelp, scan: labels.scan, scanHelp: labels.scanHelp, or: labels.or, qrAlt: labels.qrAlt }}
-              qrDataUrl={qrDataUrl}
-              showMonster={showMonster}
-              value={{ product: "social", theme }}
-            />
-          </PrintCardScaledFrame>
-        ) : (
-          <PrintCardScaledFrame targetWidth={340}>
-            <PrintCardCanvas
-              labels={labels}
-              id="tapqr-print-card"
-              cardId={cardId}
-              footerNote={footerNote}
-              headline={headline}
-              preHeadline={preHeadline}
-              qrDataUrl={qrDataUrl}
-              showMonster={showMonster}
-              theme={theme}
-            />
-          </PrintCardScaledFrame>
-        )}
+        <PrintCardScaledFrame {...(material === "pvc" ? { canvasWidth: PVC_CARD_WIDTH, canvasHeight: PVC_CARD_HEIGHT, maxWidth: 516 } : { maxWidth: Math.min(340, 340 * dimensions.widthMm / 148) })}>
+          {artwork}
+        </PrintCardScaledFrame>
 
         {/* Acrylic stand base */}
         {material === "acrylic" && <div className="mt-3 h-4 w-3/4 rounded-full bg-gradient-to-r from-black/10 via-black/25 to-black/10 shadow-lg blur-xs" />}

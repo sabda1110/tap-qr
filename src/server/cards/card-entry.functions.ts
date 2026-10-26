@@ -3,6 +3,7 @@ import { z } from "zod";
 import { cardIdSchema, claimCardSchema, userOutletCardsSchema } from "./card-entry.schemas";
 import { resolveCardEntry, claimEntryCard, listUserOutlets, listUserOutletCards, recordCardVisit } from "./card-entry.repository.server";
 import { requireAuthenticatedUser } from "../auth/authorization.server";
+import { recordLimitedPublicEvent } from "../analytics/public-event.server";
 
 export const getCardEntry = createServerFn({ method: "GET" }).validator(z.object({ cardId: cardIdSchema }))
   .handler(({ data }) => resolveCardEntry(data.cardId));
@@ -24,4 +25,4 @@ export const getUserOutletCopyCards = createServerFn({ method: "GET" })
   });
 
 export const trackCardVisit = createServerFn({ method: "POST" }).validator(z.object({ cardId: cardIdSchema }))
-  .handler(({ data }) => recordCardVisit(data.cardId));
+  .handler(({ data }) => recordLimitedPublicEvent(`card:${data.cardId}`, () => recordCardVisit(data.cardId)));

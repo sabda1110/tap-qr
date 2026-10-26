@@ -3,7 +3,9 @@ import type { ReviewCardLabels } from "../molecules/classic-review-card";
 import type { wifiPrintId } from "../../i18n/locales/wifi-print-id";
 
 export type AdminPrintStudioContent = {
+  paper: { title: string; a4: string; artwork: string; help: string };
   wifi: typeof wifiPrintId;
+  materialSelector: { title: string; acrylic: string; pvc: string; empty: string };
   printLabels: ReviewCardLabels;
   kicker: string;
   title: string;

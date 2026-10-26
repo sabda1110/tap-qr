@@ -63,7 +63,7 @@ export async function listCardsForPrint(): Promise<PrintCardOption[]> {
     cardId: c.cardId,
     claimStatus: c.claimStatus,
     printStatus: (c.print?.status as CardPrintStatus) ?? "unprinted",
-    material: c.material,
+    material: c.material === "pvc" ? "pvc" : "acrylic",
     outletName: null,
     outletSlug: null,
   }));
@@ -97,7 +97,7 @@ export async function getCardPrintDetail(cardId: string): Promise<PrintCardDetai
     cardId: cardData.cardId,
     claimStatus: cardData.claimStatus,
     printStatus: cardData.print?.status ?? "unprinted",
-    material: cardData.material,
+    material: cardData.material === "pvc" ? "pvc" : "acrylic",
     outletName,
     outletSlug,
     logoUrl,

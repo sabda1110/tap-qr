@@ -9,6 +9,7 @@
     "dev": "vite dev --port 3000",
     "generate-routes": "tsr generate",
     "test:orders": "node scripts/test-orders.cjs",
+    "test:core": "node scripts/test-core.cjs",
     "build": "vite build",
     "preview": "vite preview"
   },

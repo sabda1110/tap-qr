@@ -1,3 +1,4 @@
+import { PrintDocument, PrintSheet } from "../elements/print-document";
 import { Wifi } from "lucide-react";
 import type { wifiPrintId } from "../../i18n/locales/wifi-print-id";
 import type { WifiPrintJob, WifiPrintTheme } from "../../hooks/use-wifi-print";
@@ -37,24 +38,19 @@ export function WifiPrintPreview({ jobs, theme, mode, title, footer, content, di
             <div className="relative mx-auto w-full max-w-[380px]">
               {cropMarks && <PrintCropMarks />}
               <PrintCardScaledFrame>
-                <WifiPrintCard id={mode === "single" ? "tapqr-print-card" : undefined} job={job} theme={theme} title={title} footer={footer} content={content} />
+                <WifiPrintCard job={job} theme={theme} title={title} footer={footer} content={content} />
               </PrintCardScaledFrame>
             </div>
           </div>
         ))}
       </div>
-      {mode === "bulk" && (
-        <div id="tapqr-bulk-print-container" className="hidden" aria-hidden="true">
-          {jobs.map((job) => (
-            <div className="bulk-print-page" key={job.id} style={{ width: `${dimensions.widthMm}mm`, height: `${dimensions.heightMm}mm` }}>
-              <div className="bulk-print-scaler-wrapper relative">
-                {cropMarks && <PrintCropMarks />}
-                <WifiPrintCard job={job} theme={theme} title={title} footer={footer} content={content} />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <PrintDocument>
+        {jobs.map((job) => (
+          <PrintSheet key={job.id} dimensions={dimensions} cropMarks={cropMarks}>
+            <WifiPrintCard job={job} theme={theme} title={title} footer={footer} content={content} />
+          </PrintSheet>
+        ))}
+      </PrintDocument>
     </section>
   );
 }

@@ -3,17 +3,20 @@ import { ArrowLeft } from "lucide-react";
 import { useI18n } from "../../i18n";
 import { useDashboardSession } from "../../hooks/use-dashboard-session";
 import type { UserProfile } from "../../lib/auth/user-profile";
+import type { CardMaterial } from "../../lib/firebase/firestore-schema";
 import { UserDashboardLayout } from "../layouts/user-dashboard-layout";
 import { CardOrderForm } from "../organisms/card-order-form";
 import { ToasterProvider } from "../ui/toaster";
 import type { OrderDetail } from "../../server/orders/order.types";
 import { canEditOrder } from "../../server/orders/order-policy";
 
-export function OwnerCardOrderPage(props: { user: UserProfile; whatsappNumber: string | null; order?: OrderDetail }) {
+type Props = { user: UserProfile; whatsappNumber: string | null; order?: OrderDetail; initialMaterial?: CardMaterial };
+
+export function OwnerCardOrderPage(props: Props) {
   return <ToasterProvider><OwnerCheckout {...props} /></ToasterProvider>;
 }
 
-function OwnerCheckout({ user, whatsappNumber, order }: { user: UserProfile; whatsappNumber: string | null; order?: OrderDetail }) {
+function OwnerCheckout({ user, whatsappNumber, order, initialMaterial }: Props) {
   const { language, messages } = useI18n();
   const signOut = useDashboardSession(user, language);
   return (
@@ -25,7 +28,7 @@ function OwnerCheckout({ user, whatsappNumber, order }: { user: UserProfile; wha
         </Link>
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{order ? messages.orders.management.editTitle : messages.orders.buy}</h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-[#69737d]">{order ? `${order.code} · ${messages.orders.management.editDescription}` : messages.orders.ownerCheckoutDescription}</p>
-        {order && !canEditOrder(order) ? <p role="status" className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">{messages.orders.management.locked}</p> : <CardOrderForm user={user} available={!!order || !!whatsappNumber} context="owner" editing={order} />}
+        {order && !canEditOrder(order) ? <p role="status" className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">{messages.orders.management.locked}</p> : <CardOrderForm key={order?.id ?? initialMaterial ?? "default"} user={user} available={!!order || !!whatsappNumber} context="owner" editing={order} initialMaterial={initialMaterial} />}
       </div>
     </UserDashboardLayout>
   );

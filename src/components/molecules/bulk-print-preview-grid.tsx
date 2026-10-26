@@ -1,3 +1,4 @@
+import { PrintDocument, PrintSheet } from "../elements/print-document";
 import { useEffect, useState } from "react";
 import { Layers, Printer } from "lucide-react";
 import type { PrintThemeKey } from "../elements/nfc-tap-target";
@@ -171,24 +172,14 @@ export function BulkPrintPreviewGrid({
         })}
       </div>
 
-      {/* Hidden DOM elements rendered specifically for browser multi-page print */}
-      <div id="tapqr-bulk-print-container" className="hidden" aria-hidden="true">
+      <PrintDocument>
         {cardIds.map((id) => (
-          <div
-            key={`print-bulk-${id}`}
-            className="bulk-print-page"
-            style={{
-              width: `${dimensions.widthMm}mm`,
-              height: `${dimensions.heightMm}mm`,
-            }}
-          >
-            <div className="bulk-print-scaler-wrapper" data-material={cardMaterials[id] ?? "acrylic"}>
-              {showCropMarks && <PrintCropMarks />}
-              <MaterialCardCanvas cardId={id} material={cardMaterials[id] ?? "acrylic"} labels={labels} theme={theme} showMonster={showMonster} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrMap[id] || ""} />
-            </div>
-          </div>
+          <PrintSheet key={id} dimensions={dimensions} cropMarks={showCropMarks}
+            {...(cardMaterials[id] === "pvc" ? { canvasWidth: PVC_CARD_WIDTH, canvasHeight: PVC_CARD_HEIGHT } : {})}>
+            <MaterialCardCanvas cardId={id} material={cardMaterials[id] ?? "acrylic"} labels={labels} theme={theme} showMonster={showMonster} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrMap[id] || ""} />
+          </PrintSheet>
         ))}
-      </div>
+      </PrintDocument>
     </div>
   );
 }

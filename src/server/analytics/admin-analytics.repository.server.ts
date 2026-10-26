@@ -38,8 +38,10 @@ async function getCount(query: FirebaseFirestore.Query): Promise<number> {
   try {
     const snapshot = await query.count().get();
     return snapshot.data().count;
-  } catch {
-    return 0;
+  } catch (error) {
+    const code = error && typeof error === "object" && "code" in error ? error.code : "unknown";
+    console.error("ADMIN_ANALYTICS_COUNT_FAILED", { code, message: error instanceof Error ? error.message : "Unknown error" });
+    throw new Error("ADMIN_ANALYTICS_UNAVAILABLE");
   }
 }
 
@@ -86,9 +88,9 @@ export async function getAdminAnalyticsSummary(): Promise<AdminAnalyticsSummary>
     getCount(database.collection("scanEvents").where("event", "==", "profile_view")),
     database
       .collection("outlets")
+      .orderBy("createdAt", "desc")
       .limit(5)
-      .get()
-      .catch(() => ({ docs: [] })),
+      .get(),
   ]);
 
   const recentOutlets = recentOutletsSnapshot.docs.map((doc) => {

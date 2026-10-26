@@ -22,6 +22,12 @@ export const adminDashboardEn = {
   },
   printStudio: printStudioEn,
   analytics: {
+    unavailable: {
+      title: "Analytics are currently unavailable",
+      description: "The statistics could not be loaded. Try again to retrieve the latest data.",
+      retry: "Try again",
+      retrying: "Reloading…",
+    },
     kicker: "Platform Analytics",
     title: "Growth & Usage Overview",
     description:

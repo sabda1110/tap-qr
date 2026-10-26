@@ -10,10 +10,11 @@ export type FeatureItemContent = {
 type FeatureItemProps = {
   content: FeatureItemContent;
   imageSrc: string;
+  imageSrcSet?: string;
   reverse?: boolean;
 };
 
-export function FeatureItem({ content, imageSrc, reverse }: FeatureItemProps) {
+export function FeatureItem({ content, imageSrc, imageSrcSet, reverse }: FeatureItemProps) {
   const textOrder = reverse ? "lg:order-2" : "";
   const imageOrder = reverse ? "lg:order-1" : "";
 
@@ -36,8 +37,13 @@ export function FeatureItem({ content, imageSrc, reverse }: FeatureItemProps) {
           <img
             className="h-auto w-full max-w-[520px] select-none"
             src={imageSrc}
+            srcSet={imageSrcSet}
+            sizes="(min-width: 640px) 520px, calc(100vw - 2rem)"
+            width={1536}
+            height={1024}
             alt={content.imageAlt}
             loading="lazy"
+            decoding="async"
             draggable={false}
           />
         </figure>

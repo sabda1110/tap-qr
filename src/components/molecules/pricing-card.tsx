@@ -2,6 +2,7 @@ import { ArrowUpRight, Check, type LucideIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 import type { Language } from "../../i18n";
+import type { CardMaterial } from "../../lib/firebase/firestore-schema";
 import { PricingCardArtwork } from "../elements/pricing-card-artwork";
 
 export type PricingCardContent = {
@@ -22,6 +23,7 @@ type PricingCardProps = {
   featured?: boolean;
   royal?: boolean;
   order?: boolean;
+  material?: CardMaterial;
   externalHref?: string | null;
 };
 
@@ -32,6 +34,7 @@ export function PricingCard({
   featured,
   royal = false,
   order = false,
+  material,
   externalHref,
 }: PricingCardProps) {
   const ctaClassName = `pricing-cta mt-9 inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-4 py-3 text-center text-sm font-bold no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0798ad] md:min-h-16 lg:min-h-12 ${
@@ -103,6 +106,7 @@ export function PricingCard({
           className={ctaClassName}
           to={order ? "/$locale/order" : "/$locale/auth/$mode"}
           params={{ locale: language, mode: "register" }}
+          search={order ? { material } : undefined}
         >
           {ctaContent}
         </Link>

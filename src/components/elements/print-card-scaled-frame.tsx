@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-export const BASE_CARD_WIDTH = 380;
-export const BASE_CARD_HEIGHT = 550;
+import { BASE_CARD_WIDTH, BASE_CARD_HEIGHT } from "../../lib/print-dimensions";
+export { BASE_CARD_WIDTH, BASE_CARD_HEIGHT } from "../../lib/print-dimensions";
 
 type PrintCardScaledFrameProps = {
   targetWidth?: number;

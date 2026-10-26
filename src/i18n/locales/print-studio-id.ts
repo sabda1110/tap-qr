@@ -1,7 +1,12 @@
 import { wifiPrintId } from "./wifi-print-id";
 
 export const printStudioId = {
+  paper: {
+    title: "Kertas cetak", a4: "Kertas A4", artwork: "Sesuai ukuran desain",
+    help: "A4 menampilkan desain sesuai ukuran pilihan di tengah kertas. Cetak dengan ukuran aktual / skala 100%, bukan Sesuaikan halaman. Pilihan sesuai desain membuat halaman PDF seukuran A7/A6/A5; zoom otomatis dapat membuatnya terlihat sama. Desain yang melebihi A4 memakai halaman sesuai desain.",
+  },
   wifi: wifiPrintId,
+  materialSelector: { title: "Bahan media cetak", acrylic: "Papan Akrilik", pvc: "Kartu PVC", empty: "Belum ada kartu bahan ini yang siap dicetak. Preview tetap tersedia; tambahkan stok di Inventaris untuk mencetak." },
   printLabels: {
     tap: "Tap di sini", tapHelp: "Tempelkan ponsel Anda", scan: "Scan QR", scanHelp: "Buka kamera ponsel", or: "atau",
     review: "Bagikan pengalaman Anda di Google", qrAlt: "Kode QR kartu {cardId}",
@@ -27,7 +32,7 @@ export const printStudioId = {
   copySectionTitle: "Isi teks kartu",
   copySectionDescription: "Sesuaikan pesan yang tampil pada hasil cetak.",
   printNow: "Cetak Sekarang",
-  previewTitle: "Preview Standee Akrilik A7",
+  previewTitle: "Preview Standee Akrilik",
   pvcPreviewTitle: "Preview Kartu PVC Horizontal",
   dimensionsNote: "Ukuran Standee: 74 × 105 mm",
   tabSingle: "Cetak Satuan",

@@ -51,7 +51,7 @@ function publicSettings(value: unknown): OutletPublicProfileSettings {
   };
 }
 
-export async function getPublicOutletProfile(id: string): Promise<PublicOutletProfile | null> {
+async function findActivePublicOutlet(id: string) {
   const database = getFirebaseAdminFirestore();
   let outletDocument = await database.collection("outlets").doc(id).get();
   if (!outletDocument.exists) {
@@ -61,11 +61,17 @@ export async function getPublicOutletProfile(id: string): Promise<PublicOutletPr
   }
   const outlet = outletDocument.data()!;
   if (outlet.status !== "active" || !outlet.ownerId) return null;
+  return outletDocument;
+}
 
-  const snapshot = await database.collection("cards").where("ownerId", "==", outlet.ownerId).get();
+export async function getPublicOutletProfile(id: string): Promise<PublicOutletProfile | null> {
+  const outletDocument = await findActivePublicOutlet(id);
+  if (!outletDocument) return null;
+  const outlet = outletDocument.data()!;
+  const snapshot = await getFirebaseAdminFirestore().collection("cards").where("outletId", "==", outletDocument.id).get();
   const cards = snapshot.docs
     .map((document) => ({ id: document.id, record: document.data() as CardRecord }))
-    .filter(({ record }) => record.outletId === outletDocument.id && record.claimStatus === "claimed" && record.isEnabled)
+    .filter(({ record }) => record.ownerId === outlet.ownerId && record.outletId === outletDocument.id && record.claimStatus === "claimed" && record.isEnabled)
     .sort((a, b) => a.id.localeCompare(b.id));
   const links: SocialLink[] = [];
   const seen = new Set<string>();
@@ -98,7 +104,10 @@ export async function getPublicOutletProfile(id: string): Promise<PublicOutletPr
   };
 }
 
-export async function recordPublicProfileView(outletId: string) {
+export async function recordPublicProfileView(id: string) {
+  const outlet = await findActivePublicOutlet(id);
+  if (!outlet) return;
+  const outletId = outlet.id;
   await getFirebaseAdminFirestore().collection("scanEvents").add({
     business_id: outletId,
     outletId,
