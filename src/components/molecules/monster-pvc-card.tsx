@@ -120,11 +120,11 @@ function MangoArtwork(props: ContentProps) {
         </div>
       </header>
       <div className="relative z-10 grid h-[214px] shrink-0 grid-cols-[1fr_164px] gap-4 px-5 pt-1 pb-2">
-        <section className="flex min-w-0 flex-col justify-between pb-1">
+        <section className="flex min-w-0 flex-col justify-between">
           <ReviewTitle {...props} />
-          <MonsterStars className="my-2 [&_svg]:size-[17px]" />
+          <MonsterStars className="my-1 [&_svg]:size-[17px]" />
           <ReviewBanner {...props} />
-          <div className="mt-3"><TapPanel {...props} /></div>
+          <div className="mt-2"><TapPanel {...props} /></div>
         </section>
         <ScanPanel {...props} />
       </div>
