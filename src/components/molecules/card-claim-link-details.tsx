@@ -29,8 +29,8 @@ export function CardClaimLinkDetails({
 
   return (
     <section>
-      <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-xl font-extrabold tracking-tight text-slate-950 sm:text-2xl">
+      <div className="max-w-2xl">
+        <h2 className="text-lg font-bold tracking-tight text-[#171b22] sm:text-xl">
           {content.detailsTitle}
         </h2>
         <p className="mt-1 text-sm leading-5 text-slate-500">
@@ -111,7 +111,7 @@ export function CardClaimLinkDetails({
                               href={placeIdFinderUrl}
                               target="_blank"
                               rel="noreferrer"
-                              className="inline-flex items-center gap-1 font-bold text-[#155ee8] underline underline-offset-2"
+                              className="inline-flex items-center gap-1 font-bold text-[#087e91] underline underline-offset-2"
                             >
                               {content.placeIdGuide.googleDocs}
                               <ExternalLink
@@ -221,7 +221,7 @@ export function CardClaimLinkDetails({
             isActive: true,
           })
         }
-        className="mt-3 w-full rounded-xl border-dashed border-[#155ee8] text-[#155ee8] sm:w-auto"
+        className="mt-3 w-full rounded-xl border-dashed border-[#087e91] text-[#087e91] sm:w-auto"
       >
         <Plus className="size-4" />
         {content.addAdditionalLink}

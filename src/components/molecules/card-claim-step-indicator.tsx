@@ -1,62 +1,28 @@
-import { Clock } from "lucide-react";
+import { Check } from "lucide-react";
 import type { Messages } from "../../i18n";
 
-type Props = {
-  content: Messages["cardClaim"];
-  step: 1 | 2 | 3;
-};
+type Props = { content: Messages["cardClaim"]; step: 1 | 2 | 3 };
 
 export function CardClaimStepIndicator({ content, step }: Props) {
+  const labels = [content.steps.outlet, content.steps.channels, content.steps.links];
   return (
-    <div className="mb-5" aria-label={content.step.replace("{current}", String(step))}>
-      <div className="grid gap-2 sm:grid-cols-3">
-        <div
-          className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
-            step === 1
-              ? "bg-[#eaf3ff] text-slate-950"
-              : "bg-blue-50 text-[#155ee8]"
-          }`}
-        >
-          <span
-            className={`grid size-5 place-items-center rounded-full text-xs font-bold ${
-              step === 1 ? "bg-[#155ee8] text-white" : "bg-[#155ee8] text-white"
-            }`}
-          >
-            1
-          </span>
-          <span>{content.steps.outlet}</span>
-        </div>
-
-        <div
-          className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
-            step === 2
-              ? "bg-[#eaf3ff] text-slate-950"
-              : "text-slate-500"
-          }`}
-        >
-          <span
-            className={`grid size-5 place-items-center rounded-full text-xs font-bold ${
-              step === 2
-              ? "bg-[#155ee8] text-white"
-              : "bg-slate-100 text-slate-500"
-            }`}
-          >
-            2
-          </span>
-          <span className={step === 2 ? "text-slate-950" : "font-medium text-slate-500"}>
-            {content.steps.channels}
-          </span>
-        </div>
-        <div className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold ${step === 3 ? "bg-[#eaf3ff] text-slate-950" : "text-slate-500"}`}>
-          <span className={`grid size-5 place-items-center rounded-full text-xs font-bold ${step === 3 ? "bg-[#155ee8] text-white" : "bg-slate-100 text-slate-500"}`}>3</span>
-          <span className={step === 3 ? "text-slate-950" : "font-medium text-slate-500"}>{content.steps.links}</span>
-        </div>
-      </div>
-
-      <div className="mt-2.5 flex items-center gap-1.5 text-xs font-medium text-slate-500">
-        <Clock className="size-3.5" />
-        <span>{content.step.replace("{current}", String(step))}</span>
-      </div>
-    </div>
+    <nav className="mb-6" aria-label={content.step.replace("{current}", String(step))}>
+      <ol className="grid grid-cols-3 gap-2 rounded-2xl border border-black/8 bg-[#faf9f6] p-2 sm:gap-3">
+        {labels.map((label, index) => {
+          const current = step === index + 1;
+          const complete = step > index + 1;
+          return (
+            <li key={label} aria-current={current ? "step" : undefined}
+              className={`flex min-w-0 flex-col items-center gap-2 rounded-xl px-2 py-3 text-center sm:flex-row sm:text-left ${current ? "bg-[#ffb332] text-[#171b22]" : complete ? "text-[#087e91]" : "text-[#69737d]"}`}>
+              <span className={`grid size-7 shrink-0 place-items-center rounded-full text-xs font-bold ${current ? "bg-[#171b22] text-white" : complete ? "bg-[#e8f8fb] text-[#087e91]" : "border border-black/15 bg-white"}`}>
+                {complete ? <Check aria-hidden="true" className="size-4" /> : index + 1}
+              </span>
+              <span className="min-w-0 text-xs leading-5 font-semibold sm:text-sm">{label}</span>
+            </li>
+          );
+        })}
+      </ol>
+      <p className="mt-3 text-xs font-medium text-[#69737d]" aria-live="polite">{content.step.replace("{current}", String(step))}</p>
+    </nav>
   );
 }

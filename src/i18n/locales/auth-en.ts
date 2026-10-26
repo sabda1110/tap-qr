@@ -1,6 +1,19 @@
 import type { authId } from "./auth-id";
 
 export const authEn: typeof authId = {
+  activation: {
+    loginTitle: "Activate your card",
+    registerTitle: "Start with your account",
+    loginDescription: "Sign in to TapQR to connect your card to your business.",
+    registerDescription: "Create a TapQR account to activate and manage your business card.",
+    nextStep: "After signing in, continue setting up your card.",
+    registerNextStep: "After registering, continue setting up your card.",
+    registerAction: "Create account",
+    loginAction: "Sign in",
+    kicker: "TapQR card activation",
+    registerPrompt: "New to TapQR?",
+    loginPrompt: "Already have an account?",
+  },
   backHome: "Back to home",
   languageLabel: "Choose language",
   google: "Continue with Google",

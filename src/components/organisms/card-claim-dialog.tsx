@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, ContactRound } from "lucide-react";
+import { ChevronLeft, ChevronRight, CreditCard } from "lucide-react";
 
 import type { Messages } from "../../i18n";
 import { extractCardIdFromQr } from "../../lib/card-id";
@@ -75,7 +75,7 @@ export function CardClaimDialog({
   const titleNode = (
     <span>
       {content.title.replace("TapQR", "").trim()}{" "}
-      <span className="bg-gradient-to-r from-[#155ee8] to-[#3288f5] bg-clip-text text-transparent">
+      <span className="text-[#ffb332]">
         TapQR
       </span>
     </span>
@@ -89,8 +89,8 @@ export function CardClaimDialog({
     <Dialog
       title={titleNode}
       description={content.description}
-      icon={ContactRound}
-      iconClassName="border-blue-100 bg-[#eaf3ff] text-[#155ee8]"
+      icon={CreditCard}
+      iconClassName="rounded-xl border-[#171b22] bg-[#ffb332] text-[#171b22] shadow-[3px_3px_0_#171b22]"
       headerExtra={headerExtra}
       closeLabel={content.cancel}
       onClose={onClose}
@@ -104,7 +104,7 @@ export function CardClaimDialog({
           className="flex min-h-0 flex-1 flex-col"
           aria-busy={busy}
         >
-          <DialogBody className="bg-white sm:px-7 sm:py-5">
+          <DialogBody key={step} className="bg-white sm:px-7 sm:py-6">
             <CardClaimStepIndicator content={content} step={step} />
             <fieldset disabled={busy} className="grid gap-4 border-0 p-0">
               {step === 1 ? (
@@ -193,7 +193,7 @@ export function CardClaimDialog({
                 variant="outline"
                 onClick={() => setStep(step === 3 ? 2 : 1)}
                 disabled={busy}
-                className="rounded-xl border-slate-200 px-5"
+                className="rounded-md border-black/15 px-5 font-semibold"
               >
                 <ChevronLeft className="size-4" />
                 {content.back}
@@ -204,7 +204,7 @@ export function CardClaimDialog({
                 type="button"
                 onClick={step === 1 ? nextStep : nextToDetails}
                 disabled={busy}
-                className="cursor-pointer gap-1.5 rounded-xl bg-[#155ee8] px-6 py-2.5 font-bold text-white shadow-md shadow-blue-600/15 transition hover:bg-[#0f4dcc]"
+                className="cursor-pointer gap-2 rounded-md bg-[#171b22] px-6 py-2.5 font-semibold text-white hover:bg-[#303740]"
               >
                 <span>{content.next}</span>
                 <ChevronRight className="size-4" />
@@ -213,7 +213,7 @@ export function CardClaimDialog({
               <Button
                 type="submit"
                 disabled={busy}
-                className="cursor-pointer rounded-xl bg-[#155ee8] px-6 py-2.5 font-bold text-white shadow-md shadow-blue-600/15 transition hover:bg-[#0f4dcc]"
+                className="cursor-pointer rounded-md border-[#171b22] bg-[#ffb332] px-6 py-2.5 font-bold text-[#171b22] hover:bg-[#ffc45c]"
               >
                 {busy ? content.saving : content.save}
               </Button>

@@ -18,6 +18,7 @@ export function AuthPage({ mode, cardId, reason, destination }: AuthPageProps) {
   return (
     <AuthLayout
       mode={mode}
+      activation={Boolean(cardId)}
       header={
         <AuthHeader
           backLabel={messages.auth.backHome}

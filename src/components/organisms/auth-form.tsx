@@ -4,6 +4,7 @@ import { CircleAlert } from "lucide-react";
 import type { Language, Messages } from "../../i18n";
 import { useFirebaseAuthentication } from "../../hooks/use-firebase-authentication";
 import type { AuthMode } from "../layouts/auth-layout";
+import { ActivationAuthNotice } from "../molecules/activation-auth-notice";
 import { GoogleMark } from "../elements/google-mark";
 import {
   AuthEmailForm,
@@ -46,10 +47,10 @@ export function AuthForm({ content, feedback, language, mode, cardId, reason, de
     <section className="flex h-full items-center p-7 sm:p-10 lg:p-8">
       <div className="mx-auto w-full max-w-[410px]">
         <div className="flex items-center justify-between gap-4">
-          <p className="text-[11px] font-bold tracking-[0.18em] text-[#0798ad] uppercase">
-            {content.kicker}
+          <p className={cardId ? "text-sm font-semibold text-[#087e91]" : "text-[11px] font-bold tracking-[0.18em] text-[#0798ad] uppercase"}>
+            {cardId ? feedback.activation.kicker : content.kicker}
           </p>
-          {isRegister ? (
+          {isRegister && !cardId ? (
             <Link
               aria-disabled={isSubmitting}
               className="shrink-0 text-xs font-bold text-black underline decoration-[#ffb332] decoration-2 underline-offset-4 hover:text-[#0798ad] aria-disabled:pointer-events-none aria-disabled:opacity-40"
@@ -61,10 +62,16 @@ export function AuthForm({ content, feedback, language, mode, cardId, reason, de
             </Link>
           ) : null}
         </div>
-        <h1 className="mt-3 text-[clamp(2rem,4vw,2.8rem)] leading-tight font-semibold tracking-[-0.05em] text-black">
-          {content.title}
+        <h1 className={cardId ? "relative mt-3 pb-3 text-[clamp(1.75rem,3.4vw,2.4rem)] leading-[1.28] font-extrabold tracking-[-0.035em] text-black" : "mt-3 text-[clamp(2rem,4vw,2.8rem)] leading-tight font-semibold tracking-[-0.05em] text-black"}>
+          {cardId ? (isRegister ? feedback.activation.registerTitle : feedback.activation.loginTitle) : content.title}
+          {cardId && <svg aria-hidden="true" className="absolute bottom-0 left-0 h-2 w-32 text-[#ffb332]" viewBox="0 0 140 10" fill="none">
+            <path d="M3 6C40 1 94 2 137 6M5 7c45-3 86-2 126 1" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+          </svg>}
         </h1>
-        <p className="mt-3 text-sm leading-6 text-[#6b7079]">{content.description}</p>
+        {cardId ? (
+          <ActivationAuthNotice cardId={cardId} mode={mode} language={language}
+            content={feedback.activation} disabled={isSubmitting} />
+        ) : <p className="mt-3 text-sm leading-6 text-[#6b7079]">{content.description}</p>}
 
         {reason === "concurrent_login" && (
           <div
@@ -115,7 +122,7 @@ export function AuthForm({ content, feedback, language, mode, cardId, reason, de
           </p>
         ) : null}
 
-        {!isRegister ? (
+        {!isRegister && !cardId ? (
           <p className="mt-6 text-center text-sm text-black/55">
             {content.switchPrompt}{" "}
             <Link

@@ -4,12 +4,13 @@ export type AuthMode = "login" | "register";
 
 type AuthLayoutProps = {
   mode: AuthMode;
+  activation?: boolean;
   header: ReactNode;
   showcase: ReactNode;
   form: ReactNode;
 };
 
-export function AuthLayout({ mode, header, showcase, form }: AuthLayoutProps) {
+export function AuthLayout({ mode, header, showcase, form, activation = false }: AuthLayoutProps) {
   const isRegister = mode === "register";
 
   return (
@@ -21,20 +22,20 @@ export function AuthLayout({ mode, header, showcase, form }: AuthLayoutProps) {
 
         <div
           className={`relative mx-auto grid w-full max-w-6xl overflow-hidden rounded-[2rem] border border-black/[0.07] bg-white shadow-[0_28px_90px_rgba(23,36,52,0.11)] transition-[height] duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none lg:grid-cols-2 ${
-            isRegister ? "lg:h-[780px]" : "lg:h-[700px]"
+            activation ? "lg:min-h-[760px]" : (isRegister ? "lg:h-[780px]" : "lg:h-[700px]")
           }`}
         >
           <div
-            className={`relative z-10 min-h-[390px] overflow-hidden bg-[#eaf6f8] transition-transform duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none lg:absolute lg:inset-y-0 lg:left-0 lg:w-1/2 ${
-              isRegister ? "lg:translate-x-full" : "lg:translate-x-0"
+            className={`relative z-10 min-h-[390px] overflow-hidden bg-[#eaf6f8] transition-transform duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none ${
+              activation ? `order-2 ${isRegister ? "lg:order-2" : "lg:order-1"}` : `lg:absolute lg:inset-y-0 lg:left-0 lg:w-1/2 ${isRegister ? "lg:translate-x-full" : "lg:translate-x-0"}`
             }`}
           >
             {showcase}
           </div>
 
           <div
-            className={`relative z-20 bg-white transition-transform duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none lg:absolute lg:inset-y-0 lg:left-1/2 lg:w-1/2 ${
-              isRegister ? "lg:-translate-x-full" : "lg:translate-x-0"
+            className={`relative z-20 bg-white transition-transform duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none ${
+              activation ? `order-1 ${isRegister ? "lg:order-1" : "lg:order-2"}` : `lg:absolute lg:inset-y-0 lg:left-1/2 lg:w-1/2 ${isRegister ? "lg:-translate-x-full" : "lg:translate-x-0"}`
             }`}
           >
             {form}

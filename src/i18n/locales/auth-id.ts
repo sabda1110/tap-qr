@@ -1,4 +1,17 @@
 export const authId = {
+  activation: {
+    loginTitle: "Aktifkan kartu Anda",
+    registerTitle: "Mulai dengan akun Anda",
+    loginDescription: "Masuk ke akun TapQR untuk menghubungkan kartu dengan bisnis Anda.",
+    registerDescription: "Buat akun TapQR untuk mengaktifkan dan mengelola kartu bisnis Anda.",
+    nextStep: "Setelah masuk, lanjutkan pengaturan kartu.",
+    registerNextStep: "Setelah daftar, lanjutkan pengaturan kartu.",
+    registerAction: "Buat akun",
+    loginAction: "Masuk",
+    kicker: "Aktivasi kartu TapQR",
+    registerPrompt: "Belum punya akun?",
+    loginPrompt: "Sudah punya akun?",
+  },
   backHome: "Kembali ke beranda",
   languageLabel: "Pilih bahasa",
   google: "Lanjutkan dengan Google",

@@ -54,8 +54,8 @@ export function CardClaimChannelStep({
 
   return (
     <section>
-      <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-xl font-extrabold tracking-tight text-slate-950 sm:text-2xl">
+      <div className="max-w-2xl">
+        <h2 className="text-lg font-bold tracking-tight text-[#171b22] sm:text-xl">
           {content.channelTitle}
         </h2>
         <p className="mt-1 text-sm leading-5 text-slate-500">
@@ -72,14 +72,14 @@ export function CardClaimChannelStep({
               aria-pressed={selected}
               onClick={() => toggleChannel(type)}
               className={cn(
-                "relative flex min-h-24 cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 bg-white p-3 text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#155ee8] focus-visible:ring-offset-2",
+                "relative flex min-h-24 cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 bg-white p-3 text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#087e91] focus-visible:ring-offset-2",
                 selected
-                  ? "border-[#155ee8] shadow-[0_8px_24px_rgba(21,94,232,0.12)]"
-                  : "border-slate-200 hover:border-blue-200",
+                  ? "border-[#171b22] bg-[#fff8e9] shadow-[3px_3px_0_#ffb332]"
+                  : "border-slate-200 hover:border-[#087e91]/40",
               )}
             >
               {selected && (
-                <span className="absolute top-2 right-2 grid size-5 place-items-center rounded-full bg-[#155ee8] text-white">
+                <span className="absolute top-2 right-2 grid size-5 place-items-center rounded-full bg-[#171b22] text-[#ffb332]">
                   <Check className="size-3.5" />
                 </span>
               )}
