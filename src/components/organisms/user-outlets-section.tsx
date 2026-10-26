@@ -1,5 +1,5 @@
 import { useId, useState } from "react";
-import { Store } from "lucide-react";
+import storeAvatar from "../assets/images/activation/new-store-orange.webp";
 import type { Language, Messages } from "../../i18n";
 import type { OutletDetail } from "../../server/outlets/outlet.types";
 import { UserOutletManagementCard } from "../molecules/user-outlet-management-card";
@@ -44,10 +44,8 @@ export function UserOutletsSection({
     outlets.find((outlet) => outlet.id === selectedOutletId) ?? newestOutlet;
   if (outlets.length === 0)
     return (
-      <section className="rounded-2xl border border-dashed border-[#bce8ef] bg-white px-5 py-10 text-center sm:py-14">
-        <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-[#e8f8fb] text-[#087e91]">
-          <Store aria-hidden="true" className="size-6" />
-        </span>
+      <section className="rounded-2xl border border-dashed border-[#e8c98e] bg-white px-5 py-10 text-center sm:py-14">
+        <img src={storeAvatar} alt="" width={96} height={96} className="mx-auto size-24 object-contain" />
         <h2 className="mt-5 text-xl font-bold">{content.emptyTitle}</h2>
         <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#69737d]">
           {content.emptyDescription}
@@ -62,7 +60,7 @@ export function UserOutletsSection({
     );
   return (
     <section aria-label={content.title}>
-      <div className="mb-5 rounded-2xl border border-black/8 bg-white p-4 sm:p-5">
+      <div className="mb-5 rounded-2xl border border-black/10 bg-white p-4 sm:p-5">
         <label htmlFor={selectId} className="block text-sm font-semibold">
           {content.selectOutlet}
         </label>

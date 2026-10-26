@@ -4,11 +4,16 @@ import { useState } from "react";
 export function OutletAvatar({
   name,
   logoUrl,
+  fallbackSrc,
 }: {
   name: string;
   logoUrl: string | null;
+  fallbackSrc?: string;
 }) {
   const [hasImage, setHasImage] = useState(Boolean(logoUrl));
+
+  if ((!hasImage || !logoUrl) && fallbackSrc)
+    return <img src={fallbackSrc} alt="" width={56} height={56} className="size-14 shrink-0 rounded-xl object-contain" />;
 
   if (!hasImage || !logoUrl)
     return (

@@ -1,14 +1,16 @@
+import { cn } from "../../lib/utils";
 import type { ReactNode } from "react";
 
 type DashboardLayoutProps = {
+  className?: string;
   content: ReactNode;
   mobileHeader?: ReactNode;
   sidebar: ReactNode;
 };
 
-export function DashboardLayout({ content, mobileHeader, sidebar }: DashboardLayoutProps) {
+export function DashboardLayout({ content, mobileHeader, sidebar, className }: DashboardLayoutProps) {
   return (
-    <div className="min-h-dvh bg-[#f7f9fb] text-[#171a20] lg:grid lg:grid-cols-[260px_minmax(0,1fr)]">
+    <div className={cn("min-h-dvh bg-[#f7f9fb] text-[#171a20] lg:grid lg:grid-cols-[260px_minmax(0,1fr)]", className)}>
       {sidebar}
       <div className="min-w-0">
         {mobileHeader}

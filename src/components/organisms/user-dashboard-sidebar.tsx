@@ -49,7 +49,7 @@ export function UserDashboardSidebar({
         </nav>
       </div>
       <button
-        className="mt-auto flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-[#646b75] transition-colors hover:text-black focus-visible:outline-2 focus-visible:outline-ring"
+        className="mt-auto flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-[#646b75] transition-colors hover:text-black focus-visible:outline-2 focus-visible:outline-[#d58a0b]"
         onClick={onSignOut}
         type="button"
       >
@@ -76,9 +76,9 @@ function SidebarLink({
   return (
     <Link
       aria-current={active ? "page" : undefined}
-      className={`mt-1 flex min-h-11 items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold no-underline transition-colors focus-visible:outline-2 focus-visible:outline-ring lg:w-full ${
+      className={`mt-1 flex min-h-11 items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold no-underline transition-colors focus-visible:outline-2 focus-visible:outline-[#d58a0b] lg:w-full ${
         active
-          ? "bg-[#e8f8fb] text-[#087e91]"
+          ? "bg-[#ffb332] text-[#171b22] shadow-[2px_2px_0_#171b22]"
           : "text-[#646b75] hover:bg-black/4 hover:text-black"
       }`}
       params={{ locale: language }}

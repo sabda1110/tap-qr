@@ -24,6 +24,7 @@ export function UserDashboardLayout({
 }: UserDashboardLayoutProps) {
   return (
     <DashboardLayout
+      className="bg-[#faf9f6]"
       sidebar={
         <UserDashboardSidebar
           activeItem={activeItem}

@@ -1,3 +1,4 @@
+import storeAvatar from "../assets/images/activation/existing-store-orange.webp";
 import { useId } from "react";
 import { Link } from "@tanstack/react-router";
 import { CreditCard, ExternalLink, Images, MapPin, Pencil, Plus } from "lucide-react";
@@ -35,13 +36,14 @@ export function UserOutletManagementCard({
     (card) => card.links.filter((link) => link.isActive).length > 1,
   );
   return (
-    <article className="min-w-0 overflow-hidden rounded-2xl border border-black/8 bg-white">
-      <div className="p-4 sm:p-5">
+    <article className="min-w-0 overflow-hidden rounded-3xl border border-black/10 bg-white">
+      <div className="border-t-4 border-[#ffb332] bg-[#fffdf8] p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <OutletAvatar
             key={outlet.logoUrl}
             name={outlet.name}
             logoUrl={outlet.logoUrl}
+            fallbackSrc={storeAvatar}
           />
           <div className="min-w-0 flex-1">
             <h3 className="text-lg font-bold tracking-tight break-words">
@@ -63,7 +65,7 @@ export function UserOutletManagementCard({
         )}
         <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
           <Button
-            className="h-11 px-3"
+            className="h-11 rounded-md px-3"
             variant="outline"
             onClick={onEditOutlet}
           >
@@ -74,7 +76,7 @@ export function UserOutletManagementCard({
             <Link
               className={buttonVariants({
                 variant: "outline",
-                className: "h-11 gap-2 px-3 no-underline",
+                className: "h-11 gap-2 rounded-md px-3 no-underline",
               })}
               to="/$locale/p/$id"
               params={{ locale: language, id: outlet.slug || outlet.id }}
@@ -85,7 +87,7 @@ export function UserOutletManagementCard({
               {content.viewProfile}
             </Link>
           ) : (
-            <Button className="h-11 px-3" variant="outline" disabled>
+            <Button className="h-11 rounded-md px-3" variant="outline" disabled>
               <ExternalLink aria-hidden="true" />
               {content.viewProfile}
             </Button>
@@ -96,7 +98,7 @@ export function UserOutletManagementCard({
             aria-describedby={canManageGallery ? undefined : galleryTooltipId}
           >
             <Button
-              className="h-11 w-full px-3"
+              className="h-11 w-full rounded-md px-3"
               variant="outline"
               onClick={onManageGallery}
               disabled={!canManageGallery}
@@ -123,11 +125,11 @@ export function UserOutletManagementCard({
       </div>
 
       <section
-        className="border-t border-black/8 bg-[#f8fafc] p-4 sm:p-5"
+        className="border-t border-black/8 bg-[#faf9f6] p-4 sm:p-5"
         aria-label={content.cards}
       >
         <h4 className="flex items-center gap-2 text-sm font-bold">
-          <CreditCard aria-hidden="true" className="size-4 text-[#087e91]" />
+          <CreditCard aria-hidden="true" className="size-4 text-[#c77913]" />
           {content.cards}
         </h4>
         <p className="mt-1 text-xs leading-5 text-[#69737d]">
@@ -140,17 +142,18 @@ export function UserOutletManagementCard({
             return (
               <li
                 key={card.id}
-                className="min-w-0 rounded-xl border border-black/8 bg-white p-3 sm:p-4"
+                className="min-w-0 rounded-2xl border border-black/10 bg-white p-4 shadow-[2px_2px_0_#f0e4cd] sm:p-5"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-xs font-semibold text-[#69737d]">
+                  <span className="inline-flex items-center gap-2 rounded-lg bg-[#fff2d3] px-2.5 py-1.5 text-xs font-bold text-[#85500f]">
+                    <CreditCard aria-hidden="true" className="size-4" />
                     {card.material === "acrylic"
                       ? materials.acrylic
                       : materials.pvc}
                   </span>
                   <StatusBadge active={available} content={content} />
                 </div>
-                <p className="mt-2 font-mono text-xs leading-5 break-all">
+                <p className="mt-3 font-mono text-[11px] leading-5 break-all text-[#69737d]">
                   {card.cardId}
                 </p>
                 <p className="mt-2 text-xs text-[#69737d]">
@@ -164,7 +167,7 @@ export function UserOutletManagementCard({
                     {activeLinks.map((link) => (
                       <span
                         key={link.id}
-                        className="max-w-full rounded-md bg-[#e8f8fb] px-2 py-1 text-xs font-medium break-words text-[#087e91]"
+                        className="max-w-full rounded-md border border-[#eadfc9] bg-[#fffaf0] px-2 py-1 text-xs font-medium break-words text-[#614a2b]"
                       >
                         {link.label}
                       </span>
@@ -177,7 +180,7 @@ export function UserOutletManagementCard({
                 )}
                 <div className="mt-3 grid grid-cols-2 gap-2">
                   <Button
-                    className="h-11 px-3"
+                    className="h-11 rounded-md px-3"
                     onClick={() => onEditCard(card.id)}
                   >
                     <Pencil aria-hidden="true" className="hidden sm:block" />
@@ -186,8 +189,8 @@ export function UserOutletManagementCard({
                   {available ? (
                     <Link
                       className={buttonVariants({
-                        variant: "ghost",
-                        className: "h-11 gap-2 px-3 no-underline",
+                        variant: "outline",
+                        className: "h-11 gap-2 rounded-md px-3 no-underline",
                       })}
                       to="/$locale/$cardId"
                       params={{ locale: language, cardId: card.cardId }}
@@ -201,7 +204,7 @@ export function UserOutletManagementCard({
                       {content.viewCard}
                     </Link>
                   ) : (
-                    <Button className="h-11 px-3" variant="ghost" disabled>
+                    <Button className="h-11 rounded-md px-3" variant="outline" disabled>
                       <ExternalLink
                         aria-hidden="true"
                         className="hidden sm:block"
@@ -226,7 +229,7 @@ export function UserOutletManagementCard({
         )}
         {outletActive && (
           <Button
-            className="mt-3 h-11 w-full"
+            className="mt-4 h-11 w-full rounded-md border-[#e5c68b] bg-[#fff8e9] text-[#614a2b] hover:bg-[#fff2d3]"
             variant="outline"
             onClick={onAddCard}
           >

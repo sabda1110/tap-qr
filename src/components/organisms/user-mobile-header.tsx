@@ -63,7 +63,7 @@ export function UserMobileHeader({
             to={to}
             params={{ locale: language }}
             aria-current={activeItem === key ? "page" : undefined}
-            className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-center text-[10px] font-semibold no-underline focus-visible:outline-2 focus-visible:outline-ring sm:flex-row sm:gap-2 sm:text-xs ${activeItem === key ? "bg-[#e8f8fb] text-[#087e91]" : "bg-[#f7f9fb] text-[#69737d] hover:bg-black/5"}`}
+            className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-center text-[11px] font-semibold no-underline focus-visible:outline-2 focus-visible:outline-[#d58a0b] sm:flex-row sm:gap-2 sm:text-xs ${activeItem === key ? "bg-[#ffb332] text-[#171b22] shadow-[2px_2px_0_#171b22]" : "bg-[#f7f9fb] text-[#69737d] hover:bg-black/5"}`}
           >
             <Icon aria-hidden="true" className="size-4 shrink-0" />
             {label}

@@ -126,7 +126,7 @@ export function UserDashboardPage({
         />
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-black/8 bg-white p-4">
           <p className="text-sm text-[#69737d]">{messages.orders.historyDescription}</p>
-          <div className="flex flex-wrap gap-3 text-sm font-bold"><Link to="/$locale/dashboard/user/orders" params={{ locale: language }} className="inline-flex min-h-11 items-center px-2 text-[#087e91]">{messages.orders.myOrders}</Link><Link to="/$locale/dashboard/user/buy" params={{ locale: language }} className="inline-flex min-h-11 items-center rounded-xl bg-[#172029] px-4 text-white">{messages.orders.buy}</Link></div>
+          <div className="flex flex-wrap gap-3 text-sm font-bold"><Link to="/$locale/dashboard/user/orders" params={{ locale: language }} className="inline-flex min-h-11 items-center rounded-md border border-black/15 px-4 text-[#171b22]">{messages.orders.myOrders}</Link><Link to="/$locale/dashboard/user/buy" params={{ locale: language }} className="inline-flex min-h-11 items-center rounded-md bg-[#172029] px-4 text-white">{messages.orders.buy}</Link></div>
         </div>
         <UserOutletsSection
           outlets={outlets}

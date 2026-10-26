@@ -78,7 +78,7 @@ export function AccountSettingsPanel({
 
   return (
     <section className="mx-auto max-w-4xl pb-[env(safe-area-inset-bottom)]">
-      <p className="text-xs font-bold tracking-[0.16em] text-[#087e91] uppercase">
+      <p className="text-xs font-bold tracking-[0.16em] text-[#9b5b0b] uppercase">
         {content.kicker}
       </p>
       <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
@@ -89,9 +89,9 @@ export function AccountSettingsPanel({
       </p>
 
       <div className="mt-6 grid items-start gap-5 lg:grid-cols-2">
-        <article className="rounded-2xl border border-black/8 bg-white p-5 sm:p-6">
+        <article className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
           <h2 className="flex items-center gap-2 font-bold">
-            <UserRound aria-hidden="true" className="size-5 text-[#087e91]" />
+            <UserRound aria-hidden="true" className="size-5 text-[#9b5b0b]" />
             {content.profileTitle}
           </h2>
           <dl className="mt-5 grid gap-4">
@@ -112,12 +112,12 @@ export function AccountSettingsPanel({
         {profile.provider === "password" ? (
           <form
             aria-busy={saving}
-            className="rounded-2xl border border-black/8 bg-white p-5 sm:p-6"
+            className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6"
             noValidate
             onSubmit={(event) => void savePassword(event)}
           >
             <h2 className="flex items-center gap-2 font-bold">
-              <KeyRound aria-hidden="true" className="size-5 text-[#087e91]" />
+              <KeyRound aria-hidden="true" className="size-5 text-[#9b5b0b]" />
               {content.passwordTitle}
             </h2>
             <p className="mt-2 text-sm leading-6 text-[#69737d]">
@@ -163,7 +163,7 @@ export function AccountSettingsPanel({
           </form>
         ) : (
           <article className="rounded-2xl border border-[#bce8ef] bg-[#f2fbfc] p-5 sm:p-6">
-            <span className="grid size-11 place-items-center rounded-xl bg-white text-[#087e91]">
+            <span className="grid size-11 place-items-center rounded-xl bg-white text-[#9b5b0b]">
               <ShieldCheck aria-hidden="true" className="size-5" />
             </span>
             <h2 className="mt-4 font-bold">{content.googlePasswordTitle}</h2>
