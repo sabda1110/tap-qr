@@ -8,6 +8,15 @@ export const gettingStartedEn: typeof gettingStartedId = {
   titleStart: "From your first order to",
   titleAccent: "your first tap.",
   description: "New to TapQR? Follow these four stages to set up your Social / Google Review card.",
+  journey: {
+    title: "Your journey map",
+    hint: "Click or tap a stop to move your pawn and read the guide. Hover over a stop for a quick preview.",
+    start: "Start", finish: "Ready to use", previous: "Previous", next: "Next", restart: "Restart map",
+    currentStep: "Guide step",
+    readStep: "Read this step's instructions",
+    note: "This is a guide. Moving the pawn does not place an order or activate your card.",
+    labels: { purchase: "Buy a card", account: "Create account", outlet: "Set up outlet", activate: "Activate card" },
+  },
   steps: {
     purchase: {
       title: "Choose and order your card",

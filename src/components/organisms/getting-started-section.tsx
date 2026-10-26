@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, CircleCheck, ScanLine, ShoppingBag, Store, UserRoundPlus } from "lucide-react";
+import { ArrowUpRight, CircleCheck } from "lucide-react";
 import type { Language, Messages } from "../../i18n";
 import { MotionReveal } from "../elements/motion-reveal";
 import { SectionUnderline } from "../elements/section-underline";
-import { GettingStartedStep } from "../molecules/getting-started-step";
+import { ActivationJourneyMap } from "../molecules/activation-journey-map";
 import { Button } from "../ui/button";
 
 type Props = {
@@ -12,13 +12,6 @@ type Props = {
 };
 
 export function GettingStartedSection({ content, language }: Props) {
-  const steps = [
-    { key: "purchase", content: content.steps.purchase, icon: ShoppingBag },
-    { key: "account", content: content.steps.account, icon: UserRoundPlus },
-    { key: "outlet", content: content.steps.outlet, icon: Store },
-    { key: "activate", content: content.steps.activate, icon: ScanLine },
-  ];
-
   return (
     <section id="how-it-works" aria-labelledby="getting-started-title" className="scroll-mt-24 bg-[#fff8e9] py-16 sm:py-24">
       <div className="mx-auto w-[calc(100%-2rem)] max-w-6xl sm:w-[calc(100%-4rem)]">
@@ -36,15 +29,7 @@ export function GettingStartedSection({ content, language }: Props) {
           </header>
         </MotionReveal>
 
-        <ol className="mt-10 grid gap-5 md:grid-cols-2 lg:gap-7">
-          {steps.map((step, index) => (
-            <li key={step.key}>
-              <MotionReveal className="h-full" delay={(index % 2) * 100}>
-                <GettingStartedStep content={step.content} icon={step.icon} number={index + 1} />
-              </MotionReveal>
-            </li>
-          ))}
-        </ol>
+        <ActivationJourneyMap content={content} />
 
         <MotionReveal>
           <div className="mt-8 flex flex-col gap-7 rounded-3xl bg-[#171b22] p-6 text-white sm:p-8 lg:flex-row lg:items-center lg:justify-between">

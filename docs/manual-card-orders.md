@@ -58,6 +58,13 @@ landing; tautan Cara aktivasi pada header, footer, pertanyaan FAQ, dan navigasi
 dashboard owner (desktop/mobile) membukanya di tab baru. Halaman tetap bisa
 diakses sebelum maupun setelah login, tanpa memuat data akun atau pesanan.
 
+Panduan menggunakan peta empat pos dengan pion yang bergerak berurutan menuju
+pos pilihan. Hover/fokus menampilkan ringkasan; klik/tap menampilkan petunjuk
+lengkap. Tombol Sebelumnya, Lanjut, dan Ulangi peta menyediakan alternatif
+navigasi. Pilihan tahap hanya state lokal, bukan status pesanan atau aktivasi.
+Mobile menyediakan tautan menuju panel petunjuk di bawah peta; animasi mengikuti
+preferensi reduced motion dan tooltip dapat ditutup dengan Escape.
+
 1. Beli kartu tanpa akun, lanjutkan ke WhatsApp, kirim pesan, dan sepakati
    harga, ongkir, pembayaran, serta pengiriman dengan admin.
 2. Setelah kartu diterima, scan QR kartu yang belum aktif dan buat akun atau

@@ -6,6 +6,15 @@ export const gettingStartedId = {
   titleStart: "Dari beli kartu sampai",
   titleAccent: "siap digunakan.",
   description: "Baru pertama kali? Ikuti empat tahap ini untuk menyiapkan kartu Sosmed / Google Review Anda.",
+  journey: {
+    title: "Peta perjalanan Anda",
+    hint: "Klik atau tap pos untuk memindahkan pion dan membaca panduan. Arahkan kursor ke pos untuk mengintip ringkasannya.",
+    start: "Mulai", finish: "Siap dipakai", previous: "Sebelumnya", next: "Lanjut", restart: "Ulangi peta",
+    currentStep: "Panduan tahap",
+    readStep: "Lihat petunjuk tahap ini",
+    note: "Ini peta panduan. Menggerakkan pion tidak membuat pesanan atau mengaktifkan kartu Anda.",
+    labels: { purchase: "Beli kartu", account: "Buat akun", outlet: "Siapkan outlet", activate: "Aktivasi kartu" },
+  },
   steps: {
     purchase: {
       title: "Beli kartu pilihan Anda",
