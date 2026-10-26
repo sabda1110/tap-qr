@@ -2,13 +2,14 @@ import { Leaf, Nfc, QrCode, Star, Wifi } from "lucide-react";
 import type { ReactNode } from "react";
 import type { OrderDraft } from "../../server/orders/order.schemas";
 import { PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "../../lib/print-dimensions";
-import { isPvcPrintTheme } from "../../lib/print-themes";
+import { isMonsterPrintTheme, isPvcPrintTheme } from "../../lib/print-themes";
 import monsterBarber from "../assets/images/monsters/monster-barber.jpg";
 import monsterOrange from "../assets/images/monsters/monster-orange.png";
 import { GoogleMark } from "../elements/google-mark";
 import { MonsterAvatar } from "../elements/monster-avatar";
 import { VintageCoffeeMascot } from "../elements/vintage-coffee-mascot";
 import { ContemporaryPvcCard } from "./contemporary-pvc-card";
+import { MonsterPvcCard } from "./monster-pvc-card";
 
 export { PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "../../lib/print-dimensions";
 
@@ -86,6 +87,9 @@ export function OrderPvcCard({ value, copy, cardId = "", qrDataUrl = "", showMon
   id?: string;
 }) {
   if (value.product === "social" && isPvcPrintTheme(value.theme)) {
+    if (isMonsterPrintTheme(value.theme)) {
+      return <MonsterPvcCard theme={value.theme} copy={copy} cardId={cardId} qrDataUrl={qrDataUrl} showMonster={showMonster} id={id} />;
+    }
     return <ContemporaryPvcCard theme={value.theme} copy={copy} cardId={cardId} qrDataUrl={qrDataUrl} id={id} />;
   }
   const visual = getVisual(value.product, value.theme);

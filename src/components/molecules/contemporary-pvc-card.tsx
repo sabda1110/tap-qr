@@ -1,11 +1,11 @@
 import { ArrowDownRight, ArrowUpRight, Nfc, QrCode, Sparkle } from "lucide-react";
-import type { PvcPrintTheme } from "../../lib/print-themes";
+import type { ContemporaryPvcTheme } from "../../lib/print-themes";
 import { PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "../../lib/print-dimensions";
 import { GoogleMark } from "../elements/google-mark";
 import type { PvcCardCopy } from "./order-pvc-card";
 
 type Props = {
-  theme: PvcPrintTheme;
+  theme: ContemporaryPvcTheme;
   copy: PvcCardCopy;
   qrDataUrl: string;
   cardId: string;

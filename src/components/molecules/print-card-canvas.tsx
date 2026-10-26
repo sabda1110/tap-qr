@@ -1,6 +1,6 @@
 import { ScanLine } from "lucide-react";
 import { type PrintThemeKey, NfcTapTarget } from "../elements/nfc-tap-target";
-import { isAcrylicPrintTheme, isPvcPrintTheme } from "../../lib/print-themes";
+import { isAcrylicPrintTheme, isMonsterPrintTheme, isPvcPrintTheme } from "../../lib/print-themes";
 import { ClassicReviewCard, type ReviewCardLabels } from "./classic-review-card";
 import { GoogleBrandText } from "../elements/google-brand-text";
 import { FiveStarRating } from "../elements/five-star-rating";
@@ -12,6 +12,7 @@ import { CoffeeMonsterCard } from "./coffee-monster-card";
 import { BarberMonsterCard } from "./barber-monster-card";
 import { PosterReviewCard } from "./poster-review-card";
 import { ContemporaryAcrylicCard } from "./contemporary-acrylic-card";
+import { MonsterAcrylicCard } from "./monster-acrylic-card";
 
 export type PrintCardCanvasProps = {
   labels: ReviewCardLabels;
@@ -103,6 +104,9 @@ export function PrintCardCanvas({
   id,
 }: PrintCardCanvasProps) {
   const theme = isPvcPrintTheme(selectedTheme) ? "google" : selectedTheme;
+  if (isMonsterPrintTheme(theme)) {
+    return <MonsterAcrylicCard theme={theme} cardId={cardId} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrDataUrl} labels={labels} showMonster={showMonster} className={className} id={id} />;
+  }
   if (isAcrylicPrintTheme(theme)) {
     return <ContemporaryAcrylicCard theme={theme} cardId={cardId} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrDataUrl} labels={labels} className={className} id={id} />;
   }

@@ -1,7 +1,7 @@
 import { CreditCard, Image, Palette, RefreshCw, Type } from "lucide-react";
 import { useId } from "react";
 import type { CardMaterial } from "../../lib/firebase/firestore-schema";
-import type { PrintThemeKey } from "../../lib/print-themes";
+import { isMonsterPrintTheme, type PrintThemeKey } from "../../lib/print-themes";
 import type { PrintCardOption } from "../../server/print/admin-print.repository.server";
 import { SocialPrintThemePicker, type SocialPrintThemeLabels } from "./social-print-theme-picker";
 import { Button } from "../ui/button";
@@ -126,7 +126,7 @@ export function PrintCardFormControls({
           </div>
         </div>
         <SocialPrintThemePicker material={material} theme={theme} onChange={onSelectTheme} labels={labels.themes} className="mt-4 lg:grid-cols-1 xl:grid-cols-2" />
-        {(theme === "google" || theme === "coffee" || theme === "barbershop" || theme === "modern") && (
+        {(isMonsterPrintTheme(theme) || theme === "google" || theme === "coffee" || theme === "barbershop" || theme === "modern") && (
         <div className="mt-4 flex items-center justify-between gap-4 border-t border-black/6 pt-4">
           <div className="flex min-w-0 items-start gap-3">
             <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-[#fff4dd] text-[#9a6200]">

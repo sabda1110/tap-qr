@@ -65,6 +65,42 @@ export const printStudioId = {
   toastPrintSuccess: "{count} kartu berhasil dicetak & diperbarui statusnya!",
   toastPrintFailure: "Gagal memperbarui status cetak kartu di server.",
   themes: {
+    "pvc-monster-mango": {
+      title: "Monster Mango", subtitle: "Monster oranye bertanduk, sudut warna-warni, dan bingkai komik",
+      defaultPreHeadline: "Setiap kunjungan punya cerita",
+      defaultHeadline: "Bagikan ulasan Anda",
+      defaultFooter: "Tap atau scan. Ceritakan pengalaman Anda di Google.",
+    },
+    "pvc-monster-boba": {
+      title: "Monster Boba", subtitle: "Monster teal yang ramah, panel krem, dan detail stiker",
+      defaultPreHeadline: "Cerita Anda berarti untuk kami",
+      defaultHeadline: "Yuk, ceritakan pengalaman Anda",
+      defaultFooter: "Terima kasih telah berbagi ulasan Anda.",
+    },
+    "pvc-monster-ziggy": {
+      title: "Monster Ziggy", subtitle: "Monster kuning ekspresif, pola zigzag, dan aksen teal",
+      defaultPreHeadline: "Satu tap untuk berbagi cerita",
+      defaultHeadline: "Ulasan Anda punya arti",
+      defaultFooter: "Bagikan cerita kunjungan Anda di Google.",
+    },
+    "acrylic-monster-mango": {
+      title: "Monster Mango", subtitle: "Maskot oranye, pita komik, dan area tap serta QR yang jelas",
+      defaultPreHeadline: "Bagaimana pengalaman Anda?",
+      defaultHeadline: "Ceritakan kunjungan Anda",
+      defaultFooter: "Terima kasih atas waktu dan ulasan Anda.",
+    },
+    "acrylic-monster-boba": {
+      title: "Monster Boba", subtitle: "Monster teal membulat, bidang mint, dan bingkai QR krem",
+      defaultPreHeadline: "Setiap cerita membantu kami berkembang",
+      defaultHeadline: "Bagikan pengalaman Anda",
+      defaultFooter: "Tap atau scan untuk memberi ulasan di Google.",
+    },
+    "acrylic-monster-ziggy": {
+      title: "Monster Ziggy", subtitle: "Monster kuning ceria, tepian zigzag, dan garis hitam tegas",
+      defaultPreHeadline: "Ada cerita dari kunjungan Anda?",
+      defaultHeadline: "Yuk, bagikan ulasan Anda",
+      defaultFooter: "Suara Anda berarti untuk perjalanan kami.",
+    },
     "pvc-signal": {
       title: "Signal", subtitle: "Oranye khas TapQR, huruf editorial tegas, dan QR yang menonjol",
       defaultPreHeadline: "Satu tap, banyak cerita",

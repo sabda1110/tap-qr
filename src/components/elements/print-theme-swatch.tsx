@@ -1,5 +1,6 @@
-import { isAcrylicPrintTheme, isPvcPrintTheme, type PrintThemeKey } from "../../lib/print-themes";
+import { isAcrylicPrintTheme, isMonsterPrintTheme, isPvcPrintTheme, type PrintThemeKey } from "../../lib/print-themes";
 import type { CardMaterial } from "../../lib/firebase/firestore-schema";
+import { MonsterThemeSwatch } from "./monster-theme-swatch";
 
 function QrMark({ x, y, size }: { x: number; y: number; size: number }) {
   return (
@@ -21,6 +22,8 @@ function CopyLines({ x, y, width, color = "#172029" }: { x: number; y: number; w
 }
 
 export function PrintThemeSwatch({ theme, material }: { theme: PrintThemeKey; material: CardMaterial }) {
+  if (isMonsterPrintTheme(theme)) return <MonsterThemeSwatch theme={theme} />;
+
   if (isPvcPrintTheme(theme)) {
     return (
       <svg aria-hidden="true" className="size-full max-w-full rounded-md shadow-sm" viewBox="0 0 172 108">

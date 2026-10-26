@@ -12,6 +12,9 @@ Katalog tema Sosmed memakai satu sumber di `src/lib/print-themes.ts` untuk
 Studio Cetak dan pembelian tamu/owner. PVC memiliki tambahan Signal, Orbit,
 dan Studio pada ukuran horizontal 86 × 54 mm. Akrilik memiliki tambahan
 Sunrise, Arch, dan Mosaic pada kanvas portrait. Semua tema lama tetap tersedia.
+Koleksi monster menambahkan Monster Mango (oranye), Monster Boba (teal), dan
+Monster Ziggy (kuning), masing-masing dengan desain akrilik serta PVC.
+Ilustrasi karakter dan aksen monster dapat disembunyikan melalui toggle Studio.
 Pilihan baru difilter berdasarkan bahan, dan mengganti bahan mengembalikan
 tema yang tidak cocok ke tema awal. Server menolak pasangan tema/bahan yang
 tidak sesuai. Preview pembelian, cetak satuan, dan massal memakai renderer

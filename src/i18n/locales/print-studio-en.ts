@@ -66,6 +66,42 @@ export const printStudioEn: typeof printStudioId = {
   toastPrintSuccess: "{count} cards successfully printed & status updated!",
   toastPrintFailure: "Failed to update print status on server.",
   themes: {
+    "pvc-monster-mango": {
+      title: "Monster Mango", subtitle: "A horned orange monster, colorful corners, and comic framing",
+      defaultPreHeadline: "Every visit has a story",
+      defaultHeadline: "Share your review",
+      defaultFooter: "Tap or scan. Tell us about your experience on Google.",
+    },
+    "pvc-monster-boba": {
+      title: "Monster Boba", subtitle: "A friendly teal monster, cream panels, and sticker details",
+      defaultPreHeadline: "Your story matters to us",
+      defaultHeadline: "Tell us about your visit",
+      defaultFooter: "Thank you for sharing your review.",
+    },
+    "pvc-monster-ziggy": {
+      title: "Monster Ziggy", subtitle: "An expressive yellow monster, zigzag patterns, and teal accents",
+      defaultPreHeadline: "One tap to share your story",
+      defaultHeadline: "Your review makes a difference",
+      defaultFooter: "Share the story of your visit on Google.",
+    },
+    "acrylic-monster-mango": {
+      title: "Monster Mango", subtitle: "An orange mascot, comic ribbon, and clear tap and QR areas",
+      defaultPreHeadline: "How was your experience?",
+      defaultHeadline: "Tell us about your visit",
+      defaultFooter: "Thank you for your time and your review.",
+    },
+    "acrylic-monster-boba": {
+      title: "Monster Boba", subtitle: "A round teal monster, mint backdrop, and cream QR frame",
+      defaultPreHeadline: "Every story helps us grow",
+      defaultHeadline: "Share your experience",
+      defaultFooter: "Tap or scan to leave a review on Google.",
+    },
+    "acrylic-monster-ziggy": {
+      title: "Monster Ziggy", subtitle: "A cheerful yellow monster, zigzag edges, and bold black outlines",
+      defaultPreHeadline: "Have a story from your visit?",
+      defaultHeadline: "Share your review with us",
+      defaultFooter: "Your voice matters on our journey.",
+    },
     "pvc-signal": {
       title: "Signal", subtitle: "TapQR orange, bold editorial type, and a prominent QR code",
       defaultPreHeadline: "One tap, many stories",

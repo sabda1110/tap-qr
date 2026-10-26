@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { acrylicPrintThemes, getSocialPrintThemes, legacyPrintThemes, pvcPrintThemes } from "../../lib/print-themes";
+import { acrylicMonsterThemes, acrylicPrintThemes, getSocialPrintThemes, isMonsterPrintTheme, legacyPrintThemes, pvcMonsterThemes, pvcPrintThemes } from "../../lib/print-themes";
 import { canAdvanceOrder, createOrderSchema, orderDraftSchema, orderPhoneSchema, orderStatuses, orderTokenSchema, updateOrderSchema } from "./order.schemas";
 import { detailOrder, phoneOrderSummary, summarizeOrder, type OrderRecord } from "./order.types";
 
@@ -51,6 +51,24 @@ test("legacy social designs remain available for both materials and schema optio
   }
   assert.equal(orderDraftSchema.options[0].shape.theme.parse("pvc-signal"), "pvc-signal");
   assert.equal(orderDraftSchema.options[1].shape.theme.parse("poster"), "poster");
+});
+
+test("six monster designs can be ordered only for their matching material", () => {
+  const expected = {
+    pvc: ["pvc-monster-mango", "pvc-monster-boba", "pvc-monster-ziggy"],
+    acrylic: ["acrylic-monster-mango", "acrylic-monster-boba", "acrylic-monster-ziggy"],
+  } as const;
+  assert.deepEqual(pvcMonsterThemes, expected.pvc);
+  assert.deepEqual(acrylicMonsterThemes, expected.acrylic);
+  for (const material of ["pvc", "acrylic"] as const) {
+    for (const theme of expected[material]) {
+      assert.equal(isMonsterPrintTheme(theme), true);
+      assert.equal(orderDraftSchema.safeParse({ ...draft, material, theme }).success, true);
+      const otherMaterial = material === "pvc" ? "acrylic" : "pvc";
+      assert.equal(orderDraftSchema.safeParse({ ...draft, material: otherMaterial, theme }).success, false);
+    }
+  }
+  assert.equal(isMonsterPrintTheme("pvc-signal"), false);
 });
 
 test("private tracking requires a random token, never a public order code or phone", () => {

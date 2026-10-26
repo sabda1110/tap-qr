@@ -1,10 +1,10 @@
 import { ArrowUpRight, Nfc, QrCode, ScanLine } from "lucide-react";
 import type { ReactNode } from "react";
-import type { AcrylicPrintTheme } from "@/lib/print-themes";
+import type { ContemporaryAcrylicTheme } from "@/lib/print-themes";
 import type { ReviewCardLabels } from "./classic-review-card";
 
 type Props = {
-  theme: AcrylicPrintTheme;
+  theme: ContemporaryAcrylicTheme;
   cardId: string;
   preHeadline?: string;
   headline?: string;
@@ -186,7 +186,7 @@ const acrylicArtworks = {
   "acrylic-sunrise": SunriseArtwork,
   "acrylic-arch": ArchArtwork,
   "acrylic-mosaic": MosaicArtwork,
-} satisfies Record<AcrylicPrintTheme, (props: ArtworkProps) => ReactNode>;
+} satisfies Record<ContemporaryAcrylicTheme, (props: ArtworkProps) => ReactNode>;
 
 export function ContemporaryAcrylicCard({ theme, className = "", id, ...props }: Props) {
   const Artwork = acrylicArtworks[theme];
