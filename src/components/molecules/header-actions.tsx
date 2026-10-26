@@ -1,3 +1,4 @@
+import { landingButtonStyles } from "../elements/landing-button";
 import { Link } from "@tanstack/react-router";
 
 import type { Language, Messages } from "../../i18n";
@@ -31,11 +32,7 @@ export function HeaderActions({
         {labels.login}
       </Link>
       <Link
-        className={
-          mobile
-            ? "flex h-11 w-full items-center justify-center rounded-md bg-black px-7 text-[12px] font-medium text-white no-underline hover:bg-black/80 hover:text-white"
-            : "flex h-11 items-center justify-center rounded-md bg-black px-7 text-[12px] font-medium text-white no-underline hover:bg-black/80 hover:text-white"
-        }
+        className={landingButtonStyles({ compact: true, className: mobile ? "w-full" : undefined })}
         to="/$locale/order"
         params={{ locale: language }}
       >

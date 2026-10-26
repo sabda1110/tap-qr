@@ -1,3 +1,4 @@
+import { landingButtonStyles } from "../elements/landing-button";
 import { MessageSquare, Plus } from "lucide-react";
 import type { Messages } from "../../i18n";
 import { FaqDecorations } from "../elements/faq-decorations";
@@ -45,7 +46,7 @@ export function LandingFaqSection({ content, contactHref }: Props) {
             <h3 className="mt-7 text-xl leading-snug font-bold tracking-tight text-[#171b22]">{content.contactTitle}</h3>
             <p className="mt-4 text-sm leading-7 text-[#58606b]">{content.contactDescription}</p>
             {contactHref && (
-              <a href={contactHref} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[#ffb332] px-5 py-3 text-sm font-bold text-[#171b22] no-underline hover:bg-[#ffc45c] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0798ad] lg:mt-12">{content.contact}</a>
+              <a href={contactHref} target="_blank" rel="noopener noreferrer" className={landingButtonStyles({ className: "mt-8 mb-2 w-full lg:mt-12" })}>{content.contact}</a>
             )}
           </aside>
         </div>

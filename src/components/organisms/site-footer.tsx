@@ -1,3 +1,4 @@
+import { landingButtonStyles } from "../elements/landing-button";
 import { ArrowUp, ArrowUpRight } from "lucide-react";
 
 import type { Language, Messages } from "../../i18n";
@@ -66,7 +67,7 @@ export function SiteFooter({ content, language }: SiteFooterProps) {
                 {content.ctaDescription}
               </p>
               <a
-                className="mt-6 inline-flex h-11 items-center justify-center rounded-xl bg-[#ffb332] px-5 text-sm font-semibold text-black no-underline hover:bg-[#ffc45b] hover:text-black"
+                className={landingButtonStyles({ className: "mt-6 mb-2 w-full" })}
                 href="#pricing"
               >
                 {content.ctaLabel}

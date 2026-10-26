@@ -95,7 +95,8 @@ export const id = {
     titleEnd: "& Pelanggan Kembali",
     description:
       "Bantu pelanggan memberi ulasan Google, terhubung ke WiFi, membuka WhatsApp, melihat menu, dan mengikuti media sosial Anda—semuanya dalam satu tap atau scan.",
-    getStarted: "Pilih Kartu TapQR",
+    getStarted: "Pilih media Anda",
+    contact: "Tanya lewat WhatsApp",
     tryDemo: "Lihat fitur TapQR",
     illustrationAlt:
       "Ilustrasi pelanggan terhubung dengan bisnis melalui perangkat digital",

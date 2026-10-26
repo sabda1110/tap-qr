@@ -81,7 +81,8 @@ export const en: typeof id = {
     titleEnd: "& Returning Customers",
     description:
       "Help customers leave a Google review, connect to WiFi, open WhatsApp, browse your menu, and follow your social media—all from a single tap or scan.",
-    getStarted: "Choose Your TapQR Card",
+    getStarted: "Choose your medium",
+    contact: "Ask us on WhatsApp",
     tryDemo: "Explore TapQR features",
     illustrationAlt:
       "Customers connecting with a business through their digital devices",

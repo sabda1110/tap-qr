@@ -1,3 +1,4 @@
+import { landingButtonStyles } from "../elements/landing-button";
 import type { Messages } from "../../i18n";
 import { HeroDecorations } from "../elements/hero-decorations";
 import { HeroTitleUnderline } from "../elements/hero-title-underline";
@@ -6,9 +7,10 @@ import { MotionReveal } from "../elements/motion-reveal";
 type HeroSectionProps = {
   content: Messages["home"];
   imageSrc: string;
+  contactHref: string | null;
 };
 
-export function HeroSection({ content, imageSrc }: HeroSectionProps) {
+export function HeroSection({ content, imageSrc, contactHref }: HeroSectionProps) {
   return (
     <section className="relative isolate overflow-hidden bg-white pb-14 pt-8 sm:pb-20 sm:pt-12 lg:pb-24">
       <HeroDecorations />
@@ -33,18 +35,20 @@ export function HeroSection({ content, imageSrc }: HeroSectionProps) {
             {content.description}
           </p>
 
-          <div className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:gap-8">
+          <div className="mt-7 flex w-full flex-col items-stretch justify-center gap-5 sm:w-auto sm:flex-row sm:items-center">
             <a
-              className="inline-flex h-11 items-center justify-center rounded-md bg-black px-6 text-[12px] font-medium text-white no-underline hover:bg-black/80 hover:text-white"
+              className={landingButtonStyles()}
               href="#pricing"
             >
               {content.getStarted}
             </a>
             <a
-              className="text-[12px] font-medium text-black underline decoration-black/50 underline-offset-4 hover:text-black/65"
-              href="#features"
+              className={landingButtonStyles({ tone: "black" })}
+              href={contactHref ?? "#features"}
+              target={contactHref ? "_blank" : undefined}
+              rel={contactHref ? "noopener noreferrer" : undefined}
             >
-              {content.tryDemo}
+              {contactHref ? content.contact : content.tryDemo}
             </a>
           </div>
         </MotionReveal>

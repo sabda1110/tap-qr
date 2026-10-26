@@ -1,3 +1,4 @@
+import { landingButtonStyles } from "../elements/landing-button";
 import { ArrowUpRight, Check, type LucideIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
@@ -37,11 +38,10 @@ export function PricingCard({
   material,
   externalHref,
 }: PricingCardProps) {
-  const ctaClassName = `pricing-cta mt-9 inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-4 py-3 text-center text-sm font-bold no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0798ad] md:min-h-16 lg:min-h-12 ${
-    featured
-      ? "bg-[#171b22] text-white hover:bg-[#303740] hover:text-white"
-      : "bg-[#ffb332] text-[#171b22] hover:bg-[#ffc45c] hover:text-[#171b22]"
-  }`;
+  const ctaClassName = landingButtonStyles({
+    tone: featured ? "black" : "orange",
+    className: "pricing-cta mt-9 w-full",
+  });
   const ctaContent = <>{content.cta}<ArrowUpRight aria-hidden="true" className="pricing-cta-arrow size-4 shrink-0" /></>;
   return (
     <article

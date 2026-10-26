@@ -29,6 +29,7 @@ export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) 
       header={<SiteHeader content={messages.header} language={language} />}
       hero={
         <HeroSection
+          contactHref={whatsappNumber ? `https://wa.me/${whatsappNumber}` : null}
           content={messages.home}
           imageSrc={heroShot}
         />

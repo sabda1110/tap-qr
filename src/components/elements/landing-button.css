@@ -1,0 +1,52 @@
+.landing-cta {
+  --cta-face: #ffb332;
+  --cta-edge: #bd7710;
+  --cta-hover: #ffc45c;
+  --cta-ink: #171b22;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: auto;
+  min-height: 56px;
+  max-width: 100%;
+  padding: 14px 24px;
+  border: 3px solid var(--cta-edge);
+  border-radius: 20px;
+  background: var(--cta-face);
+  color: var(--cta-ink);
+  box-shadow: 0 6px 0 var(--cta-edge);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: .065em;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: normal;
+  translate: none;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+.landing-cta-black {
+  --cta-face: #242a32;
+  --cta-edge: #080b10;
+  --cta-hover: #353e48;
+  --cta-ink: #fff;
+}
+.landing-cta-compact { min-height: 44px; padding: 9px 16px; border-radius: 15px; font-size: 11px; }
+.landing-cta:hover:not(:disabled) {
+  background: var(--cta-hover);
+  color: var(--cta-ink);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 var(--cta-edge);
+}
+.landing-cta:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--cta-edge);
+}
+.landing-cta:focus-visible { outline: 3px solid #0798ad; outline-offset: 5px; }
+.landing-cta:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
+@media (prefers-reduced-motion: reduce) {
+  .landing-cta { transition: none; }
+  .landing-cta:hover:not(:disabled), .landing-cta:active:not(:disabled) { transform: none; }
+}

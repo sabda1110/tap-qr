@@ -1,3 +1,4 @@
+import { landingButtonStyles } from "../elements/landing-button";
 import type { ReactNode } from "react";
 import type { Messages } from "../../i18n";
 import { MotionReveal } from "../elements/motion-reveal";
@@ -24,7 +25,7 @@ export function ProductShowcaseSection({ content, preview }: Props) {
                 <span className="block">{content.titleAccent}</span>
               </h2>
               <p className="mt-6 max-w-lg text-[15px] leading-[1.8] text-[#6f7280] sm:text-base">{content.description}</p>
-              <a href="#pricing" className="mt-6 inline-flex min-h-11 items-center rounded-md bg-black px-6 py-3 text-xs font-medium text-white no-underline hover:bg-black/80 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0798ad]">
+              <a href="#pricing" className={landingButtonStyles({ className: "mt-6 mb-2" })}>
                 {content.cta}
               </a>
             </MotionReveal>
