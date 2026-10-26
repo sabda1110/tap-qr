@@ -1,0 +1,30 @@
+.hero-title-underline {
+  animation: hero-underline-slide 1.3s cubic-bezier(.22, 1, .36, 1) .45s both;
+}
+
+.hero-title-underline path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+  animation: hero-underline-draw 1.2s cubic-bezier(.22, 1, .36, 1) .45s both;
+}
+
+.hero-title-underline path:nth-child(2) {
+  animation-delay: .65s;
+}
+
+@keyframes hero-underline-slide {
+  from { transform: translateX(-12px); }
+  to { transform: translateX(0); }
+}
+
+@keyframes hero-underline-draw {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title-underline,
+  .hero-title-underline path {
+    animation: none;
+  }
+}
