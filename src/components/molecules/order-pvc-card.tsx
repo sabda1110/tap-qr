@@ -2,15 +2,17 @@ import { Leaf, Nfc, QrCode, Star, Wifi } from "lucide-react";
 import type { ReactNode } from "react";
 import type { OrderDraft } from "../../server/orders/order.schemas";
 import { PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "../../lib/print-dimensions";
+import { isPvcPrintTheme } from "../../lib/print-themes";
 import monsterBarber from "../assets/images/monsters/monster-barber.jpg";
 import monsterOrange from "../assets/images/monsters/monster-orange.png";
 import { GoogleMark } from "../elements/google-mark";
 import { MonsterAvatar } from "../elements/monster-avatar";
 import { VintageCoffeeMascot } from "../elements/vintage-coffee-mascot";
+import { ContemporaryPvcCard } from "./contemporary-pvc-card";
 
 export { PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "../../lib/print-dimensions";
 
-type PvcCardCopy = {
+export type PvcCardCopy = {
   preHeadline?: string;
   headline: string;
   footer: string;
@@ -83,6 +85,9 @@ export function OrderPvcCard({ value, copy, cardId = "", qrDataUrl = "", showMon
   showMonster?: boolean;
   id?: string;
 }) {
+  if (value.product === "social" && isPvcPrintTheme(value.theme)) {
+    return <ContemporaryPvcCard theme={value.theme} copy={copy} cardId={cardId} qrDataUrl={qrDataUrl} id={id} />;
+  }
   const visual = getVisual(value.product, value.theme);
   return (
     <article id={id} className={`print-canvas-root pvc-print-canvas relative shrink-0 overflow-hidden rounded-[24px] border-4 ${visual.surface}`} style={{ boxSizing: "border-box", width: PVC_CARD_WIDTH, height: PVC_CARD_HEIGHT }}>

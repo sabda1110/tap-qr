@@ -8,6 +8,15 @@ alamat rumah/jalan berupa teks bebas, pilihan Sosmed atau WiFi, bahan akrilik/PV
 tema Studio Cetak, serta jumlah 1–100. Contoh tema tidak berisi QR aktif.
 Harga dan ongkir belum dihitung otomatis; keduanya disepakati dengan admin.
 
+Katalog tema Sosmed memakai satu sumber di `src/lib/print-themes.ts` untuk
+Studio Cetak dan pembelian tamu/owner. PVC memiliki tambahan Signal, Orbit,
+dan Studio pada ukuran horizontal 86 × 54 mm. Akrilik memiliki tambahan
+Sunrise, Arch, dan Mosaic pada kanvas portrait. Semua tema lama tetap tersedia.
+Pilihan baru difilter berdasarkan bahan, dan mengganti bahan mengembalikan
+tema yang tidak cocok ke tema awal. Server menolak pasangan tema/bahan yang
+tidak sesuai. Preview pembelian, cetak satuan, dan massal memakai renderer
+yang sama agar komposisi desain konsisten sampai hasil cetak.
+
 Submit menyimpan pesanan `on_progress` dan membuka halaman pelacakan.
 Pembeli harus menekan tombol WhatsApp dan mengirim pesan yang telah diisi
 kode serta ringkasan pesanan. Menekan submit tidak mengirim chat atau email.

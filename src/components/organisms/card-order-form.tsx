@@ -6,6 +6,7 @@ import { ShoppingBag, Wifi, Link2 } from "lucide-react";
 import { useI18n } from "../../i18n";
 import type { UserProfile } from "../../lib/auth/user-profile";
 import type { CardMaterial } from "../../lib/firebase/firestore-schema";
+import { isSocialPrintTheme, supportsPrintThemeMaterial } from "../../lib/print-themes";
 import { orderDraftSchema, type OrderDraft } from "../../server/orders/order.schemas";
 import { submitCardOrder, submitOwnerOrder } from "../../server/orders/order.functions";
 import { Input } from "../ui/input";
@@ -37,6 +38,14 @@ export function CardOrderForm({ user, available, context = "public", editing, in
   } });
   const draft = form.watch();
   const busy = form.formState.isSubmitting;
+  function changeMaterial(value: string | null) {
+    if (value !== "acrylic" && value !== "pvc") return;
+    form.setValue("material", value, { shouldDirty: true, shouldValidate: true });
+    const current = form.getValues();
+    if (current.product === "social" && isSocialPrintTheme(current.theme) && !supportsPrintThemeMaterial(current.theme, value)) {
+      form.setValue("theme", "google", { shouldDirty: true, shouldValidate: true });
+    }
+  }
   const submit = form.handleSubmit(async (order) => {
     setError(undefined);
     try {
@@ -80,7 +89,7 @@ export function CardOrderForm({ user, available, context = "public", editing, in
             </div>
             <p className="mt-3 text-xs leading-5 text-[#69737d]">{draft.product === "wifi" ? content.wifiHelp : content.socialHelp}</p>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              <div><label htmlFor="order-material" className="mb-2 block text-sm font-semibold">{content.material}</label><Select value={draft.material} onValueChange={(value) => { if (value === "acrylic" || value === "pvc") form.setValue("material", value); }}><SelectTrigger id="order-material" className="w-full min-w-0"><SelectValue>{content[draft.material]}</SelectValue></SelectTrigger><SelectContent><SelectItem value="acrylic">{content.acrylic}</SelectItem><SelectItem value="pvc">{content.pvc}</SelectItem></SelectContent></Select><p className="mt-1.5 text-xs leading-5 text-[#69737d]">{content.materialSizes[draft.material]}</p></div>
+              <div><label htmlFor="order-material" className="mb-2 block text-sm font-semibold">{content.material}</label><Select value={draft.material} onValueChange={changeMaterial}><SelectTrigger id="order-material" className="w-full min-w-0"><SelectValue>{content[draft.material]}</SelectValue></SelectTrigger><SelectContent><SelectItem value="acrylic">{content.acrylic}</SelectItem><SelectItem value="pvc">{content.pvc}</SelectItem></SelectContent></Select><p className="mt-1.5 text-xs leading-5 text-[#69737d]">{content.materialSizes[draft.material]}</p></div>
               <div><label htmlFor="order-quantity" className="mb-2 block text-sm font-semibold">{content.quantity}</label><Input id="order-quantity" type="number" min={1} max={100} aria-invalid={!!form.formState.errors.quantity} {...form.register("quantity", { valueAsNumber: true })} /></div>
             </div>
           </section>

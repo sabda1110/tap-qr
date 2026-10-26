@@ -1,6 +1,7 @@
 import type { PrintCardDetail, PrintCardOption } from "../../server/print/admin-print.repository.server";
 import type { ReviewCardLabels } from "../molecules/classic-review-card";
 import type { wifiPrintId } from "../../i18n/locales/wifi-print-id";
+import type { PrintThemeKey } from "../../lib/print-themes";
 
 export type AdminPrintStudioContent = {
   paper: { title: string; a4: string; artwork: string; help: string };
@@ -57,16 +58,7 @@ export type AdminPrintStudioContent = {
   confirmDialogCancel: string;
   toastPrintSuccess: string;
   toastPrintFailure: string;
-  themes: {
-    "review-poster": { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };
-    "google-classic": { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };
-    minimal: { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };
-    natural: { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };
-    google: { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };
-    coffee: { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };
-    barbershop: { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };
-    modern: { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string };
-  };
+  themes: Record<PrintThemeKey, { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string }>;
 };
 
 export type AdminPrintStudioProps = {

@@ -66,6 +66,42 @@ export const printStudioEn: typeof printStudioId = {
   toastPrintSuccess: "{count} cards successfully printed & status updated!",
   toastPrintFailure: "Failed to update print status on server.",
   themes: {
+    "pvc-signal": {
+      title: "Signal", subtitle: "TapQR orange, bold editorial type, and a prominent QR code",
+      defaultPreHeadline: "One tap, many stories",
+      defaultHeadline: "Your story matters",
+      defaultFooter: "Tap or scan to share your experience.",
+    },
+    "pvc-orbit": {
+      title: "Orbit", subtitle: "Deep black, orbital rings, and amber accents",
+      defaultPreHeadline: "Connect in a single step",
+      defaultHeadline: "Share your experience",
+      defaultFooter: "Your feedback helps us keep growing.",
+    },
+    "pvc-studio": {
+      title: "Studio", subtitle: "Warm cream, orange blocks, and a structured ticket layout",
+      defaultPreHeadline: "Thanks for stopping by",
+      defaultHeadline: "Every visit has a story",
+      defaultFooter: "Tap or scan. Tell us about your experience.",
+    },
+    "acrylic-sunrise": {
+      title: "Sunrise", subtitle: "An orange sunrise, oversized type, and bold contrast",
+      defaultPreHeadline: "Every visit matters",
+      defaultHeadline: "Tell us your story",
+      defaultFooter: "Your review helps our business grow.",
+    },
+    "acrylic-arch": {
+      title: "Arch", subtitle: "Soft cream, a black arched frame, and minimal details",
+      defaultPreHeadline: "It was lovely having you",
+      defaultHeadline: "Make room for your story",
+      defaultFooter: "Scan or tap to share your review.",
+    },
+    "acrylic-mosaic": {
+      title: "Mosaic", subtitle: "A teal and orange geometric collage with bold outlines",
+      defaultPreHeadline: "Many stories, one place",
+      defaultHeadline: "Share your visit with us",
+      defaultFooter: "Thank you for sharing your experience with us.",
+    },
     "review-poster": {
       title: "Review Poster", subtitle: "Blue and white poster, expressive lettering, and hand-drawn accents",
       defaultPreHeadline: "Stopped by? Share your story!",

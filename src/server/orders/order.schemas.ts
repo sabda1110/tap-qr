@@ -1,9 +1,10 @@
 import { z } from "zod";
+import { socialPrintThemes, supportsPrintThemeMaterial } from "../../lib/print-themes";
 
 export const orderStatuses = ["on_progress", "confirmed", "shipped", "completed"] as const;
 export const orderStatusOptions = [...orderStatuses, "cancelled"] as const;
 export const paymentStatuses = ["unpaid", "paid", "refunded"] as const;
-export const socialOrderThemes = ["google", "google-classic", "minimal", "natural", "coffee", "barbershop", "modern", "review-poster"] as const;
+export const socialOrderThemes = socialPrintThemes;
 export const wifiOrderThemes = ["monster", "mono", "natural", "coffee", "barbershop", "kraken", "poster"] as const;
 export const orderTokenSchema = z.string().regex(/^[a-f0-9]{64}$/);
 export const orderIdSchema = z.string().regex(/^[a-f0-9]{64}$/);
@@ -32,7 +33,10 @@ const customerSchema = z.object({
 });
 
 export const orderDraftSchema = z.discriminatedUnion("product", [
-  customerSchema.extend({ product: z.literal("social"), theme: z.enum(socialOrderThemes) }),
+  customerSchema.extend({ product: z.literal("social"), theme: z.enum(socialOrderThemes) })
+    .refine(({ theme, material }) => supportsPrintThemeMaterial(theme, material), {
+      path: ["theme"], message: "THEME_MATERIAL_MISMATCH",
+    }),
   customerSchema.extend({ product: z.literal("wifi"), theme: z.enum(wifiOrderThemes) }),
 ]);
 export const createOrderSchema = z.object({ token: orderTokenSchema, order: orderDraftSchema });

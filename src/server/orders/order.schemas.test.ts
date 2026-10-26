@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { acrylicPrintThemes, getSocialPrintThemes, legacyPrintThemes, pvcPrintThemes } from "../../lib/print-themes";
 import { canAdvanceOrder, createOrderSchema, orderDraftSchema, orderPhoneSchema, orderStatuses, orderTokenSchema, updateOrderSchema } from "./order.schemas";
 import { detailOrder, phoneOrderSummary, summarizeOrder, type OrderRecord } from "./order.types";
 
@@ -27,6 +28,29 @@ test("order schema discards browser-supplied ownership, status, and WiFi credent
   assert.equal("status" in parsed.order, false);
   assert.equal("payload" in parsed.order, false);
   assert.equal(createOrderSchema.safeParse({ token: "TQO-PUBLIC", order: draft }).success, false);
+});
+
+test("social print designs accept their intended material and reject mismatches", () => {
+  for (const [material, themes] of [["pvc", pvcPrintThemes], ["acrylic", acrylicPrintThemes]] as const) {
+    for (const theme of themes) {
+      assert.equal(orderDraftSchema.safeParse({ ...draft, material, theme }).success, true);
+      const mismatch = orderDraftSchema.safeParse({ ...draft, material: material === "pvc" ? "acrylic" : "pvc", theme });
+      assert.equal(mismatch.success, false);
+      if (!mismatch.success) assert.deepEqual(mismatch.error.issues[0].path, ["theme"]);
+      assert.equal(orderDraftSchema.safeParse({ ...draft, material, theme, product: "wifi" }).success, false);
+    }
+    assert.deepEqual(getSocialPrintThemes(material), [...legacyPrintThemes, ...themes]);
+  }
+});
+
+test("legacy social designs remain available for both materials and schema options stay accessible", () => {
+  for (const material of ["acrylic", "pvc"] as const) {
+    for (const theme of legacyPrintThemes) {
+      assert.equal(orderDraftSchema.safeParse({ ...draft, material, theme }).success, true);
+    }
+  }
+  assert.equal(orderDraftSchema.options[0].shape.theme.parse("pvc-signal"), "pvc-signal");
+  assert.equal(orderDraftSchema.options[1].shape.theme.parse("poster"), "poster");
 });
 
 test("private tracking requires a random token, never a public order code or phone", () => {

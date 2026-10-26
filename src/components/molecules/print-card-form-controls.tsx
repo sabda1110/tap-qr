@@ -1,21 +1,9 @@
-import {
-  Coffee,
-  CreditCard,
-  Image,
-  Palette,
-  RefreshCw,
-  Scissors,
-  Sparkles,
-  Type,
-  Waves,
-  Leaf,
-  LayoutTemplate,
-} from "lucide-react";
-import { GoogleMark } from "../elements/google-mark";
+import { CreditCard, Image, Palette, RefreshCw, Type } from "lucide-react";
 import { useId } from "react";
+import type { CardMaterial } from "../../lib/firebase/firestore-schema";
+import type { PrintThemeKey } from "../../lib/print-themes";
 import type { PrintCardOption } from "../../server/print/admin-print.repository.server";
-import type { PrintThemeKey } from "../elements/nfc-tap-target";
-import { ThemePickerButton } from "../elements/theme-picker-button";
+import { SocialPrintThemePicker, type SocialPrintThemeLabels } from "./social-print-theme-picker";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import {
@@ -30,6 +18,7 @@ type PrintCardFormControlsProps = {
   cards: PrintCardOption[];
   selectedCardId: string;
   onSelectCardId: (id: string) => void;
+  material: CardMaterial;
   theme: PrintThemeKey;
   onSelectTheme: (theme: PrintThemeKey) => void;
   showMonster: boolean;
@@ -55,16 +44,7 @@ type PrintCardFormControlsProps = {
     mascotHelp: string;
     copySectionTitle: string;
     copySectionDescription: string;
-    themes: {
-      "review-poster": { title: string; subtitle: string };
-      google: { title: string; subtitle: string };
-      coffee: { title: string; subtitle: string };
-      barbershop: { title: string; subtitle: string };
-      modern: { title: string; subtitle: string };
-      "google-classic": { title: string; subtitle: string };
-      minimal: { title: string; subtitle: string };
-      natural: { title: string; subtitle: string };
-    };
+    themes: SocialPrintThemeLabels;
   };
   hideCardSelect?: boolean;
 };
@@ -73,6 +53,7 @@ export function PrintCardFormControls({
   cards,
   selectedCardId,
   onSelectCardId,
+  material,
   theme,
   onSelectTheme,
   showMonster,
@@ -144,41 +125,8 @@ export function PrintCardFormControls({
             <p className="mt-0.5 text-xs leading-5 text-[#69737d]">{labels.themeHelp}</p>
           </div>
         </div>
-        <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-          <ThemePickerButton active={theme === "google-classic"} icon={<GoogleMark />} onClick={() => onSelectTheme("google-classic")} {...labels.themes["google-classic"]} />
-          <ThemePickerButton active={theme === "minimal"} icon={<LayoutTemplate className="size-4.5" />} onClick={() => onSelectTheme("minimal")} {...labels.themes.minimal} />
-          <ThemePickerButton active={theme === "natural"} icon={<Leaf className="size-4.5" />} onClick={() => onSelectTheme("natural")} {...labels.themes.natural} />
-          <ThemePickerButton active={theme === "review-poster"} icon={<Type className="size-4.5" />} onClick={() => onSelectTheme("review-poster")} {...labels.themes["review-poster"]} />
-          <ThemePickerButton
-            active={theme === "google"}
-            icon={<Sparkles className="size-4.5" />}
-            onClick={() => onSelectTheme("google")}
-            subtitle={labels.themes.google.subtitle}
-            title={labels.themes.google.title}
-          />
-          <ThemePickerButton
-            active={theme === "coffee"}
-            icon={<Coffee className="size-4.5" />}
-            onClick={() => onSelectTheme("coffee")}
-            subtitle={labels.themes.coffee.subtitle}
-            title={labels.themes.coffee.title}
-          />
-          <ThemePickerButton
-            active={theme === "barbershop"}
-            icon={<Scissors className="size-4.5" />}
-            onClick={() => onSelectTheme("barbershop")}
-            subtitle={labels.themes.barbershop.subtitle}
-            title={labels.themes.barbershop.title}
-          />
-          <ThemePickerButton
-            active={theme === "modern"}
-            icon={<Waves className="size-4.5" />}
-            onClick={() => onSelectTheme("modern")}
-            subtitle={labels.themes.modern.subtitle}
-            title={labels.themes.modern.title}
-          />
-        </div>
-        {theme !== "google-classic" && theme !== "minimal" && theme !== "natural" && theme !== "review-poster" && (
+        <SocialPrintThemePicker material={material} theme={theme} onChange={onSelectTheme} labels={labels.themes} className="mt-4 lg:grid-cols-1 xl:grid-cols-2" />
+        {(theme === "google" || theme === "coffee" || theme === "barbershop" || theme === "modern") && (
         <div className="mt-4 flex items-center justify-between gap-4 border-t border-black/6 pt-4">
           <div className="flex min-w-0 items-start gap-3">
             <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-[#fff4dd] text-[#9a6200]">

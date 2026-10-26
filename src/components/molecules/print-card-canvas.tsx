@@ -1,5 +1,6 @@
 import { ScanLine } from "lucide-react";
-import { type ClassicPrintTheme, type PrintThemeKey, NfcTapTarget } from "../elements/nfc-tap-target";
+import { type PrintThemeKey, NfcTapTarget } from "../elements/nfc-tap-target";
+import { isAcrylicPrintTheme, isPvcPrintTheme } from "../../lib/print-themes";
 import { ClassicReviewCard, type ReviewCardLabels } from "./classic-review-card";
 import { GoogleBrandText } from "../elements/google-brand-text";
 import { FiveStarRating } from "../elements/five-star-rating";
@@ -10,6 +11,7 @@ import {
 import { CoffeeMonsterCard } from "./coffee-monster-card";
 import { BarberMonsterCard } from "./barber-monster-card";
 import { PosterReviewCard } from "./poster-review-card";
+import { ContemporaryAcrylicCard } from "./contemporary-acrylic-card";
 
 export type PrintCardCanvasProps = {
   labels: ReviewCardLabels;
@@ -40,7 +42,7 @@ type CanvasThemeVisual = {
   footerClass: string;
 };
 
-const canvasThemeVisuals: Record<Exclude<PrintThemeKey, ClassicPrintTheme | "google">, CanvasThemeVisual> = {
+const canvasThemeVisuals: Record<"coffee" | "barbershop" | "modern", CanvasThemeVisual> = {
   coffee: {
     cardBg: "bg-[#fbf7f0]",
     cardBorder: "border-[#5c3a21] shadow-xl",
@@ -90,7 +92,7 @@ const canvasThemeVisuals: Record<Exclude<PrintThemeKey, ClassicPrintTheme | "goo
 
 export function PrintCardCanvas({
   labels,
-  theme,
+  theme: selectedTheme,
   cardId,
   preHeadline,
   headline,
@@ -100,6 +102,10 @@ export function PrintCardCanvas({
   className = "",
   id,
 }: PrintCardCanvasProps) {
+  const theme = isPvcPrintTheme(selectedTheme) ? "google" : selectedTheme;
+  if (isAcrylicPrintTheme(theme)) {
+    return <ContemporaryAcrylicCard theme={theme} cardId={cardId} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrDataUrl} labels={labels} className={className} id={id} />;
+  }
   if (theme === "review-poster") {
     return <PosterReviewCard cardId={cardId} preHeadline={preHeadline} headline={headline} footerNote={footerNote} qrDataUrl={qrDataUrl} labels={labels} className={className} id={id} />;
   }

@@ -1,4 +1,3 @@
-import storeAvatar from "../assets/images/activation/existing-store-orange.webp";
 import { CreditCard, Plus, Store } from "lucide-react";
 import type { Messages } from "../../i18n";
 import { Button } from "../ui/button";

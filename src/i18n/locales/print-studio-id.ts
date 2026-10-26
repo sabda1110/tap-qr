@@ -65,6 +65,42 @@ export const printStudioId = {
   toastPrintSuccess: "{count} kartu berhasil dicetak & diperbarui statusnya!",
   toastPrintFailure: "Gagal memperbarui status cetak kartu di server.",
   themes: {
+    "pvc-signal": {
+      title: "Signal", subtitle: "Oranye khas TapQR, huruf editorial tegas, dan QR yang menonjol",
+      defaultPreHeadline: "Satu tap, banyak cerita",
+      defaultHeadline: "Cerita Anda berarti",
+      defaultFooter: "Tap atau scan untuk berbagi pengalaman Anda.",
+    },
+    "pvc-orbit": {
+      title: "Orbit", subtitle: "Hitam pekat, lingkaran orbital, dan aksen amber",
+      defaultPreHeadline: "Terhubung dalam satu langkah",
+      defaultHeadline: "Bagikan pengalaman Anda",
+      defaultFooter: "Suara Anda membantu kami terus berkembang.",
+    },
+    "pvc-studio": {
+      title: "Studio", subtitle: "Krem hangat, blok oranye, dan susunan tiket yang rapi",
+      defaultPreHeadline: "Terima kasih sudah mampir",
+      defaultHeadline: "Kunjungan Anda punya cerita",
+      defaultFooter: "Tap atau scan. Ceritakan pengalaman Anda.",
+    },
+    "acrylic-sunrise": {
+      title: "Sunrise", subtitle: "Matahari oranye, tipografi besar, dan kontras yang berani",
+      defaultPreHeadline: "Setiap kunjungan berarti",
+      defaultHeadline: "Ceritakan pengalaman Anda",
+      defaultFooter: "Ulasan Anda membantu usaha kami berkembang.",
+    },
+    "acrylic-arch": {
+      title: "Arch", subtitle: "Krem lembut, bingkai lengkung hitam, dan detail minimal",
+      defaultPreHeadline: "Senang menyambut Anda",
+      defaultHeadline: "Beri ruang untuk cerita",
+      defaultFooter: "Scan atau tap untuk berbagi ulasan Anda.",
+    },
+    "acrylic-mosaic": {
+      title: "Mosaic", subtitle: "Kolase geometris teal dan oranye dengan garis tebal",
+      defaultPreHeadline: "Banyak cerita, satu tempat",
+      defaultHeadline: "Bagikan cerita kunjungan Anda",
+      defaultFooter: "Terima kasih telah berbagi pengalaman bersama kami.",
+    },
     "review-poster": {
       title: "Review Poster", subtitle: "Poster biru putih, huruf ekspresif, dan aksen coretan",
       defaultPreHeadline: "Sudah mampir? Yuk, cerita!",

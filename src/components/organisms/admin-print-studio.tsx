@@ -5,7 +5,7 @@ import { useRouter } from "@tanstack/react-router";
 import { useToast } from "../ui/toaster";
 import { updateAdminCardsPrintStatus } from "../../server/cards/card.functions";
 import { getCardUrl } from "../../lib/app-url";
-import type { PrintThemeKey } from "../elements/nfc-tap-target";
+import { supportsPrintThemeMaterial, type PrintThemeKey } from "../../lib/print-themes";
 import { type PrintDimensions, PrintSizeSelector } from "../elements/print-size-selector";
 import { PrintStudioStyles } from "../elements/print-studio-styles";
 import { AdminPrintPreview } from "../molecules/admin-print-preview";
@@ -159,6 +159,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
             material={selectedMaterial}
             onChange={(material) => {
               setSelectedMaterial(material);
+              if (!supportsPrintThemeMaterial(theme, material)) handleSelectTheme("google");
               setSelectedBulkCardIds(cards.filter((card) => card.material === material).slice(0, 6).map((card) => card.cardId));
             }}
             labels={content.materialSelector}
@@ -205,6 +206,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
             selectedCardId={selectedCardId}
             onSelectCardId={setSelectedCardId}
             hideCardSelect={activeTab === "bulk"}
+            material={selectedMaterial}
             theme={theme}
             onSelectTheme={handleSelectTheme}
             showMonster={showMonster}
@@ -216,22 +218,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
             footerNote={footerNote}
             onChangeFooterNote={setFooterNote}
             onResetDefaults={handleResetDefaults}
-            labels={{
-              selectCardLabel: content.selectCardLabel,
-              chooseThemeLabel: content.chooseThemeLabel,
-              showMonsterLabel: content.showMonsterLabel,
-              preHeadlineLabel: content.preHeadlineLabel,
-              headlineLabel: content.headlineLabel,
-              footerNoteLabel: content.footerNoteLabel,
-              resetDefaults: content.resetDefaults,
-              cardStatusUnprinted: content.cardStatusUnprinted,
-              emptyCardLabel: content.emptyCardLabel,
-              themeHelp: content.themeHelp,
-              mascotHelp: content.mascotHelp,
-              copySectionTitle: content.copySectionTitle,
-              copySectionDescription: content.copySectionDescription,
-              themes: content.themes,
-            }}
+            labels={content}
           />
         </div>
 
