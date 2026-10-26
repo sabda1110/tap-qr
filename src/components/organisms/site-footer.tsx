@@ -1,6 +1,7 @@
 import { ArrowUp, ArrowUpRight } from "lucide-react";
 
 import type { Language, Messages } from "../../i18n";
+import { ActivationGuideLink } from "../elements/activation-guide-link";
 import { BrandLogo } from "../elements/brand-logo";
 import { MotionReveal } from "../elements/motion-reveal";
 
@@ -53,6 +54,7 @@ export function SiteFooter({ content, language }: SiteFooterProps) {
                     </a>
                   </li>
                 ))}
+                <li><ActivationGuideLink className="text-sm text-white/70 hover:text-white" /></li>
               </ul>
             </nav>
 

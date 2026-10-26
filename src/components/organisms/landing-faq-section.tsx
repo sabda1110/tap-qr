@@ -1,6 +1,7 @@
 import { MessageSquare, Plus } from "lucide-react";
 import type { Messages } from "../../i18n";
 import { FaqDecorations } from "../elements/faq-decorations";
+import { ActivationGuideLink } from "../elements/activation-guide-link";
 
 type Props = {
   content: Messages["faq"];
@@ -19,6 +20,16 @@ export function LandingFaqSection({ content, contactHref }: Props) {
         </header>
         <div className="mt-10 grid items-start gap-6 sm:mt-14 lg:grid-cols-[1.65fr_1fr] lg:gap-10">
           <div className="space-y-3">
+            <details className="group rounded-xl border border-black/15 bg-white open:border-[#0798ad]/40">
+              <summary className="flex min-h-18 cursor-pointer list-none items-center justify-between gap-5 rounded-xl px-5 py-5 text-sm leading-6 font-bold text-[#171b22] sm:text-base focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0798ad] [&::-webkit-details-marker]:hidden">
+                {content.activationGuide.question}
+                <Plus aria-hidden="true" className="size-5 shrink-0 text-[#0798ad] transition-transform group-open:rotate-45 motion-reduce:transition-none" />
+              </summary>
+              <div className="px-5 pb-5">
+                <p className="text-sm leading-7 text-[#58606b]">{content.activationGuide.answer}</p>
+                <ActivationGuideLink className="mt-3 min-h-11 px-3 text-sm font-bold text-[#087e91] hover:bg-[#fff8e9]" />
+              </div>
+            </details>
             {content.items.map((item, index) => (
               <details key={item.question} open={index === 0} className="group rounded-xl border border-black/15 bg-white open:border-[#0798ad]/40">
                 <summary className="flex min-h-18 cursor-pointer list-none items-center justify-between gap-5 rounded-xl px-5 py-5 text-sm leading-6 font-bold text-[#171b22] sm:text-base focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0798ad] [&::-webkit-details-marker]:hidden">

@@ -41,19 +41,19 @@ export function SiteHeader({ content, language }: SiteHeaderProps) {
       }`}
     >
       <div
-        className={`mx-auto flex w-[calc(100%-2rem)] max-w-6xl items-center justify-between transition-all duration-300 md:w-[82%] ${
+        className={`mx-auto flex w-[calc(100%-2rem)] max-w-6xl items-center justify-between transition-all duration-300 sm:w-[calc(100%-4rem)] ${
           isScrolled ? "h-16 md:h-20" : "h-20 md:h-[104px]"
         }`}
       >
         <BrandLogo homeLabel={content.brandHomeLabel} language={language} />
 
-        <div className="flex items-center gap-8 lg:gap-12">
+        <div className="hidden items-center gap-8 xl:flex">
           <PrimaryNavigation activeSection={activeSection} labels={content} />
           <HeaderActions labels={content} language={language} />
         </div>
 
         <button
-          className="grid size-10 place-items-center rounded-md text-black hover:bg-black/5 md:hidden"
+          className="grid size-10 place-items-center rounded-md text-black hover:bg-black/5 xl:hidden"
           type="button"
           aria-expanded={isMenuOpen}
           aria-controls="mobile-navigation"
@@ -71,7 +71,7 @@ export function SiteHeader({ content, language }: SiteHeaderProps) {
       {isMenuOpen ? (
         <div
           id="mobile-navigation"
-          className="border-t border-black/5 bg-white/95 px-6 py-6 shadow-xl backdrop-blur-lg md:hidden"
+          className="max-h-[calc(100dvh-6.5rem)] overflow-y-auto border-t border-black/5 bg-white/95 px-6 py-6 shadow-xl backdrop-blur-lg xl:hidden"
         >
           <PrimaryNavigation
             activeSection={activeSection}

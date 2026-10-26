@@ -1,4 +1,8 @@
 export const landingFaqEn = {
+  activationGuide: {
+    question: "How do I order and activate my TapQR card?",
+    answer: "Order your card and confirm through WhatsApp, create an account, set up your outlet, then activate the card. Open the guide below for step-by-step instructions.",
+  },
   kicker: "Before you order",
   title: "Frequently asked questions.",
   description: "Learn about using TapQR, costs, and the ordering process.",

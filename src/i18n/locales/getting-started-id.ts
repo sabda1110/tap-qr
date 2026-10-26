@@ -1,0 +1,60 @@
+export const gettingStartedId = {
+  navigationLabel: "Cara aktivasi",
+  newTab: "Buka panduan di tab baru",
+  backHome: "Kembali ke beranda",
+  kicker: "Cara pakai TapQR",
+  titleStart: "Dari beli kartu sampai",
+  titleAccent: "siap digunakan.",
+  description: "Baru pertama kali? Ikuti empat tahap ini untuk menyiapkan kartu Sosmed / Google Review Anda.",
+  steps: {
+    purchase: {
+      title: "Beli kartu pilihan Anda",
+      badge: "Bisa tanpa akun",
+      description: "Pilih kartu PVC atau papan akrilik yang cocok untuk bisnis Anda.",
+      instructions: [
+        "Klik Beli kartu, pilih Sosmed, desain, dan jumlah. Isi kontak serta alamat pengiriman.",
+        "Klik Buat pesanan, lalu Lanjutkan ke WhatsApp admin. Kirim pesan yang sudah disiapkan.",
+        "Sepakati harga akhir, ongkir, dan pembayaran dengan admin, lalu tunggu kartu dikirim.",
+      ],
+      tip: "Pantau pengiriman lewat Cek pesanan menggunakan nomor HP saat memesan.",
+    },
+    account: {
+      title: "Buat akun TapQR",
+      badge: "Setelah kartu diterima",
+      description: "Akun ini menjadi tempat Anda mengatur kartu dan informasi bisnis.",
+      instructions: [
+        "Scan QR pada kartu yang belum aktif menggunakan kamera ponsel.",
+        "Pilih Buat akun, lalu gunakan Google atau isi nama, email, dan kata sandi. Sudah punya akun? Cukup masuk.",
+        "Setelah masuk, panduan aktivasi terbuka dengan ID kartu yang sudah terisi.",
+      ],
+      tip: "Sudah di dashboard? Klik Aktifkan kartu. Anda bisa scan QR atau isi ID kartu pada langkah Isi detail.",
+    },
+    outlet: {
+      title: "Siapkan outlet Anda",
+      badge: "Informasi bisnis",
+      description: "Outlet adalah profil bisnis atau cabang yang akan memakai kartu ini.",
+      instructions: [
+        "Pada langkah Pilih bisnis, pilih Bisnis baru.",
+        "Isi nama outlet, alamat profil yang unik, dan alamat usaha. Logo boleh ditambahkan agar mudah dikenali.",
+        "Klik Lanjut untuk memilih tautan yang ingin ditampilkan kepada pelanggan.",
+      ],
+      tip: "Sudah punya outlet? Pilih Bisnis terdaftar agar kartu terhubung ke outlet tersebut.",
+    },
+    activate: {
+      title: "Atur tautan & aktifkan kartu",
+      badge: "Langkah terakhir",
+      description: "Tentukan tujuan yang dibuka pelanggan saat tap atau scan kartu.",
+      instructions: [
+        "Pada Pilih tautan, pilih minimal satu: Google Review, WhatsApp, Instagram, atau TikTok.",
+        "Lanjut ke Isi detail. Isi nomor WhatsApp, username, atau Place ID Google sesuai panduan. Untuk menu, katalog, atau situs web, klik Tambah tautan lain.",
+        "Pastikan ID kartu dan tujuan tautannya benar, lalu klik Aktifkan kartu. Outlet baru dan kartu tersimpan bersama.",
+      ],
+      tip: "Tautan diatur per kartu. Dua kartu pada outlet yang sama boleh memiliki tujuan yang berbeda.",
+    },
+  },
+  readyTitle: "Sudah aktif? Coba kartu Anda!",
+  readyDescription: "Scan QR atau tap NFC dengan ponsel yang mendukung. Pastikan tujuan yang terbuka sudah benar, lalu letakkan kartu di meja atau kasir agar mudah dijangkau pelanggan.",
+  buy: "Pilih kartu saya",
+  register: "Buat akun TapQR",
+  wifiNote: "Memesan kartu WiFi? Pengaturan jaringan dikoordinasikan dengan admin saat pemesanan; panduan aktivasi di atas untuk kartu Sosmed / Google Review.",
+};

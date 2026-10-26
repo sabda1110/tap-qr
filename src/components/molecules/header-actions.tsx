@@ -19,7 +19,7 @@ export function HeaderActions({
       className={
         mobile
           ? "flex flex-col items-start gap-5 border-t border-black/10 pt-5"
-          : "hidden items-center gap-7 md:flex"
+          : "hidden items-center gap-5 xl:flex"
       }
     >
       <LanguageSwitcher label={labels.languageLabel} />

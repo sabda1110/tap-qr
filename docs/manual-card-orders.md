@@ -50,6 +50,30 @@ sesi yang berakhir tidak boleh membuat pesanan sebagai tamu. Setelah berhasil,
 pengguna kembali ke Pesanan saya dengan pesanan baru dan tombol WhatsApp.
 Owner yang membuka halaman order publik diarahkan ke checkout dashboard.
 
+## Halaman panduan: dari membeli sampai aktivasi
+
+Halaman publik `/$locale/tutorial/activation` menjelaskan empat tahap untuk
+pembeli kartu Sosmed / Google Review. Tutorial tidak ditampilkan penuh pada
+landing; tautan Cara aktivasi pada header, footer, pertanyaan FAQ, dan navigasi
+dashboard owner (desktop/mobile) membukanya di tab baru. Halaman tetap bisa
+diakses sebelum maupun setelah login, tanpa memuat data akun atau pesanan.
+
+1. Beli kartu tanpa akun, lanjutkan ke WhatsApp, kirim pesan, dan sepakati
+   harga, ongkir, pembayaran, serta pengiriman dengan admin.
+2. Setelah kartu diterima, scan QR kartu yang belum aktif dan buat akun atau
+   masuk. ID kartu terbawa ke dashboard dan panduan aktivasi terbuka otomatis.
+3. Pada Pilih bisnis, buat outlet dengan nama, slug, alamat, dan logo opsional,
+   atau pilih outlet terdaftar. Klik Lanjut untuk memilih tautan.
+4. Pilih minimal satu tautan, lengkapi detail tujuan serta ID kartu, lalu tekan
+   Aktifkan kartu. Outlet baru dan klaim disimpan bersamaan. Uji scan/tap setelahnya.
+
+Empat tahap ini berbeda dari tiga langkah di dalam wizard aktivasi:
+Pilih bisnis → Pilih tautan → Isi detail. Dari dashboard, pengguna juga dapat
+menekan Aktifkan kartu dan mengisi ID atau memindai QR pada langkah Isi detail.
+Pesanan tamu tetap dicek dengan nomor HP atau tautan pribadi setelah mendaftar.
+Kartu WiFi memiliki konfigurasi jaringan terpisah yang dikoordinasikan dengan admin.
+Copy panduan berada di `src/i18n/locales/getting-started-{id,en}.ts`.
+
 ## Alur admin
 
 `/$locale/dashboard/admin/orders` menampilkan 20 pesanan per halaman,

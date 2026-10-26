@@ -6,7 +6,9 @@ import { ordersId } from "./orders-id";
 import { landingFaqId } from "./landing-details-id";
 import { productShowcaseId } from "./product-showcase-id";
 import { outletGalleryId } from "./outlet-gallery-id";
+import { gettingStartedId } from "./getting-started-id";
 export const id = {
+  gettingStarted: gettingStartedId,
   productShowcase: productShowcaseId,
   faq: landingFaqId,
   orders: ordersId,

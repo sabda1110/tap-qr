@@ -168,13 +168,14 @@ Route `/$locale/$cardId` memeriksa kartu aktif di server. Kartu `unclaimed`
 membawa `cardId` ke login/registrasi dan dashboard melalui query URL. Dashboard
 membuka popup tambah outlet dan tautan; penyimpanan memerlukan sesi autentikasi.
 Pembuatan outlet, reservasi slug, dan klaim kartu berjalan dalam satu transaksi
-agar klaim bersamaan tidak menimpa pemilik. Form minimal meminta nama, slug, dan
-setidaknya satu tautan aktif; alamat dan telepon awalnya kosong.
+agar klaim bersamaan tidak menimpa pemilik. Form minimal meminta nama, slug,
+alamat operasional, dan setidaknya satu tautan aktif; logo bersifat opsional.
 Jika pengguna sudah memiliki outlet aktif, mereka dapat memilih outlet tersebut
 di langkah pertama. Transaksi memverifikasi `ownerId` outlet sama dengan sesi
 pengguna sebelum menghubungkan kartu; outlet dan reservasi slug tidak dibuat
-ulang. Langkah kedua selalu menyimpan konfigurasi Google Place ID dan tautan
-sosial pada kartu yang sedang diklaim.
+ulang. Wizard memiliki tiga langkah: Pilih bisnis, Pilih tautan, dan Isi detail.
+Penyimpanan di akhir wizard membuat outlet baru (jika dipilih) serta menyimpan
+konfigurasi Google Place ID dan tautan sosial pada kartu yang sedang diklaim.
 Pemilik dapat memilih kartu sumber dari outlet miliknya untuk menyalin tautan
 pilihan ke draft kartu baru. Server memeriksa kepemilikan outlet sumber; salinan
 menerima ID tautan baru dan tidak terhubung dengan kartu asal.

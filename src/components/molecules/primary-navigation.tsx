@@ -1,3 +1,4 @@
+import { ActivationGuideLink } from "../elements/activation-guide-link";
 import { HeaderNavLink } from "../elements/header-nav-link";
 import type { Messages } from "../../i18n";
 
@@ -26,7 +27,7 @@ export function PrimaryNavigation({
   return (
     <nav
       className={
-        mobile ? "flex flex-col gap-5" : "hidden items-center gap-7 md:flex"
+        mobile ? "flex flex-col gap-5" : "hidden items-center gap-5 xl:flex"
       }
       aria-label={labels.mainNavigationLabel}
     >
@@ -40,6 +41,7 @@ export function PrimaryNavigation({
           {link.label}
         </HeaderNavLink>
       ))}
+      <ActivationGuideLink className="pb-2 text-[13px] font-medium text-[#282828] hover:text-black" onClick={onNavigate} />
     </nav>
   );
 }

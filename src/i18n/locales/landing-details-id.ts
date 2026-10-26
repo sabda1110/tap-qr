@@ -1,4 +1,8 @@
 export const landingFaqId = {
+  activationGuide: {
+    question: "Bagaimana cara membeli sampai mengaktifkan kartu TapQR?",
+    answer: "Mulai dari membeli kartu dan konfirmasi WhatsApp, buat akun, siapkan outlet, lalu aktifkan kartu. Buka panduan berikut untuk mengikuti langkah-langkahnya.",
+  },
   kicker: "Sebelum memesan",
   title: "Pertanyaan yang sering diajukan.",
   description: "Kenali cara penggunaan, biaya, dan proses pemesanan TapQR.",

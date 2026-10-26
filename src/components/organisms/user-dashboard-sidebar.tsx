@@ -1,3 +1,4 @@
+import { ActivationGuideLink } from "../elements/activation-guide-link";
 import { Link } from "@tanstack/react-router";
 import { LayoutDashboard, LogOut, Settings, ShoppingBag } from "lucide-react";
 import type { ReactNode } from "react";
@@ -46,6 +47,7 @@ export function UserDashboardSidebar({
           >
             <Settings className="size-4" />
           </SidebarLink>
+          <ActivationGuideLink className="mt-3 min-h-11 rounded-xl px-3 py-2 text-sm font-bold text-[#087e91] hover:bg-[#fff8e9]" />
         </nav>
       </div>
       <button

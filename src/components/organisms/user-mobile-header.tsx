@@ -1,3 +1,4 @@
+import { ActivationGuideLink } from "../elements/activation-guide-link";
 import { Link } from "@tanstack/react-router";
 import { LayoutDashboard, LogOut, Settings, ShoppingBag } from "lucide-react";
 import type { Language, Messages } from "../../i18n";
@@ -70,6 +71,7 @@ export function UserMobileHeader({
           </Link>
         ))}
       </nav>
+      <ActivationGuideLink className="mt-2 min-h-10 w-full justify-center rounded-lg bg-[#fff8e9] px-3 text-xs font-bold text-[#087e91]" />
     </header>
   );
 }

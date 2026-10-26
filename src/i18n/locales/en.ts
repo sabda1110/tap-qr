@@ -7,8 +7,10 @@ import { ordersEn } from "./orders-en";
 import { landingFaqEn } from "./landing-details-en";
 import { productShowcaseEn } from "./product-showcase-en";
 import { outletGalleryEn } from "./outlet-gallery-en";
+import { gettingStartedEn } from "./getting-started-en";
 
 export const en: typeof id = {
+  gettingStarted: gettingStartedEn,
   productShowcase: productShowcaseEn,
   faq: landingFaqEn,
   orders: ordersEn,
