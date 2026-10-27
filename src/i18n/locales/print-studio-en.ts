@@ -66,6 +66,18 @@ export const printStudioEn: typeof printStudioId = {
   toastPrintSuccess: "{count} cards successfully printed & status updated!",
   toastPrintFailure: "Failed to update print status on server.",
   themes: {
+    "pvc-monster-gym": {
+      title: "Monster Gym", subtitle: "Gym monster, weight-plate corners, a barbell banner, and bold comic framing",
+      defaultPreHeadline: "Every session is progress",
+      defaultHeadline: "Tell us about your workout",
+      defaultFooter: "Thanks for growing stronger with us.",
+    },
+    "acrylic-monster-gym": {
+      title: "Monster Gym", subtitle: "Gym monster, weight-plate corners, a barbell banner, and bold comic framing",
+      defaultPreHeadline: "Every session is progress",
+      defaultHeadline: "Tell us about your workout",
+      defaultFooter: "Thanks for growing stronger with us.",
+    },
     "pvc-monster-mango": {
       title: "Monster Mango", subtitle: "A horned orange monster, colorful corners, and comic framing",
       defaultPreHeadline: "Every visit has a story",

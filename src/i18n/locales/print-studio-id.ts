@@ -65,6 +65,18 @@ export const printStudioId = {
   toastPrintSuccess: "{count} kartu berhasil dicetak & diperbarui statusnya!",
   toastPrintFailure: "Gagal memperbarui status cetak kartu di server.",
   themes: {
+    "pvc-monster-gym": {
+      title: "Monster Gym", subtitle: "Monster gym, sudut pelat beban, pita barbel, dan bingkai komik",
+      defaultPreHeadline: "Satu sesi, banyak progres",
+      defaultHeadline: "Ceritakan sesi latihanmu",
+      defaultFooter: "Terima kasih sudah tumbuh kuat bersama kami.",
+    },
+    "acrylic-monster-gym": {
+      title: "Monster Gym", subtitle: "Monster gym, sudut pelat beban, pita barbel, dan bingkai komik",
+      defaultPreHeadline: "Satu sesi, banyak progres",
+      defaultHeadline: "Ceritakan sesi latihanmu",
+      defaultFooter: "Terima kasih sudah tumbuh kuat bersama kami.",
+    },
     "pvc-monster-mango": {
       title: "Monster Mango", subtitle: "Monster oranye bertanduk, sudut warna-warni, dan bingkai komik",
       defaultPreHeadline: "Setiap kunjungan punya cerita",

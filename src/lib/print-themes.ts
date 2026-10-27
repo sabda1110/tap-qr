@@ -2,8 +2,8 @@ export const legacyPrintThemes = [
   "google", "google-classic", "minimal", "natural", "coffee", "barbershop", "modern", "review-poster",
 ] as const;
 
-export const pvcMonsterThemes = ["pvc-monster-mango", "pvc-monster-boba", "pvc-monster-ziggy"] as const;
-export const acrylicMonsterThemes = ["acrylic-monster-mango", "acrylic-monster-boba", "acrylic-monster-ziggy"] as const;
+export const pvcMonsterThemes = ["pvc-monster-mango", "pvc-monster-boba", "pvc-monster-ziggy", "pvc-monster-gym"] as const;
+export const acrylicMonsterThemes = ["acrylic-monster-mango", "acrylic-monster-boba", "acrylic-monster-ziggy", "acrylic-monster-gym"] as const;
 export const pvcPrintThemes = [...pvcMonsterThemes, "pvc-signal", "pvc-orbit", "pvc-studio"] as const;
 export const acrylicPrintThemes = [...acrylicMonsterThemes, "acrylic-sunrise", "acrylic-arch", "acrylic-mosaic"] as const;
 export const socialPrintThemes = [...legacyPrintThemes, ...pvcPrintThemes, ...acrylicPrintThemes] as const;

@@ -53,10 +53,10 @@ test("legacy social designs remain available for both materials and schema optio
   assert.equal(orderDraftSchema.options[1].shape.theme.parse("poster"), "poster");
 });
 
-test("six monster designs can be ordered only for their matching material", () => {
+test("monster designs including Gym can be ordered only for their matching material", () => {
   const expected = {
-    pvc: ["pvc-monster-mango", "pvc-monster-boba", "pvc-monster-ziggy"],
-    acrylic: ["acrylic-monster-mango", "acrylic-monster-boba", "acrylic-monster-ziggy"],
+    pvc: ["pvc-monster-mango", "pvc-monster-boba", "pvc-monster-ziggy", "pvc-monster-gym"],
+    acrylic: ["acrylic-monster-mango", "acrylic-monster-boba", "acrylic-monster-ziggy", "acrylic-monster-gym"],
   } as const;
   assert.deepEqual(pvcMonsterThemes, expected.pvc);
   assert.deepEqual(acrylicMonsterThemes, expected.acrylic);

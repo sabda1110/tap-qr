@@ -3,9 +3,11 @@ import mango from "../assets/images/monsters/monster-mango.webp";
 import boba from "../assets/images/monsters/monster-boba.webp";
 import ziggy from "../assets/images/monsters/monster-ziggy.webp";
 
-export type MonsterCharacter = "mango" | "boba" | "ziggy";
+import gym from "../assets/images/monsters/monster-gym.webp";
 
-const mascotImages = { mango, boba, ziggy };
+export type MonsterCharacter = "mango" | "boba" | "ziggy" | "gym";
+
+const mascotImages = { mango, boba, ziggy, gym };
 
 export function MonsterMascot({ character, className = "" }: { character: MonsterCharacter; className?: string }) {
   return <img src={mascotImages[character]} alt="" width={128} height={128} className={`shrink-0 object-contain ${className}`} />;

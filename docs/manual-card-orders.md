@@ -14,6 +14,10 @@ dan Studio pada ukuran horizontal 86 × 54 mm. Akrilik memiliki tambahan
 Sunrise, Arch, dan Mosaic pada kanvas portrait. Semua tema lama tetap tersedia.
 Koleksi monster menambahkan Monster Mango (oranye), Monster Boba (teal), dan
 Monster Ziggy (kuning), masing-masing dengan desain akrilik serta PVC.
+Monster Gym memakai komposisi keluarga monster: latar putih, badge maskot gym,
+bintang, pita barbel, sudut pelat beban, serta NFC bulat dan QR berbingkai hitam
+untuk PVC horizontal dan akrilik portrait. Pilihannya tersedia di order tamu,
+pembelian owner, serta Studio Cetak melalui katalog yang sama.
 Ilustrasi karakter dan aksen monster dapat disembunyikan melalui toggle Studio.
 Pilihan baru difilter berdasarkan bahan, dan mengganti bahan mengembalikan
 tema yang tidak cocok ke tema awal. Server menolak pasangan tema/bahan yang

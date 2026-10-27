@@ -1,3 +1,4 @@
+import { GymMonsterCard } from "./gym-monster-card";
 import { Nfc, QrCode, ScanLine } from "lucide-react";
 import { PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "@/lib/print-dimensions";
 import type { PvcMonsterTheme } from "@/lib/print-themes";
@@ -179,6 +180,7 @@ function ZiggyArtwork(props: ContentProps) {
 }
 
 export function MonsterPvcCard({ theme, id, showMonster = true, ...content }: Props) {
+  if (theme === "pvc-monster-gym") return <GymMonsterCard {...content} id={id} showMonster={showMonster} landscape />;
   const character = getCharacter(theme);
   const props = { ...content, character, showMonster };
   return (

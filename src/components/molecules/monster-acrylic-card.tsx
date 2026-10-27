@@ -1,3 +1,4 @@
+import { GymMonsterCard } from "./gym-monster-card";
 import { Nfc, QrCode, ScanLine } from "lucide-react";
 import type { AcrylicMonsterTheme } from "@/lib/print-themes";
 import {
@@ -119,6 +120,10 @@ function InteractionPanel({ character, labels, qrDataUrl, cardId }: Props & { ch
 }
 
 export function MonsterAcrylicCard({ theme, className = "", id, showMonster = true, ...content }: Props) {
+  if (theme === "acrylic-monster-gym") return (
+    <GymMonsterCard id={id} className={className} cardId={content.cardId} qrDataUrl={content.qrDataUrl} showMonster={showMonster}
+      copy={{ ...content.labels, headline: content.headline ?? "", preHeadline: content.preHeadline, footer: content.footerNote ?? "", action: content.labels.review }} />
+  );
   const character = getCharacter(theme);
   const visual = styles[character];
   const props = { ...content, theme, character, showMonster };

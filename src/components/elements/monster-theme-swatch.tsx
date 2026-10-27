@@ -1,3 +1,5 @@
+import { useId } from "react";
+import gym from "../assets/images/monsters/monster-gym.webp";
 import type { MonsterPrintTheme } from "../../lib/print-themes";
 import mango from "../assets/images/monsters/monster-mango.webp";
 import boba from "../assets/images/monsters/monster-boba.webp";
@@ -22,6 +24,7 @@ function MiniQr({ x, y, size }: { x: number; y: number; size: number }) {
 }
 
 export function MonsterThemeSwatch({ theme }: { theme: MonsterPrintTheme }) {
+  if (theme.endsWith("-gym")) return <GymSwatch landscape={theme.startsWith("pvc")} />;
   const character = theme.endsWith("mango") ? "mango" : theme.endsWith("boba") ? "boba" : "ziggy";
   const { image, base, accent, support } = palettes[character];
   const landscape = theme.startsWith("pvc");
@@ -85,6 +88,45 @@ export function MonsterThemeSwatch({ theme }: { theme: MonsterPrintTheme }) {
         </>}
         <path d="M27 155h64" stroke="#172029" strokeWidth="2" />
       </>}
+    </svg>
+  );
+}
+
+function GymSwatch({ landscape }: { landscape: boolean }) {
+  const clipId = useId();
+  const width = landscape ? 172 : 118;
+  const height = landscape ? 108 : 168;
+  return (
+    <svg aria-hidden="true" className="size-full max-w-full rounded-md shadow-sm" viewBox={`0 0 ${width} ${height}`}>
+      <defs><clipPath id={clipId}><rect x="2" y="2" width={width - 4} height={height - 4} rx="5" /></clipPath></defs>
+      <rect x="1.5" y="1.5" width={width - 3} height={height - 3} rx="5" fill="#fff" stroke="#172029" strokeWidth="3" />
+      <g clipPath={`url(#${clipId})`}>
+        {[[0, 0, "#0798ad"], [width, 0, "#ff8a24"], [0, height, "#ffb332"], [width, height, "#0798ad"]].map(([x, y, color], index) => (
+          <g key={index} transform={`translate(${x} ${y})`} stroke="#172029">
+            <circle r="18" fill={String(color)} strokeWidth="2" /><circle r="13" fill="none" /><circle r="4" fill="white" />
+          </g>
+        ))}
+      </g>
+      {landscape ? <>
+        <circle cx="31" cy="17" r="12" fill="white" stroke="#172029" strokeWidth="1.5" />
+        <image href={gym} x="20" y="6" width="22" height="22" />
+        <path d="M76 10h48" stroke="#ffb332" strokeWidth="2" />
+        <path d="M12 39h80M12 48h64" stroke="#172029" strokeWidth="5" />
+        <path d="m11 58 83-2 1 11-83 2z" fill="#ffb332" stroke="#172029" strokeWidth="1.5" />
+        <circle cx="27" cy="83" r="12" fill="white" stroke="#172029" strokeWidth="2" />
+        <path d="M27 76q5 7 0 14m4-16q7 9 0 18" fill="none" stroke="#172029" strokeWidth="1.5" />
+        <MiniQr x={111} y={39} size={44} />
+      </> : <>
+        <path d="M43 8h32" stroke="#ffb332" strokeWidth="2" />
+        <circle cx="59" cy="31" r="18" fill="white" stroke="#172029" strokeWidth="2" />
+        <image href={gym} x="41" y="13" width="36" height="36" />
+        <path d="M15 60h88M25 70h68" stroke="#172029" strokeWidth="5" />
+        <path d="m9 84 100-2 1 12-100 2z" fill="#ffb332" stroke="#172029" strokeWidth="2" />
+        <circle cx="31" cy="122" r="20" fill="white" stroke="#172029" strokeWidth="2" />
+        <path d="M30 112q8 10 0 20m5-23q12 13 0 26" fill="none" stroke="#172029" strokeWidth="2" />
+        <MiniQr x={68} y={104} size={37} />
+      </>}
+      <path d={`M30 ${height - 9}h${width - 60}`} stroke="#172029" strokeWidth="2" />
     </svg>
   );
 }
