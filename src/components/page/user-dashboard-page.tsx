@@ -184,6 +184,11 @@ export function UserDashboardPage({
             outlet.name
           }
           icon={editingGallery ? Images : card ? CreditCard : Store}
+          iconClassName={
+            card
+              ? "rounded-xl border-[#171b22] bg-[#ffb332] text-[#171b22] shadow-[3px_3px_0_#171b22]"
+              : undefined
+          }
           closeLabel={formContent.close}
           busy={busy}
           dismissOnOutsidePress={false}

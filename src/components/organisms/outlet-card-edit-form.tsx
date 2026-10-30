@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { ReactNode } from "react";
+import { CreditCard } from "lucide-react";
 import type { Messages } from "../../i18n";
 import type { OutletDetail } from "../../server/outlets/outlet.types";
 import {
@@ -54,8 +55,19 @@ export function OutletCardEditForm({
             value = destination.pathname.replace(/\D/g, "");
             message ??= destination.searchParams.get("text") ?? undefined;
           }
+          if (link.type === "instagram" || link.type === "tiktok") {
+            const parsed = new URL(link.url);
+            const username = parsed.pathname
+              .replace(/^\/@?/, "")
+              .replace(/\/$/, "");
+            if (username) value = username;
+          }
         } catch {
-          value = "";
+          if (link.type === "instagram" || link.type === "tiktok") {
+            value = link.url.replace(/^@+/, "");
+          } else {
+            value = "";
+          }
         }
         return {
           id: link.id,
@@ -89,12 +101,24 @@ export function OutletCardEditForm({
         aria-busy={busy}
         onSubmit={form.handleSubmit(save)}
       >
-        <DialogBody>
+        <DialogBody className="bg-white sm:px-7 sm:py-6">
           <fieldset disabled={busy} className="grid gap-5 border-0 p-0">
-            <p className="rounded-xl border border-[#bce8ef] bg-[#e8f8fb] p-4 text-sm text-[#087e91]">
-              {content.cardEditHelp}
-              <strong className="mt-2 block break-all">{card.cardId}</strong>
-            </p>
+            <div className="flex flex-wrap items-center justify-between gap-2.5 rounded-2xl border border-black/10 bg-[#fffdf8] p-4 shadow-[2px_2px_0_#f0e4cd]">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#fff2d3] px-2.5 py-1 text-xs font-bold text-[#85500f]">
+                  <CreditCard className="size-3.5" />
+                  {card.material === "acrylic"
+                    ? content.acrylic
+                    : content.pvc}
+                </span>
+                <span className="font-mono text-xs font-bold break-all text-slate-800">
+                  {card.cardId}
+                </span>
+              </div>
+              <p className="w-full text-xs text-[#69737d]">
+                {content.cardEditHelp}
+              </p>
+            </div>
             <OutletLinksEditor
               form={form}
               content={content}
@@ -107,14 +131,18 @@ export function OutletCardEditForm({
         <DialogFooter>
           <Button
             type="button"
-            className="h-11 px-5"
+            className="h-11 rounded-md border-black/15 px-5 font-semibold"
             variant="outline"
             disabled={busy}
             onClick={onCancel}
           >
             {content.cancel}
           </Button>
-          <Button type="submit" className="h-11 px-5" disabled={busy}>
+          <Button
+            type="submit"
+            className="h-11 cursor-pointer rounded-md border-[#171b22] bg-[#ffb332] px-6 font-bold text-[#171b22] hover:bg-[#ffc45c]"
+            disabled={busy}
+          >
             {busy ? content.saving : content.save}
           </Button>
         </DialogFooter>
