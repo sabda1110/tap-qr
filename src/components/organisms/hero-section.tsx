@@ -35,7 +35,7 @@ export function HeroSection({ content, imageSrc, contactHref }: HeroSectionProps
             {content.description}
           </p>
 
-          <div className="mt-7 flex w-full flex-col items-stretch justify-center gap-5 sm:w-auto sm:flex-row sm:items-center">
+          <div className="mt-7 flex w-full flex-col items-stretch justify-center gap-5 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
             <a
               className={landingButtonStyles()}
               href="#pricing"

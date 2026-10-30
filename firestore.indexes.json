@@ -1,6 +1,14 @@
 {
   "indexes": [
     {
+      "collectionGroup": "consultationBookings", "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "deadlineAt", "order": "ASCENDING" }]
+    },
+    {
+      "collectionGroup": "consultationNotifications", "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "nextAttemptAt", "order": "ASCENDING" }]
+    },
+    {
       "collectionGroup": "orders", "queryScope": "COLLECTION",
       "fields": [{ "fieldPath": "phone", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" }]
     },
@@ -26,6 +34,7 @@
     }
   ],
   "fieldOverrides": [
+    { "collectionGroup": "consultationRateLimits", "fieldPath": "expiresAt", "ttl": true, "indexes": [] },
     { "collectionGroup": "orderRateLimits", "fieldPath": "expiresAt", "ttl": true, "indexes": [] },
     { "collectionGroup": "analyticsRateLimits", "fieldPath": "expiresAt", "ttl": true, "indexes": [] }
   ]

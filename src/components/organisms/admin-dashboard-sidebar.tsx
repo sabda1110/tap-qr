@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { BarChart3, CreditCard, Link2, LogOut, Printer, ShieldCheck, ShoppingBag, Store } from "lucide-react";
+import { BarChart3, CalendarDays, CreditCard, Link2, LogOut, Printer, ShieldCheck, ShoppingBag, Store } from "lucide-react";
 
 import type { Language } from "../../i18n";
 import { BrandLogo } from "../elements/brand-logo";
 
 type AdminDashboardSidebarProps = {
   content: {
+    consultations?: string;
     orders: string;
     analytics?: string;
     print?: string;
@@ -27,6 +28,7 @@ export function AdminDashboardSidebar({ content, homeLabel, language, onSignOut 
       <div className="lg:block">
         <BrandLogo homeLabel={homeLabel} language={language} to="/$locale/dashboard/admin" />
         <nav aria-label={content.navigationLabel} className="mt-4 grid gap-2 lg:mt-12">
+          {content.consultations && <Link activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4" params={{ locale: language }} to="/$locale/dashboard/admin/consultations"><CalendarDays className="size-4" />{content.consultations}</Link>}
           {content.analytics && (
             <Link
               activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}

@@ -7,9 +7,10 @@ import { ActivationGuideLink } from "../elements/activation-guide-link";
 type Props = {
   content: Messages["faq"];
   contactHref: string | null;
+  consultation: Messages["consultation"];
 };
 
-export function LandingFaqSection({ content, contactHref }: Props) {
+export function LandingFaqSection({ content, contactHref, consultation }: Props) {
   return (
     <section id="faq" className="relative isolate scroll-mt-24 overflow-hidden bg-white py-16 sm:py-24">
       <FaqDecorations />
@@ -21,6 +22,15 @@ export function LandingFaqSection({ content, contactHref }: Props) {
         </header>
         <div className="mt-10 grid items-start gap-6 sm:mt-14 lg:grid-cols-[1.65fr_1fr] lg:gap-10">
           <div className="space-y-3">
+            <details className="group rounded-xl border border-black/15 bg-white open:border-[#0798ad]/40">
+              <summary className="flex min-h-18 cursor-pointer list-none items-center justify-between gap-5 rounded-xl px-5 py-5 text-sm leading-6 font-bold text-[#171b22] sm:text-base focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0798ad] [&::-webkit-details-marker]:hidden">
+                {consultation.faqQuestion}
+                <Plus aria-hidden="true" className="size-5 shrink-0 text-[#0798ad] transition-transform group-open:rotate-45 motion-reduce:transition-none" />
+              </summary>
+              <div className="px-5 pb-6">
+                <p className="text-sm leading-7 text-[#58606b]">{consultation.faqAnswer}</p>
+              </div>
+            </details>
             <details className="group rounded-xl border border-black/15 bg-white open:border-[#0798ad]/40">
               <summary className="flex min-h-18 cursor-pointer list-none items-center justify-between gap-5 rounded-xl px-5 py-5 text-sm leading-6 font-bold text-[#171b22] sm:text-base focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0798ad] [&::-webkit-details-marker]:hidden">
                 {content.activationGuide.question}

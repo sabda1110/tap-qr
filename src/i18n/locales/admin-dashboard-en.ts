@@ -8,6 +8,7 @@ export const adminDashboardEn = {
   outletCreate: outletCreateEn,
   outlets: outletsEn,
   sidebar: {
+    consultations: 'Consultation bookings',
     orders: "Card orders",
     analytics: "Analytics",
     outlets: "Outlets",

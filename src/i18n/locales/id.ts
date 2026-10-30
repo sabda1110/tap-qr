@@ -7,7 +7,9 @@ import { landingFaqId } from "./landing-details-id";
 import { productShowcaseId } from "./product-showcase-id";
 import { outletGalleryId } from "./outlet-gallery-id";
 import { gettingStartedId } from "./getting-started-id";
+import { consultationId } from "./consultation-id";
 export const id = {
+  consultation: consultationId,
   gettingStarted: gettingStartedId,
   productShowcase: productShowcaseId,
   faq: landingFaqId,

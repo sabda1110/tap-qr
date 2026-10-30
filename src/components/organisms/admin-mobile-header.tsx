@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Dialog } from "@base-ui/react/dialog";
 import {
-  BarChart3,
+  BarChart3, CalendarDays,
   CreditCard,
   Link2,
   LogOut,
@@ -19,6 +19,7 @@ import { BrandLogo } from "../elements/brand-logo";
 
 type AdminMobileHeaderProps = {
   content: {
+    consultations?: string;
     orders: string;
     analytics?: string;
     print?: string;
@@ -83,6 +84,7 @@ export function AdminMobileHeader({
               aria-label={content.navigationLabel}
               className="mt-6 grid gap-2"
             >
+          {content.consultations && <Link activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-bold text-[#646b75] no-underline hover:bg-black/4" onClick={closeMenu} params={{ locale: language }} to="/$locale/dashboard/admin/consultations"><CalendarDays className="size-4" />{content.consultations}</Link>}
               {content.analytics && (
                 <Link
                   activeProps={{ className: "bg-[#e8f8fb] text-[#087e91]" }}

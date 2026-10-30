@@ -8,8 +8,10 @@ import { landingFaqEn } from "./landing-details-en";
 import { productShowcaseEn } from "./product-showcase-en";
 import { outletGalleryEn } from "./outlet-gallery-en";
 import { gettingStartedEn } from "./getting-started-en";
+import { consultationEn } from "./consultation-en";
 
 export const en: typeof id = {
+  consultation: consultationEn,
   gettingStarted: gettingStartedEn,
   productShowcase: productShowcaseEn,
   faq: landingFaqEn,

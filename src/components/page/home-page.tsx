@@ -1,6 +1,8 @@
 import { CreditCard, Crown, ScanLine } from "lucide-react";
 import heroShot from "../assets/images/heroshot-feature-style-v2.webp";
 import cloudMascot from "../assets/images/tapqr-cloud-mascot.webp";
+import consultationMascot from "../assets/images/consultation-calendar-mascot.webp";
+import { ConsultationInvitationSection } from "../organisms/consultation-invitation-section";
 import customerHubImage from "../assets/images/features/customer-hub-520.webp";
 import customerHubLarge from "../assets/images/features/customer-hub-1040.webp";
 import flexibleNfcQrImage from "../assets/images/features/flexible-nfc-qr-520.webp";
@@ -100,8 +102,10 @@ export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) 
               messages.testimonials.laundry,
             ]}
           />
+          <ConsultationInvitationSection content={messages.consultation} language={language} imageSrc={consultationMascot} />
           <LandingFaqSection
             content={messages.faq}
+            consultation={messages.consultation}
             contactHref={whatsappNumber ? `https://wa.me/${whatsappNumber}` : null}
           />
         </>

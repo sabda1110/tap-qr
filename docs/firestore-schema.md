@@ -14,6 +14,8 @@ Schema ini adalah kontrak data proyek. Semua akses aplikasi berjalan melalui Fir
 | `orderRateLimits/{hash}` | hitungan pembuatan pesanan per IP/email per 15 menit, `expiresAt` untuk TTL |
 | `analyticsRateLimits/{hash}` | batas event publik per IP/menit dan deduplikasi browser/event, `expiresAt` untuk TTL; tidak menyimpan IP atau ID browser mentah |
 | `orders/{orderId}/events/{eventId}` | aksi pengelolaan, timestamp ISO UTC, UID/nama pelaku, alasan, perubahan field before/after; hanya endpoint admin |
+| `consultationSettings`, `consultationSlots`, `consultationBookings` | aturan, slot manual admin, dan booking publik; [kontrak lengkap](consultation-booking.md#kontrak-firestore) |
+| `consultationSlotLocks`, `consultationPhoneLocks`, `consultationNotifications`, `consultationRateLimits` | reservasi atomik, kuota aktif, outbox notifikasi, dan rate limit booking |
 
 ## Outlet dan logo
 

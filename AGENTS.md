@@ -47,8 +47,8 @@ Gunakan [docs/firestore-schema.md](docs/firestore-schema.md) sebagai kontrak
 database. Role pengguna hanya `owner` atau `admin`; card inventory membedakan
 material `acrylic` dan `pvc`. Akses Firestore aplikasi harus melalui server
 function dan Firebase Admin, bukan Firebase client SDK.
-Data lokasi outlet hanya disimpan dalam field `address`; jangan menambah atau
-menggunakan field `city` maupun `province`.
+Alamat outlet hanya memakai `address`, tanpa `city`/`province`. Booking konsultasi
+mengikuti [kontrak slot, transaksi, notifikasi, dan cron](docs/consultation-booking.md).
 
 ## Target pengguna
 
