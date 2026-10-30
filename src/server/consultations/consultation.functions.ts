@@ -2,7 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestIP, setResponseHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { requireAdmin } from "../auth/authorization.server";
-import { bookingActionSchema, bookingInputSchema, consultationSettingsSchema, consultationTokenSchema, slotActionSchema, slotCreationSchema, normalizeConsultationPhone } from "./consultation.schemas";
+import { bookingActionSchema, bookingInputSchema, consultationSettingsSchema, consultationTokenSchema, slotActionSchema, slotBulkDeleteSchema, slotCreationSchema, normalizeConsultationPhone } from "./consultation.schemas";
+import { deleteConsultationSlots } from "./consultation-slot-delete.repository.server";
 import { canBookSlot } from "./consultation-policy";
 import { bookingsRef, consultationRateLimit, hashConsultation, readConsultationSettings } from "./consultation-store.server";
 import { createConsultation, findBookingByCancelToken, listConsultationBookings, listConsultationSlots, readPublicConsultation } from "./consultation.repository.server";
@@ -20,7 +21,7 @@ function adminWhatsApp() {
   const phone = normalizeConsultationPhone(process.env.ADMIN_WHATSAPP ?? "");
   return /^628\d{8,11}$/.test(phone) ? phone : null;
 }
-const knownReasons = new Set(["slotUnavailable", "limit", "slotBooked", "deadlinePassed", "invalidStatus", "duplicateSlot", "slotPast", "notFound", "notificationFailed"]);
+const knownReasons = new Set(["confirmedSlot", "slotUnavailable", "limit", "slotBooked", "deadlinePassed", "invalidStatus", "duplicateSlot", "slotPast", "notFound", "notificationFailed"]);
 function safeReason(error: unknown) { return error instanceof Error && knownReasons.has(error.message) ? error.message : "error"; }
 async function mutation(work: () => Promise<unknown>) {
   privateResponse();
@@ -75,7 +76,10 @@ export const createConsultationSlots = createServerFn({ method: "POST" }).valida
   await requireAdmin(); return mutation(() => createSlots(data));
 });
 export const changeConsultationSlot = createServerFn({ method: "POST" }).validator(slotActionSchema).handler(async ({ data }) => {
-  await requireAdmin(); return mutation(() => changeSlot(data));
+  await requireAdmin(); return mutation(async () => { await changeSlot(data); if (data.action === "delete") await notify(); });
+});
+export const deleteAdminConsultationSlots = createServerFn({ method: "POST" }).validator(slotBulkDeleteSchema).handler(async ({ data }) => {
+  await requireAdmin(); return mutation(async () => { await deleteConsultationSlots(data.ids); await notify(); });
 });
 export const saveConsultationSettings = createServerFn({ method: "POST" }).validator(consultationSettingsSchema).handler(async ({ data }) => {
   await requireAdmin(); return mutation(() => writeConsultationSettings(data));

@@ -61,6 +61,25 @@ Jam yang dipilih berlaku untuk semua tanggal pilihan. Untuk jam berbeda pada
 tanggal berbeda, buat jadwal terpisah. Kalender utama hanya untuk melihat dan
 mengelola jadwal tersimpan; pengaturan durasi tetap berada di tab Pengaturan.
 
+## Menghapus beberapa jadwal
+
+Pada tab jadwal admin, **Hapus beberapa jadwal** membuka daftar lintas tanggal
+dengan checkbox, jam, dan status booking. Pilih semua mengambil maksimal 50
+jadwal yang dapat dihapus. Penghapusan satuan mengikuti aturan yang sama.
+
+- Slot kosong boleh dihapus. Slot yang memiliki booking `menunggu` boleh dihapus;
+  booking menjadi `dibatalkan_otomatis` dengan alasan `slotDeletedByAdmin`.
+- Booking `dikonfirmasi` melindungi slot dari penghapusan. Jika satu slot dalam
+  pilihan sudah dikonfirmasi atau datanya berubah/tidak konsisten, seluruh
+  transaksi ditolak tanpa penghapusan sebagian. Status tidak diketahui di UI
+  juga dilindungi; server tetap menjadi pemeriksaan terakhir.
+- Pembatalan, kenaikan revision, pelepasan lock slot dan kuota nomor WhatsApp,
+  pembuatan outbox pembatalan, serta penghapusan slot dilakukan atomik. Riwayat
+  booking dan event notifikasi tetap disimpan. Kuota beberapa booking pada nomor
+  yang sama diperbarui bersama agar booking lain tidak terhapus dari kuota.
+- Customer melihat status/alasan baru melalui tautan pribadinya. Pengiriman
+  WhatsApp ke customer tetap manual; notifikasi admin memakai outbox yang ada.
+
 ## Alur dan aturan
 
 Halaman publik `/$locale/consultation` memakai dua langkah:

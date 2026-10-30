@@ -32,6 +32,7 @@ export const slotCreationSchema = z.object({
   repeatWeeks: z.number().int().min(0).max(12).default(0),
 }).refine((value) => value.dates.length * value.times.length * (value.repeatWeeks + 1) <= 100, { message: "TOO_MANY_SLOTS" });
 export const slotActionSchema = z.object({ id: z.string().regex(/^\d{8}-\d{4}$/), action: z.enum(["close", "open", "delete"]) });
+export const slotBulkDeleteSchema = z.object({ ids: z.array(z.string().regex(/^\d{8}-\d{4}$/)).min(1).max(50).transform((ids) => [...new Set(ids)]) });
 export const bookingActionSchema = z.object({
   id: consultationTokenSchema, action: z.enum(["confirm", "cancel", "reschedule", "complete", "seen"]),
   slotId: z.string().regex(/^\d{8}-\d{4}$/).optional(), reason: text(300).optional(),

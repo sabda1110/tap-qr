@@ -94,6 +94,7 @@ export const consultationEn: typeof consultationId = {
   confirmedNotice: "Your time is confirmed. Contact the admin on WhatsApp for the consultation arrangements.",
   finishedNotice: "Your consultation is complete. Thank you for sharing your business story with us.",
   cancelledNotice: "This booking has been cancelled. You can choose a new consultation time.",
+  slotDeletedReason: "The admin removed this time before the booking was confirmed.",
   automaticReason: "The admin did not confirm your booking before the deadline.",
   customerReason: "The customer requested this cancellation.",
   adminReason: "The admin cancelled this booking.",

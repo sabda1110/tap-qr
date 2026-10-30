@@ -6,6 +6,7 @@ export type ConsultationMutation = (work: () => Promise<{ success: boolean; reas
 
 export function consultationAdminError(reason: string | undefined, copy: ConsultationAdminCopy) {
   const keys = {
+    confirmedSlot: "confirmed_slot",
     slotUnavailable: "slot_unavailable", slotBooked: "slot_booked",
     deadlinePassed: "deadline_passed", invalidStatus: "invalid_status",
     duplicateSlot: "duplicate_slot", notificationFailed: "notification_failed", slotPast: "slot_past",

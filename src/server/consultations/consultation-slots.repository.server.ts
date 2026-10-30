@@ -3,6 +3,7 @@ import type { slotActionSchema, slotCreationSchema } from "./consultation.schema
 import type { ConsultationSettings } from "./consultation.types";
 import { expandSlots } from "./consultation-policy";
 import { consultationDb, lockRef, resolveSettings, settingsRef, slotsRef } from "./consultation-store.server";
+import { deleteConsultationSlots } from "./consultation-slot-delete.repository.server";
 
 export async function createSlots(input: z.infer<typeof slotCreationSchema>) {
   return consultationDb().runTransaction(async (tx) => {
@@ -16,16 +17,14 @@ export async function createSlots(input: z.infer<typeof slotCreationSchema>) {
   });
 }
 export async function changeSlot(input: z.infer<typeof slotActionSchema>) {
+  if (input.action === "delete") return deleteConsultationSlots([input.id]);
   return consultationDb().runTransaction(async (tx) => {
     const ref = slotsRef().doc(input.id);
     const [doc, lock] = await Promise.all([tx.get(ref), tx.get(lockRef(input.id))]);
     if (!doc.exists) throw new Error("notFound");
     if (doc.data()?.status === "dipesan" || doc.data()?.bookingId || lock.exists) throw new Error("slotBooked");
-    if (input.action === "delete") tx.delete(ref);
-    else {
-      if (input.action === "open" && Date.parse(doc.data()!.startAt) <= Date.now()) throw new Error("slotPast");
-      tx.update(ref, { status: input.action === "open" ? "tersedia" : "ditutup" });
-    }
+    if (input.action === "open" && Date.parse(doc.data()!.startAt) <= Date.now()) throw new Error("slotPast");
+    tx.update(ref, { status: input.action === "open" ? "tersedia" : "ditutup" });
   });
 }
 export async function writeConsultationSettings(settings: ConsultationSettings) {

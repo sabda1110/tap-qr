@@ -93,6 +93,7 @@ export const consultationId = {
   confirmedNotice: "Jadwal Anda sudah dikonfirmasi. Hubungi admin melalui WhatsApp untuk detail pelaksanaan konsultasi.",
   finishedNotice: "Konsultasi telah selesai. Terima kasih sudah berbagi cerita tentang bisnis Anda.",
   cancelledNotice: "Booking ini sudah dibatalkan. Anda dapat memilih jadwal konsultasi yang baru.",
+  slotDeletedReason: "Jadwal dihapus oleh admin sebelum booking dikonfirmasi.",
   automaticReason: "Admin belum mengonfirmasi booking hingga tenggat yang ditentukan.",
   customerReason: "Booking dibatalkan atas permintaan pelanggan.",
   adminReason: "Booking dibatalkan oleh admin.",

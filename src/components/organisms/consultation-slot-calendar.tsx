@@ -1,3 +1,5 @@
+import { ConsultationBulkDeleteDialog } from "../molecules/consultation-bulk-delete-dialog";
+import { slotDeleteState, type SlotBooking } from "../../lib/consultation-slot-delete";
 import { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, LockKeyhole, Trash2, UnlockKeyhole } from "lucide-react";
 import type { Language } from "../../i18n";
@@ -8,7 +10,7 @@ import { cn } from "../../lib/utils";
 import { AlertDialog } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 
-type Props = { initialDate?: string; slots: ConsultationSlot[]; now: number; cutoffHours: number; language: Language; copy: ConsultationAdminCopy; busy: boolean; mutate: ConsultationMutation };
+type Props = { initialDate?: string; slots: ConsultationSlot[]; bookings: SlotBooking[]; now: number; cutoffHours: number; language: Language; copy: ConsultationAdminCopy; busy: boolean; mutate: ConsultationMutation };
 const dayDate = (key: string) => new Date(`${key}T12:00:00Z`);
 const dayKey = (date: Date) => date.toISOString().slice(0, 10);
 
@@ -24,7 +26,8 @@ function calendarDays(anchor: string, mode: "week" | "month") {
   });
 }
 
-export function ConsultationSlotCalendar({ initialDate, slots, now, cutoffHours, language, copy, busy, mutate }: Props) {
+export function ConsultationSlotCalendar({ initialDate, slots, bookings, now, cutoffHours, language, copy, busy, mutate }: Props) {
+  const [bulkDeleting, setBulkDeleting] = useState(false);
   const today = consultationDateKey(now);
   const [anchor, setAnchor] = useState(initialDate ?? today);
   const [selected, setSelected] = useState(initialDate ?? today);
@@ -51,6 +54,7 @@ export function ConsultationSlotCalendar({ initialDate, slots, now, cutoffHours,
       <h2 className="text-lg font-bold capitalize">{month}</h2>
       <div className="flex rounded-xl bg-[#f2f5f7] p-1" aria-label={copy.tabs.slots}>{(["week", "month"] as const).map((value) => <Button key={value} type="button" size="sm" variant={mode === value ? "default" : "ghost"} aria-pressed={mode === value} onClick={() => setMode(value)}>{copy.calendar[value]}</Button>)}</div>
     </header>
+    <Button variant="outline" className="mt-4 min-h-11" disabled={busy || !slots.length} onClick={() => setBulkDeleting(true)}><Trash2 />{copy.bulkDelete.title}</Button>
     <div className="my-4 flex items-center justify-between gap-2"><Button variant="outline" size="icon" aria-label={copy.calendar.previous} onClick={() => shift(-1)}><ChevronLeft /></Button><Button size="sm" variant="ghost" onClick={() => { setAnchor(today); setSelected(today); }}>{copy.calendar.today}</Button><Button variant="outline" size="icon" aria-label={copy.calendar.next} onClick={() => shift(1)}><ChevronRight /></Button></div>
     <div className="grid grid-cols-7 gap-1 text-center sm:gap-2">
       {days.slice(0, 7).map((key) => <span key={`label-${key}`} className="pb-2 text-[10px] font-bold text-[#69737d] sm:text-xs">{dayFormatter.format(dayDate(key))}</span>)}
@@ -68,17 +72,22 @@ export function ConsultationSlotCalendar({ initialDate, slots, now, cutoffHours,
     <div className="mt-6 border-t border-black/8 pt-5"><h3 className="font-bold">{consultationDateLabel(selected, language)}</h3><p className="mt-1 text-xs text-[#69737d]">{copy.calendar.selectedDate}</p>
       {!byDate.get(selected)?.length && <p className="py-6 text-sm text-[#69737d]">{copy.calendar.empty}</p>}
       <div className="mt-3 grid gap-3">{byDate.get(selected)?.map((slot) => {
+        const deleteState = slotDeleteState(slot, bookings);
         const cutoff = Date.parse(slot.startAt) - cutoffHours * 3_600_000 <= now;
         const past = Date.parse(slot.startAt) <= now;
         return <article key={slot.id} className="rounded-2xl border border-black/8 p-3 sm:p-4"><div className="flex flex-wrap items-center justify-between gap-2"><p className="text-sm font-bold">{consultationRangeLabel(slot.startAt, slot.endAt)}</p><span className={cn("rounded-full border px-2.5 py-1 text-xs font-semibold", consultationSlotClass[slot.status])}>{copy.slotStatuses[slot.status]}</span></div>
           {slot.status === "dipesan" ? <p className="mt-3 text-xs leading-5 text-[#69737d]">{copy.calendar.bookedHelp}</p> : <div className="mt-3 flex flex-wrap items-center gap-2">
             <Button size="sm" variant="outline" disabled={busy || (slot.status === "ditutup" && cutoff)} onClick={() => void mutate(() => changeConsultationSlot({ data: { id: slot.id, action: slot.status === "tersedia" ? "close" : "open" } }))}>{slot.status === "tersedia" ? <LockKeyhole /> : <UnlockKeyhole />}{slot.status === "tersedia" ? copy.calendar.close : copy.calendar.open}</Button>
-            <Button size="sm" variant="destructive" disabled={busy} onClick={() => setDeleting(slot)}><Trash2 />{copy.calendar.delete}</Button>
             {cutoff && <span className="text-xs text-[#69737d]">{past ? copy.calendar.past : copy.calendar.cutoff}</span>}
           </div>}
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <Button size="sm" variant="destructive" disabled={busy || deleteState === "protected"} onClick={() => setDeleting(slot)}><Trash2 />{copy.calendar.delete}</Button>
+            {deleteState !== "empty" && <p className="text-xs leading-5 text-[#69737d]">{deleteState === "pending" ? copy.bulkDelete.pending : copy.bulkDelete.protected}</p>}
+          </div>
         </article>;
       })}</div>
     </div>
+    {bulkDeleting && <ConsultationBulkDeleteDialog slots={slots} bookings={bookings} language={language} copy={copy} busy={busy} mutate={mutate} onClose={() => setBulkDeleting(false)} />}
     <AlertDialog open={Boolean(deleting)} title={copy.calendar.deleteTitle} description={copy.calendar.deleteDescription} cancelLabel={copy.cancel} confirmLabel={busy ? copy.saving : copy.calendar.delete} onOpenChange={(open) => { if (!open && !busy) setDeleting(null); }} onConfirm={() => { if (!deleting || busy) return; void mutate(() => changeConsultationSlot({ data: { id: deleting.id, action: "delete" } })).then((success) => { if (success) setDeleting(null); }); }} />
   </section>;
 }

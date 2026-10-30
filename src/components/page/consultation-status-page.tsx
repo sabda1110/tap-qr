@@ -86,7 +86,7 @@ export function ConsultationStatusPage({ initial, token }: { initial: StatusData
 
   const active = booking?.status === "menunggu" || booking?.status === "dikonfirmasi";
   const confirmed = booking?.status === "dikonfirmasi";
-  const reason = booking?.reason === "confirmationExpired" ? content.automaticReason
+  const reason = booking?.reason === "slotDeletedByAdmin" ? content.slotDeletedReason : booking?.reason === "confirmationExpired" ? content.automaticReason
     : booking?.reason === "cancelledByCustomer" ? content.customerReason
       : booking?.reason === "cancelledByAdmin" ? content.adminReason : booking?.reason;
   const whatsappText = booking ? consultationText(content.whatsappMessage, {

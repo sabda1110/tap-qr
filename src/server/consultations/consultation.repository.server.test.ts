@@ -118,15 +118,17 @@ test("confirmation just before the deadline survives expiry and confirmation at 
   assert.equal(await changeConsultationBooking({ id: second, action: "expire" }), false);
 }));
 
-test("slot uniqueness rolls back entire batches and occupied slots cannot be closed or deleted", async () => withConsultations(async (fixture) => {
+test("slot uniqueness rolls back entire batches and confirmed slots cannot be closed or deleted", async () => withConsultations(async (fixture) => {
   const input = slotCreationSchema.parse({ dates: ["2026-11-07"], times: ["10:00", "11:00", "13:00", "14:00"], repeatWeeks: 3 });
   await createSlots(input);
   assert.equal([...fixture.documents.keys()].filter((path) => path.startsWith("consultationSlots/")).length, 16);
   await assert.rejects(createSlots({ ...input, times: ["10:00", "15:00"] }), /duplicateSlot/);
   assert.equal(fixture.documents.has("consultationSlots/20261107-1500"), false);
   const slotId = "20261107-1000";
-  await createConsultation(bookingInput(slotId));
-  for (const action of ["delete", "close", "open"] as const) await assert.rejects(changeSlot({ id: slotId, action }), /slotBooked/);
+  const id = await createConsultation(bookingInput(slotId));
+  await changeConsultationBooking({ id, action: "confirm" });
+  await assert.rejects(changeSlot({ id: slotId, action: "delete" }), /confirmedSlot/);
+  for (const action of ["close", "open"] as const) await assert.rejects(changeSlot({ id: slotId, action }), /slotBooked/);
   await changeSlot({ id: "20261107-1100", action: "close" });
   await assert.rejects(createConsultation(bookingInput("20261107-1100", "b")), /slotUnavailable/);
   await changeSlot({ id: "20261107-1100", action: "open" });
