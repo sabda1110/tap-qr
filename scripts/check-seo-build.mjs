@@ -33,6 +33,7 @@ for (const file of (await readdir("public")).filter((file) => /^google[a-f0-9]+\
 for (const path of ["/id", "/en", "/id/tutorial/activation", "/en/tutorial/google-place-id"]) {
   const { body } = await request(path);
   const head = body.slice(0, body.indexOf("</head>"));
+  assert.match(head, /name="google-site-verification" content="s89d2JcWJ9yMygTWR00ELWiZQuHzQ2vpKIfAgokmiY8"/);
   const canonical = head.match(/<link[^>]*rel="canonical"[^>]*>/)?.[0] ?? "";
   assert.ok(canonical.includes(`href="https://www.tapqr.id${path}"`), `${path} canonical must be in server HTML`);
   assert.match(head, /name="robots" content="index, follow, max-image-preview:large"/);

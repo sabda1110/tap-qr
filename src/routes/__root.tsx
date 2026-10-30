@@ -19,6 +19,10 @@ export const Route = createRootRoute({
       { title: "TapQR" },
       { name: "robots", content: "noindex, nofollow, noarchive" },
       { name: "author", content: "TapQR" },
+      {
+        name: "google-site-verification",
+        content: "s89d2JcWJ9yMygTWR00ELWiZQuHzQ2vpKIfAgokmiY8",
+      },
       { name: "theme-color", content: "#ffb332" },
       { name: "application-name", content: "TapQR" },
       { name: "apple-mobile-web-app-title", content: "TapQR" },
