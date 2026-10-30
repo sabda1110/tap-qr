@@ -1,3 +1,4 @@
+import { seoEn } from "./seo-en";
 import { adminDashboardEn } from "./admin-dashboard-en";
 import { authEn } from "./auth-en";
 import { cardClaimEn, userDashboardEn } from "./user-dashboard-en";
@@ -11,6 +12,7 @@ import { gettingStartedEn } from "./getting-started-en";
 import { consultationEn } from "./consultation-en";
 
 export const en: typeof id = {
+  seo: seoEn,
   consultation: consultationEn,
   gettingStarted: gettingStartedEn,
   productShowcase: productShowcaseEn,
@@ -214,6 +216,8 @@ export const en: typeof id = {
     },
   },
   footer: {
+    consultation: "Product consultation",
+    placeIdGuide: "Google Place ID guide",
     brandHomeLabel: "Back to the TapQR homepage",
     tagline:
       "One tap to help small businesses earn more reviews, connect with customers, and grow with better insight.",

@@ -1,3 +1,4 @@
+import { outletProfileHead } from "../lib/seo/head";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { OutletProfilePage } from "../components/page/outlet-profile-page";
 import { getOutletProfile } from "../server/outlets/public-profile.functions";
@@ -8,7 +9,7 @@ export const Route = createFileRoute("/$locale/p/$id")({
     if (!profile) throw notFound();
     return profile;
   },
-  head: ({ loaderData }) => ({ meta: [{ title: loaderData ? `${loaderData.name} | TapQR` : "TapQR" }] }),
+  head: ({ loaderData, params }) => outletProfileHead(params.locale, loaderData),
   component: OutletProfileRoute,
   notFoundComponent: () => <OutletProfilePage profile={null} />,
   errorComponent: () => <OutletProfilePage profile={null} failed />,

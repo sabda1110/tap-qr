@@ -1,3 +1,4 @@
+import { seoId } from "./seo-id";
 import { adminDashboardId } from "./admin-dashboard-id";
 import { authId } from "./auth-id";
 import { cardClaimId, userDashboardId } from "./user-dashboard-id";
@@ -9,6 +10,7 @@ import { outletGalleryId } from "./outlet-gallery-id";
 import { gettingStartedId } from "./getting-started-id";
 import { consultationId } from "./consultation-id";
 export const id = {
+  seo: seoId,
   consultation: consultationId,
   gettingStarted: gettingStartedId,
   productShowcase: productShowcaseId,
@@ -227,6 +229,8 @@ export const id = {
     },
   },
   footer: {
+    consultation: "Konsultasi produk",
+    placeIdGuide: "Panduan Google Place ID",
     brandHomeLabel: "Kembali ke beranda TapQR",
     tagline:
       "Satu tap untuk membantu UMKM mendapatkan lebih banyak review, terhubung dengan pelanggan, dan bertumbuh lebih cerdas.",

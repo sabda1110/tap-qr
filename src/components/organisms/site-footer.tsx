@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { landingButtonStyles } from "../elements/landing-button";
 import { ArrowUp, ArrowUpRight } from "lucide-react";
 
@@ -56,6 +57,8 @@ export function SiteFooter({ content, language }: SiteFooterProps) {
                   </li>
                 ))}
                 <li><ActivationGuideLink className="text-sm text-white/70 hover:text-white" /></li>
+                <li><Link to="/$locale/consultation" params={{ locale: language }} className="text-sm text-white/70 hover:text-white">{content.consultation}</Link></li>
+                <li><Link to="/$locale/tutorial/google-place-id" params={{ locale: language }} className="text-sm text-white/70 hover:text-white">{content.placeIdGuide}</Link></li>
               </ul>
             </nav>
 

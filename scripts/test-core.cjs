@@ -3,6 +3,7 @@ require("./test-orders.cjs");
 require("../src/lib/validation/checkout-search.test.ts");
 require("../src/lib/print-dimensions.test.ts");
 require("../src/lib/studio-print-job.test.ts");
+require("../src/lib/seo/seo.test.ts");
 require("../src/server/print/admin-print.repository.server.test.ts");
 require("../src/server/analytics/public-event-limiter.server.test.ts");
 require("../src/server/analytics/admin-analytics.repository.server.test.ts");

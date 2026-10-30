@@ -1,3 +1,4 @@
+import { publicPageHead } from "../lib/seo/head";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { HomePage } from "../components/page/home-page";
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/$locale/")({
 
     return { whatsappNumber };
   },
+  head: ({ params }) => publicPageHead(params.locale, "home"),
   component: HomeRoute,
 });
 
