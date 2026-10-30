@@ -1,9 +1,7 @@
 import { PrintPaperSelector } from "../molecules/print-paper-selector";
 import type { PrintPaper } from "../../lib/print-dimensions";
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "@tanstack/react-router";
-import { useToast } from "../ui/toaster";
-import { updateAdminCardsPrintStatus } from "../../server/cards/card.functions";
+import { useStudioPrint } from "../../hooks/use-studio-print";
 import { getCardUrl } from "../../lib/app-url";
 import { supportsPrintThemeMaterial, type PrintThemeKey } from "../../lib/print-themes";
 import { type PrintDimensions, PrintSizeSelector } from "../elements/print-size-selector";
@@ -26,8 +24,6 @@ function getMaterialDimensions(material: CardMaterial): PrintDimensions {
     : { preset: "a7", widthMm: 74, heightMm: 105 };
 }
 export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminPrintStudioProps) {
-  const router = useRouter();
-  const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState<"single" | "bulk">("single");
   const [requestedCardId, setSelectedCardId] = useState(
     initialCard?.cardId || cards[0]?.cardId || "",
@@ -48,7 +44,6 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
   const [paper, setPaper] = useState<PrintPaper>("a4");
   const [dimensions, setDimensions] = useState<PrintDimensions>(() => getMaterialDimensions(initialMaterial));
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const [preHeadline, setPreHeadline] = useState(content.themes.google.defaultPreHeadline);
   const [headline, setHeadline] = useState(content.themes.google.defaultHeadline);
   const [footerNote, setFooterNote] = useState(content.themes.google.defaultFooter);
@@ -77,48 +72,10 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
     setConfirmDialogOpen(true);
   }, []);
 
-  const handleConfirmPrint = async (markAsPrinted: boolean) => {
-    const ids =
-      activeTab === "single"
-        ? selectedCardId
-          ? [selectedCardId]
-          : []
-        : selectedBulkCardIds;
-
-    if (ids.length === 0) return;
-
-    if (!markAsPrinted) {
-      setConfirmDialogOpen(false);
-      window.setTimeout(() => {
-        window.print();
-      }, 150);
-      return;
-    }
-
-    setIsUpdatingStatus(true);
-    try {
-      await updateAdminCardsPrintStatus({
-        data: {
-          ids,
-          status: "printed",
-        },
-      });
-      showToast(
-        content.toastPrintSuccess.replace("{count}", String(ids.length)),
-        "success",
-      );
-      setConfirmDialogOpen(false);
-      await router.invalidate();
-      window.setTimeout(() => {
-        window.print();
-      }, 150);
-    } catch (error) {
-      console.error("Failed to update card print status", error);
-      showToast(content.toastPrintFailure, "error");
-    } finally {
-      setIsUpdatingStatus(false);
-    }
-  };
+  const { handleConfirmPrint, isUpdatingStatus } = useStudioPrint({
+    cards, cardIds: activeTab === "single" ? (selectedCardId ? [selectedCardId] : []) : selectedBulkCardIds,
+    content, closeDialog: () => setConfirmDialogOpen(false),
+  });
 
   const handleToggleBulkCard = (cardId: string) => {
     setSelectedBulkCardIds((prev) =>

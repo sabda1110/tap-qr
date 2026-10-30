@@ -35,6 +35,11 @@ Tombol hapus logo menghapus pilihan dari form, bukan aset Cloudinary.
 
 Kartu baru selalu memiliki `claimStatus: "unclaimed"`, `ownerId: null`, `outletId: null`, `isEnabled: true`, dan konfigurasi Google/social kosong. Master kartu menambah field `material` agar inventaris PVC dan akrilik dapat dibedakan. Status produksi fisik disimpan terpisah pada `print.status` (`unprinted`/`printed`), `print.printedAt`, dan `print.printedBy`; dokumen lama tanpa field `print` dianggap belum dicetak. Hanya kartu belum diklaim yang dapat diubah status cetaknya dari master kartu.
 
+Studio Cetak membedakan `id` dokumen inventaris dari kode publik `cardId`
+(`TQR-…`) pada QR. Mutasi status memakai `id`; pencarian detail memakai field
+`cardId`. Jika satu kartu hilang/sudah diklaim, seluruh pembaruan status ditolak.
+Antrean baru dimuat ulang setelah dialog cetak ditutup agar artwork tidak berganti.
+
 `cardId` dibuat acak dengan entropi 128-bit, misalnya `TQR-7B83...`, sehingga tidak dapat ditebak dari urutan kartu lain. Setiap kartu juga memiliki token klaim acak 256-bit. Token tersebut nantinya menjadi isi QR/NFC untuk proses claim; Firestore hanya menyimpan hash SHA-256-nya pada `claim.claimTokenHash`.
 
 `config.social.links` menyimpan `id`, tipe, label, URL, status aktif, dan urutan.

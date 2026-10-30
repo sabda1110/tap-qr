@@ -58,6 +58,7 @@ export type AdminPrintStudioContent = {
   confirmDialogCancel: string;
   toastPrintSuccess: string;
   toastPrintFailure: string;
+  toastPrintRefreshFailure: string;
   themes: Record<PrintThemeKey, { title: string; subtitle: string; defaultPreHeadline: string; defaultHeadline: string; defaultFooter: string }>;
 };
 

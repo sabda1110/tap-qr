@@ -112,7 +112,7 @@ export async function listMasterCards({
 export async function removeUnusedCards(ids: string[]) {
   const database = getFirebaseAdminFirestore();
   return database.runTransaction(async (transaction) => {
-    const references = ids.map((id) => database.collection("cards").doc(id));
+    const references = [...new Set(ids)].map((id) => database.collection("cards").doc(id));
     const snapshots = await Promise.all(references.map((reference) => transaction.get(reference)));
     const unusedReferences = snapshots
       .filter((snapshot) => snapshot.exists && isUnusedCard(snapshot.data()))
@@ -142,11 +142,12 @@ export async function updateCardsPrintStatus(
 ) {
   const database = getFirebaseAdminFirestore();
   return database.runTransaction(async (transaction) => {
-    const references = ids.map((id) => database.collection("cards").doc(id));
+    const references = [...new Set(ids)].map((id) => database.collection("cards").doc(id));
     const snapshots = await Promise.all(references.map((reference) => transaction.get(reference)));
-    const printableCards = snapshots.filter(
-      (snapshot) => snapshot.exists && snapshot.data()?.claimStatus === "unclaimed",
-    );
+    if (!snapshots.length || snapshots.some((snapshot) => !snapshot.exists || snapshot.data()?.claimStatus !== "unclaimed")) {
+      throw new Error("CARD_PRINT_UPDATE_CONFLICT");
+    }
+    const printableCards = snapshots;
     const timestamp = FieldValue.serverTimestamp();
 
     printableCards.forEach((snapshot) => {

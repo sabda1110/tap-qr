@@ -64,6 +64,7 @@ export const printStudioEn: typeof printStudioId = {
   confirmDialogPrintAndMark: "Print & Mark as Printed",
   confirmDialogCancel: "Cancel",
   toastPrintSuccess: "{count} cards successfully printed & status updated!",
+  toastPrintRefreshFailure: "Print status was saved, but the queue could not be refreshed. Reload this page.",
   toastPrintFailure: "Failed to update print status on server.",
   themes: {
     "pvc-monster-gym": {

@@ -63,6 +63,7 @@ export const printStudioId = {
   confirmDialogPrintAndMark: "Cetak & Tandai Sudah Dicetak",
   confirmDialogCancel: "Batal",
   toastPrintSuccess: "{count} kartu berhasil dicetak & diperbarui statusnya!",
+  toastPrintRefreshFailure: "Status cetak sudah tersimpan, tetapi antrean belum dapat dimuat ulang. Muat ulang halaman.",
   toastPrintFailure: "Gagal memperbarui status cetak kartu di server.",
   themes: {
     "pvc-monster-gym": {

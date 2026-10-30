@@ -8,6 +8,7 @@ import type {
 } from "../../lib/firebase/firestore-schema";
 
 export type PrintCardOption = {
+  id: string;
   cardId: string;
   claimStatus: CardClaimStatus;
   printStatus: CardPrintStatus;
@@ -49,7 +50,7 @@ export async function listCardsForPrint(): Promise<PrintCardOption[]> {
     .where("claimStatus", "==", "unclaimed")
     .get();
 
-  const cards = snapshot.docs.map((doc) => doc.data() as CardRecord);
+  const cards = snapshot.docs.map((doc) => ({ ...doc.data() as CardRecord, id: doc.id }));
 
   // Filter only cards that have NOT been printed yet (unprinted)
   const unprintedCards = cards.filter(
@@ -60,6 +61,7 @@ export async function listCardsForPrint(): Promise<PrintCardOption[]> {
   unprintedCards.sort((a, b) => getMillis(b.createdAt) - getMillis(a.createdAt));
 
   return unprintedCards.map((c) => ({
+    id: c.id,
     cardId: c.cardId,
     claimStatus: c.claimStatus,
     printStatus: (c.print?.status as CardPrintStatus) ?? "unprinted",
@@ -71,8 +73,9 @@ export async function listCardsForPrint(): Promise<PrintCardOption[]> {
 
 export async function getCardPrintDetail(cardId: string): Promise<PrintCardDetail | null> {
   const database = getFirebaseAdminFirestore();
-  const snapshot = await database.collection("cards").doc(cardId).get();
-  if (!snapshot.exists) return null;
+  const matching = await database.collection("cards").where("cardId", "==", cardId).limit(1).get();
+  const snapshot = matching.docs[0];
+  if (!snapshot) return null;
 
   const cardData = snapshot.data() as CardRecord;
   let outletName: string | null = null;
@@ -94,6 +97,7 @@ export async function getCardPrintDetail(cardId: string): Promise<PrintCardDetai
   }
 
   return {
+    id: snapshot.id,
     cardId: cardData.cardId,
     claimStatus: cardData.claimStatus,
     printStatus: cardData.print?.status ?? "unprinted",
