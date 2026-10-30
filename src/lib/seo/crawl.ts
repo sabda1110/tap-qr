@@ -7,12 +7,10 @@ export function escapeXml(value: string) {
 /** Keep the sitemap allowlisted: never enumerate orders, card inventory, tokens or accounts. */
 export function buildSitemap(origin: string) {
   const urls = (Object.keys(seoPagePaths) as SeoPage[]).flatMap((page) => seoLanguages.map((language) => {
-    const alternates = [...seoLanguages.map((code) => ({ code, url: seoPageUrl(origin, code, page) })),
-      { code: "x-default", url: seoPageUrl(origin, "id", page) }];
-    return `  <url>\n    <loc>${escapeXml(seoPageUrl(origin, language, page))}</loc>\n${alternates.map(({ code, url }) =>
-      `    <xhtml:link rel="alternate" hreflang="${code}" href="${escapeXml(url)}" />`).join("\n")}\n  </url>`;
+    // Hreflang is already emitted in each HTML head; XHTML elements disable Chrome's XML tree viewer.
+    return `  <url>\n    <loc>${escapeXml(seoPageUrl(origin, language, page))}</loc>\n  </url>`;
   }));
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join("\n")}\n</urlset>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
 }
 
 export function buildRobots(origin: string, noindex = false) {

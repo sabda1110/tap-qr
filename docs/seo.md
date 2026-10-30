@@ -21,7 +21,9 @@ konsultasi, panduan aktivasi, dan panduan Google Place ID, masing-masing `/id`
 dan `/en`. Tiap halaman memiliki title/deskripsi lokal, canonical ke dirinya,
 alternate ID/EN dan x-default Indonesia, Open Graph, serta Twitter card.
 
-`/sitemap.xml` memuat delapan URL dengan anotasi bahasa. Tidak ada tanggal
+`/sitemap.xml` memuat delapan URL dalam XML standar tanpa elemen XHTML agar
+browser dapat menampilkan pohon XML. Anotasi bahasa tetap tersedia di `<head>`
+setiap halaman; Google menerima metode HTML tanpa duplikasi di sitemap. Tidak ada tanggal
 lastmod buatan pada setiap request. Jika kelak menambahkan lastmod, gunakan
 waktu perubahan konten aktual, bukan waktu crawler mengakses endpoint.
 

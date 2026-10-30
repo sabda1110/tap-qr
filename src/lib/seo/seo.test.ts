@@ -33,7 +33,8 @@ test("every sitemap URL has matching localized metadata, canonicals and reciproc
   assert.equal(new Set(urls).size, urls.length);
   assert.equal(titles.size, 8);
   assert.doesNotMatch(sitemap, /dashboard|orders|\/order<|auth|TQR-|token|lastmod/);
-  assert.match(sitemap, /xmlns:xhtml="http:\/\/www.w3.org\/1999\/xhtml"/);
+  assert.match(sitemap, /<urlset xmlns="http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9">/);
+  assert.doesNotMatch(sitemap, /xhtml:/);
 });
 
 test("robots and sitemap responses are crawlable and staging can disable indexing", () => {
