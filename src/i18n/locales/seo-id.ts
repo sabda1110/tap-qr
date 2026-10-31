@@ -5,12 +5,12 @@ export const seoId = {
   catalogName: "Media NFC dan QR untuk bisnis",
   pages: {
     home: {
-      title: "TapQR — Kartu NFC & QR Google Review untuk UMKM",
-      description: "Kartu NFC + QR untuk UMKM: Google Review, WiFi, WhatsApp, dan media sosial. Pilih PVC atau papan akrilik dengan desain bisnis dan tautan yang bisa diubah.",
+      title: "TapQR — Kartu NFC Google Review untuk UMKM Pekanbaru",
+      description: "Permudah Google Review untuk UMKM Pekanbaru, Kerinci, dan Duri dengan kartu NFC + QR. Pilih PVC atau akrilik untuk ulasan, WhatsApp, menu, dan media sosial.",
     },
     consultation: {
-      title: "Konsultasi Produk NFC & QR untuk Bisnis | TapQR",
-      description: "Diskusikan kebutuhan bisnis dan pilihan kartu NFC atau papan akrilik QR bersama TapQR. Pilih tanggal dan jam konsultasi, lalu kirim data singkat Anda.",
+      title: "Konsultasi Google Review & Pemasaran UMKM | TapQR",
+      description: "Diskusikan Google Review, akses menu, dan WhatsApp untuk UMKM Pekanbaru, Kerinci, dan Duri. Pilih jadwal konsultasi NFC + QR sesuai kebutuhan bisnis Anda.",
     },
     activationGuide: {
       title: "Cara Aktivasi Kartu NFC dan QR TapQR | Panduan Pemilik",
@@ -18,7 +18,7 @@ export const seoId = {
     },
     googlePlaceIdGuide: {
       title: "Cara Menemukan Google Place ID untuk Link Review | TapQR",
-      description: "Temukan Google Place ID bisnis dengan alat resmi Google. Ikuti langkah menyalin Place ID dan memasangnya di TapQR agar pelanggan membuka profil yang tepat.",
+      description: "Buat akses ulasan Google lebih mudah: temukan Google Place ID bisnis, salin ke TapQR, lalu arahkan pelanggan ke link review yang tepat melalui NFC atau QR.",
     },
   },
 };

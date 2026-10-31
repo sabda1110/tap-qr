@@ -7,12 +7,12 @@ export const seoEn: typeof seoId = {
   catalogName: "NFC and QR products for businesses",
   pages: {
     home: {
-      title: "TapQR — NFC & QR Cards for Google Reviews and Business",
-      description: "NFC + QR PVC cards and acrylic stands for Google reviews, WiFi, WhatsApp, and business social links. Custom business designs with links you can update.",
+      title: "TapQR — NFC Google Review Cards for Pekanbaru Businesses",
+      description: "Make Google reviews easier for small businesses in Pekanbaru, Kerinci, and Duri. Choose NFC + QR PVC cards or acrylic stands for reviews, WhatsApp, and menus.",
     },
     consultation: {
-      title: "NFC & QR Business Product Consultation | TapQR",
-      description: "Talk to TapQR about your business needs and the right NFC card or acrylic QR stand. Choose an available date and time, then send your contact details.",
+      title: "Google Reviews & Small Business Marketing Consultation | TapQR",
+      description: "Discuss Google reviews, menus, and WhatsApp for businesses in Pekanbaru, Kerinci, and Duri. Book an NFC + QR consultation that fits your business needs.",
     },
     activationGuide: {
       title: "How to Activate Your TapQR NFC & QR Card | Owner Guide",
@@ -20,7 +20,7 @@ export const seoEn: typeof seoId = {
     },
     googlePlaceIdGuide: {
       title: "How to Find Your Google Place ID for Review Links | TapQR",
-      description: "Find your business Google Place ID using Google's official tool. Follow the steps to copy it into TapQR and direct customers to the correct business profile.",
+      description: "Make Google reviews easier to access: find your business Google Place ID, copy it into TapQR, and direct customers to the right review link with NFC or QR.",
     },
   },
 };

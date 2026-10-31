@@ -11,6 +11,14 @@ export const landingFaqId = {
   contactDescription: "Ceritakan kebutuhan bisnis Anda. Kami siap membantu memilih media TapQR dan menjelaskan proses pemesanannya.",
   items: [
     {
+      question: "Bagaimana TapQR membantu Google Review untuk UMKM Pekanbaru, Kerinci, dan Duri?",
+      answer: "Pemilik kafe, restoran, barbershop, laundry, atau toko dapat menempatkan kartu NFC atau papan akrilik QR di kasir. Pelanggan cukup tap atau scan untuk membuka link Google Review bisnis yang tepat. Jika Anda mencari solusi Google Review di Pekanbaru, Kerinci, atau Duri, konsultasikan kebutuhan dan lokasi usaha melalui WhatsApp sebelum memesan.",
+    },
+    {
+      question: "Bagaimana cara meningkatkan penjualan UMKM dengan Google Review dan WhatsApp?",
+      answer: "Mulai dengan pelayanan yang baik, informasi Google Business Profile yang akurat, menu yang mudah dibuka, serta kontak WhatsApp yang jelas untuk pertanyaan dan pemesanan. TapQR membantu menyatukan akses tersebut dan memudahkan pelanggan memberi ulasan jujur setelah bertransaksi. Hasil penjualan bergantung pada banyak faktor, bukan jumlah ulasan saja. Jangan menawarkan hadiah atau diskon sebagai syarat memberi review.",
+    },
+    {
       question: "Apa yang saya dapatkan saat membeli kartu atau papan TapQR?",
       answer: "Kartu PVC dan papan akrilik sama-sama sudah termasuk chip NFC dan QR dalam satu media, dengan desain yang disesuaikan untuk bisnis Anda. Paket Bisnis juga mencakup setup Google Business Profile dan link review, serta landing page bisnis dengan dua kali revisi.",
     },

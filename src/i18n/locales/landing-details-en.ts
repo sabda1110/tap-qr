@@ -11,6 +11,14 @@ export const landingFaqEn = {
   contactDescription: "Tell us what your business needs. We can help you choose your TapQR medium and explain how to order.",
   items: [
     {
+      question: "How does TapQR help with Google reviews for businesses in Pekanbaru, Kerinci, and Duri?",
+      answer: "Cafes, restaurants, barbershops, laundries, and shops can place an NFC card or acrylic QR stand at checkout. Customers tap or scan to open the correct business Google Review link. If you are looking for a Google Review solution in Pekanbaru, Kerinci, or Duri, discuss your business needs and location on WhatsApp before ordering.",
+    },
+    {
+      question: "How can Google reviews and WhatsApp support small business sales?",
+      answer: "Start with good service, accurate Google Business Profile information, an accessible menu, and a clear WhatsApp contact for questions and orders. TapQR brings these destinations together and makes it easier for customers to leave honest feedback after a purchase. Sales depend on many factors, not review counts alone. Never offer rewards or discounts in exchange for reviews.",
+    },
+    {
       question: "What is included with a TapQR card or standee?",
       answer: "Both PVC cards and acrylic standees include an NFC chip and QR in one medium, with a design customized for your business. The Business Package also includes Google Business Profile and review link setup, plus a business landing page with two revisions.",
     },
