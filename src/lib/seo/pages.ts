@@ -6,6 +6,7 @@ export const seoPagePaths = {
   consultation: "/consultation",
   activationGuide: "/tutorial/activation",
   googlePlaceIdGuide: "/tutorial/google-place-id",
+  googleReviewGuide: "/tutorial/google-review",
 } as const;
 export type SeoPage = keyof typeof seoPagePaths;
 

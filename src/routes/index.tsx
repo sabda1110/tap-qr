@@ -7,6 +7,7 @@ export const Route = createFileRoute("/")({
       to: "/$locale",
       params: { locale: defaultLanguage },
       replace: true,
+      statusCode: 308,
     });
   },
 });

@@ -1,4 +1,5 @@
 import { seoEn } from "./seo-en";
+import { reviewGuideEn } from "./review-guide-en";
 import { adminDashboardEn } from "./admin-dashboard-en";
 import { authEn } from "./auth-en";
 import { cardClaimEn, userDashboardEn } from "./user-dashboard-en";
@@ -13,6 +14,7 @@ import { consultationEn } from "./consultation-en";
 
 export const en: typeof id = {
   seo: seoEn,
+  reviewGuide: reviewGuideEn,
   consultation: consultationEn,
   gettingStarted: gettingStartedEn,
   productShowcase: productShowcaseEn,
@@ -156,7 +158,7 @@ export const en: typeof id = {
     acrylicBoard: {
       name: "Acrylic Standee",
       badge: "Most Popular",
-      description: "A freestanding acrylic board with NFC and QR, ready for tables and checkout counters.",
+      description: "An acrylic Google Review stand with NFC and QR, ready for tables and checkout counters.",
       price: "Rp69.000",
       priceDetail: "/ unit",
       features: [
@@ -216,6 +218,7 @@ export const en: typeof id = {
     },
   },
   footer: {
+    reviewGuide: "How to get Google reviews",
     consultation: "Product consultation",
     placeIdGuide: "Google Place ID guide",
     brandHomeLabel: "Back to the TapQR homepage",

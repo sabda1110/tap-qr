@@ -1,12 +1,19 @@
 export const seoId = {
   profileDescription: "Temukan informasi, tautan, dan kontak bisnis {name} di TapQR.",
+  profileLocationDescription: "{description} Lokasi: {location}.",
+  profileImageAlt: "Logo {name}",
+  profileUnavailable: "Profil bisnis tidak tersedia | TapQR",
   siteName: "TapQR",
   imageAlt: "TapQR membantu pelanggan terhubung dengan bisnis melalui kartu NFC dan QR code.",
   catalogName: "Media NFC dan QR untuk bisnis",
   pages: {
+    googleReviewGuide: {
+      title: "Cara Mendapatkan Google Review untuk UMKM | TapQR",
+      description: "Panduan Google Review untuk UMKM: siapkan profil bisnis, ajak ulasan jujur, gunakan NFC + QR, dan permudah akses WhatsApp tanpa hadiah atau review palsu.",
+    },
     home: {
-      title: "TapQR — Kartu NFC Google Review untuk UMKM Pekanbaru",
-      description: "Permudah Google Review untuk UMKM Pekanbaru, Kerinci, dan Duri dengan kartu NFC + QR. Pilih PVC atau akrilik untuk ulasan, WhatsApp, menu, dan media sosial.",
+      title: "TapQR — Papan Google Review & Kartu NFC untuk UMKM",
+      description: "Papan Google Review NFC + QR Rp69.000/unit untuk UMKM Pekanbaru, Kerinci, dan Duri. Desain bisnis, akses ulasan dan WhatsApp. Ongkir dikonfirmasi saat memesan.",
     },
     consultation: {
       title: "Konsultasi Google Review & Pemasaran UMKM | TapQR",

@@ -17,11 +17,11 @@ tetap mengikuti `VITE_APP_URL`; konfigurasi SEO sengaja tidak mengganti URL QR.
 ## Halaman yang dapat diindeks
 
 Registry `src/lib/seo/pages.ts` menjadi sumber daftar sitemap: beranda,
-konsultasi, panduan aktivasi, dan panduan Google Place ID, masing-masing `/id`
+konsultasi, panduan aktivasi, panduan Google Place ID, dan panduan Google Review, masing-masing `/id`
 dan `/en`. Tiap halaman memiliki title/deskripsi lokal, canonical ke dirinya,
 alternate ID/EN dan x-default Indonesia, Open Graph, serta Twitter card.
 
-`/sitemap.xml` memuat delapan URL dalam XML standar tanpa elemen XHTML agar
+`/sitemap.xml` memuat sepuluh URL dalam XML standar tanpa elemen XHTML agar
 browser dapat menampilkan pohon XML. Anotasi bahasa tetap tersedia di `<head>`
 setiap halaman; Google menerima metode HTML tanpa duplikasi di sitemap. Tidak ada tanggal
 lastmod buatan pada setiap request. Jika kelak menambahkan lastmod, gunakan
@@ -33,7 +33,14 @@ entry kartu tidak masuk sitemap. Robots mengizinkan crawler membaca noindex
 HTML; robots.txt bukan pengganti autentikasi. API/server function diblokir.
 
 Profil bisnis publik yang valid mempertahankan indeksnya, dengan metadata
-nama/deskripsi publik serta canonical berdasarkan slug. Profil dinamis tidak
+nama/tagline, deskripsi dan alamat publik serta canonical berdasarkan slug.
+Logo HTTPS outlet dipakai untuk Open Graph/Twitter tanpa menebak ukuran atau
+format gambar. Jika logo tidak valid, gunakan gambar TapQR. Schema LocalBusiness
+memakai alamat publik apa adanya; tanpa alamat gunakan Organization. Jam buka,
+rating, nomor telepon, kategori usaha, dan lokasi koordinat tidak ditebak.
+Metadata hanya mengambil field yang sudah tampil di profil; data akun pemilik,
+pesanan, kredensial WiFi, dan token tidak disertakan. Profil tidak tersedia
+memakai noindex tanpa canonical ke beranda. Profil dinamis tidak
 dienumerasi dalam sitemap: endpoint SEO tidak membaca database pelanggan atau
 mempublikasikan inventaris/kontak/token. Profil hilang tidak dapat diindeks.
 
@@ -43,11 +50,34 @@ Homepage menyertakan Organization, WebSite, WebPage, dan OfferCatalog dari
 harga/deskripsi produk yang benar-benar tampil. Panduan/konsultasi memakai
 WebPage dan BreadcrumbList. Tidak ada rating, review, stok, atau tanggal
 pembaruan yang dibuat-buat. JSON-LD di-escape sebelum dimasukkan ke HTML.
+Referensi Organization, WebSite, dan breadcrumb didefinisikan dalam graph setiap
+halaman. Paket Bisnis memakai Service karena menggabungkan produk dan setup.
+Root `/` memakai redirect permanen 308 ke `/id`. Panduan Google Review memakai
+SSR, heading terstruktur, daftar isi, sumber Google, serta tautan dari footer
+dan panduan Place ID. Tidak ada halaman kota duplikat atau janji ranking.
 
 `public/tapqr-social.webp` menyalin ilustrasi hero yang sudah ada untuk preview
 tautan, 1536 × 1024. URL gambar absolut dan alt tersedia di dua bahasa. Font
 tetap memakai paket lokal yang sudah ada; stylesheet Google Fonts ganda dihapus.
 Devtools hanya tampil dalam mode pengembangan, dan zoom mobile tetap diizinkan.
+
+Favicon pencarian memakai logo PNG 192 × 192 pada URL stabil `/icon-192.png`,
+selain SVG dan ikon browser kecil. Logo organisasi memakai ImageObject PNG
+512 × 512; nama WebSite adalah TapQR dengan alternatif Tap QR dan tapqr.id.
+Gambar Open Graph landing tetap memakai ilustrasi hero, bukan favicon.
+Setelah deploy, minta crawling ulang beranda lewat URL Inspection Search Console.
+Google memilih waktu pemrosesan dan tampilan favicon; perubahan tidak instan.
+
+## Fokus pencarian landing page
+
+Judul dan section produk menargetkan papan Google Review serta kartu NFC.
+Deskripsi dan FAQ membahas kebutuhan UMKM Pekanbaru, Kerinci, dan Duri,
+cara pesan, perbedaan NFC/QR, serta pilihan papan NFC sesuai anggaran. Istilah
+"murah" dijelaskan dengan harga nyata Rp69.000/unit (belum ongkir), tanpa klaim
+termurah. Jika harga akrilik berubah, perbarui pricing, metadata ID/EN, dan FAQ
+harga dalam perubahan yang sama. Tidak ada meta keywords atau halaman kota
+duplikat. Pantau kueri, impresi, klik, dan CTR di Search Console setelah deploy;
+keyword yang ditargetkan bukan klaim volume pencarian atau jaminan posisi.
 
 ## Verifikasi
 

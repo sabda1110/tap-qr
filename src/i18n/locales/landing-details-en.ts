@@ -11,8 +11,16 @@ export const landingFaqEn = {
   contactDescription: "Tell us what your business needs. We can help you choose your TapQR medium and explain how to order.",
   items: [
     {
-      question: "How does TapQR help with Google reviews for businesses in Pekanbaru, Kerinci, and Duri?",
-      answer: "Cafes, restaurants, barbershops, laundries, and shops can place an NFC card or acrylic QR stand at checkout. Customers tap or scan to open the correct business Google Review link. If you are looking for a Google Review solution in Pekanbaru, Kerinci, or Duri, discuss your business needs and location on WhatsApp before ordering.",
+      question: "How do I order a Google Review stand for Pekanbaru, Kerinci, or Duri?",
+      answer: "Choose an acrylic NFC + QR stand or PVC card, then enter your contact details and shipping address on the order page. Confirm the design, business location, shipping cost, and delivery estimate on WhatsApp before paying. Cafes, restaurants, barbershops, laundries, and shops can use the stand to open their Google Review link with a tap or scan.",
+    },
+    {
+      question: "Looking for an affordable NFC stand? How much does TapQR cost?",
+      answer: "A TapQR acrylic Google Review stand costs Rp69.000 per unit, including NFC and QR in one medium and a design with your business identity. PVC cards cost Rp79.000 per unit. Shipping is excluded. Compare materials, NFC + QR support, and the ability to update links when choosing an NFC stand for your budget.",
+    },
+    {
+      question: "How is an NFC Google Review stand different from a regular QR code?",
+      answer: "A QR code opens through a phone camera or scanner. NFC opens by bringing a compatible phone close to the card or stand. TapQR includes both so customers can choose the method that works for them. Both simplify access to the review page; customers still write their own reviews based on their experience.",
     },
     {
       question: "How can Google reviews and WhatsApp support small business sales?",

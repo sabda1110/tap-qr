@@ -59,6 +59,7 @@ export function SiteFooter({ content, language }: SiteFooterProps) {
                 <li><ActivationGuideLink className="text-sm text-white/70 hover:text-white" /></li>
                 <li><Link to="/$locale/consultation" params={{ locale: language }} className="text-sm text-white/70 hover:text-white">{content.consultation}</Link></li>
                 <li><Link to="/$locale/tutorial/google-place-id" params={{ locale: language }} className="text-sm text-white/70 hover:text-white">{content.placeIdGuide}</Link></li>
+                <li><Link to="/$locale/tutorial/google-review" params={{ locale: language }} className="text-sm text-white/70 hover:text-white">{content.reviewGuide}</Link></li>
               </ul>
             </nav>
 

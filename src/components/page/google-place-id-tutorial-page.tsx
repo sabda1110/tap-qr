@@ -1,4 +1,5 @@
 import { useI18n } from "../../i18n";
+import { Link } from "@tanstack/react-router";
 
 const placeIdFinderUrl =
   "https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder";
@@ -37,6 +38,7 @@ export function GooglePlaceIdTutorialPage() {
         <a href={placeIdFinderUrl} target="_blank" rel="noreferrer" className="mt-8 inline-flex min-h-11 items-center rounded-xl bg-[#172029] px-5 text-sm font-bold text-white">
           {content.googleDocs}
         </a>
+        <Link to="/$locale/tutorial/google-review" params={{ locale: language }} className="mt-6 block py-2 text-sm font-semibold underline underline-offset-4">{messages.footer.reviewGuide}</Link>
       </article>
     </main>
   );

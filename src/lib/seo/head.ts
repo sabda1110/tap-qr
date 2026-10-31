@@ -1,6 +1,7 @@
 import { id } from "../../i18n/locales/id";
 import { en } from "../../i18n/locales/en";
-import { localizedSeo, pageMetadata, publicPageMetadata, serializeJsonLd } from "./metadata";
+import { publicPageMetadata, serializeJsonLd } from "./metadata";
+import { outletProfileMetadata } from "./outlet-profile";
 import { DEFAULT_SEO_ORIGIN, normalizeSeoOrigin, type SeoPage } from "./pages";
 import { pageStructuredData } from "./structured-data";
 
@@ -14,15 +15,10 @@ export function publicPageHead(locale: string, page: SeoPage) {
   return {
     ...publicPageMetadata(origin, language, page, import.meta.env.VITE_SEO_NOINDEX === "true"),
     scripts: [{ type: "application/ld+json", children: serializeJsonLd(pageStructuredData(origin, language, page,
-      page === "home" ? [pricing.pvcCard, pricing.acrylicBoard, pricing.businessBundle] : [])) }],
+      page === "home" ? [pricing.pvcCard, pricing.acrylicBoard, { ...pricing.businessBundle, kind: "Service" }] : [])) }],
   };
 }
 
-export function outletProfileHead(locale: string, profile?: { name: string; slug: string; id: string; description: string | null; tagline: string | null } | null) {
-  const copy = localizedSeo(locale);
-  return pageMetadata(getSeoOrigin(), locale, {
-    title: profile ? `${profile.name} | TapQR` : "TapQR",
-    description: profile?.description || profile?.tagline || copy.profileDescription.replace("{name}", profile?.name ?? "TapQR"),
-    path: profile ? `/p/${encodeURIComponent(profile.slug || profile.id)}` : "",
-  }, !profile || import.meta.env.VITE_SEO_NOINDEX === "true");
+export function outletProfileHead(locale: string, profile?: Parameters<typeof outletProfileMetadata>[2]) {
+  return outletProfileMetadata(getSeoOrigin(), locale, profile, import.meta.env.VITE_SEO_NOINDEX === "true");
 }

@@ -11,8 +11,16 @@ export const landingFaqId = {
   contactDescription: "Ceritakan kebutuhan bisnis Anda. Kami siap membantu memilih media TapQR dan menjelaskan proses pemesanannya.",
   items: [
     {
-      question: "Bagaimana TapQR membantu Google Review untuk UMKM Pekanbaru, Kerinci, dan Duri?",
-      answer: "Pemilik kafe, restoran, barbershop, laundry, atau toko dapat menempatkan kartu NFC atau papan akrilik QR di kasir. Pelanggan cukup tap atau scan untuk membuka link Google Review bisnis yang tepat. Jika Anda mencari solusi Google Review di Pekanbaru, Kerinci, atau Duri, konsultasikan kebutuhan dan lokasi usaha melalui WhatsApp sebelum memesan.",
+      question: "Bagaimana memesan papan Google Review untuk Pekanbaru, Kerinci, dan Duri?",
+      answer: "Pilih papan akrilik NFC + QR atau kartu PVC, lalu isi kontak dan alamat pengiriman pada halaman pemesanan. Konfirmasikan desain, lokasi usaha, ongkir, dan estimasi pengiriman melalui WhatsApp sebelum membayar. Papan dapat digunakan oleh kafe, restoran, barbershop, laundry, dan toko untuk membuka link Google Review bisnis melalui tap atau scan.",
+    },
+    {
+      question: "Mencari papan NFC murah, berapa harga TapQR?",
+      answer: "Papan akrilik Google Review TapQR seharga Rp69.000 per unit sudah termasuk NFC dan QR dalam satu media serta desain dengan identitas bisnis. Kartu PVC tersedia seharga Rp79.000 per unit. Harga tersebut belum termasuk ongkir. Bandingkan bahan, kelengkapan NFC + QR, dan kemudahan memperbarui tautan saat memilih papan NFC sesuai anggaran Anda.",
+    },
+    {
+      question: "Apa bedanya papan Google Review NFC dengan QR code biasa?",
+      answer: "QR code dibuka dengan kamera atau pemindai ponsel. NFC dibuka dengan mendekatkan ponsel yang mendukung NFC ke kartu atau papan. Media TapQR menyediakan keduanya agar pelanggan bisa memilih cara yang sesuai. Keduanya mempermudah akses ke halaman ulasan; pelanggan tetap menulis review sendiri berdasarkan pengalaman mereka.",
     },
     {
       question: "Bagaimana cara meningkatkan penjualan UMKM dengan Google Review dan WhatsApp?",

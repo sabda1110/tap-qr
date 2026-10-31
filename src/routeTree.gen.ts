@@ -26,6 +26,7 @@ import { Route as LocaleOrdersTokenRouteImport } from './routes/$locale.orders.$
 import { Route as LocalePIdRouteImport } from './routes/$locale.p.$id'
 import { Route as LocaleTutorialActivationRouteImport } from './routes/$locale.tutorial.activation'
 import { Route as LocaleTutorialGooglePlaceIdRouteImport } from './routes/$locale.tutorial.google-place-id'
+import { Route as LocaleTutorialGoogleReviewRouteImport } from './routes/$locale.tutorial.google-review'
 import { Route as ApiConsultationsCronRouteImport } from './routes/api.consultations.cron'
 import { Route as LocaleDashboardAdminIndexRouteImport } from './routes/$locale.dashboard.admin.index'
 import { Route as LocaleDashboardAdminActivationRouteImport } from './routes/$locale.dashboard.admin.activation'
@@ -127,6 +128,12 @@ const LocaleTutorialGooglePlaceIdRoute =
   LocaleTutorialGooglePlaceIdRouteImport.update({
     id: '/tutorial/google-place-id',
     path: '/tutorial/google-place-id',
+    getParentRoute: () => LocaleRoute,
+  } as any)
+const LocaleTutorialGoogleReviewRoute =
+  LocaleTutorialGoogleReviewRouteImport.update({
+    id: '/tutorial/google-review',
+    path: '/tutorial/google-review',
     getParentRoute: () => LocaleRoute,
   } as any)
 const ApiConsultationsCronRoute = ApiConsultationsCronRouteImport.update({
@@ -234,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/$locale/p/$id': typeof LocalePIdRoute
   '/$locale/tutorial/activation': typeof LocaleTutorialActivationRoute
   '/$locale/tutorial/google-place-id': typeof LocaleTutorialGooglePlaceIdRoute
+  '/$locale/tutorial/google-review': typeof LocaleTutorialGoogleReviewRoute
   '/api/consultations/cron': typeof ApiConsultationsCronRoute
   '/$locale/consultation/': typeof LocaleConsultationIndexRoute
   '/$locale/orders/': typeof LocaleOrdersIndexRoute
@@ -265,6 +273,7 @@ export interface FileRoutesByTo {
   '/$locale/p/$id': typeof LocalePIdRoute
   '/$locale/tutorial/activation': typeof LocaleTutorialActivationRoute
   '/$locale/tutorial/google-place-id': typeof LocaleTutorialGooglePlaceIdRoute
+  '/$locale/tutorial/google-review': typeof LocaleTutorialGoogleReviewRoute
   '/api/consultations/cron': typeof ApiConsultationsCronRoute
   '/$locale/consultation': typeof LocaleConsultationIndexRoute
   '/$locale/orders': typeof LocaleOrdersIndexRoute
@@ -300,6 +309,7 @@ export interface FileRoutesById {
   '/$locale/p/$id': typeof LocalePIdRoute
   '/$locale/tutorial/activation': typeof LocaleTutorialActivationRoute
   '/$locale/tutorial/google-place-id': typeof LocaleTutorialGooglePlaceIdRoute
+  '/$locale/tutorial/google-review': typeof LocaleTutorialGoogleReviewRoute
   '/api/consultations/cron': typeof ApiConsultationsCronRoute
   '/$locale/consultation/': typeof LocaleConsultationIndexRoute
   '/$locale/orders/': typeof LocaleOrdersIndexRoute
@@ -336,6 +346,7 @@ export interface FileRouteTypes {
     | '/$locale/p/$id'
     | '/$locale/tutorial/activation'
     | '/$locale/tutorial/google-place-id'
+    | '/$locale/tutorial/google-review'
     | '/api/consultations/cron'
     | '/$locale/consultation/'
     | '/$locale/orders/'
@@ -367,6 +378,7 @@ export interface FileRouteTypes {
     | '/$locale/p/$id'
     | '/$locale/tutorial/activation'
     | '/$locale/tutorial/google-place-id'
+    | '/$locale/tutorial/google-review'
     | '/api/consultations/cron'
     | '/$locale/consultation'
     | '/$locale/orders'
@@ -401,6 +413,7 @@ export interface FileRouteTypes {
     | '/$locale/p/$id'
     | '/$locale/tutorial/activation'
     | '/$locale/tutorial/google-place-id'
+    | '/$locale/tutorial/google-review'
     | '/api/consultations/cron'
     | '/$locale/consultation/'
     | '/$locale/orders/'
@@ -547,6 +560,13 @@ declare module '@tanstack/react-router' {
       path: '/tutorial/google-place-id'
       fullPath: '/$locale/tutorial/google-place-id'
       preLoaderRoute: typeof LocaleTutorialGooglePlaceIdRouteImport
+      parentRoute: typeof LocaleRoute
+    }
+    '/$locale/tutorial/google-review': {
+      id: '/$locale/tutorial/google-review'
+      path: '/tutorial/google-review'
+      fullPath: '/$locale/tutorial/google-review'
+      preLoaderRoute: typeof LocaleTutorialGoogleReviewRouteImport
       parentRoute: typeof LocaleRoute
     }
     '/api/consultations/cron': {
@@ -716,6 +736,7 @@ interface LocaleRouteChildren {
   LocalePIdRoute: typeof LocalePIdRoute
   LocaleTutorialActivationRoute: typeof LocaleTutorialActivationRoute
   LocaleTutorialGooglePlaceIdRoute: typeof LocaleTutorialGooglePlaceIdRoute
+  LocaleTutorialGoogleReviewRoute: typeof LocaleTutorialGoogleReviewRoute
   LocaleConsultationIndexRoute: typeof LocaleConsultationIndexRoute
   LocaleOrdersIndexRoute: typeof LocaleOrdersIndexRoute
 }
@@ -732,6 +753,7 @@ const LocaleRouteChildren: LocaleRouteChildren = {
   LocalePIdRoute: LocalePIdRoute,
   LocaleTutorialActivationRoute: LocaleTutorialActivationRoute,
   LocaleTutorialGooglePlaceIdRoute: LocaleTutorialGooglePlaceIdRoute,
+  LocaleTutorialGoogleReviewRoute: LocaleTutorialGoogleReviewRoute,
   LocaleConsultationIndexRoute: LocaleConsultationIndexRoute,
   LocaleOrdersIndexRoute: LocaleOrdersIndexRoute,
 }

@@ -1,4 +1,5 @@
 import { seoId } from "./seo-id";
+import { reviewGuideId } from "./review-guide-id";
 import { adminDashboardId } from "./admin-dashboard-id";
 import { authId } from "./auth-id";
 import { cardClaimId, userDashboardId } from "./user-dashboard-id";
@@ -11,6 +12,7 @@ import { gettingStartedId } from "./getting-started-id";
 import { consultationId } from "./consultation-id";
 export const id = {
   seo: seoId,
+  reviewGuide: reviewGuideId,
   consultation: consultationId,
   gettingStarted: gettingStartedId,
   productShowcase: productShowcaseId,
@@ -170,7 +172,7 @@ export const id = {
     acrylicBoard: {
       name: "Papan Akrilik",
       badge: "Paling Populer",
-      description: "Papan akrilik berdiri dengan NFC dan QR, siap dipasang di meja dan kasir.",
+      description: "Papan Google Review berbahan akrilik dengan NFC dan QR, siap dipasang di meja dan kasir.",
       price: "Rp69.000",
       priceDetail: "/ unit",
       features: [
@@ -229,6 +231,7 @@ export const id = {
     },
   },
   footer: {
+    reviewGuide: "Cara mendapatkan Google Review",
     consultation: "Konsultasi produk",
     placeIdGuide: "Panduan Google Place ID",
     brandHomeLabel: "Kembali ke beranda TapQR",

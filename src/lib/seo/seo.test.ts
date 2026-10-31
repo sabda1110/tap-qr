@@ -29,9 +29,9 @@ test("every sitemap URL has matching localized metadata, canonicals and reciproc
     assert.ok(head.meta.some((meta) => meta.name === "description" && meta.content === localizedSeo(language).pages[page].description));
     titles.add(head.meta.find((meta) => meta.title)?.title ?? "");
   }
-  assert.equal(urls.length, 8);
+  assert.equal(urls.length, 10);
   assert.equal(new Set(urls).size, urls.length);
-  assert.equal(titles.size, 8);
+  assert.equal(titles.size, 10);
   assert.doesNotMatch(sitemap, /dashboard|orders|\/order<|auth|TQR-|token|lastmod/);
   assert.match(sitemap, /<urlset xmlns="http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9">/);
   assert.doesNotMatch(sitemap, /xhtml:/);
@@ -61,4 +61,15 @@ test("JSON-LD uses real visible product prices and never invents reviews or rati
   const hostile = { name: "</script><script>alert('x')</script>" };
   assert.doesNotMatch(serializeJsonLd(hostile), /<\/script>/);
   assert.deepEqual(JSON.parse(serializeJsonLd(hostile)), hostile);
+});
+
+test("guide structured data resolves organization, website and breadcrumb references", () => {
+  const schema = pageStructuredData(DEFAULT_SEO_ORIGIN, "id", "googleReviewGuide");
+  const nodes = schema["@graph"];
+  const ids = new Set(nodes.map((node) => node["@id"]));
+  const page = nodes.find((node) => node["@type"] === "WebPage");
+  assert.ok(page && "isPartOf" in page && "about" in page && "breadcrumb" in page);
+  assert.ok(ids.has(page.isPartOf["@id"]));
+  assert.ok(ids.has(page.about["@id"]));
+  assert.ok(ids.has(page.breadcrumb!["@id"]));
 });
