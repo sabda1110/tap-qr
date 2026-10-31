@@ -58,6 +58,14 @@ for (const path of ["/id", "/en", "/id/tutorial/activation", "/en/tutorial/googl
     const nodes = jsonLd.flatMap((match) => JSON.parse(match[1])["@graph"] ?? []);
     assert.equal(nodes.find((node) => node["@type"] === "WebSite")?.name, "TapQR");
     assert.equal(nodes.find((node) => node["@type"] === "Organization")?.logo.url, "https://www.tapqr.id/icon-512.png");
+    // Crawlers must receive readable answers, not only serialized hydration data.
+    const faq = body.match(/<section\b[^>]*id="faq"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? "";
+    const answers = [...faq.matchAll(/<details\b[^>]*>([\s\S]*?)<\/details>/g)];
+    assert.ok(answers.length > 0, `${path} FAQ must render on the server`);
+    for (const [, answer] of answers) {
+      assert.match(answer, /<summary\b[^>]*>[\s\S]*?\S[\s\S]*?<\/summary>/);
+      assert.match(answer, /<p\b[^>]*>[^<]*\S[^<]*<\/p>/, `${path} FAQ must include answer text before hydration`);
+    }
   }
   assert.ok(body.includes(`<html lang="${path.startsWith("/en") ? "en" : "id"}">`));
   if (path.endsWith("/tutorial/google-review")) {

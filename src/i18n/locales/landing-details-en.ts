@@ -11,6 +11,14 @@ export const landingFaqEn = {
   contactDescription: "Tell us what your business needs. We can help you choose your TapQR medium and explain how to order.",
   items: [
     {
+      question: "What is a TapQR Google Review stand?",
+      answer: "A TapQR Google Review stand is a freestanding acrylic display with an NFC chip and QR code that opens your business's Google review link. Customers tap with an NFC-compatible phone or scan the QR code, then write a review based on their experience. The stand fits checkout counters at cafes, restaurants, barbershops, laundries, and shops. TapQR provides access to reviews; it does not sell reviews.",
+    },
+    {
+      question: "How do I choose the best Google Review stand for my business?",
+      answer: "Compare NFC and QR support for two ways to connect, materials suited to where you will use it, a readable design, editable link destinations, and the total cost including shipping. TapQR acrylic stands suit checkout counters, while 86 × 54 mm PVC cards are compact enough to carry or attach to a surface. Both include NFC + QR and let you update Google Review link destinations through the dashboard. Consider the Business Package if you also need Google Business Profile setup and a landing page. The best choice depends on your business needs and budget.",
+    },
+    {
       question: "How do I order a Google Review stand for Pekanbaru, Kerinci, or Duri?",
       answer: "Choose an acrylic NFC + QR stand or PVC card, then enter your contact details and shipping address on the order page. Confirm the design, business location, shipping cost, and delivery estimate on WhatsApp before paying. Cafes, restaurants, barbershops, laundries, and shops can use the stand to open their Google Review link with a tap or scan.",
     },

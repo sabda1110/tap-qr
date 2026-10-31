@@ -79,6 +79,36 @@ harga dalam perubahan yang sama. Tidak ada meta keywords atau halaman kota
 duplikat. Pantau kueri, impresi, klik, dan CTR di Search Console setelah deploy;
 keyword yang ditargetkan bukan klaim volume pencarian atau jaminan posisi.
 
+## Penemuan melalui pencarian AI (GEO)
+
+GEO bertujuan membantu mesin pencarian AI memahami dan merujuk informasi
+TapQR secara akurat. Landing page menyediakan jawaban langsung tentang papan
+Google Review, kriteria memilih produk, bahan, harga, dan proses pemesanan dalam
+bahasa Indonesia dan Inggris. Kriteria "terbaik" dijelaskan berdasarkan kebutuhan
+usaha; bukan klaim bahwa TapQR mengalahkan semua produk lain.
+
+FAQ dirender sebagai teks HTML melalui SSR, termasuk isi accordion yang belum
+dibuka. Pemeriksaan hasil build memastikan jawaban tersedia tanpa JavaScript.
+Organization dan penawaran produk memakai fakta yang sama dengan konten terlihat.
+Robots produksi mengizinkan crawling halaman publik lewat `User-agent: *`;
+periksa juga pengaturan CDN/firewall setelah deploy jika crawler ditolak.
+
+Google AI Overviews dan AI Mode tidak memerlukan file AI atau schema khusus.
+Halaman perlu terindeks dan memenuhi syarat untuk menampilkan cuplikan. Tidak ada
+jaminan suatu pertanyaan akan menampilkan TapQR, meskipun seluruh syarat terpenuhi.
+
+Langkah pengembangan konten berikutnya: dokumentasikan studi kasus pelanggan
+nyata dengan izin, foto produk aktual, serta hasil terukur dengan periode dan
+metode pengukuran yang jelas. Jangan menyamakan klik tombol ulasan dengan ulasan
+yang berhasil dikirim. Hindari rating, testimoni, penghargaan, atau perbandingan
+kompetitor yang tidak dapat dibuktikan.
+
+Pantau Search Console untuk kueri produk dan wilayah. Trafik dari fitur AI Google
+tergabung dalam laporan Web, sehingga kenaikan impresi bukan bukti khusus hasil
+GEO. Jika analitik rujukan tersedia, ukur kunjungan dan konversi dari layanan AI;
+data referrer bisa tidak lengkap. Catat tanggal, pertanyaan, dan sumber kutipan
+saat mengevaluasi jawaban AI secara manual; satu jawaban bukan ukuran ranking.
+
 ## Verifikasi
 
 1. Jalankan `npx tsc --noEmit`, `npm run test:core`, dan `npm run build`.
@@ -100,6 +130,8 @@ impresi/klik, canonical pilihan Google, dan error crawling setelah deploy.
 
 ## Rujukan resmi
 
+- [Google AI features and your website](https://developers.google.com/search/docs/appearance/ai-features)
+- [TanStack Start GEO](https://tanstack.com/start/latest/docs/framework/react/guide/geo)
 - [Sitemap Google](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)
 - [Canonical](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls)
 - [Versi bahasa/hreflang](https://developers.google.com/search/docs/specialty/international/localized-versions)
