@@ -4,7 +4,7 @@ import { wifiPrintEn } from "./wifi-print-en";
 export const printStudioEn: typeof printStudioId = {
   paper: {
     title: "Print paper", a4: "A4 paper", artwork: "Match design size",
-    help: "A4 centers the design at its selected size. Print at actual size / 100% scale, not Fit to page. Match design size creates an A7/A6/A5 PDF page; automatic zoom can make them look identical. Designs larger than A4 use their own page size.",
+    help: "A4 centers the design at its selected size. Print at actual size / 100% scale, not Fit to page. Match design size creates an A7/A6/4R/A5 PDF page; automatic zoom can make them look identical. Designs larger than A4 use their own page size.",
   },
   wifi: wifiPrintEn,
   materialSelector: { title: "Print material", acrylic: "Acrylic Stand", pvc: "PVC Card", empty: "No cards of this material are ready to print. You can still preview the design; add stock in Inventory to print." },
@@ -41,6 +41,7 @@ export const printStudioEn: typeof printStudioId = {
   sizeLabel: "Print size",
   sizePresetA7: "A7 (74 × 105 mm)",
   sizePresetA6: "A6 (105 × 148 mm)",
+  sizePreset4R: "4R (102 × 152 mm)",
   sizePresetA5: "A5 (148 × 210 mm)",
   sizePresetCustom: "Custom (mm)",
   customWidthLabel: "Width (mm)",

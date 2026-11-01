@@ -5,16 +5,17 @@ import { BASE_CARD_WIDTH, BASE_CARD_HEIGHT, PVC_CARD_WIDTH, PVC_CARD_HEIGHT, get
 const toMm = (pixels: number) => pixels * 25.4 / 96;
 const near = (actual: number, expected: number) => assert.ok(Math.abs(actual - expected) < 0.00001);
 
-test("A7, A6 and A5 retain different physical sizes on the same A4 paper", () => {
-  const heights = [105, 148, 210];
-  const widths = [74, 105, 148];
+test("standard presets retain different physical sizes on the same A4 paper", () => {
+  const heights = [105, 148, 152, 210];
+  const widths = [74, 105, 102, 148];
   const scales = widths.map((width, index) => {
     assert.deepEqual(getPrintPaper(width, heights[index], "a4"), { widthMm: 210, heightMm: 297 });
     assert.deepEqual(getPrintPaper(width, heights[index], "artwork"), { widthMm: width, heightMm: heights[index] });
     return getPrintPlacement(width, heights[index]).scale;
   });
-  assert.ok(scales[0] < scales[1] && scales[1] < scales[2]);
-  near(scales[2] / scales[0], 2);
+  assert.ok(scales[0] < scales[1] && scales[1] < scales[3]);
+  assert.ok(scales[0] < scales[2] && scales[2] < scales[3]);
+  near(scales[3] / scales[0], 2);
 });
 
 test("custom sheets use landscape A4 if possible and preserve oversize dimensions", () => {
@@ -22,8 +23,8 @@ test("custom sheets use landscape A4 if possible and preserve oversize dimension
   assert.deepEqual(getPrintPaper(400, 500, "a4"), { widthMm: 400, heightMm: 500 });
 });
 
-test("acrylic artwork fits A7, A6 and A5 without stretching or overflowing", () => {
-  for (const [width, height] of [[74, 105], [105, 148], [148, 210]]) {
+test("acrylic artwork fits standard presets without stretching or overflowing", () => {
+  for (const [width, height] of [[74, 105], [105, 148], [102, 152], [148, 210]]) {
     const placement = getPrintPlacement(width, height);
     const printedWidth = toMm(BASE_CARD_WIDTH * placement.scale);
     const printedHeight = toMm(BASE_CARD_HEIGHT * placement.scale);

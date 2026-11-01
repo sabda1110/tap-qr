@@ -36,6 +36,7 @@ export type AdminPrintStudioContent = {
   sizeLabel: string;
   sizePresetA7: string;
   sizePresetA6: string;
+  sizePreset4R: string;
   sizePresetA5: string;
   sizePresetCustom: string;
   customWidthLabel: string;
