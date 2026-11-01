@@ -132,6 +132,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
               sizeLabel: content.sizeLabel,
               sizePresetA7: content.sizePresetA7,
               sizePresetA6: content.sizePresetA6,
+              sizePreset4R: content.sizePreset4R,
               sizePresetA5: content.sizePresetA5,
               sizePresetCustom: content.sizePresetCustom,
               customWidthLabel: content.customWidthLabel,

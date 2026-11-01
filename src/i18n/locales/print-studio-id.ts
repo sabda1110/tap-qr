@@ -3,7 +3,7 @@ import { wifiPrintId } from "./wifi-print-id";
 export const printStudioId = {
   paper: {
     title: "Kertas cetak", a4: "Kertas A4", artwork: "Sesuai ukuran desain",
-    help: "A4 menampilkan desain sesuai ukuran pilihan di tengah kertas. Cetak dengan ukuran aktual / skala 100%, bukan Sesuaikan halaman. Pilihan sesuai desain membuat halaman PDF seukuran A7/A6/A5; zoom otomatis dapat membuatnya terlihat sama. Desain yang melebihi A4 memakai halaman sesuai desain.",
+    help: "A4 menampilkan desain sesuai ukuran pilihan di tengah kertas. Cetak dengan ukuran aktual / skala 100%, bukan Sesuaikan halaman. Pilihan sesuai desain membuat halaman PDF seukuran A7/A6/4R/A5; zoom otomatis dapat membuatnya terlihat sama. Desain yang melebihi A4 memakai halaman sesuai desain.",
   },
   wifi: wifiPrintId,
   materialSelector: { title: "Bahan media cetak", acrylic: "Papan Akrilik", pvc: "Kartu PVC", empty: "Belum ada kartu bahan ini yang siap dicetak. Preview tetap tersedia; tambahkan stok di Inventaris untuk mencetak." },
@@ -40,6 +40,7 @@ export const printStudioId = {
   sizeLabel: "Ukuran cetak",
   sizePresetA7: "A7 (74 × 105 mm)",
   sizePresetA6: "A6 (105 × 148 mm)",
+  sizePreset4R: "4R (102 × 152 mm)",
   sizePresetA5: "A5 (148 × 210 mm)",
   sizePresetCustom: "Kustom (mm)",
   customWidthLabel: "Lebar (mm)",

@@ -1,7 +1,7 @@
 import { Crop, Ruler } from "lucide-react";
 import { Input } from "../ui/input";
 
-export type PrintSizePreset = "a7" | "a6" | "a5" | "custom";
+export type PrintSizePreset = "a7" | "a6" | "4r" | "a5" | "custom";
 
 export type PrintDimensions = {
   preset: PrintSizePreset;
@@ -12,6 +12,7 @@ export type PrintDimensions = {
 export const DEFAULT_PRINT_DIMENSIONS: Record<Exclude<PrintSizePreset, "custom">, { widthMm: number; heightMm: number; label: string }> = {
   a7: { widthMm: 74, heightMm: 105, label: "A7 (74 × 105 mm)" },
   a6: { widthMm: 105, heightMm: 148, label: "A6 (105 × 148 mm)" },
+  "4r": { widthMm: 102, heightMm: 152, label: "4R (102 × 152 mm)" },
   a5: { widthMm: 148, heightMm: 210, label: "A5 (148 × 210 mm)" },
 };
 
@@ -24,6 +25,7 @@ type PrintSizeSelectorProps = {
     sizeLabel: string;
     sizePresetA7: string;
     sizePresetA6: string;
+    sizePreset4R: string;
     sizePresetA5: string;
     sizePresetCustom: string;
     customWidthLabel: string;
@@ -93,17 +95,19 @@ export function PrintSizeSelector({
       </div>
 
       <div className="grid grid-cols-2 gap-2">
-        {(["a7", "a6", "a5", "custom"] as const).map((p) => {
+        {(["a7", "a6", "4r", "a5", "custom"] as const).map((p) => {
           const isSelected = dimensions.preset === p;
           const name = {
             a7: "A7",
             a6: "A6",
+            "4r": labels.sizePreset4R.split(" ")[0],
             a5: "A5",
             custom: labels.sizePresetCustom.split(" ")[0],
           }[p];
           const sub = {
             a7: "74×105",
             a6: "105×148",
+            "4r": "102×152",
             a5: "148×210",
             custom: "mm",
           }[p];
