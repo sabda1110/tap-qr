@@ -48,6 +48,7 @@ export function buildOutletSummary(
       ),
     ],
     highlights: parseOutletHighlights(outlet.publicProfile?.highlights),
+    membership: outlet.addons?.membership ?? null,
   };
 }
 

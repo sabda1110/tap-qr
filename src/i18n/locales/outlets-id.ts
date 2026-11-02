@@ -59,4 +59,16 @@ export const outletsId = {
   invalid: "Periksa format isian ini.",
   removeConfirm:
     "Hapus tautan ini dari kartu yang dipilih? Perubahan diterapkan setelah Anda menyimpan.",
+  addons: {
+    title: "Add-on outlet",
+    description: "Admin hanya memberikan akses add-on. PIN kasir, masa aktif, target stempel, dan hadiah diatur oleh owner dari menu Membership.",
+    active: "Membership aktif",
+    inactive: "Belum aktif",
+    enable: "Aktifkan Add-on Outlet",
+    save: "Simpan add-on",
+    saving: "Menyimpan…",
+    enabledSuccess: "Add-on Membership berhasil diaktifkan.",
+    disabledSuccess: "Add-on Membership dinonaktifkan dan sesi kasir dicabut.",
+    error: "Pengaturan add-on belum dapat disimpan.",
+  },
 };

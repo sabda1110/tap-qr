@@ -12,8 +12,10 @@ import { productShowcaseEn } from "./product-showcase-en";
 import { outletGalleryEn } from "./outlet-gallery-en";
 import { gettingStartedEn } from "./getting-started-en";
 import { consultationEn } from "./consultation-en";
+import { membershipEn } from "./membership-en";
 
 export const en: typeof id = {
+  membership: membershipEn,
   seo: seoEn,
   reviewGuide: reviewGuideEn,
   consultation: consultationEn,

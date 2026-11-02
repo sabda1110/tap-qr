@@ -1,6 +1,6 @@
 import { ActivationGuideLink } from "../elements/activation-guide-link";
 import { Link } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, Settings, ShoppingBag } from "lucide-react";
+import { LayoutDashboard, LogOut, Settings, ShoppingBag, Users } from "lucide-react";
 import type { Language, Messages } from "../../i18n";
 import { BrandLogo } from "../elements/brand-logo";
 import { Button } from "../ui/button";
@@ -11,12 +11,16 @@ export function UserMobileHeader({
   homeLabel,
   language,
   onSignOut,
+  membershipEnabled,
+  membershipLabel,
 }: {
-  activeItem: "dashboard" | "accountSettings" | "orders";
+  activeItem: "dashboard" | "accountSettings" | "orders" | "membership";
   content: Messages["userDashboard"]["sidebar"];
   homeLabel: string;
   language: Language;
   onSignOut: () => void;
+  membershipEnabled: boolean;
+  membershipLabel: string;
 }) {
   return (
     <header className="sticky top-0 z-40 border-b border-black/8 bg-white px-4 pt-2 pb-3 lg:hidden">
@@ -37,7 +41,7 @@ export function UserMobileHeader({
       </div>
       <nav
         aria-label={content.navigationLabel}
-        className="mt-2 grid grid-cols-3 gap-2"
+        className={`mt-2 grid gap-2 ${membershipEnabled ? "grid-cols-4" : "grid-cols-3"}`}
       >
         {[
           {
@@ -52,6 +56,7 @@ export function UserMobileHeader({
             to: "/$locale/dashboard/user/orders",
             icon: ShoppingBag,
           },
+          ...(membershipEnabled ? [{ key: "membership", label: membershipLabel, to: "/$locale/dashboard/user/membership" as const, icon: Users }] : []),
           {
             key: "accountSettings",
             label: content.accountSettings,

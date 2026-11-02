@@ -1,5 +1,6 @@
 import type {
   OutletHighlight,
+  OutletMembershipAddon,
   SocialLink,
 } from "../../lib/firebase/firestore-schema";
 
@@ -18,6 +19,7 @@ export type OutletSummary = {
   activeCardCount: number;
   channels: string[];
   highlights: OutletHighlight[];
+  membership: OutletMembershipAddon | null;
 };
 
 export type OutletDetail = OutletSummary & {

@@ -1,17 +1,19 @@
 import { ActivationGuideLink } from "../elements/activation-guide-link";
 import { Link } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, Settings, ShoppingBag } from "lucide-react";
+import { LayoutDashboard, LogOut, Settings, ShoppingBag, Users } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { BrandLogo } from "../elements/brand-logo";
 import type { Language, Messages } from "../../i18n";
 
 type UserDashboardSidebarProps = {
-  activeItem: "dashboard" | "accountSettings" | "orders";
+  activeItem: "dashboard" | "accountSettings" | "orders" | "membership";
   content: Messages["userDashboard"]["sidebar"];
   homeLabel: string;
   language: Language;
   onSignOut: () => void;
+  membershipEnabled: boolean;
+  membershipLabel: string;
 };
 
 export function UserDashboardSidebar({
@@ -20,6 +22,8 @@ export function UserDashboardSidebar({
   homeLabel,
   language,
   onSignOut,
+  membershipEnabled,
+  membershipLabel,
 }: UserDashboardSidebarProps) {
   return (
     <aside className="hidden border-r border-black/8 bg-white px-6 py-8 lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:overflow-y-auto">
@@ -39,6 +43,7 @@ export function UserDashboardSidebar({
             <LayoutDashboard className="size-4" />
           </SidebarLink>
           <SidebarLink active={activeItem === "orders"} label={content.orders} language={language} to="/$locale/dashboard/user/orders"><ShoppingBag className="size-4" /></SidebarLink>
+          {membershipEnabled ? <SidebarLink active={activeItem === "membership"} label={membershipLabel} language={language} to="/$locale/dashboard/user/membership"><Users className="size-4" /></SidebarLink> : null}
           <SidebarLink
             active={activeItem === "accountSettings"}
             label={content.accountSettings}
@@ -73,7 +78,7 @@ function SidebarLink({
   children: ReactNode;
   language: Language;
   label: string;
-  to: "/$locale/dashboard/user" | "/$locale/dashboard/user/account" | "/$locale/dashboard/user/orders";
+  to: "/$locale/dashboard/user" | "/$locale/dashboard/user/account" | "/$locale/dashboard/user/orders" | "/$locale/dashboard/user/membership";
 }) {
   return (
     <Link

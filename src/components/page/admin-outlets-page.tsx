@@ -16,6 +16,7 @@ import { OutletCreateForm } from "../organisms/outlet-create-form";
 import { Dialog, DialogBody } from "../ui/dialog";
 import { CreditCard, Pencil, Store } from "lucide-react";
 import { ToasterProvider } from "../ui/toaster";
+import { AdminMembershipAddonPanel } from "../organisms/admin-membership-addon-panel";
 
 export function AdminOutletsPage({
   page,
@@ -138,6 +139,11 @@ export function AdminOutletsPage({
                   language={language}
                   onEdit={edit}
                   onEditCard={setSelectedCardId}
+                />
+                <AdminMembershipAddonPanel
+                  outlet={detail}
+                  content={content.addons}
+                  onSaved={async () => { await router.invalidate(); }}
                 />
               </DialogBody>
             )}
