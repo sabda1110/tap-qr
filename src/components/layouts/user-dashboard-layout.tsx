@@ -4,9 +4,11 @@ import type { Language, Messages } from "../../i18n";
 import { DashboardLayout } from "./dashboard-layout";
 import { UserDashboardSidebar } from "../organisms/user-dashboard-sidebar";
 import { UserMobileHeader } from "../organisms/user-mobile-header";
+import { useMembershipNavigation } from "./membership-navigation-context";
+import { useI18n } from "../../i18n";
 
 type UserDashboardLayoutProps = {
-  activeItem: "dashboard" | "accountSettings" | "orders";
+  activeItem: "dashboard" | "accountSettings" | "orders" | "membership";
   children: ReactNode;
   homeLabel: string;
   language: Language;
@@ -22,6 +24,8 @@ export function UserDashboardLayout({
   navigation,
   onSignOut,
 }: UserDashboardLayoutProps) {
+  const membershipEnabled = useMembershipNavigation();
+  const { messages } = useI18n();
   return (
     <DashboardLayout
       className="bg-[#faf9f6]"
@@ -32,6 +36,8 @@ export function UserDashboardLayout({
           homeLabel={homeLabel}
           language={language}
           onSignOut={onSignOut}
+          membershipEnabled={membershipEnabled}
+          membershipLabel={messages.membership.owner.nav}
         />
       }
       mobileHeader={
@@ -41,6 +47,8 @@ export function UserDashboardLayout({
           homeLabel={homeLabel}
           language={language}
           onSignOut={onSignOut}
+          membershipEnabled={membershipEnabled}
+          membershipLabel={messages.membership.owner.nav}
         />
       }
       content={children}

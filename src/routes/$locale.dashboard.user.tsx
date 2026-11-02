@@ -2,6 +2,8 @@ import { cardSearchSchema } from "../server/cards/card-entry.schemas";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 import { getCurrentAuthenticatedUser } from "../server/auth/auth.functions";
+import { getUserDashboardOutlets } from "../server/outlets/user-outlet.functions";
+import { MembershipNavigationContext } from "../components/layouts/membership-navigation-context";
 
 export const Route = createFileRoute("/$locale/dashboard/user")({
   validateSearch: cardSearchSchema,
@@ -28,11 +30,13 @@ export const Route = createFileRoute("/$locale/dashboard/user")({
       });
     }
 
-    return user;
+    const outlets = await getUserDashboardOutlets();
+    return { user, membershipEnabled: outlets.some((outlet) => outlet.membership?.enabled) };
   },
   component: UserDashboardLayoutRoute,
 });
 
 function UserDashboardLayoutRoute() {
-  return <Outlet />;
+  const { membershipEnabled } = Route.useLoaderData();
+  return <MembershipNavigationContext.Provider value={membershipEnabled}><Outlet /></MembershipNavigationContext.Provider>;
 }

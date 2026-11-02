@@ -58,4 +58,16 @@ export const outletsEn = {
   invalid: "Check the format of this field.",
   removeConfirm:
     "Remove this link from the selected card? Changes apply after you save.",
+  addons: {
+    title: "Outlet add-ons",
+    description: "Admin only grants add-on access. The owner configures the cashier PIN, membership period, stamp target, and reward from the Membership menu.",
+    active: "Membership active",
+    inactive: "Not active",
+    enable: "Enable Outlet Add-on",
+    save: "Save add-on",
+    saving: "Saving…",
+    enabledSuccess: "Membership add-on enabled successfully.",
+    disabledSuccess: "Membership add-on disabled and cashier sessions revoked.",
+    error: "Unable to save the add-on settings.",
+  },
 };

@@ -11,7 +11,9 @@ import { productShowcaseId } from "./product-showcase-id";
 import { outletGalleryId } from "./outlet-gallery-id";
 import { gettingStartedId } from "./getting-started-id";
 import { consultationId } from "./consultation-id";
+import { membershipId } from "./membership-id";
 export const id = {
+  membership: membershipId,
   seo: seoId,
   reviewGuide: reviewGuideId,
   consultation: consultationId,

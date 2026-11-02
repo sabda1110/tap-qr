@@ -16,6 +16,22 @@ Schema ini adalah kontrak data proyek. Semua akses aplikasi berjalan melalui Fir
 | `orders/{orderId}/events/{eventId}` | aksi pengelolaan, timestamp ISO UTC, UID/nama pelaku, alasan, perubahan field before/after; hanya endpoint admin |
 | `consultationSettings`, `consultationSlots`, `consultationBookings` | aturan, slot manual admin, dan booking publik; [kontrak lengkap](consultation-booking.md#kontrak-firestore) |
 | `consultationSlotLocks`, `consultationPhoneLocks`, `consultationNotifications`, `consultationRateLimits` | reservasi atomik, kuota aktif, outbox notifikasi, dan rate limit booking |
+| `outlets/{outletId}/members/{memberId}` | member outlet, hash token publik, masa aktif, kunjungan, progres stempel, dan total reward |
+| `outlets/{outletId}/memberPhones/{sha256(phone)}` | reservasi nomor HP unik per outlet; hanya menyimpan `memberId` |
+| `outlets/{outletId}/members/{memberId}/logs/{logId}` | audit aktivitas membership: pendaftaran, verifikasi, stempel, klaim, perpanjangan, dan status |
+| `cashierRateLimits/{outletId}_{sha256(ip)}` | percobaan PIN kasir, waktu kunci, dan `expiresAt` Firestore Timestamp untuk TTL |
+
+## Membership dan loyalty stamp
+
+Add-on hanya tersedia ketika `outlets/{outletId}.addons.membership.enabled` bernilai `true`. Konfigurasi menyimpan `activatedAt`, `cashierPinSalt`, `cashierPinHash`, `cashierSessionVersion`, `expiryType`, `defaultDurationDays`, serta `loyaltyReward` (`enabled`, `targetVisits`, `rewardTitle`). PIN tidak pernah disimpan sebagai teks; hash menggabungkan PIN, salt acak, outlet, dan secret server. Mengganti PIN menaikkan versi sesi untuk mencabut seluruh sesi kasir.
+
+Entitlement add-on hanya dapat diaktifkan atau dinonaktifkan melalui endpoint admin pada detail outlet. Admin tidak mengatur PIN atau aturan program. Aktivasi pertama membuat konfigurasi default; owner kemudian menetapkan PIN kasir, masa aktif, target stempel, dan hadiah melalui menu Membership. Deaktivasi mempertahankan konfigurasi program agar dapat dipakai kembali, tetapi menaikkan versi sesi sehingga semua sesi kasir langsung tidak berlaku. Owner tidak dapat mengubah field `enabled`.
+
+Dokumen `members` memakai ID acak 128-bit berawalan `MBR-` dan menyimpan hanya SHA-256 token publik 256-bit. Field wajibnya adalah `name`, nomor telepon Indonesia ternormalisasi pada `phone`, `status` (`active`/`expired`/`suspended`), tipe dan waktu kedaluwarsa, total kunjungan, stempel berjalan, total reward, waktu pendaftaran/perubahan/kunjungan, serta identitas pendaftar. Nomor telepon unik dalam satu outlet melalui reservasi `memberPhones` yang dibuat pada transaksi pendaftaran yang sama. Token mentah hanya diberikan kepada pelanggan dan tidak disimpan.
+
+Setiap perubahan progres ditulis atomik bersama log pada subkoleksi `logs`. Log berisi `event`, waktu ISO UTC, pelaku (`owner`/`cashier`), ID pelaku, dan detail before/after yang relevan. Akses publik berdasarkan token hanya mengembalikan data kartu yang telah dipersempit dan tidak mengembalikan nomor telepon, catatan, atau hash token.
+
+Rate limit PIN dipisahkan per outlet dan hash IP: kegagalan kelima mengunci selama 15 menit. Dokumen limiter tidak menyimpan IP mentah dan `expiresAt` harus dikonfigurasi sebagai TTL. Sesi kasir berupa cookie HTTP-only bertanda tangan, berlaku 12 jam, terbatas pada satu outlet, dan diperiksa terhadap `cashierSessionVersion` pada setiap operasi.
 
 ## Outlet dan logo
 

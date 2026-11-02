@@ -17,10 +17,12 @@ import { Route as LocaleIndexRouteImport } from './routes/$locale.index'
 import { Route as LocaleCardIdRouteImport } from './routes/$locale.$cardId'
 import { Route as LocaleOrderRouteImport } from './routes/$locale.order'
 import { Route as LocaleAuthModeRouteImport } from './routes/$locale.auth.$mode'
+import { Route as LocaleCashierOutletIdRouteImport } from './routes/$locale.cashier.$outletId'
 import { Route as LocaleConsultationIndexRouteImport } from './routes/$locale.consultation.index'
 import { Route as LocaleConsultationTokenRouteImport } from './routes/$locale.consultation.$token'
 import { Route as LocaleDashboardAdminRouteImport } from './routes/$locale.dashboard.admin'
 import { Route as LocaleDashboardUserRouteImport } from './routes/$locale.dashboard.user'
+import { Route as LocaleMTokenRouteImport } from './routes/$locale.m.$token'
 import { Route as LocaleOrdersIndexRouteImport } from './routes/$locale.orders.index'
 import { Route as LocaleOrdersTokenRouteImport } from './routes/$locale.orders.$token'
 import { Route as LocalePIdRouteImport } from './routes/$locale.p.$id'
@@ -41,6 +43,7 @@ import { Route as LocaleDashboardUserIndexRouteImport } from './routes/$locale.d
 import { Route as LocaleDashboardUserAccountRouteImport } from './routes/$locale.dashboard.user.account'
 import { Route as LocaleDashboardUserBuyRouteImport } from './routes/$locale.dashboard.user.buy'
 import { Route as LocaleDashboardUserEditOrderRouteImport } from './routes/$locale.dashboard.user.edit-order'
+import { Route as LocaleDashboardUserMembershipRouteImport } from './routes/$locale.dashboard.user.membership'
 import { Route as LocaleDashboardUserOrdersRouteImport } from './routes/$locale.dashboard.user.orders'
 
 const IndexRoute = IndexRouteImport.update({
@@ -83,6 +86,11 @@ const LocaleAuthModeRoute = LocaleAuthModeRouteImport.update({
   path: '/auth/$mode',
   getParentRoute: () => LocaleRoute,
 } as any)
+const LocaleCashierOutletIdRoute = LocaleCashierOutletIdRouteImport.update({
+  id: '/cashier/$outletId',
+  path: '/cashier/$outletId',
+  getParentRoute: () => LocaleRoute,
+} as any)
 const LocaleConsultationIndexRoute = LocaleConsultationIndexRouteImport.update({
   id: '/consultation/',
   path: '/consultation/',
@@ -101,6 +109,11 @@ const LocaleDashboardAdminRoute = LocaleDashboardAdminRouteImport.update({
 const LocaleDashboardUserRoute = LocaleDashboardUserRouteImport.update({
   id: '/dashboard/user',
   path: '/dashboard/user',
+  getParentRoute: () => LocaleRoute,
+} as any)
+const LocaleMTokenRoute = LocaleMTokenRouteImport.update({
+  id: '/m/$token',
+  path: '/m/$token',
   getParentRoute: () => LocaleRoute,
 } as any)
 const LocaleOrdersIndexRoute = LocaleOrdersIndexRouteImport.update({
@@ -218,6 +231,12 @@ const LocaleDashboardUserEditOrderRoute =
     path: '/edit-order',
     getParentRoute: () => LocaleDashboardUserRoute,
   } as any)
+const LocaleDashboardUserMembershipRoute =
+  LocaleDashboardUserMembershipRouteImport.update({
+    id: '/membership',
+    path: '/membership',
+    getParentRoute: () => LocaleDashboardUserRoute,
+  } as any)
 const LocaleDashboardUserOrdersRoute =
   LocaleDashboardUserOrdersRouteImport.update({
     id: '/orders',
@@ -234,9 +253,11 @@ export interface FileRoutesByFullPath {
   '/$locale/order': typeof LocaleOrderRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/auth/$mode': typeof LocaleAuthModeRoute
+  '/$locale/cashier/$outletId': typeof LocaleCashierOutletIdRoute
   '/$locale/consultation/$token': typeof LocaleConsultationTokenRoute
   '/$locale/dashboard/admin': typeof LocaleDashboardAdminRouteWithChildren
   '/$locale/dashboard/user': typeof LocaleDashboardUserRouteWithChildren
+  '/$locale/m/$token': typeof LocaleMTokenRoute
   '/$locale/orders/$token': typeof LocaleOrdersTokenRoute
   '/$locale/p/$id': typeof LocalePIdRoute
   '/$locale/tutorial/activation': typeof LocaleTutorialActivationRoute
@@ -256,6 +277,7 @@ export interface FileRoutesByFullPath {
   '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
   '/$locale/dashboard/user/buy': typeof LocaleDashboardUserBuyRoute
   '/$locale/dashboard/user/edit-order': typeof LocaleDashboardUserEditOrderRoute
+  '/$locale/dashboard/user/membership': typeof LocaleDashboardUserMembershipRoute
   '/$locale/dashboard/user/orders': typeof LocaleDashboardUserOrdersRoute
   '/$locale/dashboard/admin/': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user/': typeof LocaleDashboardUserIndexRoute
@@ -268,7 +290,9 @@ export interface FileRoutesByTo {
   '/$locale/order': typeof LocaleOrderRoute
   '/$locale': typeof LocaleIndexRoute
   '/$locale/auth/$mode': typeof LocaleAuthModeRoute
+  '/$locale/cashier/$outletId': typeof LocaleCashierOutletIdRoute
   '/$locale/consultation/$token': typeof LocaleConsultationTokenRoute
+  '/$locale/m/$token': typeof LocaleMTokenRoute
   '/$locale/orders/$token': typeof LocaleOrdersTokenRoute
   '/$locale/p/$id': typeof LocalePIdRoute
   '/$locale/tutorial/activation': typeof LocaleTutorialActivationRoute
@@ -288,6 +312,7 @@ export interface FileRoutesByTo {
   '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
   '/$locale/dashboard/user/buy': typeof LocaleDashboardUserBuyRoute
   '/$locale/dashboard/user/edit-order': typeof LocaleDashboardUserEditOrderRoute
+  '/$locale/dashboard/user/membership': typeof LocaleDashboardUserMembershipRoute
   '/$locale/dashboard/user/orders': typeof LocaleDashboardUserOrdersRoute
   '/$locale/dashboard/admin': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user': typeof LocaleDashboardUserIndexRoute
@@ -302,9 +327,11 @@ export interface FileRoutesById {
   '/$locale/order': typeof LocaleOrderRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/auth/$mode': typeof LocaleAuthModeRoute
+  '/$locale/cashier/$outletId': typeof LocaleCashierOutletIdRoute
   '/$locale/consultation/$token': typeof LocaleConsultationTokenRoute
   '/$locale/dashboard/admin': typeof LocaleDashboardAdminRouteWithChildren
   '/$locale/dashboard/user': typeof LocaleDashboardUserRouteWithChildren
+  '/$locale/m/$token': typeof LocaleMTokenRoute
   '/$locale/orders/$token': typeof LocaleOrdersTokenRoute
   '/$locale/p/$id': typeof LocalePIdRoute
   '/$locale/tutorial/activation': typeof LocaleTutorialActivationRoute
@@ -324,6 +351,7 @@ export interface FileRoutesById {
   '/$locale/dashboard/user/account': typeof LocaleDashboardUserAccountRoute
   '/$locale/dashboard/user/buy': typeof LocaleDashboardUserBuyRoute
   '/$locale/dashboard/user/edit-order': typeof LocaleDashboardUserEditOrderRoute
+  '/$locale/dashboard/user/membership': typeof LocaleDashboardUserMembershipRoute
   '/$locale/dashboard/user/orders': typeof LocaleDashboardUserOrdersRoute
   '/$locale/dashboard/admin/': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user/': typeof LocaleDashboardUserIndexRoute
@@ -339,9 +367,11 @@ export interface FileRouteTypes {
     | '/$locale/order'
     | '/$locale/'
     | '/$locale/auth/$mode'
+    | '/$locale/cashier/$outletId'
     | '/$locale/consultation/$token'
     | '/$locale/dashboard/admin'
     | '/$locale/dashboard/user'
+    | '/$locale/m/$token'
     | '/$locale/orders/$token'
     | '/$locale/p/$id'
     | '/$locale/tutorial/activation'
@@ -361,6 +391,7 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/user/account'
     | '/$locale/dashboard/user/buy'
     | '/$locale/dashboard/user/edit-order'
+    | '/$locale/dashboard/user/membership'
     | '/$locale/dashboard/user/orders'
     | '/$locale/dashboard/admin/'
     | '/$locale/dashboard/user/'
@@ -373,7 +404,9 @@ export interface FileRouteTypes {
     | '/$locale/order'
     | '/$locale'
     | '/$locale/auth/$mode'
+    | '/$locale/cashier/$outletId'
     | '/$locale/consultation/$token'
+    | '/$locale/m/$token'
     | '/$locale/orders/$token'
     | '/$locale/p/$id'
     | '/$locale/tutorial/activation'
@@ -393,6 +426,7 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/user/account'
     | '/$locale/dashboard/user/buy'
     | '/$locale/dashboard/user/edit-order'
+    | '/$locale/dashboard/user/membership'
     | '/$locale/dashboard/user/orders'
     | '/$locale/dashboard/admin'
     | '/$locale/dashboard/user'
@@ -406,9 +440,11 @@ export interface FileRouteTypes {
     | '/$locale/order'
     | '/$locale/'
     | '/$locale/auth/$mode'
+    | '/$locale/cashier/$outletId'
     | '/$locale/consultation/$token'
     | '/$locale/dashboard/admin'
     | '/$locale/dashboard/user'
+    | '/$locale/m/$token'
     | '/$locale/orders/$token'
     | '/$locale/p/$id'
     | '/$locale/tutorial/activation'
@@ -428,6 +464,7 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/user/account'
     | '/$locale/dashboard/user/buy'
     | '/$locale/dashboard/user/edit-order'
+    | '/$locale/dashboard/user/membership'
     | '/$locale/dashboard/user/orders'
     | '/$locale/dashboard/admin/'
     | '/$locale/dashboard/user/'
@@ -499,6 +536,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleAuthModeRouteImport
       parentRoute: typeof LocaleRoute
     }
+    '/$locale/cashier/$outletId': {
+      id: '/$locale/cashier/$outletId'
+      path: '/cashier/$outletId'
+      fullPath: '/$locale/cashier/$outletId'
+      preLoaderRoute: typeof LocaleCashierOutletIdRouteImport
+      parentRoute: typeof LocaleRoute
+    }
     '/$locale/consultation/': {
       id: '/$locale/consultation/'
       path: '/consultation'
@@ -525,6 +569,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/user'
       fullPath: '/$locale/dashboard/user'
       preLoaderRoute: typeof LocaleDashboardUserRouteImport
+      parentRoute: typeof LocaleRoute
+    }
+    '/$locale/m/$token': {
+      id: '/$locale/m/$token'
+      path: '/m/$token'
+      fullPath: '/$locale/m/$token'
+      preLoaderRoute: typeof LocaleMTokenRouteImport
       parentRoute: typeof LocaleRoute
     }
     '/$locale/orders/': {
@@ -667,6 +718,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleDashboardUserEditOrderRouteImport
       parentRoute: typeof LocaleDashboardUserRoute
     }
+    '/$locale/dashboard/user/membership': {
+      id: '/$locale/dashboard/user/membership'
+      path: '/membership'
+      fullPath: '/$locale/dashboard/user/membership'
+      preLoaderRoute: typeof LocaleDashboardUserMembershipRouteImport
+      parentRoute: typeof LocaleDashboardUserRoute
+    }
     '/$locale/dashboard/user/orders': {
       id: '/$locale/dashboard/user/orders'
       path: '/orders'
@@ -709,6 +767,7 @@ interface LocaleDashboardUserRouteChildren {
   LocaleDashboardUserAccountRoute: typeof LocaleDashboardUserAccountRoute
   LocaleDashboardUserBuyRoute: typeof LocaleDashboardUserBuyRoute
   LocaleDashboardUserEditOrderRoute: typeof LocaleDashboardUserEditOrderRoute
+  LocaleDashboardUserMembershipRoute: typeof LocaleDashboardUserMembershipRoute
   LocaleDashboardUserOrdersRoute: typeof LocaleDashboardUserOrdersRoute
   LocaleDashboardUserIndexRoute: typeof LocaleDashboardUserIndexRoute
 }
@@ -717,6 +776,7 @@ const LocaleDashboardUserRouteChildren: LocaleDashboardUserRouteChildren = {
   LocaleDashboardUserAccountRoute: LocaleDashboardUserAccountRoute,
   LocaleDashboardUserBuyRoute: LocaleDashboardUserBuyRoute,
   LocaleDashboardUserEditOrderRoute: LocaleDashboardUserEditOrderRoute,
+  LocaleDashboardUserMembershipRoute: LocaleDashboardUserMembershipRoute,
   LocaleDashboardUserOrdersRoute: LocaleDashboardUserOrdersRoute,
   LocaleDashboardUserIndexRoute: LocaleDashboardUserIndexRoute,
 }
@@ -729,9 +789,11 @@ interface LocaleRouteChildren {
   LocaleOrderRoute: typeof LocaleOrderRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
   LocaleAuthModeRoute: typeof LocaleAuthModeRoute
+  LocaleCashierOutletIdRoute: typeof LocaleCashierOutletIdRoute
   LocaleConsultationTokenRoute: typeof LocaleConsultationTokenRoute
   LocaleDashboardAdminRoute: typeof LocaleDashboardAdminRouteWithChildren
   LocaleDashboardUserRoute: typeof LocaleDashboardUserRouteWithChildren
+  LocaleMTokenRoute: typeof LocaleMTokenRoute
   LocaleOrdersTokenRoute: typeof LocaleOrdersTokenRoute
   LocalePIdRoute: typeof LocalePIdRoute
   LocaleTutorialActivationRoute: typeof LocaleTutorialActivationRoute
@@ -746,9 +808,11 @@ const LocaleRouteChildren: LocaleRouteChildren = {
   LocaleOrderRoute: LocaleOrderRoute,
   LocaleIndexRoute: LocaleIndexRoute,
   LocaleAuthModeRoute: LocaleAuthModeRoute,
+  LocaleCashierOutletIdRoute: LocaleCashierOutletIdRoute,
   LocaleConsultationTokenRoute: LocaleConsultationTokenRoute,
   LocaleDashboardAdminRoute: LocaleDashboardAdminRouteWithChildren,
   LocaleDashboardUserRoute: LocaleDashboardUserRouteWithChildren,
+  LocaleMTokenRoute: LocaleMTokenRoute,
   LocaleOrdersTokenRoute: LocaleOrdersTokenRoute,
   LocalePIdRoute: LocalePIdRoute,
   LocaleTutorialActivationRoute: LocaleTutorialActivationRoute,

@@ -36,3 +36,7 @@ Admin SDK.
    The `server-token.json` file and `.env.local` are ignored by Git and must never be committed.
 4. Deploy `firestore.rules` when Firestore is ready. Client reads/writes are
    denied because trusted access happens through TanStack server functions.
+5. Untuk add-on Membership, set `MEMBERSHIP_SESSION_SECRET` ke secret acak
+   minimal 32 karakter pada local dan production. Secret ini menandatangani
+   cookie sesi kasir dan menjadi pepper hash PIN; jangan mengeksposnya dengan
+   prefix `VITE_`. Deploy `firestore.indexes.json` agar TTL rate limit kasir aktif.

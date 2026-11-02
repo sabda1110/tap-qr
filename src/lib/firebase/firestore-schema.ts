@@ -7,6 +7,57 @@ export type CardConfigType = "google_review" | "social";
 export type NfcType = "tapqr" | "google_review" | "custom";
 export type OutletProfileTheme = "coffee" | "barbershop" | "general";
 
+export type MembershipExpiryType = "lifetime" | "period";
+export type MemberStatus = "active" | "expired" | "suspended";
+
+export type OutletMembershipAddon = {
+  enabled: boolean;
+  activatedAt: string;
+  cashierPinSalt: string;
+  cashierPinHash: string;
+  cashierSessionVersion: number;
+  expiryType: MembershipExpiryType;
+  defaultDurationDays?: number;
+  loyaltyReward?: {
+    enabled: boolean;
+    targetVisits: number;
+    rewardTitle: string;
+  };
+};
+
+export type MemberDocument = {
+  id: string;
+  tokenHash: string;
+  name: string;
+  phone: string;
+  status: MemberStatus;
+  expiryType: MembershipExpiryType;
+  expiresAt: string | null;
+  totalVisits: number;
+  currentStamps: number;
+  totalRewardsClaimed: number;
+  registeredAt: string;
+  registeredByUid: string;
+  lastVisitedAt: string | null;
+  notes?: string;
+  updatedAt: string;
+};
+
+export type MemberActivityLog = {
+  id: string;
+  event: "registered" | "verified" | "stamp_added" | "reward_claimed" | "extended" | "status_changed";
+  timestamp: string;
+  actor: "owner" | "cashier";
+  actorUid: string;
+  details: { previousStamps?: number; newStamps?: number; rewardTitle?: string; note?: string };
+};
+
+export type CashierRateLimit = {
+  attempts: number;
+  lockedUntil: string | null;
+  expiresAt: unknown;
+};
+
 export type OutletHighlightImage = {
   id: string;
   url: string;
@@ -41,6 +92,7 @@ export type OutletRecord = {
   phone: string;
   status: AccountStatus;
   publicProfile?: OutletPublicProfileSettings;
+  addons?: { membership?: OutletMembershipAddon };
   createdAt: unknown;
   updatedAt: unknown;
 };

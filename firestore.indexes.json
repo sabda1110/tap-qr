@@ -36,6 +36,7 @@
   "fieldOverrides": [
     { "collectionGroup": "consultationRateLimits", "fieldPath": "expiresAt", "ttl": true, "indexes": [] },
     { "collectionGroup": "orderRateLimits", "fieldPath": "expiresAt", "ttl": true, "indexes": [] },
-    { "collectionGroup": "analyticsRateLimits", "fieldPath": "expiresAt", "ttl": true, "indexes": [] }
+    { "collectionGroup": "analyticsRateLimits", "fieldPath": "expiresAt", "ttl": true, "indexes": [] },
+    { "collectionGroup": "cashierRateLimits", "fieldPath": "expiresAt", "ttl": true, "indexes": [] }
   ]
 }
