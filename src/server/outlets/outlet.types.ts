@@ -1,8 +1,22 @@
 import type {
   OutletHighlight,
-  OutletMembershipAddon,
   SocialLink,
 } from "../../lib/firebase/firestore-schema";
+
+export type OutletMembershipSummary = {
+  enabled: boolean;
+  activatedAt: string;
+  expiresAt: string | null;
+  isActive: boolean;
+  pinConfigured: boolean;
+  loyaltyReward?: {
+    targetVisits: number;
+    rewardTitle: string;
+    stampExpiryValue: number;
+    stampExpiryUnit: "day" | "month";
+    dailyStampLimit: number;
+  };
+};
 
 export type OutletSummary = {
   id: string;
@@ -19,7 +33,7 @@ export type OutletSummary = {
   activeCardCount: number;
   channels: string[];
   highlights: OutletHighlight[];
-  membership: OutletMembershipAddon | null;
+  membership: OutletMembershipSummary | null;
 };
 
 export type OutletDetail = OutletSummary & {

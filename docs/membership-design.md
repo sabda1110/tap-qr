@@ -19,15 +19,16 @@ interface OutletRecordAddonMembership {
     membership?: {
       enabled: boolean; // Entitlement add-on aktif/tidak
       activatedAt: string; // ISO UTC
+      expiresAt?: string | null; // Masa berlaku add-on outlet, bukan member
       cashierPinSalt: string; // Salt acak (16 bytes hex)
       cashierPinHash: string; // SHA-256(pin + cashierPinSalt + SERVER_SECRET)
       cashierSessionVersion: number; // Naik +1 saat ganti PIN (invalidasi sesi massal)
-      expiryType: "lifetime" | "period";
-      defaultDurationDays?: number; // Digunakan jika expiryType = "period" (misal 30/365)
       loyaltyReward?: {
-        enabled: boolean; // True jika menggunakan sistem stempel
         targetVisits: number; // Misal: 5 atau 10 kunjungan
         rewardTitle: string; // Misal: "Gratis 1 Kopi Americano"
+        stampExpiryValue: number; // Batas sejak stempel terakhir
+        stampExpiryUnit: "day" | "month";
+        dailyStampLimit: number; // Maksimum stempel per pelanggan per tanggal WIB
       };
     };
   };
@@ -46,11 +47,11 @@ interface MemberDocument {
   tokenHash: string; // SHA-256 dari memberToken (token di URL pelanggan)
   name: string; // Nama pelanggan (maks 40 karakter)
   phone: string; // Nomor HP normalisasi (+62812...)
-  status: "active" | "expired" | "suspended";
-  expiryType: "lifetime" | "period";
-  expiresAt: string | null; // ISO UTC, null jika lifetime
+  status: "active" | "suspended";
   totalVisits: number; // Total kunjungan seumur hidup
   currentStamps: number; // Progres stempel saat ini (0 s.d. targetVisits)
+  stampDayKey: string; // YYYY-MM-DD WIB untuk limit harian
+  stampDayCount: number; // Jumlah stempel pada stampDayKey
   totalRewardsClaimed: number; // Berapa kali sudah menukarkan reward
   registeredAt: string; // ISO UTC
   registeredByUid: string; // UID owner atau "cashier-session"
@@ -146,7 +147,7 @@ Ditampilkan di layar tablet/PC kasir setelah input form member:
 +-------------------------------------------------------+
 |                                                       |
 |  Nama: Budi Santoso (0812-xxxx-5678)                  |
-|  Status: Aktif Selamanya                              |
+|  Status: Aktif                                        |
 |                                                       |
 |             +-------------------------+               |
 |             |                         |               |
@@ -163,7 +164,7 @@ Ditampilkan di layar tablet/PC kasir setelah input form member:
 
 ---
 
-### C. Layar Kasir: Scanner & Verifikasi Kunjungan (`/cashier/scanner`)
+### C. Layar Kasir: Scanner & Verifikasi Kunjungan (`/$locale/cashier/$outletId`)
 
 Layar kerja kasir untuk memvalidasi QR pelanggan:
 
@@ -183,7 +184,7 @@ Layar kerja kasir untuk memvalidasi QR pelanggan:
 | HASIL SCAN:                                           |
 |                                                       |
 | [ ● VALID: MEMBER AKTIF ]  (Budi Santoso)             |
-| Total Kunjungan: 4x | Masa Berlaku: Selamanya         |
+| Total Kunjungan: 4x                                   |
 |                                                       |
 | Progres Stempel: [ ★ ] [ ★ ] [ ★ ] [ ★ ] [ ○ ] (4/5)  |
 |                                                       |
@@ -207,4 +208,4 @@ Menu baru di dashboard owner khusus untuk outlet yang memiliki addon:
 2. **Tab Navigasi**:
    - **Daftar Member**: Tabel nama, nomor HP, progres stempel, aksi (detail riwayat, edit, tampilkan ulang QR).
    - **Mode Kasir & PIN**: Input/Ubah PIN kasir 6-digit, tombol salin tautan kasir, tombol "Keluarkan Semua Sesi Kasir".
-   - **Pengaturan Program**: Toggle stempel aktif, target jumlah stempel, nama hadiah, dan jenis masa aktif (lifetime/period).
+   - **Pengaturan Program**: Target jumlah stempel, nama hadiah, masa hangus sejak stempel terakhir, dan limit stempel harian per pelanggan.

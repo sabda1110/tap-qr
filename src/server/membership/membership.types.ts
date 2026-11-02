@@ -1,12 +1,10 @@
-import type { MemberStatus, MembershipExpiryType } from "../../lib/firebase/firestore-schema";
+import type { MemberStatus } from "../../lib/firebase/firestore-schema";
 
 export type MemberView = {
   id: string;
   name: string;
   maskedPhone?: string;
   status: MemberStatus;
-  expiryType: MembershipExpiryType;
-  expiresAt: string | null;
   totalVisits: number;
   currentStamps: number;
   totalRewardsClaimed: number;
@@ -16,5 +14,5 @@ export type MemberView = {
 
 export type MemberPass = MemberView & {
   outlet: { id: string; name: string; address: string; logoUrl: string | null; reviewUrl: string | null };
-  reward: { enabled: boolean; targetVisits: number; title: string };
+  reward: { targetVisits: number; title: string };
 };

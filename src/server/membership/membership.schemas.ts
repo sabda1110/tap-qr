@@ -18,16 +18,17 @@ export const memberRegistrationSchema = z.object({
 
 export const memberTokenInputSchema = z.object({ token: memberTokenSchema });
 export const cashierMemberSchema = z.object({ outletId: outletIdSchema, token: memberTokenSchema });
-export const memberActionSchema = cashierMemberSchema.extend({ action: z.enum(["stamp", "claim"]) });
+export const memberActionSchema = cashierMemberSchema.extend({ action: z.enum(["stamp", "claim", "undo_stamp"]) });
 export const memberSearchSchema = z.object({ outletId: outletIdSchema, phone: phoneSchema });
+export const ownerMemberSchema = z.object({ outletId: outletIdSchema, memberId: z.string().regex(/^MBR-[A-F0-9]{32}$/) });
 
 export const membershipSettingsSchema = z.object({
   outletId: outletIdSchema,
-  expiryType: z.enum(["lifetime", "period"]),
-  defaultDurationDays: z.coerce.number().int().min(1).max(3650).optional(),
-  rewardEnabled: z.boolean(),
   targetVisits: z.coerce.number().int().min(2).max(50),
   rewardTitle: z.string().trim().min(1).max(80),
+  stampExpiryValue: z.coerce.number().int().min(1).max(365),
+  stampExpiryUnit: z.enum(["day", "month"]),
+  dailyStampLimit: z.coerce.number().int().min(1).max(20),
 });
 
 export const cashierPinChangeSchema = z.object({
@@ -38,4 +39,5 @@ export const cashierPinChangeSchema = z.object({
 export const adminMembershipAddonSchema = z.object({
   outletId: outletIdSchema,
   enabled: z.boolean(),
+  expiresAt: z.string().datetime().nullable(),
 });
