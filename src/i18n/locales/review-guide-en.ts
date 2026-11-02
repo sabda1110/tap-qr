@@ -42,6 +42,13 @@ export const reviewGuideEn: typeof reviewGuideId = {
         "Taps, scans, and review button clicks indicate interactions, not proof that a review was submitted. Compare these with reviews actually visible on Google Business Profile. Record service changes and observation periods so your evaluation goes beyond star counts.",
       ],
     },
+    {
+      id: "pekanbaru", title: "6. Example Google Review workflow for a cafe in Pekanbaru",
+      paragraphs: [
+        "As an example setup, a cafe in Pekanbaru could place a Google Review stand at checkout. Check that the link opens that cafe's Google Business Profile rather than another branch. After a purchase, staff can invite customers to share their experience voluntarily through NFC or QR, without rewards or instructions about which star rating to choose.",
+        "Before ordering, prepare the business name, review link or Google Place ID, and design identity. Choose an acrylic stand for a counter or a compact PVC card. Confirm the shipping address, delivery cost, and production estimate with TapQR on WhatsApp. Once activated, test both access methods on a phone and evaluate reviews that actually appear on the business profile. This is an illustrative workflow, not a report of results achieved by a TapQR customer.",
+      ],
+    },
   ],
   nextTitle: "Prepare your business links and NFC + QR medium",
   placeId: "Find your Google Place ID",

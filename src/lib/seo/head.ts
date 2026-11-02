@@ -1,6 +1,6 @@
 import { novemberPromotion, withNovemberPricing } from "../order-promotion";
-import { id } from "../../i18n/locales/id";
-import { en } from "../../i18n/locales/en";
+import { pricingId } from "../../i18n/locales/pricing-id";
+import { pricingEn } from "../../i18n/locales/pricing-en";
 import { publicPageMetadata, serializeJsonLd } from "./metadata";
 import { outletProfileMetadata } from "./outlet-profile";
 import { DEFAULT_SEO_ORIGIN, normalizeSeoOrigin, type SeoPage } from "./pages";
@@ -11,7 +11,7 @@ export function getSeoOrigin() {
 }
 export function publicPageHead(locale: string, page: SeoPage) {
   const language = locale === "en" ? "en" : "id";
-  const pricing = withNovemberPricing((language === "en" ? en : id).pricing);
+  const pricing = withNovemberPricing(language === "en" ? pricingEn : pricingId);
   const offer = (plan: typeof pricing.pvcCard) => plan.originalPrice
     ? { ...plan, validFrom: novemberPromotion.startsAt, validThrough: novemberPromotion.validThrough } : plan;
   const origin = getSeoOrigin();

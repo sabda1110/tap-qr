@@ -19,8 +19,8 @@ export const landingFaqEn = {
       answer: "Compare NFC and QR support for two ways to connect, materials suited to where you will use it, a readable design, editable link destinations, and the total cost including shipping. TapQR acrylic stands suit checkout counters, while 86 × 54 mm PVC cards are compact enough to carry or attach to a surface. Both include NFC + QR and let you update Google Review link destinations through the dashboard. Consider the Business Package if you also need Google Business Profile setup and a landing page. The best choice depends on your business needs and budget.",
     },
     {
-      question: "How do I order a Google Review stand for Pekanbaru, Kerinci, or Duri?",
-      answer: "Choose an acrylic NFC + QR stand or PVC card, then enter your contact details and shipping address on the order page. Confirm the design, business location, shipping cost, and delivery estimate on WhatsApp before paying. Cafes, restaurants, barbershops, laundries, and shops can use the stand to open their Google Review link with a tap or scan.",
+      question: "How do I order a Google Review stand for a business in Pekanbaru?",
+      answer: "For a business in Pekanbaru, choose an acrylic NFC + QR stand or PVC card, then enter your contact details and shipping address on the order page. Prepare the Google Business Profile review link or Google Place ID for the correct outlet. Confirm the design, shipping cost, and delivery estimate on WhatsApp before paying. Businesses in Kerinci, Duri, and other locations can also order. This service provides access to your review page; it does not sell Google reviews or ratings.",
     },
     {
       question: "Looking for an affordable NFC stand? How much does TapQR cost?",

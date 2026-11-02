@@ -14,8 +14,8 @@ export const seoEn: typeof seoId = {
       description: "A practical Google Review guide: prepare your business profile, invite honest feedback, use NFC + QR, and make WhatsApp accessible without rewards or fake reviews.",
     },
     home: {
-      title: "TapQR — Google Review Stands & NFC Cards for Small Businesses",
-      description: "NFC + QR Google Review stands for businesses in Pekanbaru, Kerinci, and Duri. Custom designs, reviews and WhatsApp. Shipping confirmed when ordering.",
+      title: "Google Review Stands for Pekanbaru & NFC Cards | TapQR",
+      description: "Order NFC + QR Google Review stands for businesses in Pekanbaru, Kerinci, and Duri. Custom designs and editable links. Confirm shipping on WhatsApp.",
     },
     consultation: {
       title: "Google Reviews & Small Business Marketing Consultation | TapQR",

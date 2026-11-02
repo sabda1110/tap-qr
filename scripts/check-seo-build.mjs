@@ -3,6 +3,9 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { readdir } from "node:fs/promises";
 
+// Nitro installs an exception handler; failed assertions must still fail the check.
+process.on("uncaughtExceptionMonitor", () => { process.exitCode = 1; });
+
 // Exercise the compiled HTTP handler in-process, without a browser, TCP port or Firebase writes.
 let app;
 globalThis.__srvxLoader__ = ({ server }) => { app = server; };
@@ -55,6 +58,10 @@ for (const path of ["/id", "/en", "/id/tutorial/activation", "/en/tutorial/googl
   assert.ok(jsonLd.length);
   for (const match of jsonLd) assert.equal(JSON.parse(match[1])["@context"], "https://schema.org");
   if (["/id", "/en"].includes(path)) {
+    const hero = body.match(/<section\b[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? "";
+    assert.match(hero, /<h1[\s>]/, `${path} hero must be in server HTML`);
+    assert.doesNotMatch(hero, /opacity-0|blur-\[2px\]/, `${path} hero must be visible before hydration`);
+    assert.match(hero, /<img[^>]*loading="eager"[^>]*fetchPriority="high"/i);
     const nodes = jsonLd.flatMap((match) => JSON.parse(match[1])["@graph"] ?? []);
     assert.equal(nodes.find((node) => node["@type"] === "WebSite")?.name, "TapQR");
     assert.equal(nodes.find((node) => node["@type"] === "Organization")?.logo.url, "https://www.tapqr.id/icon-512.png");
@@ -76,6 +83,14 @@ for (const path of ["/id", "/en", "/id/tutorial/activation", "/en/tutorial/googl
 const root = await app.fetch(new Request("https://www.tapqr.id/"));
 assert.equal(root.status, 308);
 assert.equal(root.headers.get("location"), "/id");
+for (const path of ["/id/dashboard/user", "/en/dashboard/admin/analytics"]) {
+  const protectedPage = await app.fetch(new Request(`https://www.tapqr.id${path}`));
+  assert.ok([301, 302, 303, 307, 308].includes(protectedPage.status), `${path} must redirect unauthenticated visits`);
+  assert.match(protectedPage.headers.get("location") ?? "", /\/(id|en)\/auth\/login/);
+}
+const unsupportedLocale = await app.fetch(new Request("https://www.tapqr.id/fr"));
+assert.ok([301, 302, 303, 307, 308].includes(unsupportedLocale.status));
+assert.equal(unsupportedLocale.headers.get("location"), "/id");
 const missing = await app.fetch(new Request("https://www.tapqr.id/id/tutorial/missing-guide"));
 assert.equal(missing.status, 404);
 const login = await request("/id/auth/login");

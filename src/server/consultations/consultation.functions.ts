@@ -1,3 +1,4 @@
+import { singleFlight } from "../../lib/single-flight";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestIP, setResponseHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
@@ -28,7 +29,8 @@ async function mutation(work: () => Promise<unknown>) {
   try { await work(); return { success: true as const }; }
   catch (error) { return { success: false as const, reason: safeReason(error) }; }
 }
-async function maintenance() { await runConsultationMaintenance({ budgetMs: 5_000, maxEvents: 2 }); }
+// Coalesce overlapping fallback passes per server instance; each later pass still runs.
+const maintenance = singleFlight(() => runConsultationMaintenance({ budgetMs: 5_000, maxEvents: 2 }));
 async function notify(id?: string) {
   try { await dispatchConsultationNotifications(id); }
   catch { console.warn("consultation_notification_dispatch_failed"); }

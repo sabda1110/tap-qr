@@ -19,8 +19,8 @@ export const landingFaqId = {
       answer: "Pilih berdasarkan kebutuhan: dukungan NFC dan QR agar tersedia dua cara akses, bahan yang sesuai tempat penggunaan, desain yang terbaca, tujuan tautan yang dapat diperbarui, serta total biaya termasuk ongkir. Papan akrilik TapQR cocok untuk meja kasir, sedangkan kartu PVC 86 × 54 mm lebih ringkas untuk dibawa atau ditempel. Keduanya menyediakan NFC + QR dan pembaruan tujuan tautan Google Review melalui dashboard. Jika membutuhkan bantuan setup Google Business Profile dan landing page, pertimbangkan Paket Bisnis. Pilihan terbaik bergantung pada kebutuhan usaha dan anggaran Anda.",
     },
     {
-      question: "Bagaimana memesan papan Google Review untuk Pekanbaru, Kerinci, dan Duri?",
-      answer: "Pilih papan akrilik NFC + QR atau kartu PVC, lalu isi kontak dan alamat pengiriman pada halaman pemesanan. Konfirmasikan desain, lokasi usaha, ongkir, dan estimasi pengiriman melalui WhatsApp sebelum membayar. Papan dapat digunakan oleh kafe, restoran, barbershop, laundry, dan toko untuk membuka link Google Review bisnis melalui tap atau scan.",
+      question: "Bagaimana memesan papan Google Review untuk usaha di Pekanbaru?",
+      answer: "Untuk usaha di Pekanbaru, pilih papan akrilik NFC + QR atau kartu PVC, lalu isi kontak dan alamat pengiriman pada halaman pemesanan. Siapkan tautan ulasan Google Business Profile atau Google Place ID outlet yang benar. Konfirmasikan desain, ongkir, dan estimasi pengiriman melalui WhatsApp sebelum membayar. Pemesanan juga tersedia untuk Kerinci, Duri, dan daerah lain. Layanan ini menyediakan media akses ke ulasan bisnis, bukan menjual review atau bintang Google.",
     },
     {
       question: "Mencari papan NFC murah, berapa harga TapQR?",

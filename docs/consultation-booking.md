@@ -171,6 +171,20 @@ Tanpa scheduler, pemeriksaan saat slot/dashboard dimuat tetap memperbarui status
 Namun pengingat dan pembatalan tidak dijamin berjalan ketika tidak ada kunjungan.
 Aktifkan scheduler untuk menjalankan perubahan meskipun situs sedang sepi.
 
+### Beban pemuatan jadwal
+
+Polling jadwal/status tetap berinterval 25 detik saat tab terlihat. Tab tersembunyi
+menghentikan timer dan langsung memperbarui data ketika terlihat lagi. Tombol
+refresh, guard permintaan ganda, serta pemeriksaan transaksi booking tetap aktif.
+Data booking/status tidak dicache oleh optimasi ini.
+
+Maintenance fallback pada request tetap berjalan untuk mempertahankan kedaluwarsa
+dan pengingat ketika scheduler belum aktif. Request yang berbarengan dalam satu
+instance server berbagi satu proses maintenance; setelah selesai atau gagal,
+request berikutnya menjalankan proses baru. Ini bukan lock lintas instance;
+transaksi serta lease outbox tetap melindungi perubahan/pengiriman. Endpoint cron
+tetap menjalankan maintenance penuh secara independen.
+
 ## Menguji scheduler
 
 Jalankan aplikasi lokal seperti biasa menggunakan `npm run dev`, atau gunakan

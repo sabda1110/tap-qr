@@ -79,6 +79,16 @@ harga dalam perubahan yang sama. Tidak ada meta keywords atau halaman kota
 duplikat. Pantau kueri, impresi, klik, dan CTR di Search Console setelah deploy;
 keyword yang ditargetkan bukan klaim volume pencarian atau jaminan posisi.
 
+Judul landing secara khusus menargetkan "Papan Google Review Pekanbaru".
+Heading produk dan FAQ menjelaskan produk, cara memesan untuk usaha di Pekanbaru,
+serta kebutuhan tautan outlet yang benar. Panduan Google Review memuat contoh
+alur kafe di Pekanbaru yang diberi label sebagai ilustrasi, bukan studi kasus
+pelanggan. Kerinci dan Duri tetap dicakup pada deskripsi/cara pemesanan. Tidak ada
+alamat cabang, kantor lokal, hasil pelanggan, atau klaim peringkat yang dibuat-buat.
+Setelah deploy, gunakan URL Inspection untuk `/id` dan panduan Google Review,
+lalu pantau kueri "google review pekanbaru" dan "papan google review pekanbaru"
+di Search Console. Tidak muncul pada satu pencarian bukan bukti keyword hilang.
+
 ## Penemuan melalui pencarian AI (GEO)
 
 GEO bertujuan membantu mesin pencarian AI memahami dan merujuk informasi

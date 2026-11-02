@@ -1,3 +1,4 @@
+import { useVisiblePolling } from "../../hooks/use-visible-polling";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import { CalendarDays, Check, Clock3, MessageCircle, RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -57,10 +58,7 @@ export function ConsultationBookingPage({ initial }: { initial: Availability }) 
     finally { refreshingRef.current = false; setRefreshing(false); }
   }, []);
 
-  useEffect(() => {
-    const timer = window.setInterval(() => { void refresh(); }, 25_000);
-    return () => window.clearInterval(timer);
-  }, [refresh]);
+  useVisiblePolling(refresh, 25_000);
 
   const submit = async (values: ConsultationFormValues) => {
     if (!selected || pending || step !== 1 || refreshFailed || refreshing) return;

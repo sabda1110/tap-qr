@@ -12,8 +12,8 @@ export const seoId = {
       description: "Panduan Google Review untuk UMKM: siapkan profil bisnis, ajak ulasan jujur, gunakan NFC + QR, dan permudah akses WhatsApp tanpa hadiah atau review palsu.",
     },
     home: {
-      title: "TapQR — Papan Google Review & Kartu NFC untuk UMKM",
-      description: "Papan Google Review NFC + QR untuk UMKM Pekanbaru, Kerinci, dan Duri. Desain bisnis, akses ulasan dan WhatsApp. Ongkir dikonfirmasi saat memesan.",
+      title: "Papan Google Review Pekanbaru & Kartu NFC | TapQR",
+      description: "Pesan papan Google Review NFC + QR untuk UMKM di Pekanbaru, Kerinci, dan Duri. Desain bisnis, tautan bisa diperbarui, ongkir dikonfirmasi lewat WhatsApp.",
     },
     consultation: {
       title: "Konsultasi Google Review & Pemasaran UMKM | TapQR",

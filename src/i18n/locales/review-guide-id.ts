@@ -40,6 +40,13 @@ export const reviewGuideId = {
         "Jumlah tap, scan, atau klik tombol review menunjukkan interaksi, bukan bukti bahwa review telah dikirim. Bandingkan dengan ulasan yang benar-benar tampil di Google Business Profile. Catat perubahan pelayanan dan periode pengamatan agar evaluasi tidak hanya bertumpu pada jumlah bintang.",
       ],
     },
+    {
+      id: "pekanbaru", title: "6. Contoh alur Google Review untuk kafe di Pekanbaru",
+      paragraphs: [
+        "Sebagai contoh penerapan, sebuah kafe di Pekanbaru dapat menempatkan papan Google Review di kasir. Pastikan tautan mengarah ke Google Business Profile kafe tersebut, bukan cabang lain. Setelah transaksi, staf mengajak pelanggan berbagi pengalaman secara sukarela melalui tap NFC atau scan QR, tanpa hadiah dan tanpa menentukan jumlah bintang.",
+        "Sebelum memesan media, siapkan nama bisnis, tautan ulasan atau Google Place ID, serta identitas desain. Pilih papan akrilik untuk meja atau kartu PVC yang ringkas. Konfirmasikan alamat pengiriman, ongkir, dan estimasi produksi lewat WhatsApp TapQR. Setelah aktif, uji kedua cara akses dengan ponsel dan evaluasi ulasan yang benar-benar tampil di profil bisnis. Contoh ini adalah panduan penerapan, bukan laporan hasil pelanggan TapQR.",
+      ],
+    },
   ],
   nextTitle: "Siapkan tautan dan media bisnis Anda",
   placeId: "Panduan menemukan Google Place ID",

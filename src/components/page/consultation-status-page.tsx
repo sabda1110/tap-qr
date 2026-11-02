@@ -1,3 +1,4 @@
+import { useVisiblePolling } from "../../hooks/use-visible-polling";
 import { Link, useRouter, useRouterState } from "@tanstack/react-router";
 import { CalendarPlus, CheckCircle2, Clock3, Copy, MessageCircle, RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -55,10 +56,8 @@ export function ConsultationStatusPage({ initial, token }: { initial: StatusData
     finally { refreshingRef.current = false; setRefreshing(false); }
   }, [token]);
 
-  useEffect(() => {
-    const timer = window.setInterval(() => { void refresh(); }, 25_000);
-    return () => { window.clearInterval(timer); requestVersion.current += 1; };
-  }, [refresh]);
+  useVisiblePolling(refresh, 25_000);
+  useEffect(() => () => { requestVersion.current += 1; }, [token]);
 
   const cancel = async () => {
     if (!cancelToken || pendingRef.current) return;

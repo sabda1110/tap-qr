@@ -2,7 +2,6 @@ import { landingButtonStyles } from "../elements/landing-button";
 import type { Messages } from "../../i18n";
 import { HeroDecorations } from "../elements/hero-decorations";
 import { HeroTitleUnderline } from "../elements/hero-title-underline";
-import { MotionReveal } from "../elements/motion-reveal";
 
 type HeroSectionProps = {
   content: Messages["home"];
@@ -16,10 +15,7 @@ export function HeroSection({ content, imageSrc, contactHref }: HeroSectionProps
       <HeroDecorations />
 
       <div className="relative z-10 mx-auto flex w-[calc(100%-2rem)] max-w-6xl flex-col items-center text-center md:w-[82%]">
-        <MotionReveal
-          className="flex flex-col items-center"
-          trigger="load"
-        >
+        <div className="flex flex-col items-center">
           <h1 className="max-w-[940px] text-[clamp(2rem,4.6vw,3.2rem)] leading-[1.28] font-extrabold tracking-[-0.035em] text-black">
             <span className="block">{content.titleStart}</span>
             <span className="mt-1 block">
@@ -51,9 +47,9 @@ export function HeroSection({ content, imageSrc, contactHref }: HeroSectionProps
               {contactHref ? content.contact : content.tryDemo}
             </a>
           </div>
-        </MotionReveal>
+        </div>
 
-        <MotionReveal trigger="load" delay={160}>
+        <div>
           <img
             className="mt-9 h-auto w-[min(760px,96vw)] select-none sm:mt-7 md:w-[min(720px,75vw)]"
             src={imageSrc}
@@ -65,7 +61,7 @@ export function HeroSection({ content, imageSrc, contactHref }: HeroSectionProps
             decoding="async"
             draggable={false}
           />
-        </MotionReveal>
+        </div>
       </div>
     </section>
   );

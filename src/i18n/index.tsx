@@ -1,8 +1,8 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, use, useContext, useEffect } from "react";
 import type { ReactNode } from "react";
 
-import { en } from "./locales/en";
-import { id } from "./locales/id";
+import type { id } from "./locales/id";
+import { loadMessages } from "./load-messages";
 
 export const languages = [
   { code: "id", label: "Bahasa Indonesia" },
@@ -12,7 +12,6 @@ export const languages = [
 export type Language = (typeof languages)[number]["code"];
 export type Messages = typeof id;
 export const defaultLanguage: Language = "id";
-const messages = { id, en };
 
 export function isLanguage(value: unknown): value is Language {
   return languages.some((language) => language.code === value);
@@ -35,6 +34,8 @@ export function I18nProvider({
   language: Language;
   onLanguageChange: (language: Language) => void;
 }) {
+  const messages = use(loadMessages(language));
+
   useEffect(() => {
     document.documentElement.lang = language;
   }, [language]);
@@ -44,7 +45,7 @@ export function I18nProvider({
       value={{
         language,
         setLanguage: onLanguageChange,
-        messages: messages[language],
+        messages,
       }}
     >
       {children}

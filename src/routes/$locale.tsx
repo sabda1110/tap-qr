@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import { loadMessages } from "../i18n/load-messages";
 import {
   Outlet,
   createFileRoute,
@@ -14,7 +16,7 @@ import {
 } from "../i18n";
 
 export const Route = createFileRoute("/$locale")({
-  beforeLoad: ({ params }) => {
+  beforeLoad: async ({ params }) => {
     if (!isLanguage(params.locale)) {
       throw redirect({
         to: "/$locale",
@@ -23,6 +25,7 @@ export const Route = createFileRoute("/$locale")({
       });
     }
 
+    await loadMessages(params.locale);
     return { locale: params.locale };
   },
   component: LocaleLayout,
@@ -44,8 +47,10 @@ function LocaleLayout() {
   }
 
   return (
-    <I18nProvider language={locale} onLanguageChange={changeLanguage}>
-      <Outlet />
-    </I18nProvider>
+    <Suspense fallback={null}>
+      <I18nProvider language={locale} onLanguageChange={changeLanguage}>
+        <Outlet />
+      </I18nProvider>
+    </Suspense>
   );
 }
