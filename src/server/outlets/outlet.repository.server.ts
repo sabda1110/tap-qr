@@ -8,6 +8,7 @@ import type {
 } from "./outlet.schemas";
 import { assertOutletOwner } from "./outlet-ownership";
 import { parseOutletHighlights } from "./outlet-highlights";
+import { isMembershipAddonActive } from "../membership/membership-access";
 
 function timestamp(value: unknown): string | null {
   if (
@@ -19,6 +20,24 @@ function timestamp(value: unknown): string | null {
     return (value.toDate() as Date).toISOString();
   }
   return null;
+}
+
+function membershipSummary(value: DocumentData | undefined) {
+  if (!value) return null;
+  return {
+    enabled: value.enabled === true,
+    activatedAt: typeof value.activatedAt === "string" ? value.activatedAt : "",
+    expiresAt: typeof value.expiresAt === "string" ? value.expiresAt : null,
+    isActive: isMembershipAddonActive(value),
+    pinConfigured: Boolean(value.cashierPinHash && value.cashierPinSalt),
+    ...(value.loyaltyReward ? { loyaltyReward: {
+      targetVisits: Number(value.loyaltyReward.targetVisits) || 5,
+      rewardTitle: String(value.loyaltyReward.rewardTitle ?? ""),
+      stampExpiryValue: Number(value.loyaltyReward.stampExpiryValue) || 30,
+      stampExpiryUnit: value.loyaltyReward.stampExpiryUnit === "month" ? "month" as const : "day" as const,
+      dailyStampLimit: Number(value.loyaltyReward.dailyStampLimit) || 1,
+    } } : {}),
+  };
 }
 
 export function buildOutletSummary(
@@ -48,7 +67,7 @@ export function buildOutletSummary(
       ),
     ],
     highlights: parseOutletHighlights(outlet.publicProfile?.highlights),
-    membership: outlet.addons?.membership ?? null,
+    membership: membershipSummary(outlet.addons?.membership),
   };
 }
 

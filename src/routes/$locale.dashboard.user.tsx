@@ -31,7 +31,7 @@ export const Route = createFileRoute("/$locale/dashboard/user")({
     }
 
     const outlets = await getUserDashboardOutlets();
-    return { user, membershipEnabled: outlets.some((outlet) => outlet.membership?.enabled) };
+    return { user, membershipEnabled: outlets.some((outlet) => outlet.membership?.isActive) };
   },
   component: UserDashboardLayoutRoute,
 });

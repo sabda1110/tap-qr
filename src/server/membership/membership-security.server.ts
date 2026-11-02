@@ -2,9 +2,10 @@ import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypt
 import { deleteCookie, getCookie, getRequestProtocol, setCookie } from "@tanstack/react-start/server";
 import { getFirebaseAdminFirestore } from "../../lib/firebase/admin.server";
 import type { OutletMembershipAddon } from "../../lib/firebase/firestore-schema";
+import { isMembershipAddonActive } from "./membership-access";
 
 const COOKIE = "tapqr_cashier";
-const SESSION_SECONDS = 12 * 60 * 60;
+const SESSION_SECONDS = 24 * 60 * 60;
 
 function secret() {
   const value = process.env.MEMBERSHIP_SESSION_SECRET;
@@ -61,7 +62,7 @@ export async function requireCashierSession(outletId: string) {
   if (session.outletId !== outletId || session.expiresAt < Date.now()) throw new Error("CASHIER_AUTH_REQUIRED");
   const outlet = await getFirebaseAdminFirestore().collection("outlets").doc(outletId).get();
   const membership = outlet.data()?.addons?.membership as OutletMembershipAddon | undefined;
-  if (!outlet.exists || !membership?.enabled || membership.cashierSessionVersion !== session.version) {
+  if (!outlet.exists || !isMembershipAddonActive(membership) || membership?.cashierSessionVersion !== session.version) {
     clearCashierSession();
     throw new Error("CASHIER_AUTH_REQUIRED");
   }

@@ -19,3 +19,5 @@ require("../src/lib/order-promotion.test.ts");
 require("../src/lib/single-flight.test.ts");
 require("../src/lib/visible-polling.test.ts");
 require("../src/i18n/load-messages.test.ts");
+require("../src/server/membership/membership-access.test.ts");
+require("../src/server/membership/stamp-policy.test.ts");

@@ -7,21 +7,21 @@ export type CardConfigType = "google_review" | "social";
 export type NfcType = "tapqr" | "google_review" | "custom";
 export type OutletProfileTheme = "coffee" | "barbershop" | "general";
 
-export type MembershipExpiryType = "lifetime" | "period";
-export type MemberStatus = "active" | "expired" | "suspended";
+export type MemberStatus = "active" | "suspended";
 
 export type OutletMembershipAddon = {
   enabled: boolean;
   activatedAt: string;
+  expiresAt?: string | null;
   cashierPinSalt: string;
   cashierPinHash: string;
   cashierSessionVersion: number;
-  expiryType: MembershipExpiryType;
-  defaultDurationDays?: number;
   loyaltyReward?: {
-    enabled: boolean;
     targetVisits: number;
     rewardTitle: string;
+    stampExpiryValue: number;
+    stampExpiryUnit: "day" | "month";
+    dailyStampLimit: number;
   };
 };
 
@@ -31,10 +31,10 @@ export type MemberDocument = {
   name: string;
   phone: string;
   status: MemberStatus;
-  expiryType: MembershipExpiryType;
-  expiresAt: string | null;
   totalVisits: number;
   currentStamps: number;
+  stampDayKey: string;
+  stampDayCount: number;
   totalRewardsClaimed: number;
   registeredAt: string;
   registeredByUid: string;
@@ -45,11 +45,11 @@ export type MemberDocument = {
 
 export type MemberActivityLog = {
   id: string;
-  event: "registered" | "verified" | "stamp_added" | "reward_claimed" | "extended" | "status_changed";
+  event: "registered" | "verified" | "stamp_added" | "stamp_cancelled" | "reward_claimed" | "token_reissued" | "extended" | "status_changed";
   timestamp: string;
   actor: "owner" | "cashier";
   actorUid: string;
-  details: { previousStamps?: number; newStamps?: number; rewardTitle?: string; note?: string };
+  details: { previousStamps?: number; newStamps?: number; previousTotalVisits?: number; previousLastVisitedAt?: string | null; rewardTitle?: string; note?: string };
 };
 
 export type CashierRateLimit = {

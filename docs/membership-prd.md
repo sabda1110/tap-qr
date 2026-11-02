@@ -48,7 +48,7 @@ Fitur ini tidak aktif secara default untuk semua akun.
                                              v                              |
                                   [Buka Halaman Web Kartu]                  |
                                   - Tampil Kartu Member Digital             |
-                                  - Status: AKTIF (Lifetime / Period)       |
+                                  - Status: AKTIF                           |
                                              |                              |
                                   [Klik: Download Kartu (PNG)]              |
                                   - Kartu tersimpan di Galeri Foto HP       |
@@ -62,7 +62,7 @@ Pelanggan buka Galeri Foto HP                |                              |
 4. Staff Scan QR Pelanggan                                                  |
    (via Scanner Kasir) ---------------------------------------------------> Validasi Token & Progres
         |                                                                   |
-5. Tampil Status: VALID (Lifetime / Period)                                 |
+5. Tampil Status: VALID                                                     |
    - Progres Stempel Kunjungan (misal: 4/5)                                 |
    - Tombol "+1 Stempel Kunjungan" (jika belum capai target)                |
    - Tombol "Klaim Hadiah & Reset" (jika target tercapai) ----------------> Catat Log Aktivitas
@@ -76,10 +76,8 @@ Pelanggan buka Galeri Foto HP                |                              |
 - Form super ringkas pada dashboard kasir:
   - **Nama Pelanggan** (Wajib, teks bebas, maks 40 karakter).
   - **Nomor HP** (Wajib, format Indonesia normalisasi `+62`/`08`, berfungsi sebagai identifikasi unik & pencarian cadangan).
-  - **Masa Berlaku**:
-    - **Aktif Selamanya (Lifetime)**: Default untuk model kartu stempel/loyalitas belanja.
-    - **Berbatas Waktu (Period)**: Opsi jika outlet menerapkan sistem berjangka (1 bulan / 3 bulan / 6 bulan / 1 tahun).
   - **Catatan Opsional** (Tipe kendaraan / preferensi pelanggan, maks 100 karakter).
+- Pendaftaran yang berhasil otomatis memberi stempel dan kunjungan pertama (`1/target`).
 - Waktu input kasir: ditargetkan selesai dalam **< 15 detik**.
 - Setelah form disimpan:
   - Layar kasir langsung menampilkan **Modal QR Code Akses Member** berukuran besar dan jelas.
@@ -91,7 +89,7 @@ Pelanggan buka Galeri Foto HP                |                              |
 - Akses via web mobile: `/$locale/m/$memberToken` (Responsif, bobot halaman < 100 KB, muat < 1.5 detik).
 - Tampilan mengikuti tema brutalism TapQR:
   - Header: Logo outlet & Nama Bisnis.
-  - Kartu Member Virtual: Nama Pelanggan, Nomor Member (`MBR-XXXX`), Badge Status (`AKTIF SELAMANYA` atau Tanggal Berakhir).
+  - Kartu Member Virtual: Nama Pelanggan, Nomor Member (`MBR-XXXX`), dan badge status aktif.
   - **Indikator Stempel Digital (Digital Stamp Card)**:
     - Menampilkan kotak/lingkaran stempel progres (contoh: `4 / 5 Kunjungan`).
     - Keterangan reward menarik (contoh: *"Kumpulkan 5 stempel untuk Gratis 1 Kopi"*).
@@ -105,23 +103,23 @@ Pelanggan buka Galeri Foto HP                |                              |
   - Section Bawah: Tombol resmi "Beri Ulasan di Google" (tanpa syarat insentif langsung, sesuai kepatuhan Google Review).
 
 ### C. Verifikasi Scan & Manajemen Stempel (Sisi Kasir / Staff)
-- Akses kasir: `/$locale/dashboard/user/scanner` (atau mode PIN kasir).
+- Akses kasir: `/$locale/cashier/$outletId` melalui PIN permanen milik outlet.
 - Fitur kamera pemindai (HTML5 Web QR Scanner) yang responsif:
   - Scan QR member pelanggan (bisa scan langsung dari foto galeri HP pelanggan atau layar web).
   - Dalam < 1 detik menampilkan popup/layar:
-    - **Status Validitas**: Hijau (VALID / AKTIF SELAMANYA) atau Merah (KADALUARSA/TIDAK TERDAFTAR).
+    - **Status Validitas**: Hijau (VALID / AKTIF) atau merah (DINONAKTIFKAN/TIDAK TERDAFTAR).
     - Nama pelanggan, nomor HP (disamarkan `0812****1234`), total kunjungan, dan progres stempel saat ini (misal: `Stempel: 4/5`).
     - **Aksi Cepat Kasir**:
       - Jika belum mencapai target stempel: Tombol **[+1 Stempel Kunjungan]** (sekali klik langsung menambah stempel & catat riwayat).
       - Jika target stempel tercapai (misal 5/5): Layar menampilkan banner hijau mencolok **"HADIAH SIAP DITUKARKAN: [Nama Hadiah]"** dengan tombol **[Klaim Hadiah & Reset Stempel]**.
-      - Tombol opsional: "Perpanjang Member" (khusus tipe berbatas waktu).
+      - Penambahan stempel dibatasi per pelanggan per tanggal WIB sesuai `dailyStampLimit`.
+      - Progres yang tidak mendapat stempel baru selama batas hari/bulan owner akan hangus dan kembali ke 0.
 
 ### D. Manajemen Member (Sisi Dashboard Owner)
 - Menu `Membership` di dashboard owner (hanya muncul jika addon aktif):
   - Ringkasan: Total Member Aktif, Total Stempel Diberikan, Total Hadiah Ditukarkan.
-  - Tabel Daftar Member: Nama, No. HP, Tipe (Lifetime/Period), Progres Stempel, Total Kunjungan, Terakhir Berkunjung, Aksi (Edit / Tampilkan Ulang QR / Nonaktifkan).
+  - Tabel Daftar Member: Nama, No. HP, progres stempel, total kunjungan, terakhir berkunjung, dan aksi pengelolaan.
   - Pengaturan Membership:
-    - Pilihan Mode: Aktif Selamanya (*Lifetime*) atau Berbatas Waktu (*Period*).
     - Aturan Program Stempel: Target kunjungan (misal 5 atau 10) & Judul Hadiah (misal *"Gratis 1 Minuman / Diskon 20%"*).
     - Setting PIN Kasir untuk scanner.
 
@@ -137,13 +135,14 @@ addons?: {
   membership?: {
     enabled: boolean;            // Flag entitlement (hanya owner tertentu)
     activatedAt: string;         // ISO UTC
+    expiresAt?: string | null;   // Masa berlaku add-on outlet, bukan member
     cashierPinHash?: string;     // SHA-256 PIN scanner kasir
-    expiryType: "lifetime" | "period"; // "lifetime" (default) atau "period"
-    defaultDurationDays?: number; // jika period (misal 30 / 90 / 365)
     loyaltyReward?: {
-      enabled: boolean;          // program stempel loyalitas
       targetVisits: number;       // misal 5 atau 10
       rewardTitle: string;        // misal "Gratis 1 Kopi" / "Diskon 20%"
+      stampExpiryValue: number;   // jumlah hari/bulan sejak stempel terakhir
+      stampExpiryUnit: "day" | "month";
+      dailyStampLimit: number;    // maksimum stempel per pelanggan per tanggal WIB
     };
   };
 };
@@ -156,14 +155,14 @@ interface MemberRecord {
   tokenHash: string;             // SHA-256 dari memberToken (token diakses pelanggan)
   name: string;
   phone: string;                 // +62812...
-  status: "active" | "expired" | "suspended";
-  expiryType: "lifetime" | "period";
-  expiresAt: string | null;      // null jika lifetime
+  status: "active" | "suspended";
   registeredAt: string;          // ISO UTC
   registeredByUid: string;       // UID owner/staff
   lastVisitedAt: string | null;
   totalVisits: number;
   currentStamps: number;         // progres stempel berjalan (0 s.d. targetVisits)
+  stampDayKey: string;           // YYYY-MM-DD dalam WIB
+  stampDayCount: number;         // stempel yang diberikan pada stampDayKey
   totalRewardsClaimed: number;   // total hadiah yang pernah ditukarkan
   notes?: string;
   updatedAt: string;
@@ -185,7 +184,7 @@ interface MemberRecord {
    - **Anti Brute-Force Rate Limiting**: Percobaan input PIN kasir dibatasi maksimal 5 kali berturut-turut. Jika gagal 5 kali, akses scanner outlet dikunci otomatis selama 15 menit (pencatatan via server rate-limit TTL).
    - **Salted Hashing**: PIN 6-digit disimpan dalam bentuk hash dengan *salt* unik (`sha256(outletId + pin + SERVER_SECRET)`), mencegah serangan *rainbow table*.
    - **Prinsip Hak Akses Terkecil (*Least Privilege*)**: Sesi kasir terisolasi murni untuk menu scanner (registrasi, scan validasi, tambah stempel, klaim reward). Sesi ini tidak dapat mengakses omzet, data keuangan, pengaturan akun owner, atau data sensitif lainnya.
-   - **Masa Aktif Sesi Shift**: Sesi login kasir berlaku selama 12–24 jam (1 shift kerja) via secure HTTP-only cookie, sehingga kasir tidak perlu berulang kali mengetik PIN.
+   - **Masa Aktif Sesi Shift**: Sesi login kasir berlaku tepat 24 jam via secure HTTP-only cookie, sedangkan PIN dan link kasir tetap permanen sampai owner mengubah konfigurasi terkait.
    - **Invalidasi Seketika (*One-Click Revoke*)**: Jika owner mengganti PIN di dashboard, seluruh sesi kasir yang sedang aktif otomatis hangus dan wajib autentikasi ulang.
 
 3. **Perlindungan Data Pelanggan**:
@@ -193,7 +192,7 @@ interface MemberRecord {
 
 4. **Kepatuhan Kebijakan Google Review**:
    - Kartu member digital memuat tautan resmi "Beri Ulasan di Google" untuk mendongkrak reputasi UMKM.
-   - **Dilarang Keras**: Mengaitkan perolehan stempel, hadiah, atau perpanjangan member dengan syarat kewajiban memberikan rating/ulasan bintang 5 di Google.
+   - **Dilarang Keras**: Mengaitkan perolehan stempel atau hadiah dengan syarat kewajiban memberikan rating/ulasan bintang 5 di Google.
 
 ---
 
