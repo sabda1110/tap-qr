@@ -22,9 +22,11 @@ import { LandingFaqSection } from "../organisms/landing-faq-section";
 import { ProductShowcaseSection } from "../organisms/product-showcase-section";
 import { ProductDisplay } from "../molecules/product-display";
 import { useI18n } from "../../i18n";
+import { withNovemberPricing } from "../../lib/order-promotion";
 
 export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) {
   const { language, messages } = useI18n();
+  const pricing = withNovemberPricing(messages.pricing);
 
   return (
     <HomeLayout
@@ -69,13 +71,14 @@ export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) 
             preview={<ProductDisplay content={messages.adminDashboard.printStudio} mascotSrc={cloudMascot} benefits={messages.productShowcase.mascotBenefits} />}
           />
           <PricingSection
-            heading={messages.pricing.heading}
+            heading={pricing.heading}
+            promotion={pricing.promotion}
             language={language}
             note={messages.pricing.note}
             plans={[
-              { content: messages.pricing.pvcCard, icon: CreditCard, order: true, material: "pvc" },
+              { content: pricing.pvcCard, icon: CreditCard, order: true, material: "pvc" },
               {
-                content: messages.pricing.acrylicBoard,
+                content: pricing.acrylicBoard,
                 material: "acrylic",
                 icon: ScanLine,
                 featured: true,

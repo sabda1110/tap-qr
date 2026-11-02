@@ -32,6 +32,7 @@ type PricingSectionProps = {
   };
   plans: PricingPlan[];
   note: string;
+  promotion: { title: string; period: string; originalPrice: string; discountedPrice: string };
 };
 
 export function PricingSection({
@@ -39,6 +40,7 @@ export function PricingSection({
   language,
   plans,
   note,
+  promotion,
 }: PricingSectionProps) {
   return (
     <section
@@ -73,7 +75,7 @@ export function PricingSection({
                 className={`h-full md:order-none ${plan.featured ? "order-first md:pb-8" : "md:pt-8"}`}
                 delay={index * 110}
               >
-                <PricingCard {...plan} language={language} />
+                <PricingCard {...plan} language={language} promotion={promotion} showPromotionSpace={plans.some((entry) => entry.content.originalPrice)} />
               </MotionReveal>
             ))}
           </div>

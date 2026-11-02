@@ -15,7 +15,7 @@ export const seoEn: typeof seoId = {
     },
     home: {
       title: "TapQR — Google Review Stands & NFC Cards for Small Businesses",
-      description: "NFC + QR Google Review stands at Rp69.000/unit for businesses in Pekanbaru, Kerinci, and Duri. Custom designs, reviews and WhatsApp. Shipping confirmed when ordering.",
+      description: "NFC + QR Google Review stands for businesses in Pekanbaru, Kerinci, and Duri. Custom designs, reviews and WhatsApp. Shipping confirmed when ordering.",
     },
     consultation: {
       title: "Google Reviews & Small Business Marketing Consultation | TapQR",

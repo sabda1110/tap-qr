@@ -13,7 +13,7 @@ export const seoId = {
     },
     home: {
       title: "TapQR — Papan Google Review & Kartu NFC untuk UMKM",
-      description: "Papan Google Review NFC + QR Rp69.000/unit untuk UMKM Pekanbaru, Kerinci, dan Duri. Desain bisnis, akses ulasan dan WhatsApp. Ongkir dikonfirmasi saat memesan.",
+      description: "Papan Google Review NFC + QR untuk UMKM Pekanbaru, Kerinci, dan Duri. Desain bisnis, akses ulasan dan WhatsApp. Ongkir dikonfirmasi saat memesan.",
     },
     consultation: {
       title: "Konsultasi Google Review & Pemasaran UMKM | TapQR",

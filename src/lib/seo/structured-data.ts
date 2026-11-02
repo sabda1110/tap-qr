@@ -1,7 +1,7 @@
 import { localizedSeo } from "./metadata";
 import { normalizeSeoOrigin, seoPageUrl, type SeoLanguage, type SeoPage } from "./pages";
 
-type Offer = { name: string; description: string; price: string; kind?: "Product" | "Service" };
+type Offer = { name: string; description: string; price: string; kind?: "Product" | "Service"; validFrom?: string; validThrough?: string };
 export function pageStructuredData(origin: string, language: SeoLanguage, page: SeoPage, offers: Offer[] = []) {
   const base = normalizeSeoOrigin(origin);
   const content = localizedSeo(language);
@@ -18,6 +18,7 @@ export function pageStructuredData(origin: string, language: SeoLanguage, page: 
       "@type": "OfferCatalog", name: content.catalogName,
       itemListElement: offers.map((offer) => ({ "@type": "Offer", priceCurrency: "IDR",
         price: offer.price.replace(/[^0-9]/g, ""), url: `${seoPageUrl(base, language, "home")}#pricing`,
+        ...(offer.validFrom ? { validFrom: offer.validFrom, validThrough: offer.validThrough } : {}),
         itemOffered: { "@type": offer.kind ?? "Product", name: offer.name, description: offer.description },
       })),
     } } : {}),

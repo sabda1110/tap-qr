@@ -11,6 +11,7 @@ export type PricingCardContent = {
   badge: string;
   description: string;
   price: string;
+  originalPrice?: string;
   priceDetail: string;
   features: string[];
   cta: string;
@@ -19,6 +20,8 @@ export type PricingCardContent = {
 
 type PricingCardProps = {
   content: PricingCardContent;
+  promotion: { title: string; period: string; originalPrice: string; discountedPrice: string };
+  showPromotionSpace?: boolean;
   icon: LucideIcon;
   language: Language;
   featured?: boolean;
@@ -30,6 +33,8 @@ type PricingCardProps = {
 
 export function PricingCard({
   content,
+  promotion,
+  showPromotionSpace,
   icon: Icon,
   language,
   featured,
@@ -73,13 +78,23 @@ export function PricingCard({
         {content.description}
       </p>
 
-      <p className="mt-8 flex items-baseline gap-2 whitespace-nowrap">
+      {showPromotionSpace && <div className="mt-6 md:min-h-16">
+        {content.originalPrice && <>
+          <p className={`text-xs font-bold uppercase tracking-wide ${featured ? "text-[#171b22]" : "text-[#ffb332]"}`}>{promotion.title}</p>
+          <p className="mt-2 text-sm"><span className="sr-only">{promotion.originalPrice}: </span><s className={featured ? "text-black/70" : "text-white/70"}>{content.originalPrice}</s></p>
+        </>}
+      </div>}
+      <p className={`${showPromotionSpace ? "mt-3" : "mt-8"} flex flex-wrap items-baseline gap-2`}>
+        {content.originalPrice && <span className="sr-only">{promotion.discountedPrice}: </span>}
         <span className="text-[clamp(2rem,3vw,2.75rem)] leading-none font-bold tracking-[-0.05em] md:text-[clamp(1.5rem,3vw,2.75rem)]">
           {content.price}
         </span>
         <span className={`text-xs ${featured ? "text-black/65" : "text-white/65"}`}>{content.priceDetail}</span>
       </p>
 
+      {showPromotionSpace && <div className="mt-3 md:min-h-12">
+        {content.originalPrice && <p className={`text-xs leading-5 ${featured ? "text-[#303740]" : "text-white/80"}`}>{promotion.period}</p>}
+      </div>}
       <ul className="mt-7 flex flex-1 flex-col gap-3">
         {content.features.map((feature) => (
           <li key={feature} className={`flex gap-3 text-sm leading-6 ${featured ? "text-[#303740]" : "text-white/90"}`}>

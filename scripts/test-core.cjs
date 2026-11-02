@@ -15,3 +15,4 @@ require("../src/server/consultations/consultation-query.repository.server.test.t
 require("../src/lib/consultation-slot-draft.test.ts");
 require("../src/lib/consultation-admin-view.test.ts");
 require("../src/server/consultations/consultation-slot-delete.repository.server.test.ts");
+require("../src/lib/order-promotion.test.ts");

@@ -148,6 +148,7 @@ export const id = {
     },
   },
   pricing: {
+    promotion: { title: "Promo November 2026", period: "Berlaku 1–30 November 2026 (WIB). Belum termasuk ongkir.", originalPrice: "Harga normal", discountedPrice: "Harga promo" },
     heading: {
       kicker: "Harga Sederhana",
       titleStart: "Pilih media TapQR",

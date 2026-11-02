@@ -109,6 +109,19 @@ GEO. Jika analitik rujukan tersedia, ukur kunjungan dan konversi dari layanan AI
 data referrer bisa tidak lengkap. Catat tanggal, pertanyaan, dan sumber kutipan
 saat mengevaluasi jawaban AI secara manual; satu jawaban bukan ukuran ranking.
 
+## Promo tampilan November 2026
+
+Landing page menampilkan PVC Rp70.000 (normal Rp79.000) dan akrilik Rp50.000
+(normal Rp69.000) pada 1–30 November 2026 WIB. Harga lama dicoret; periode dan
+pengecualian ongkir tampil pada kartu harga ID/EN. Perhitungan periode berada di
+`src/lib/order-promotion.ts`; setelah periode berakhir, render berikutnya kembali
+ke harga normal. JSON-LD memakai harga tampilan yang sama dengan masa berlaku.
+FAQ menyebut harga normal dan mengarahkan pembaca ke promo pada bagian harga.
+
+Ini hanya promo tampilan sesuai keputusan pemilik: tidak ada kuota 10 unit,
+reservasi, perubahan transaksi, pencatatan pembayaran, atau perubahan database.
+Harga akhir tetap disepakati melalui WhatsApp sebelum pembayaran.
+
 ## Verifikasi
 
 1. Jalankan `npx tsc --noEmit`, `npm run test:core`, dan `npm run build`.

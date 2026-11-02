@@ -1,3 +1,4 @@
+import { novemberPromotion, withNovemberPricing } from "../order-promotion";
 import { id } from "../../i18n/locales/id";
 import { en } from "../../i18n/locales/en";
 import { publicPageMetadata, serializeJsonLd } from "./metadata";
@@ -10,12 +11,14 @@ export function getSeoOrigin() {
 }
 export function publicPageHead(locale: string, page: SeoPage) {
   const language = locale === "en" ? "en" : "id";
-  const pricing = (language === "en" ? en : id).pricing;
+  const pricing = withNovemberPricing((language === "en" ? en : id).pricing);
+  const offer = (plan: typeof pricing.pvcCard) => plan.originalPrice
+    ? { ...plan, validFrom: novemberPromotion.startsAt, validThrough: novemberPromotion.validThrough } : plan;
   const origin = getSeoOrigin();
   return {
     ...publicPageMetadata(origin, language, page, import.meta.env.VITE_SEO_NOINDEX === "true"),
     scripts: [{ type: "application/ld+json", children: serializeJsonLd(pageStructuredData(origin, language, page,
-      page === "home" ? [pricing.pvcCard, pricing.acrylicBoard, { ...pricing.businessBundle, kind: "Service" }] : [])) }],
+      page === "home" ? [offer(pricing.pvcCard), offer(pricing.acrylicBoard), { ...pricing.businessBundle, kind: "Service" }] : [])) }],
   };
 }
 

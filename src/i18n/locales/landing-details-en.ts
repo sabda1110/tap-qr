@@ -24,7 +24,7 @@ export const landingFaqEn = {
     },
     {
       question: "Looking for an affordable NFC stand? How much does TapQR cost?",
-      answer: "A TapQR acrylic Google Review stand costs Rp69.000 per unit, including NFC and QR in one medium and a design with your business identity. PVC cards cost Rp79.000 per unit. Shipping is excluded. Compare materials, NFC + QR support, and the ability to update links when choosing an NFC stand for your budget.",
+      answer: "The regular price of a TapQR acrylic Google Review stand is Rp69.000 per unit, including NFC and QR in one medium and a design with your business identity. The regular price of a PVC card is Rp79.000 per unit. Current promotions appear in the pricing section. Shipping is excluded. Compare materials, NFC + QR support, and the ability to update links when choosing an NFC stand for your budget.",
     },
     {
       question: "How is an NFC Google Review stand different from a regular QR code?",

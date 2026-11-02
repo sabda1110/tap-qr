@@ -134,6 +134,7 @@ export const en: typeof id = {
     },
   },
   pricing: {
+    promotion: { title: "November 2026 promotion", period: "Valid 1–30 November 2026 (WIB). Shipping excluded.", originalPrice: "Regular price", discountedPrice: "Promotional price" },
     heading: {
       kicker: "Simple Pricing",
       titleStart: "Choose the TapQR media",

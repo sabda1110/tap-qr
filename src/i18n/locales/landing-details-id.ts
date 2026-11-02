@@ -24,7 +24,7 @@ export const landingFaqId = {
     },
     {
       question: "Mencari papan NFC murah, berapa harga TapQR?",
-      answer: "Papan akrilik Google Review TapQR seharga Rp69.000 per unit sudah termasuk NFC dan QR dalam satu media serta desain dengan identitas bisnis. Kartu PVC tersedia seharga Rp79.000 per unit. Harga tersebut belum termasuk ongkir. Bandingkan bahan, kelengkapan NFC + QR, dan kemudahan memperbarui tautan saat memilih papan NFC sesuai anggaran Anda.",
+      answer: "Harga normal papan akrilik Google Review TapQR Rp69.000 per unit sudah termasuk NFC dan QR dalam satu media serta desain dengan identitas bisnis. Harga normal kartu PVC Rp79.000 per unit. Promo yang berlaku tercantum di bagian harga. Harga tersebut belum termasuk ongkir. Bandingkan bahan, kelengkapan NFC + QR, dan kemudahan memperbarui tautan saat memilih papan NFC sesuai anggaran Anda.",
     },
     {
       question: "Apa bedanya papan Google Review NFC dengan QR code biasa?",
