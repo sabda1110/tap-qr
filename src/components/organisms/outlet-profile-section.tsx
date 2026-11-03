@@ -58,6 +58,15 @@ export function OutletProfileSection({
           <div className="outlet-header__copy">
             <h1>{config.name}</h1>
             <p>{config.tagline}</p>
+            {config.address && (
+              <address className="outlet-header__address">
+                <MapPin aria-hidden="true" />
+                <span>
+                  <span className="sr-only">{content.addressLabel}: </span>
+                  {config.address}
+                </span>
+              </address>
+            )}
             {config.status && (
               <span className={`outlet-status outlet-status--${config.status.tone}`}>
                 <span aria-hidden="true" />
@@ -73,33 +82,36 @@ export function OutletProfileSection({
           onHighlightOpen={onHighlightOpen}
         />
 
-        <div className="outlet-greeting">
-          <span aria-hidden="true">↗</span>
-          <p>{config.greeting}</p>
-        </div>
-
         {config.reviewAction && (
-          <a
-            className="outlet-review-button outlet-pressable"
-            href={config.reviewAction.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => onAction(config.reviewAction!)}
-          >
-            <span className="outlet-review-button__label">★ {config.reviewAction.label}</span>
-            <span className="outlet-stars" aria-label={content.ratingLabel}>
-              {[0, 1, 2, 3, 4].map((star) => (
-                <span
-                  key={star}
-                  aria-hidden="true"
-                  style={{ "--star-index": star } as CSSProperties}
-                >
-                  ★
-                </span>
-              ))}
-            </span>
-            <span className="outlet-review-sticker">{content.reviewTime}</span>
-          </a>
+          <div className="outlet-review">
+            <div className="outlet-review__cue">
+              <span>{content.reviewTapHint}</span>
+              <svg aria-hidden="true" viewBox="0 0 48 44" fill="none">
+                <path d="M2 5C30 0 43 12 34 26C31 31 26 35 20 40M20 40L21 29M20 40L31 38" />
+              </svg>
+            </div>
+            <a
+              className="outlet-review-button outlet-pressable"
+              href={config.reviewAction.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => onAction(config.reviewAction!)}
+            >
+              <span className="outlet-review-button__label">★ {config.reviewAction.label}</span>
+              <span className="outlet-stars" aria-label={content.ratingLabel}>
+                {[0, 1, 2, 3, 4].map((star) => (
+                  <span
+                    key={star}
+                    aria-hidden="true"
+                  >
+                    ★
+                  </span>
+                ))}
+              </span>
+              <span className="outlet-review-sticker">{content.reviewTime}</span>
+            </a>
+            <p className="outlet-review__note">{config.greeting}</p>
+          </div>
         )}
 
         <nav aria-label={content.linksLabel} className="outlet-actions">
@@ -139,32 +151,25 @@ export function OutletProfileSection({
           <p className="outlet-empty">{content.empty}</p>
         )}
 
-        <aside className="outlet-info">
-          {config.address && (
-            <p>
-              <MapPin aria-hidden="true" />
-              <span>
-                <span className="sr-only">{content.addressLabel}: </span>
-                {config.address}
-              </span>
-            </p>
-          )}
-          {config.todayHours && (
-            <p>
-              <Clock3 aria-hidden="true" />
-              <span>{config.todayHours}</span>
-            </p>
-          )}
-          {config.allHoursUrl && (
-            <a
-              href={config.allHoursUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {content.viewAllHours} <ArrowUpRight aria-hidden="true" />
-            </a>
-          )}
-        </aside>
+        {(config.todayHours || config.allHoursUrl) && (
+          <aside className="outlet-info">
+            {config.todayHours && (
+              <p>
+                <Clock3 aria-hidden="true" />
+                <span>{config.todayHours}</span>
+              </p>
+            )}
+            {config.allHoursUrl && (
+              <a
+                href={config.allHoursUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {content.viewAllHours} <ArrowUpRight aria-hidden="true" />
+              </a>
+            )}
+          </aside>
+        )}
 
         <footer className="outlet-footer">
           <p>{content.madeFor} <strong>{config.name}</strong></p>

@@ -7,6 +7,7 @@ export const outletProfileEn: typeof outletProfileId = {
   marquee: "THANKS FOR STOPPING BY",
   linksLabel: "Outlet links",
   review: "Review us on Google",
+  reviewTapHint: "Click here!",
   reviewTime: "Just 30 seconds!",
   ratingLabel: "Five stars",
   openNow: "Open now",

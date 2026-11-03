@@ -1,0 +1,105 @@
+.outlet-review-button {
+  position: relative;
+  display: flex;
+  min-height: 100px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 18px 18px 15px;
+  background: var(--primary);
+  color: var(--ink);
+  text-align: center;
+  cursor: pointer;
+}
+
+.outlet-review-button__label {
+  font-size: clamp(17px, 5.3vw, 21px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+.outlet-stars {
+  display: flex;
+  justify-content: center;
+  margin-top: 6px;
+  color: var(--star-color);
+  font-size: 22px;
+  line-height: 1;
+  -webkit-text-stroke: 1.5px var(--ink);
+}
+
+.outlet-review-sticker {
+  position: absolute;
+  top: -13px;
+  right: -8px;
+  padding: 5px 9px;
+  transform: rotate(5deg);
+  border: 3px solid var(--ink);
+  background: var(--accent);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.outlet-review {
+  position: relative;
+  margin-top: 24px;
+  padding-top: 62px;
+}
+
+.outlet-review__note {
+  margin: 16px 8px 0;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.6;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.outlet-review__cue {
+  position: absolute;
+  top: 0;
+  left: 14px;
+  display: inline-flex;
+  align-items: flex-start;
+  pointer-events: none;
+  animation: outlet-review-float 2.8s ease-in-out infinite;
+}
+
+.outlet-review__cue > span {
+  padding: 5px 9px;
+  transform: rotate(-6deg);
+  border: 2px solid var(--ink);
+  background: var(--surface);
+  box-shadow: 2px 2px 0 var(--ink);
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.outlet-review__cue svg {
+  width: 48px;
+  height: 44px;
+  margin-top: 14px;
+  margin-left: -1px;
+  flex: none;
+  stroke: currentColor;
+  stroke-width: 2.5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.outlet-review-button.outlet-pressable:focus-visible {
+  outline-color: var(--ink);
+}
+
+@keyframes outlet-review-float {
+  50% { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .outlet-review__cue { animation: none; }
+}

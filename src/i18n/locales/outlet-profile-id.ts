@@ -5,6 +5,7 @@ export const outletProfileId = {
   marquee: "TERIMA KASIH SUDAH MAMPIR",
   linksLabel: "Tautan outlet",
   review: "Beri review di Google",
+  reviewTapHint: "Klik di sini!",
   reviewTime: "30 detik aja!",
   ratingLabel: "Lima bintang",
   openNow: "Buka sekarang",

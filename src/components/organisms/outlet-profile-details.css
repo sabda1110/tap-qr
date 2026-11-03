@@ -1,3 +1,24 @@
+.outlet-header__address {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin-top: 9px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.outlet-header__address svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  margin-top: 2px;
+}
+
+.outlet-header__address > span { min-width: 0; }
+
 .outlet-info a {
   display: inline-flex;
   min-height: 48px;
@@ -25,30 +46,12 @@
   to { transform: translateX(-50%); }
 }
 
-@keyframes outlet-pulse {
-  50% { transform: scale(1.012); }
-}
-
-@keyframes outlet-star-wiggle {
-  8%, 16% { transform: rotate(-8deg) translateY(-2px); }
-  12%, 20% { transform: rotate(8deg) translateY(-2px); }
-}
-
-@keyframes outlet-sticker-wiggle {
-  50% { transform: rotate(2deg) translateY(1px); }
-}
-
 @media (min-width: 391px) {
   .outlet-profile { border-inline: 4px solid var(--ink); }
 }
 
-.outlet-review-button:active { animation: none; }
-
 @media (prefers-reduced-motion: reduce) {
-  .outlet-marquee__track,
-  .outlet-review-button,
-  .outlet-stars span,
-  .outlet-review-sticker { animation: none; }
+  .outlet-marquee__track { animation: none; }
 
   .outlet-marquee__track { max-width: 100%; }
   .outlet-marquee__track span:first-child { overflow: hidden; text-overflow: ellipsis; }
