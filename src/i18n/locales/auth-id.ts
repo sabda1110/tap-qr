@@ -1,4 +1,12 @@
 export const authId = {
+  cardAccountPrompt: {
+    title: "Aktifkan kartu TapQR",
+    description: "Kami menemukan ID kartu yang siap dihubungkan.",
+    question: "Apakah Anda sudah memiliki akun TapQR?",
+    login: "Ya, saya sudah punya akun",
+    register: "Belum, buat akun baru",
+    close: "Tutup dialog pilihan akun",
+  },
   activation: {
     loginTitle: "Aktifkan kartu Anda",
     registerTitle: "Mulai dengan akun Anda",

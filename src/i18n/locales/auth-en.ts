@@ -1,6 +1,14 @@
 import type { authId } from "./auth-id";
 
 export const authEn: typeof authId = {
+  cardAccountPrompt: {
+    title: "Activate your TapQR card",
+    description: "We found a card ID ready to be connected.",
+    question: "Do you already have a TapQR account?",
+    login: "Yes, I have an account",
+    register: "No, create a new account",
+    close: "Close account choice dialog",
+  },
   activation: {
     loginTitle: "Activate your card",
     registerTitle: "Start with your account",

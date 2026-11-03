@@ -16,6 +16,7 @@ export function Dialog({
   icon: Icon = PanelTop,
   iconClassName,
   headerExtra,
+  size = "default",
 }: {
   title: ReactNode;
   closeLabel: string;
@@ -25,9 +26,10 @@ export function Dialog({
   dismissOnOutsidePress?: boolean;
   dismissible?: boolean;
   description?: string;
-  icon?: LucideIcon;
+  icon?: LucideIcon | null;
   iconClassName?: string;
   headerExtra?: ReactNode;
+  size?: "default" | "compact";
 }) {
   return (
     <DialogPrimitive.Root
@@ -39,17 +41,17 @@ export function Dialog({
     >
       <DialogPrimitive.Portal>
         <DialogPrimitive.Backdrop className="fixed inset-0 z-50 bg-[#172029]/45 backdrop-blur-sm" />
-        <DialogPrimitive.Popup className="fixed top-1/2 left-1/2 z-50 flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-white/70 bg-[#f8fafc] shadow-[0_30px_100px_rgba(23,32,41,0.3)] sm:max-h-[90dvh] sm:rounded-3xl">
+        <DialogPrimitive.Popup className={`fixed top-1/2 left-1/2 z-50 flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] ${size === "compact" ? "max-w-md" : "max-w-4xl"} -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-white/70 bg-[#f8fafc] shadow-[0_30px_100px_rgba(23,32,41,0.3)] sm:max-h-[90dvh] sm:rounded-3xl`}>
           <div className="flex shrink-0 items-start justify-between gap-4 border-b border-black/8 bg-white p-5 sm:px-6 sm:py-5">
             <div className="flex min-w-0 items-start gap-3 sm:gap-4">
-              <span
+              {Icon && <span
                 className={cn(
                   "grid size-11 shrink-0 place-items-center rounded-2xl border border-[#bce8ef] bg-[#e8f8fb] text-[#087e91]",
                   iconClassName,
                 )}
               >
                 <Icon aria-hidden="true" className="size-5" />
-              </span>
+              </span>}
               <div className="min-w-0">
                 <DialogPrimitive.Title className="text-lg leading-7 font-bold tracking-tight break-words sm:text-xl">
                   {title}
