@@ -8,9 +8,10 @@ type AuthLayoutProps = {
   header: ReactNode;
   showcase: ReactNode;
   form: ReactNode;
+  children?: ReactNode;
 };
 
-export function AuthLayout({ mode, header, showcase, form, activation = false }: AuthLayoutProps) {
+export function AuthLayout({ mode, header, showcase, form, activation = false, children }: AuthLayoutProps) {
   const isRegister = mode === "register";
 
   return (
@@ -26,7 +27,7 @@ export function AuthLayout({ mode, header, showcase, form, activation = false }:
           }`}
         >
           <div
-            className={`relative z-10 min-h-[390px] overflow-hidden bg-[#eaf6f8] transition-transform duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none ${
+            className={`relative z-10 hidden min-h-[390px] overflow-hidden bg-[#eaf6f8] transition-transform duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none sm:block ${
               activation ? `order-2 ${isRegister ? "lg:order-2" : "lg:order-1"}` : `lg:absolute lg:inset-y-0 lg:left-0 lg:w-1/2 ${isRegister ? "lg:translate-x-full" : "lg:translate-x-0"}`
             }`}
           >
@@ -42,6 +43,7 @@ export function AuthLayout({ mode, header, showcase, form, activation = false }:
           </div>
         </div>
       </main>
+      {children}
     </div>
   );
 }

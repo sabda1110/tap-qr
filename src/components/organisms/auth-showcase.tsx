@@ -32,7 +32,7 @@ export function AuthShowcase({ content, imageSrc }: AuthShowcaseProps) {
         </p>
       </div>
 
-      <div className="relative z-10 mx-auto my-5 w-full max-w-[300px] sm:max-w-[360px] lg:my-3 lg:max-w-[390px]">
+      <div className="relative z-10 mx-auto my-5 hidden w-full max-w-[300px] sm:block sm:max-w-[360px] lg:my-3 lg:max-w-[390px]">
         <AuthIllustration src={imageSrc} />
       </div>
 

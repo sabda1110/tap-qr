@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useI18n } from "../../i18n";
 import authIllustration from "../assets/images/auth-feature-style.webp";
 import { AuthLayout, type AuthMode } from "../layouts/auth-layout";
 import { AuthForm } from "../organisms/auth-form";
 import { AuthHeader } from "../organisms/auth-header";
 import { AuthShowcase } from "../organisms/auth-showcase";
+import { AuthCardAccountDialog } from "../molecules/auth-card-account-dialog";
 
 type AuthPageProps = {
   mode: AuthMode;
@@ -14,6 +16,7 @@ type AuthPageProps = {
 
 export function AuthPage({ mode, cardId, reason, destination }: AuthPageProps) {
   const { language, messages } = useI18n();
+  const [promptDismissed, setPromptDismissed] = useState(false);
   const authContent = messages.auth[mode];
   return (
     <AuthLayout
@@ -49,6 +52,10 @@ export function AuthPage({ mode, cardId, reason, destination }: AuthPageProps) {
           destination={destination}
         />
       }
-    />
+    >
+      {cardId && !promptDismissed ? (
+        <AuthCardAccountDialog language={language} cardId={cardId} content={messages.auth.cardAccountPrompt} onClose={() => setPromptDismissed(true)} />
+      ) : null}
+    </AuthLayout>
   );
 }
