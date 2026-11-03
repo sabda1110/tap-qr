@@ -27,8 +27,9 @@ assert.match(robots.body, /Sitemap: https:\/\/www.tapqr.id\/sitemap.xml/);
 const image = await app.fetch(new Request("https://www.tapqr.id/tapqr-social.webp"));
 assert.equal(image.status, 200);
 assert.match(image.headers.get("content-type") ?? "", /image\/webp/);
-for (const size of [192, 512]) {
-  const icon = await app.fetch(new Request(`https://www.tapqr.id/icon-${size}.png`));
+for (const size of [96, 192, 512]) {
+  const path = size === 96 ? "/favicon-96x96.png" : `/icon-${size}.png`;
+  const icon = await app.fetch(new Request(`https://www.tapqr.id${path}`));
   assert.equal(icon.status, 200);
   assert.match(icon.headers.get("content-type") ?? "", /image\/png/);
   const bytes = Buffer.from(await icon.arrayBuffer());
@@ -45,7 +46,9 @@ for (const file of (await readdir("public")).filter((file) => /^google[a-f0-9]+\
 for (const path of ["/id", "/en", "/id/tutorial/activation", "/en/tutorial/google-place-id", "/id/tutorial/google-review", "/en/tutorial/google-review"]) {
   const { body } = await request(path);
   const head = body.slice(0, body.indexOf("</head>"));
-  assert.match(head, /<link[^>]*rel="icon"[^>]*sizes="192x192"[^>]*href="\/icon-192\.png"/);
+  const favicons = [...head.matchAll(/<link\b[^>]*rel="icon"[^>]*>/g)];
+  assert.equal(favicons.length, 1, `${path} must declare a single stable primary favicon`);
+  assert.match(favicons[0][0], /type="image\/png"[^>]*sizes="96x96"[^>]*href="\/favicon-96x96\.png"/);
   assert.match(head, /name="google-site-verification" content="s89d2JcWJ9yMygTWR00ELWiZQuHzQ2vpKIfAgokmiY8"/);
   const canonical = head.match(/<link[^>]*rel="canonical"[^>]*>/)?.[0] ?? "";
   assert.ok(canonical.includes(`href="https://www.tapqr.id${path}"`), `${path} canonical must be in server HTML`);

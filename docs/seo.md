@@ -61,12 +61,25 @@ tautan, 1536 × 1024. URL gambar absolut dan alt tersedia di dua bahasa. Font
 tetap memakai paket lokal yang sudah ada; stylesheet Google Fonts ganda dihapus.
 Devtools hanya tampil dalam mode pengembangan, dan zoom mobile tetap diizinkan.
 
-Favicon pencarian memakai logo PNG 192 × 192 pada URL stabil `/icon-192.png`,
-selain SVG dan ikon browser kecil. Logo organisasi memakai ImageObject PNG
-512 × 512; nama WebSite adalah TapQR dengan alternatif Tap QR dan tapqr.id.
+Favicon utama memakai satu deklarasi `rel="icon"` PNG 96 × 96 pada URL stabil
+`/favicon-96x96.png`. SVG tidak lagi menjadi pilihan favicon pertama; panduan
+Google saat ini mencantumkan PNG/ICO dan format raster lain sebagai format
+pencarian yang didukung. File SVG dan ikon ukuran lain tetap tersedia sebagai
+aset, sementara manifest memakai PNG 192/512 dan apple-touch-icon memakai PNG 180.
+Logo organisasi memakai ImageObject PNG 512 × 512; nama WebSite adalah TapQR
+dengan alternatif Tap QR dan tapqr.id.
 Gambar Open Graph landing tetap memakai ilustrasi hero, bukan favicon.
 Setelah deploy, minta crawling ulang beranda lewat URL Inspection Search Console.
 Google memilih waktu pemrosesan dan tampilan favicon; perubahan tidak instan.
+Pemeriksaan produksi 3 November 2026: apex mengarah ke www, root mengarah ke `/id`,
+halaman akhir HTTP 200/index, PNG 96 HTTP 200/image/png (juga dengan user-agent
+Googlebot-Image), ukuran dan byte sama dengan aset lokal, serta robots mengizinkan
+akses. Ini pemeriksaan akses publik, bukan bukti Google telah mengambil ikon.
+Tiga hari tanpa ikon belum membuktikan kegagalan: dokumentasi Google menyebut
+beberapa hari hingga beberapa minggu dan tidak menjamin penayangan favicon.
+Setelah deploy, inspeksi URL `https://www.tapqr.id/` dan halaman akhirnya `/id`
+di Search Console, lalu minta pengindeksan ulang. Jangan mengganti URL ikon
+berulang kali atau menambahkan query timestamp untuk memaksa pembaruan.
 
 ## Fokus pencarian landing page
 
@@ -155,6 +168,7 @@ impresi/klik, canonical pilihan Google, dan error crawling setelah deploy.
 
 - [Google AI features and your website](https://developers.google.com/search/docs/appearance/ai-features)
 - [TanStack Start GEO](https://tanstack.com/start/latest/docs/framework/react/guide/geo)
+- [Favicon Google](https://developers.google.com/search/docs/appearance/favicon-in-search)
 - [Sitemap Google](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)
 - [Canonical](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls)
 - [Versi bahasa/hreflang](https://developers.google.com/search/docs/specialty/international/localized-versions)
