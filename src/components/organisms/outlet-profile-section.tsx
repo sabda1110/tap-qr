@@ -84,12 +84,6 @@ export function OutletProfileSection({
 
         {config.reviewAction && (
           <div className="outlet-review">
-            <div className="outlet-review__cue">
-              <span>{content.reviewTapHint}</span>
-              <svg aria-hidden="true" viewBox="0 0 48 44" fill="none">
-                <path d="M2 5C30 0 43 12 34 26C31 31 26 35 20 40M20 40L21 29M20 40L31 38" />
-              </svg>
-            </div>
             <a
               className="outlet-review-button outlet-pressable"
               href={config.reviewAction.url}
@@ -97,6 +91,12 @@ export function OutletProfileSection({
               rel="noopener noreferrer"
               onClick={() => onAction(config.reviewAction!)}
             >
+              <span className="outlet-review__cue">
+                <span>{content.reviewTapHint}</span>
+                <svg aria-hidden="true" viewBox="0 0 48 44" fill="none">
+                  <path d="M2 5C30 0 43 12 34 26C31 31 26 35 20 40M20 40L21 29M20 40L31 38" />
+                </svg>
+              </span>
               <span className="outlet-review-button__label">★ {config.reviewAction.label}</span>
               <span className="outlet-stars" aria-label={content.ratingLabel}>
                 {[0, 1, 2, 3, 4].map((star) => (
