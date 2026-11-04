@@ -10,6 +10,7 @@ type PrintCardScaledFrameProps = {
   maxWidth?: number;
   className?: string;
   children: ReactNode;
+  "data-print-card-canvas"?: string;
 };
 
 /**
@@ -23,6 +24,7 @@ export function PrintCardScaledFrame({
   maxWidth = BASE_CARD_WIDTH,
   className = "",
   children,
+  "data-print-card-canvas": dataPrintCardCanvas,
 }: PrintCardScaledFrameProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [computedWidth, setComputedWidth] = useState<number>(targetWidth ?? maxWidth);
@@ -64,6 +66,7 @@ export function PrintCardScaledFrame({
   return (
     <div
       ref={containerRef}
+      data-print-card-canvas={dataPrintCardCanvas}
       className={`print-card-scaled-frame relative mx-auto w-full overflow-hidden rounded-2xl ${className}`}
       style={{
         height: computedHeight,

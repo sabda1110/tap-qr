@@ -3,8 +3,8 @@ import { wifiPrintEn } from "./wifi-print-en";
 
 export const printStudioEn: typeof printStudioId = {
   paper: {
-    title: "Print paper", a4: "A4 paper", artwork: "Match design size",
-    help: "A4 centers the design at its selected size. Print at actual size / 100% scale, not Fit to page. Match design size creates an A7/A6/4R/A5 PDF page; automatic zoom can make them look identical. Designs larger than A4 use their own page size.",
+    title: "Print paper", a4: "A4 paper", a3: "A3 paper", artwork: "Match design size",
+    help: "A4 and A3 arrange cards smartly on a single page matching card dimensions. Print at actual size / 100% scale, not Fit to page. Match design size creates a page matching original card dimensions.",
   },
   wifi: wifiPrintEn,
   materialSelector: { title: "Print material", acrylic: "Acrylic Stand", pvc: "PVC Card", empty: "No cards of this material are ready to print. You can still preview the design; add stock in Inventory to print." },
@@ -55,6 +55,8 @@ export const printStudioEn: typeof printStudioId = {
   bulkSelectedCount: "{count} cards ready to print",
   bulkPrintPdf: "Print / Save Bulk PDF",
   bulkEmptySelection: "Select at least 1 card to generate",
+  cardTheme: "Card theme",
+  preparingImages: "Preparing card images...",
   searchCardPlaceholder: "Search card ID or outlet...",
   printPdfHint: "Print Shop Standard: Select 'Save as PDF' in the browser print dialog to generate a high-resolution multi-page vector PDF.",
   confirmDialogTitle: "Confirm Card Printing",

@@ -2,8 +2,8 @@ import { wifiPrintId } from "./wifi-print-id";
 
 export const printStudioId = {
   paper: {
-    title: "Kertas cetak", a4: "Kertas A4", artwork: "Sesuai ukuran desain",
-    help: "A4 menampilkan desain sesuai ukuran pilihan di tengah kertas. Cetak dengan ukuran aktual / skala 100%, bukan Sesuaikan halaman. Pilihan sesuai desain membuat halaman PDF seukuran A7/A6/4R/A5; zoom otomatis dapat membuatnya terlihat sama. Desain yang melebihi A4 memakai halaman sesuai desain.",
+    title: "Kertas cetak", a4: "Kertas A4", a3: "Kertas A3", artwork: "Sesuai ukuran desain",
+    help: "Pilihan A4 dan A3 menata kartu secara cerdas dalam satu halaman sesuai ukuran kartu. Cetak dengan ukuran aktual / skala 100%, bukan Sesuaikan halaman. Pilihan sesuai desain membuat halaman seukuran kartu asli.",
   },
   wifi: wifiPrintId,
   materialSelector: { title: "Bahan media cetak", acrylic: "Papan Akrilik", pvc: "Kartu PVC", empty: "Belum ada kartu bahan ini yang siap dicetak. Preview tetap tersedia; tambahkan stok di Inventaris untuk mencetak." },
@@ -54,6 +54,8 @@ export const printStudioId = {
   bulkSelectedCount: "{count} kartu siap cetak",
   bulkPrintPdf: "Cetak / Simpan PDF Massal",
   bulkEmptySelection: "Centang minimal 1 kartu untuk digenerate",
+  cardTheme: "Tema kartu",
+  preparingImages: "Menyiapkan gambar kartu...",
   searchCardPlaceholder: "Cari ID kartu atau outlet...",
   printPdfHint: "Standar Percetakan: Gunakan opsi 'Save as PDF' di dialog cetak untuk menghasilkan berkas PDF vektor multi-halaman beresolusi tinggi.",
   confirmDialogTitle: "Konfirmasi Cetak Standee / Kartu",

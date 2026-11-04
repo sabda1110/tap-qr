@@ -41,6 +41,7 @@ export function PrintStudioStyles({ dimensions, paper = "a4" }: { dimensions: Pr
         position: absolute !important;
         transform-origin: top left !important;
       }
+      .tapqr-print-artwork .print-canvas-root,
       .tapqr-print-artwork > .print-canvas-root {
         width: 100% !important;
         height: 100% !important;
@@ -50,6 +51,25 @@ export function PrintStudioStyles({ dimensions, paper = "a4" }: { dimensions: Pr
         margin: 0 !important;
         box-shadow: none !important;
         transition: none !important;
+      }
+      .tapqr-print-grid-sheet {
+        display: grid !important;
+        width: 100% !important;
+        height: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .tapqr-print-cell {
+        position: relative !important;
+        overflow: hidden !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      .tapqr-print-img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+        display: block !important;
       }
     }
   `}</style>;

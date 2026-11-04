@@ -4,7 +4,8 @@ import type { wifiPrintId } from "../../i18n/locales/wifi-print-id";
 import type { PrintThemeKey } from "../../lib/print-themes";
 
 export type AdminPrintStudioContent = {
-  paper: { title: string; a4: string; artwork: string; help: string };
+  paper: { title: string; a4: string; a3: string; artwork: string; help: string };
+  cardTheme?: string;
   wifi: typeof wifiPrintId;
   materialSelector: { title: string; acrylic: string; pvc: string; empty: string };
   printLabels: ReviewCardLabels;
