@@ -10,6 +10,7 @@ import type {
 import { AdminDashboardLayout } from "../layouts/admin-dashboard-layout";
 import { OutletListSection } from "../organisms/outlet-list-section";
 import { OutletDetail } from "../molecules/outlet-detail";
+import { PlaceIdGuide } from "../molecules/place-id-guide";
 import { OutletCardEditForm } from "../organisms/outlet-card-edit-form";
 import { OutletEditForm } from "../organisms/outlet-edit-form";
 import { OutletCreateForm } from "../organisms/outlet-create-form";
@@ -110,6 +111,8 @@ export function AdminOutletsPage({
                 card={selectedCard}
                 content={content}
                 activation={messages.adminDashboard.activation}
+                googleReviewInput="placeId"
+                placeIdGuide={<PlaceIdGuide />}
                 onBusyChange={setBusy}
                 onCancel={() => setSelectedCardId(null)}
                 onSaved={async () => {

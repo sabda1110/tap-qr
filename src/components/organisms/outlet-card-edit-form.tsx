@@ -9,6 +9,7 @@ import {
   type CardLinksEditValues,
 } from "../../server/outlets/outlet.schemas";
 import { updateAdminOutletCardLinks } from "../../server/outlets/outlet.functions";
+import { PlaceIdGuide } from "../molecules/place-id-guide";
 import { OutletLinksEditor } from "../molecules/outlet-links-editor";
 import { Button } from "../ui/button";
 import { DialogBody, DialogFooter } from "../ui/dialog";
@@ -24,8 +25,8 @@ export function OutletCardEditForm({
   onCancel,
   onSaved,
   saveCardLinks = updateAdminOutletCardLinks,
-  googleReviewInput = "search",
-  placeIdGuide,
+  googleReviewInput = "placeId",
+  placeIdGuide = <PlaceIdGuide />,
 }: {
   outletId: string;
   card: OutletDetail["cards"][number];

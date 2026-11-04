@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 import type { UseFormReturn } from "react-hook-form";
-import { ExternalLink } from "lucide-react";
 
 import type { Messages } from "../../i18n";
 import type { CardLinksEditValues } from "../../server/outlets/outlet.schemas";
 import { CustomInputText } from "../elements/custom-input-text";
 import { WhatsAppNumberInput } from "../elements/whatsapp-number-input";
 import { ActivationGoogleSearch } from "./activation-google-search";
+import { PlaceIdGuide } from "./place-id-guide";
 import { FormField } from "../ui/form";
 
 type Props = {
@@ -70,20 +70,7 @@ export function OutletLinkInputs({
                   reserveMessageSpace
                   error={fieldState.error ? content.invalid : undefined}
                 />
-                {placeIdGuide ?? (
-                  <p className="text-xs leading-5 text-slate-500">
-                    {claim.placeIdGuide.quick}{" "}
-                    <a
-                      href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1 font-bold text-[#087e91] underline underline-offset-2"
-                    >
-                      {claim.placeIdGuide.googleDocs}
-                      <ExternalLink aria-hidden="true" className="size-3" />
-                    </a>
-                  </p>
-                )}
+                {placeIdGuide ?? <PlaceIdGuide />}
               </div>
             );
           }

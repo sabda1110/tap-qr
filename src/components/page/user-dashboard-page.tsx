@@ -16,6 +16,7 @@ import { UserDashboardOverview } from "../organisms/user-dashboard-overview";
 import { UserOutletsSection } from "../organisms/user-outlets-section";
 import { Dialog, DialogBody } from "../ui/dialog";
 import { Button } from "../ui/button";
+import { PlaceIdGuide } from "../molecules/place-id-guide";
 
 const CardClaimDialog = lazy(() =>
   import("../organisms/card-claim-dialog").then((module) => ({
@@ -77,29 +78,6 @@ export function UserDashboardPage({
     await router.invalidate();
     setEditor(null);
   };
-  const placeIdGuide = (
-    <p className="text-xs leading-5 text-[#69737d]">
-      {messages.cardClaim.placeIdGuide.quick}{" "}
-      <a
-        href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder"
-        target="_blank"
-        rel="noreferrer"
-        className="font-semibold text-[#087e91] underline"
-      >
-        {messages.cardClaim.placeIdGuide.googleDocs}
-      </a>
-      .{" "}
-      <a
-        href={"/" + language + "/tutorial/google-place-id"}
-        target="_blank"
-        rel="noreferrer"
-        className="font-semibold text-[#087e91] underline"
-      >
-        {messages.cardClaim.placeIdGuide.tutorial}
-      </a>
-      .
-    </p>
-  );
   return (
     <UserDashboardLayout
       activeItem="dashboard"
@@ -221,7 +199,7 @@ export function UserDashboardPage({
                 activation={messages.adminDashboard.activation}
                 saveCardLinks={updateUserOutletCardLinks}
                 googleReviewInput="placeId"
-                placeIdGuide={placeIdGuide}
+                placeIdGuide={<PlaceIdGuide />}
                 onBusyChange={setBusy}
                 onCancel={() => setEditor(null)}
                 onSaved={saved}
