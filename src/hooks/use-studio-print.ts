@@ -6,8 +6,9 @@ import type { AdminPrintStudioContent } from "../components/organisms/admin-prin
 import type { PrintCardOption } from "../server/print/admin-print.repository.server";
 import { useToast } from "../components/ui/toaster";
 
-export function useStudioPrint({ cards, cardIds, content, closeDialog }: {
+export function useStudioPrint({ cards, cardIds, content, closeDialog, onPrepareImages }: {
   cards: PrintCardOption[]; cardIds: string[]; content: AdminPrintStudioContent; closeDialog: () => void;
+  onPrepareImages?: (cardIds: string[]) => Promise<void>;
 }) {
   const router = useRouter();
   const { showToast } = useToast();
@@ -28,7 +29,14 @@ export function useStudioPrint({ cards, cardIds, content, closeDialog }: {
         },
         print: async () => {
           closeDialog();
-          await new Promise<void>((resolve) => window.setTimeout(resolve, 150));
+          if (onPrepareImages) {
+            try {
+              await onPrepareImages(cardIds);
+            } catch (err) {
+              console.warn("[html-to-image] Preparation failed, using standard print:", err);
+            }
+          }
+          await new Promise<void>((resolve) => window.setTimeout(resolve, 200));
           window.print();
         },
         refresh: async () => {

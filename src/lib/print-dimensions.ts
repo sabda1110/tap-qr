@@ -9,12 +9,16 @@ export const BASE_CARD_WIDTH = 380;
 export const BASE_CARD_HEIGHT = 550;
 const CSS_PIXELS_PER_MM = 96 / 25.4;
 
-export type PrintPaper = "a4" | "artwork";
+export type PrintPaper = "a4" | "a3" | "artwork";
 
 export function getPrintPaper(widthMm: number, heightMm: number, paper: PrintPaper) {
   if (paper === "a4") {
     if (widthMm <= 210 && heightMm <= 297) return { widthMm: 210, heightMm: 297 };
     if (widthMm <= 297 && heightMm <= 210) return { widthMm: 297, heightMm: 210 };
+  }
+  if (paper === "a3") {
+    if (widthMm <= 297 && heightMm <= 420) return { widthMm: 297, heightMm: 420 };
+    if (widthMm <= 420 && heightMm <= 297) return { widthMm: 420, heightMm: 297 };
   }
   return { widthMm, heightMm };
 }

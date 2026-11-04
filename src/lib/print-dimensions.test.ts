@@ -21,6 +21,8 @@ test("standard presets retain different physical sizes on the same A4 paper", ()
 test("custom sheets use landscape A4 if possible and preserve oversize dimensions", () => {
   assert.deepEqual(getPrintPaper(250, 180, "a4"), { widthMm: 297, heightMm: 210 });
   assert.deepEqual(getPrintPaper(400, 500, "a4"), { widthMm: 400, heightMm: 500 });
+  assert.deepEqual(getPrintPaper(250, 180, "a3"), { widthMm: 297, heightMm: 420 });
+  assert.deepEqual(getPrintPaper(350, 250, "a3"), { widthMm: 420, heightMm: 297 });
 });
 
 test("acrylic artwork fits standard presets without stretching or overflowing", () => {

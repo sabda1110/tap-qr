@@ -4,10 +4,10 @@ import type { PrintThemeKey } from "../elements/nfc-tap-target";
 import type { PrintDimensions } from "../elements/print-size-selector";
 import { PrintCardScaledFrame } from "../elements/print-card-scaled-frame";
 import { PrintCropMarks } from "../elements/print-crop-marks";
-import { PrintCardCanvas } from "./print-card-canvas";
+import { MaterialCardCanvas } from "./material-card-canvas";
 import type { ReviewCardLabels } from "./classic-review-card";
 import type { CardMaterial } from "../../lib/firebase/firestore-schema";
-import { OrderPvcCard, PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "./order-pvc-card";
+import { PVC_CARD_HEIGHT, PVC_CARD_WIDTH } from "./order-pvc-card";
 
 type AdminPrintPreviewProps = {
   labels: ReviewCardLabels;
@@ -42,24 +42,17 @@ export function AdminPrintPreview({
     dimensions.preset !== "custom" ? ` (${dimensions.preset.toUpperCase()})` : ""
   }`;
 
-  const artwork = material === "pvc" ? (
-    <OrderPvcCard
+  const artwork = (
+    <MaterialCardCanvas
       cardId={cardId}
-      copy={{ preHeadline, headline, footer: footerNote, action: labels.review, tap: labels.tap, tapHelp: labels.tapHelp, scan: labels.scan, scanHelp: labels.scanHelp, or: labels.or, qrAlt: labels.qrAlt }}
-      qrDataUrl={qrDataUrl}
-      showMonster={showMonster}
-      value={{ product: "social", theme }}
-    />
-  ) : (
-    <PrintCardCanvas
+      material={material}
       labels={labels}
-      cardId={cardId}
-      footerNote={footerNote}
-      headline={headline}
-      preHeadline={preHeadline}
-      qrDataUrl={qrDataUrl}
-      showMonster={showMonster}
       theme={theme}
+      showMonster={showMonster}
+      preHeadline={preHeadline}
+      headline={headline}
+      footerNote={footerNote}
+      qrDataUrl={qrDataUrl}
     />
   );
 
@@ -76,17 +69,27 @@ export function AdminPrintPreview({
       </div>
 
       <PrintDocument>
-        <PrintSheet dimensions={dimensions} cropMarks={showCropMarks}
-          {...(material === "pvc" ? { canvasWidth: PVC_CARD_WIDTH, canvasHeight: PVC_CARD_HEIGHT } : {})}>
+        <PrintSheet
+          dimensions={dimensions}
+          cropMarks={showCropMarks}
+          {...(material === "pvc" ? { canvasWidth: PVC_CARD_WIDTH, canvasHeight: PVC_CARD_HEIGHT } : {})}
+        >
           {artwork}
         </PrintSheet>
       </PrintDocument>
       {/* Material-aware card preview */}
       <div className="relative flex w-full min-w-0 flex-col items-center justify-center p-3">
         {showCropMarks && <PrintCropMarks />}
-        <PrintCardScaledFrame {...(material === "pvc" ? { canvasWidth: PVC_CARD_WIDTH, canvasHeight: PVC_CARD_HEIGHT, maxWidth: 516 } : { maxWidth: Math.min(340, 340 * dimensions.widthMm / 148) })}>
-          {artwork}
-        </PrintCardScaledFrame>
+        <div className="w-full">
+          <PrintCardScaledFrame
+            data-print-card-canvas={cardId}
+            {...(material === "pvc"
+              ? { canvasWidth: PVC_CARD_WIDTH, canvasHeight: PVC_CARD_HEIGHT, maxWidth: 516 }
+              : { maxWidth: Math.min(340, (340 * dimensions.widthMm) / 148) })}
+          >
+            {artwork}
+          </PrintCardScaledFrame>
+        </div>
 
         {/* Acrylic stand base */}
         {material === "acrylic" && <div className="mt-3 h-4 w-3/4 rounded-full bg-gradient-to-r from-black/10 via-black/25 to-black/10 shadow-lg blur-xs" />}

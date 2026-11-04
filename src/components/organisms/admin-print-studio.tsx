@@ -17,6 +17,7 @@ import type { CardMaterial } from "../../lib/firebase/firestore-schema";
 import { PVC_WIDTH_MM, PVC_HEIGHT_MM } from "../../lib/print-dimensions";
 import { PrintMaterialSelector } from "../molecules/print-material-selector";
 import { useBrandedQrDataUrl } from "../../hooks/use-branded-qr-data-url";
+import { captureCardElementsByIds } from "../../lib/card-html-to-image";
 export type { AdminPrintStudioContent, AdminPrintStudioProps } from "./admin-print-studio.types";
 function getMaterialDimensions(material: CardMaterial): PrintDimensions {
   return material === "pvc"
@@ -39,6 +40,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
   const selectedBulkCardIds = requestedBulkCardIds.filter((id) =>
     materialCards.some((card) => card.cardId === id));
   const [theme, setTheme] = useState<PrintThemeKey>("google");
+  const [cardThemes, setCardThemes] = useState<Record<string, PrintThemeKey>>({});
   const [showMonster, setShowMonster] = useState(true);
   const [showCropMarks, setShowCropMarks] = useState(false);
   const [paper, setPaper] = useState<PrintPaper>("a4");
@@ -55,11 +57,16 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
   }, [selectedMaterial]);
   const handleSelectTheme = (newTheme: PrintThemeKey) => {
     setTheme(newTheme);
+    setCardThemes({});
     const defaults = content.themes[newTheme];
     setPreHeadline(defaults.defaultPreHeadline);
     setHeadline(defaults.defaultHeadline);
     setFooterNote(defaults.defaultFooter);
   };
+
+  const handleCardThemeChange = useCallback((cardId: string, newTheme: PrintThemeKey) => {
+    setCardThemes((prev) => ({ ...prev, [cardId]: newTheme }));
+  }, []);
 
   const handleResetDefaults = () => {
     const defaults = content.themes[theme];
@@ -72,9 +79,14 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
     setConfirmDialogOpen(true);
   }, []);
 
+  const handlePrepareImages = useCallback(async (ids: string[]) => {
+    await captureCardElementsByIds(ids);
+  }, []);
+
   const { handleConfirmPrint, isUpdatingStatus } = useStudioPrint({
     cards, cardIds: activeTab === "single" ? (selectedCardId ? [selectedCardId] : []) : selectedBulkCardIds,
     content, closeDialog: () => setConfirmDialogOpen(false),
+    onPrepareImages: handlePrepareImages,
   });
 
   const handleToggleBulkCard = (cardId: string) => {
@@ -203,6 +215,7 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
               cardMaterials={Object.fromEntries(cards.map((card) => [card.cardId, card.material]))}
               theme={theme}
               dimensions={dimensions}
+              paper={paper}
               showMonster={showMonster}
               showCropMarks={showCropMarks}
               preHeadline={preHeadline}
@@ -211,6 +224,11 @@ export function AdminPrintStudio({ cards, initialCard, content, locale }: AdminP
               locale={locale}
               onPrintBulk={handleOpenConfirmDialog}
               printHint={content.printPdfHint}
+              cardThemes={cardThemes}
+              onCardThemeChange={handleCardThemeChange}
+              themeLabels={content.themes}
+              themeDefaults={content.themes}
+              cardThemeLabel={content.cardTheme}
             />
           )}
         </div>
