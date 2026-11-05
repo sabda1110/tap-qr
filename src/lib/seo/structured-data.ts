@@ -1,7 +1,7 @@
 import { localizedSeo } from "./metadata";
 import { normalizeSeoOrigin, seoPageUrl, type SeoLanguage, type SeoPage } from "./pages";
 
-type Offer = { name: string; description: string; price: string; kind?: "Product" | "Service"; validFrom?: string; validThrough?: string };
+type Offer = { name: string; description: string; price: string; kind?: "Service"; validFrom?: string; validThrough?: string };
 export function pageStructuredData(origin: string, language: SeoLanguage, page: SeoPage, offers: Offer[] = []) {
   const base = normalizeSeoOrigin(origin);
   const content = localizedSeo(language);
@@ -16,10 +16,13 @@ export function pageStructuredData(origin: string, language: SeoLanguage, page: 
     description: content.pages.home.description,
     ...(offers.length ? { hasOfferCatalog: {
       "@type": "OfferCatalog", name: content.catalogName,
-      itemListElement: offers.map((offer) => ({ "@type": "Offer", priceCurrency: "IDR",
+      // The landing page lists different products, not a single-product detail page.
+      // Keep accurate catalog offers without emitting ineligible Product snippets.
+      itemListElement: offers.map((offer) => ({ "@type": "Offer", name: offer.name,
+        description: offer.description, priceCurrency: "IDR",
         price: offer.price.replace(/[^0-9]/g, ""), url: `${seoPageUrl(base, language, "home")}#pricing`,
         ...(offer.validFrom ? { validFrom: offer.validFrom, validThrough: offer.validThrough } : {}),
-        itemOffered: { "@type": offer.kind ?? "Product", name: offer.name, description: offer.description },
+        ...(offer.kind === "Service" ? { itemOffered: { "@type": "Service", name: offer.name, description: offer.description } } : {}),
       })),
     } } : {}),
   };

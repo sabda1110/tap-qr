@@ -52,6 +52,17 @@ WebPage dan BreadcrumbList. Tidak ada rating, review, stok, atau tanggal
 pembaruan yang dibuat-buat. JSON-LD di-escape sebelum dimasukkan ke HTML.
 Referensi Organization, WebSite, dan breadcrumb didefinisikan dalam graph setiap
 halaman. Paket Bisnis memakai Service karena menggabungkan produk dan setup.
+OfferCatalog menyimpan nama, deskripsi, harga IDR, dan URL pada setiap Offer.
+Homepage berisi beberapa produk berbeda, sehingga tidak menerbitkan node Product
+untuk product snippets. Product bersarang tanpa offers sebelumnya menyebabkan
+error Search Console “Either offers, review, or aggregateRating should be specified”.
+Jangan menambahkan rating buatan atau mengubah barang fisik menjadi Service untuk
+menghindari validasi. Product snippets hanya digunakan pada halaman yang fokus
+pada satu produk/variannya dan memiliki data penawaran yang lengkap.
+Setelah deploy, uji beranda dengan Rich Results Test, lalu gunakan Validate Fix
+pada laporan Product snippets dan minta pengindeksan ulang melalui URL Inspection.
+Referensi: https://developers.google.com/search/docs/appearance/structured-data/product-snippet#technical-guidelines
+
 Root `/` memakai redirect permanen 308 ke `/id`. Panduan Google Review memakai
 SSR, heading terstruktur, daftar isi, sumber Google, serta tautan dari footer
 dan panduan Place ID. Tidak ada halaman kota duplikat atau janji ranking.

@@ -5,6 +5,9 @@ import { localizedSeo, privateRobots, publicPageMetadata, serializeJsonLd } from
 import { DEFAULT_SEO_ORIGIN, normalizeSeoOrigin, seoLanguages, seoPagePaths, seoPageUrl, type SeoPage } from "./pages";
 import { pageStructuredData } from "./structured-data";
 import { id } from "../../i18n/locales/id";
+import { pricingId } from "../../i18n/locales/pricing-id";
+import { pricingEn } from "../../i18n/locales/pricing-en";
+import { novemberPromotion, withNovemberPricing } from "../order-promotion";
 
 test("SEO origin stays on the explicit public domain and rejects local or unsafe configuration", () => {
   for (const value of [undefined, "", "http://localhost:3000", "https://localhost", "javascript:alert(1)", "https://user:password@example.com"]) {
@@ -72,4 +75,37 @@ test("guide structured data resolves organization, website and breadcrumb refere
   assert.ok(ids.has(page.isPartOf["@id"]));
   assert.ok(ids.has(page.about["@id"]));
   assert.ok(ids.has(page.breadcrumb!["@id"]));
+});
+
+// A multi-product landing page is a catalog, not a Product rich-result page.
+// Traverse recursively so a nested itemOffered cannot reintroduce the GSC error.
+test("landing catalogs preserve localized prices without emitting Product snippets", () => {
+  function assertNoProduct(value: unknown): void {
+    if (!value || typeof value !== "object") return;
+    const node = value as Record<string, unknown>;
+    const types = Array.isArray(node["@type"]) ? node["@type"] : [node["@type"]];
+    assert.ok(!types.includes("Product"), "A catalog must not emit standalone Product snippets");
+    for (const child of Object.values(node)) assertNoProduct(child);
+  }
+  for (const language of seoLanguages) {
+    for (const date of ["2026-11-05T10:00:00+07:00", novemberPromotion.endsAt]) {
+      const pricing = withNovemberPricing(language === "id" ? pricingId : pricingEn, Date.parse(date));
+      const schema = pageStructuredData(DEFAULT_SEO_ORIGIN, language, "home", [
+        pricing.pvcCard, pricing.acrylicBoard, { ...pricing.businessBundle, kind: "Service" },
+      ]);
+      assertNoProduct(schema);
+      const organization = schema["@graph"].find((node) => node["@type"] === "Organization");
+      assert.ok(organization && "hasOfferCatalog" in organization);
+      const offers = organization.hasOfferCatalog!.itemListElement;
+      const expected = date === novemberPromotion.endsAt ? ["79000", "69000", "499000"] : ["70000", "50000", "499000"];
+      assert.deepEqual(offers.map((offer) => offer.price), expected);
+      for (const offer of offers) {
+        assert.ok(offer.name && offer.description);
+        assert.equal(offer.priceCurrency, "IDR");
+        assert.equal(offer.url, `${DEFAULT_SEO_ORIGIN}/${language}#pricing`);
+      }
+      assert.equal(offers[2].itemOffered?.["@type"], "Service");
+      assert.doesNotMatch(serializeJsonLd(schema), /aggregateRating|ratingValue|reviewCount|InStock/);
+    }
+  }
 });
