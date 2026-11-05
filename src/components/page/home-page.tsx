@@ -67,6 +67,7 @@ export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) 
             ]}
           />
           <ProductShowcaseSection
+            language={language}
             content={messages.productShowcase}
             preview={<ProductDisplay content={messages.adminDashboard.printStudio} mascotSrc={cloudMascot} benefits={messages.productShowcase.mascotBenefits} />}
           />

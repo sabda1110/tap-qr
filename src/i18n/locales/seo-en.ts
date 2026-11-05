@@ -15,7 +15,7 @@ export const seoEn: typeof seoId = {
     },
     home: {
       title: "Google Review Stands for Pekanbaru & NFC Cards | TapQR",
-      description: "Order NFC + QR Google Review stands for businesses in Pekanbaru, Kerinci, and Duri. Custom designs and editable links. Confirm shipping on WhatsApp.",
+      description: "Acrylic Google Review stands and NFC + QR cards for businesses in Pekanbaru, Kerinci, and Duri. Custom designs, editable links. Order via WhatsApp.",
     },
     consultation: {
       title: "Google Reviews & Small Business Marketing Consultation | TapQR",

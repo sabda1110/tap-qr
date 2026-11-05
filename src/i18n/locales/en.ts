@@ -89,7 +89,7 @@ export const en: typeof id = {
     titleAccent: "Google Reviews",
     titleEnd: "& Returning Customers",
     description:
-      "Help customers leave a Google review, connect to WiFi, open WhatsApp, browse your menu, and follow your social media—all from a single tap or scan.",
+      "Acrylic Google Review stands and NFC + QR cards for your business. Customers tap or scan to leave a review on Google Maps, open menus, connect to WiFi, or reach your WhatsApp and social links.",
     getStarted: "Choose your medium",
     contact: "Ask us on WhatsApp",
     tryDemo: "Explore TapQR features",
@@ -105,9 +105,9 @@ export const en: typeof id = {
     },
     reviewGrowth: {
       eyebrow: "REPUTATION",
-      title: "Grow Your Google Reviews",
+      title: "Google Reviews through NFC & QR",
       description:
-        "Send happy customers straight to your review page. A shorter journey helps your business collect more reviews without making customers search for the right place.",
+        "Place a Google Review stand at the checkout counter or use an NFC card while serving customers. A tap or scan opens your business review link so customers can easily share their honest experience.",
       imageAlt:
         "A customer leaving a review after tapping a TapQR card at a cafe",
     },

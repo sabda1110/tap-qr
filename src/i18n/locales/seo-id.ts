@@ -13,7 +13,7 @@ export const seoId = {
     },
     home: {
       title: "Papan Google Review Pekanbaru & Kartu NFC | TapQR",
-      description: "Pesan papan Google Review NFC + QR untuk UMKM di Pekanbaru, Kerinci, dan Duri. Desain bisnis, tautan bisa diperbarui, ongkir dikonfirmasi lewat WhatsApp.",
+      description: "Papan akrilik Google Review dan kartu NFC + QR untuk UMKM Pekanbaru, Kerinci, dan Duri. Desain custom, tautan bisa diubah, pesan lewat WhatsApp.",
     },
     consultation: {
       title: "Konsultasi Google Review & Pemasaran UMKM | TapQR",

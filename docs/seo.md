@@ -102,6 +102,36 @@ Setelah deploy, gunakan URL Inspection untuk `/id` dan panduan Google Review,
 lalu pantau kueri "google review pekanbaru" dan "papan google review pekanbaru"
 di Search Console. Tidak muncul pada satu pencarian bukan bukti keyword hilang.
 
+## Membaca keyword di Search Console
+
+Pemeriksaan publik 5 November 2026: `/id` mengembalikan HTTP 200, title
+"Papan Google Review Pekanbaru & Kartu NFC | TapQR", robots index/follow,
+dan canonical `https://www.tapqr.id/id`. Keyword sudah tersedia di produksi;
+ini bukan bukti posisi atau status pengindeksan di akun Search Console.
+
+Properti URL-prefix `https://www.tapqr.id/id/` hanya mencakup URL dengan awalan
+tersebut; beranda canonical `/id` tanpa slash terakhir berada di luar awalan itu.
+Gunakan properti Domain `tapqr.id` (verifikasi DNS), atau URL-prefix
+`https://www.tapqr.id/` (mencakup kedua bahasa), lalu inspeksi canonical `/id`.
+Jangan mengganti canonical atau menambah slash hanya untuk menyesuaikan laporan.
+
+Tabel Queries melaporkan pencarian yang benar-benar menghasilkan tayangan/klik
+untuk cakupan properti dan filter laporan, bukan daftar keyword yang ditanam.
+Sebagian kueri disembunyikan untuk privasi. "No data" saja belum membuktikan
+keyword hilang, halaman tidak terindeks, maupun kesalahan teknis tertentu.
+Periksa properti, filter, total impresi, dan hasil URL Inspection terlebih dahulu.
+
+Penguatan konten 5 November menambahkan konteks produk pada paragraf hero,
+fitur NFC + QR, kartu PVC, serta jawaban tentang QR code ulasan Google Maps.
+Section produk menautkan panduan Google Review dalam locale yang sama. Istilah
+utama tetap papan Google Review, kartu NFC Google Review, papan akrilik NFC,
+dan QR ulasan Google Maps; wilayah Pekanbaru, Kerinci, dan Duri tetap dijelaskan
+sebagai tujuan pemesanan, bukan lokasi cabang yang belum diverifikasi.
+
+Setelah deploy, minta pengindeksan `/id` dan pantau perubahan impresi/klik per
+kueri produk di properti yang mencakup seluruh situs. Catat tanggal deploy agar
+perbandingan periode jelas. Jangan menganggap penambahan kata menjamin ranking.
+
 ## Penemuan melalui pencarian AI (GEO)
 
 GEO bertujuan membantu mesin pencarian AI memahami dan merujuk informasi
@@ -174,3 +204,7 @@ impresi/klik, canonical pilihan Google, dan error crawling setelah deploy.
 - [Versi bahasa/hreflang](https://developers.google.com/search/docs/specialty/international/localized-versions)
 - [Robots meta/noindex](https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag)
 - [Organization structured data](https://developers.google.com/search/docs/appearance/structured-data/organization)
+
+- [Cakupan properti Search Console](https://support.google.com/webmasters/answer/34592)
+- [Laporan Performance](https://support.google.com/webmasters/answer/7576553)
+- [Meta tags yang didukung Google](https://developers.google.com/search/docs/crawling-indexing/special-tags)

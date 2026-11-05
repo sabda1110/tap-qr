@@ -11,7 +11,7 @@ export const pricingId = {
     pvcCard: {
       name: "Kartu PVC",
       badge: "",
-      description: "Kartu PVC dengan NFC dan QR, ringan dan mudah dibawa atau ditempel.",
+      description: "Kartu NFC Google Review berbahan PVC dengan QR code, ringan untuk dibawa atau ditempel.",
       price: "Rp79.000",
       priceDetail: "/ unit",
       features: [

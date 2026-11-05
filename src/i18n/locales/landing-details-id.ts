@@ -15,6 +15,10 @@ export const landingFaqId = {
       answer: "Papan Google Review TapQR adalah papan akrilik berdiri dengan chip NFC dan QR code untuk membuka tautan ulasan Google bisnis Anda. Pelanggan cukup tap dengan ponsel yang mendukung NFC atau scan QR, lalu menulis ulasan berdasarkan pengalaman mereka. Papan cocok ditempatkan di meja kasir kafe, restoran, barbershop, laundry, dan toko. TapQR menyediakan media akses ulasan, bukan layanan jual ulasan.",
     },
     {
+      question: "Bagaimana membuat QR code ulasan Google Maps untuk bisnis?",
+      answer: "Siapkan Google Business Profile bisnis Anda dan pastikan lokasi outlet sudah benar. Saat mengaktifkan kartu TapQR, gunakan Google Place ID outlet untuk menyiapkan tautan Google Review. Pilih papan akrilik untuk meja kasir atau kartu PVC yang mudah dibawa, lalu uji QR dan NFC sebelum digunakan pelanggan. Pelanggan tetap memilih penilaian dan menulis ulasan sendiri; tap atau scan tidak mengirim review secara otomatis.",
+    },
+    {
       question: "Bagaimana memilih papan Google Review terbaik untuk usaha saya?",
       answer: "Pilih berdasarkan kebutuhan: dukungan NFC dan QR agar tersedia dua cara akses, bahan yang sesuai tempat penggunaan, desain yang terbaca, tujuan tautan yang dapat diperbarui, serta total biaya termasuk ongkir. Papan akrilik TapQR cocok untuk meja kasir, sedangkan kartu PVC 86 × 54 mm lebih ringkas untuk dibawa atau ditempel. Keduanya menyediakan NFC + QR dan pembaruan tujuan tautan Google Review melalui dashboard. Jika membutuhkan bantuan setup Google Business Profile dan landing page, pertimbangkan Paket Bisnis. Pilihan terbaik bergantung pada kebutuhan usaha dan anggaran Anda.",
     },

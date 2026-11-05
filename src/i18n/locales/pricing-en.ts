@@ -13,7 +13,7 @@ export const pricingEn: typeof pricingId = {
     pvcCard: {
       name: "PVC Card",
       badge: "",
-      description: "A lightweight PVC card with NFC and QR, easy to carry or attach to a surface.",
+      description: "A PVC NFC Google Review card with a QR code, light enough to carry or attach to a surface.",
       price: "Rp79.000",
       priceDetail: "/ unit",
       features: [

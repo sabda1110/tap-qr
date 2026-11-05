@@ -65,6 +65,10 @@ for (const path of ["/id", "/en", "/id/tutorial/activation", "/en/tutorial/googl
     assert.match(hero, /<h1[\s>]/, `${path} hero must be in server HTML`);
     assert.doesNotMatch(hero, /opacity-0|blur-\[2px\]/, `${path} hero must be visible before hydration`);
     assert.match(hero, /<img[^>]*loading="eager"[^>]*fetchPriority="high"/i);
+    const heroCopy = path === "/id" ? /<p\b[^>]*>[^<]*Papan Google Review[^<]*NFC[^<]*<\/p>/ : /<p\b[^>]*>[^<]*Google Review stands[^<]*NFC[^<]*<\/p>/;
+    assert.match(hero, heroCopy, `${path} product description must be visible server HTML`);
+    const products = body.match(/<section\b[^>]*id="products"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? "";
+    assert.ok(products.includes(`href="${path}/tutorial/google-review"`), `${path} product guide link must use the active locale`);
     const nodes = jsonLd.flatMap((match) => JSON.parse(match[1])["@graph"] ?? []);
     assert.equal(nodes.find((node) => node["@type"] === "WebSite")?.name, "TapQR");
     assert.equal(nodes.find((node) => node["@type"] === "Organization")?.logo.url, "https://www.tapqr.id/icon-512.png");

@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { landingButtonStyles } from "../elements/landing-button";
 import type { ReactNode } from "react";
 import type { Messages } from "../../i18n";
@@ -5,9 +6,9 @@ import { MotionReveal } from "../elements/motion-reveal";
 import { FeatureDivider } from "../elements/feature-divider";
 import { ProductShowcaseDoodles } from "../elements/product-showcase-doodles";
 
-type Props = { content: Messages["productShowcase"]; preview: ReactNode };
+type Props = { language: "id" | "en"; content: Messages["productShowcase"]; preview: ReactNode };
 
-export function ProductShowcaseSection({ content, preview }: Props) {
+export function ProductShowcaseSection({ content, preview, language }: Props) {
   return (
     <section id="products" className="scroll-mt-24 overflow-hidden bg-white pb-14 pt-6 sm:pb-16 sm:pt-8 lg:pb-20 lg:pt-10">
       <div className="mx-auto w-[calc(100%-2rem)] max-w-6xl sm:w-[calc(100%-4rem)]">
@@ -28,6 +29,13 @@ export function ProductShowcaseSection({ content, preview }: Props) {
               <a href="#pricing" className={landingButtonStyles({ className: "mt-6 mb-2" })}>
                 {content.cta}
               </a>
+              <Link
+                to="/$locale/tutorial/google-review"
+                params={{ locale: language }}
+                className="mt-2 flex min-h-11 items-center text-sm leading-6 font-semibold text-[#161a22] underline decoration-black/30 underline-offset-4 hover:decoration-black focus-visible:outline-2 focus-visible:outline-offset-4"
+              >
+                {content.reviewGuide}
+              </Link>
             </MotionReveal>
             <MotionReveal delay={100} className="relative mt-6 min-w-0 md:mt-0">
               <figure className="mx-auto w-full max-w-[520px]">

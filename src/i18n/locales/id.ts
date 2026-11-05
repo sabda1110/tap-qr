@@ -103,7 +103,7 @@ export const id = {
     titleAccent: "Review Google",
     titleEnd: "& Pelanggan Kembali",
     description:
-      "Bantu pelanggan memberi ulasan Google, terhubung ke WiFi, membuka WhatsApp, melihat menu, dan mengikuti media sosial Anda—semuanya dalam satu tap atau scan.",
+      "Papan Google Review berbahan akrilik dan kartu NFC + QR untuk bisnis Anda. Pelanggan cukup tap atau scan untuk memberi ulasan di Google Maps, membuka menu, WiFi, WhatsApp, dan media sosial.",
     getStarted: "Pilih media Anda",
     contact: "Tanya lewat WhatsApp",
     tryDemo: "Lihat fitur TapQR",
@@ -119,9 +119,9 @@ export const id = {
     },
     reviewGrowth: {
       eyebrow: "REPUTASI",
-      title: "Perbanyak Review Google",
+      title: "Google Review lewat NFC & QR",
       description:
-        "Arahkan pelanggan yang puas langsung ke halaman ulasan Anda. Proses yang singkat membantu bisnis mendapatkan lebih banyak review tanpa membuat pelanggan kebingungan.",
+        "Letakkan papan Google Review di meja kasir atau gunakan kartu NFC saat melayani pelanggan. Tap atau scan membuka tautan ulasan bisnis agar pelanggan mudah membagikan pengalaman jujur mereka.",
       imageAlt:
         "Pelanggan memberi ulasan setelah melakukan tap pada kartu TapQR di sebuah kafe",
     },
