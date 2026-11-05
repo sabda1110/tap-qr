@@ -1,3 +1,4 @@
+import { TikTokShowcaseSection } from "../organisms/tiktok-showcase-section";
 import { CreditCard, Crown, ScanLine } from "lucide-react";
 import heroShot from "../assets/images/heroshot-feature-style-v2.webp";
 import cloudMascot from "../assets/images/tapqr-cloud-mascot.webp";
@@ -97,6 +98,7 @@ export function HomePage({ whatsappNumber }: { whatsappNumber: string | null }) 
               },
             ]}
           />
+          <TikTokShowcaseSection content={messages.tiktokShowcase} />
           <TestimonialsSection
             heading={messages.testimonials.heading}
             ratingLabel={messages.testimonials.ratingLabel}

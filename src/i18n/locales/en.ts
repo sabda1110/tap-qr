@@ -1,3 +1,4 @@
+import { tiktokShowcaseEn } from "./tiktok-showcase-en";
 import { pricingEn } from "./pricing-en";
 import { seoEn } from "./seo-en";
 import { reviewGuideEn } from "./review-guide-en";
@@ -15,6 +16,7 @@ import { consultationEn } from "./consultation-en";
 import { membershipEn } from "./membership-en";
 
 export const en: typeof id = {
+  tiktokShowcase: tiktokShowcaseEn,
   membership: membershipEn,
   seo: seoEn,
   reviewGuide: reviewGuideEn,

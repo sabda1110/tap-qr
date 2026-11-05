@@ -1,3 +1,4 @@
+import { tiktokShowcaseId } from "./tiktok-showcase-id";
 import { pricingId } from "./pricing-id";
 import { seoId } from "./seo-id";
 import { reviewGuideId } from "./review-guide-id";
@@ -13,6 +14,7 @@ import { gettingStartedId } from "./getting-started-id";
 import { consultationId } from "./consultation-id";
 import { membershipId } from "./membership-id";
 export const id = {
+  tiktokShowcase: tiktokShowcaseId,
   membership: membershipId,
   seo: seoId,
   reviewGuide: reviewGuideId,

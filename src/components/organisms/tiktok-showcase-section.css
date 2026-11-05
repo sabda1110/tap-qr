@@ -1,0 +1,16 @@
+.tiktok-doodle-dots {
+  background-image: radial-gradient(#171b22 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tiktok-doodle-sway {
+    animation: tiktok-doodle-sway 5s ease-in-out infinite;
+    transform-origin: center;
+  }
+
+  @keyframes tiktok-doodle-sway {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(4deg); }
+  }
+}
