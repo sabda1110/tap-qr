@@ -137,6 +137,7 @@ export function UserDashboardPage({
           }
         >
           <CardClaimDialog
+            language={language}
             cardId={cardId}
             messages={messages}
             outlets={activeOutlets}

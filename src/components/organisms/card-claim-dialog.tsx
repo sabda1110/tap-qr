@@ -1,6 +1,7 @@
+import { CardClaimSuccessDialog } from "./card-claim-success-dialog";
 import { ChevronLeft, ChevronRight, CreditCard } from "lucide-react";
 
-import type { Messages } from "../../i18n";
+import type { Language, Messages } from "../../i18n";
 import { extractCardIdFromQr } from "../../lib/card-id";
 import { toOutletSlug } from "../../lib/validation/outlet-slug";
 import { useCardClaim } from "../../hooks/use-card-claim";
@@ -21,6 +22,7 @@ import { Form } from "../ui/form";
 export function CardClaimDialog({
   cardId,
   messages,
+  language,
   onSaved,
   outlets,
   onClose,
@@ -29,6 +31,7 @@ export function CardClaimDialog({
 }: {
   cardId?: string;
   messages: Messages;
+  language: Language;
   onSaved: () => Promise<void>;
   outlets: OutletOption[];
   onClose: () => void;
@@ -39,6 +42,7 @@ export function CardClaimDialog({
   const onboarding = messages.adminDashboard.activation.onboarding;
 
   const {
+    activatedCardId,
     card,
     setCard,
     step,
@@ -69,8 +73,12 @@ export function CardClaimDialog({
     content,
     googleReviewTitle:
       messages.adminDashboard.activation.channels.google_review.title,
-    onSaved,
   });
+
+  if (activatedCardId) {
+    return <CardClaimSuccessDialog cardId={activatedCardId} language={language}
+      content={content.activated} onDone={onSaved} />;
+  }
 
   const titleNode = (
     <span>

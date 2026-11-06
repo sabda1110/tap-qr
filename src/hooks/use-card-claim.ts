@@ -22,7 +22,6 @@ type UseCardClaimOptions = {
   outlets: OutletOption[];
   content: Messages["cardClaim"];
   googleReviewTitle: string;
-  onSaved: () => Promise<void>;
 };
 
 export function useCardClaim({
@@ -32,10 +31,10 @@ export function useCardClaim({
   outlets,
   content,
   googleReviewTitle,
-  onSaved,
 }: UseCardClaimOptions) {
   const { showToast } = useToast();
   const [card, setCard] = useState(cardId ?? "");
+  const [activatedCardId, setActivatedCardId] = useState<string | null>(null);
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [outletMode, setOutletMode] = useState<"new" | "existing">(
     initialMode ?? (outlets.length ? "existing" : "new")
@@ -99,7 +98,7 @@ export function useCardClaim({
   }
 
   async function save(values: CardLinksEditValues) {
-    if (uploadingLogo) return;
+    if (uploadingLogo || activatedCardId) return;
     setError("");
     setInvalidFields([]);
     const payload =
@@ -115,7 +114,7 @@ export function useCardClaim({
     try {
       await claimUserCard({ data: parsed.data });
       showToast(content.success, "success");
-      await onSaved();
+      setActivatedCardId(parsed.data.cardId);
     } catch (caught) {
       const message =
         caught instanceof Error && caught.message.includes("SLUG_ALREADY_USED")
@@ -127,6 +126,7 @@ export function useCardClaim({
   }
 
   return {
+    activatedCardId,
     card,
     setCard,
     step,
