@@ -219,3 +219,31 @@ impresi/klik, canonical pilihan Google, dan error crawling setelah deploy.
 - [Cakupan properti Search Console](https://support.google.com/webmasters/answer/34592)
 - [Laporan Performance](https://support.google.com/webmasters/answer/7576553)
 - [Meta tags yang didukung Google](https://developers.google.com/search/docs/crawling-indexing/special-tags)
+
+## Fokus bahasa Indonesia dan status canonical (10 November 2026)
+
+Indonesia tetap bahasa default (`/` → `/id`), termasuk `x-default`. Versi `/en`
+tetap dapat diindeks dan memiliki canonical ke dirinya; jangan mengarahkan
+canonical Inggris ke Indonesia karena kontennya memang diterjemahkan.
+Judul utama Indonesia menggunakan “Ulasan Google”, dengan istilah produk
+“Papan Google Review” tetap tersedia secara alami dalam deskripsi produk.
+Query Search Console adalah kata yang dipakai pencari saat situs tampil;
+query berbahasa Inggris bukan daftar keyword yang kita pasang dalam metadata.
+Bahasa query tidak dapat dipaksa dengan mengulang keyword atau meta keywords.
+
+Audit produksi menemukan `https://tapqr.id/id` masih merespons 200 dengan
+canonical `https://www.tapqr.id/id`. URL apex ini dapat wajar dilaporkan sebagai
+“Alternate page with proper canonical tag”. Root apex mengalihkan ke `/id`,
+sehingga “Page with redirect” juga wajar untuk URL tersebut.
+`vercel.json` kini menyatukan host apex ke `www` dengan redirect permanen 308:
+root langsung ke `https://www.tapqr.id/id`, path lain dipertahankan. Query
+string diteruskan oleh Vercel, termasuk parameter aktivasi kartu dan kampanye.
+Aturan hanya mencocokkan host `tapqr.id`, bukan `www`, localhost, atau preview.
+
+Sesudah deploy, periksa pengalihan root, `/id`, `/en`, URL kartu lama, serta
+query seperti `?cardId=...` dan `?utm_source=tiktok`. Ini aturan CDN Vercel;
+build lokal tidak menjalankan kondisi host tersebut. Pada URL Inspection,
+periksa `https://www.tapqr.id/id`: status 200, boleh diindeks, canonical pilihan
+pengguna dan Google mengarah ke URL itu. Kirim sitemap domain `www` dan minta
+pengindeksan URL utama, bukan URL yang sengaja mengalihkan. Status URL alias
+boleh tetap tercatat sebagai redirect/alternate setelah Google merayapi ulang.

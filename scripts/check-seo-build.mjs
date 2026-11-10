@@ -63,6 +63,7 @@ for (const path of ["/id", "/en", "/id/tutorial/activation", "/en/tutorial/googl
   if (["/id", "/en"].includes(path)) {
     const hero = body.match(/<section\b[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? "";
     assert.match(hero, /<h1[\s>]/, `${path} hero must be in server HTML`);
+    if (path === "/id") assert.match(hero, /Ulasan Google/, "Indonesian landing copy must render before hydration");
     assert.doesNotMatch(hero, /opacity-0|blur-\[2px\]/, `${path} hero must be visible before hydration`);
     assert.match(hero, /<img[^>]*loading="eager"[^>]*fetchPriority="high"/i);
     const heroCopy = path === "/id" ? /<p\b[^>]*>[^<]*Papan Google Review[^<]*NFC[^<]*<\/p>/ : /<p\b[^>]*>[^<]*Google Review stands[^<]*NFC[^<]*<\/p>/;
@@ -90,6 +91,9 @@ for (const path of ["/id", "/en", "/id/tutorial/activation", "/en/tutorial/googl
 const root = await app.fetch(new Request("https://www.tapqr.id/"));
 assert.equal(root.status, 308);
 assert.equal(root.headers.get("location"), "/id");
+const englishBrowserRoot = await app.fetch(new Request("https://www.tapqr.id/", { headers: { "Accept-Language": "en-US,en;q=0.9" } }));
+assert.equal(englishBrowserRoot.status, 308);
+assert.equal(englishBrowserRoot.headers.get("location"), "/id", "Indonesian remains the default for all browser languages");
 for (const path of ["/id/dashboard/user", "/en/dashboard/admin/analytics"]) {
   const protectedPage = await app.fetch(new Request(`https://www.tapqr.id${path}`));
   assert.ok([301, 302, 303, 307, 308].includes(protectedPage.status), `${path} must redirect unauthenticated visits`);

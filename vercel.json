@@ -1,4 +1,28 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "tanstack-start"
+  "framework": "tanstack-start",
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "tapqr.id"
+        }
+      ],
+      "destination": "https://www.tapqr.id/id",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "tapqr.id"
+        }
+      ],
+      "destination": "https://www.tapqr.id/:path*",
+      "permanent": true
+    }
+  ]
 }

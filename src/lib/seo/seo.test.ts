@@ -28,6 +28,9 @@ test("every sitemap URL has matching localized metadata, canonicals and reciproc
     assert.equal(head.meta.find((meta) => meta.property === "og:url")?.content, canonical);
     assert.equal(head.meta.find((meta) => meta.name === "robots")?.content, "index, follow, max-image-preview:large");
     assert.equal(head.links.filter((link) => link.rel === "alternate").length, 3);
+    for (const alternate of seoLanguages) {
+      assert.ok(head.links.some((link) => link.hrefLang === alternate && link.href === seoPageUrl(DEFAULT_SEO_ORIGIN, alternate, page)));
+    }
     assert.ok(head.links.some((link) => link.hrefLang === "x-default" && link.href === seoPageUrl(DEFAULT_SEO_ORIGIN, "id", page)));
     assert.ok(head.meta.some((meta) => meta.name === "description" && meta.content === localizedSeo(language).pages[page].description));
     titles.add(head.meta.find((meta) => meta.title)?.title ?? "");
