@@ -11,7 +11,7 @@ import {
   parseOutletHighlights,
   toPublicOutletHighlights,
 } from "./outlet-highlights";
-import { isQueueAddonActive } from "../queue/queue-access";
+import { isQueueAddonActive, queueDateKey } from "../queue/queue-access";
 
 function publicUrl(value: string | null | undefined): string | null {
   if (!value) return null;
@@ -69,10 +69,17 @@ export async function getPublicOutletProfile(id: string, cardId?: string): Promi
   const outletDocument = await findActivePublicOutlet(id);
   if (!outletDocument) return null;
   const outlet = outletDocument.data()!;
-  const collection = getFirebaseAdminFirestore().collection("cards");
-  const snapshot = await (cardId
-    ? collection.where("cardId", "==", cardId).limit(1)
-    : collection.where("outletId", "==", outletDocument.id)).get();
+  const database = getFirebaseAdminFirestore();
+  const collection = database.collection("cards");
+  const queueEnabled = isQueueAddonActive(outlet.addons?.queue);
+  const [snapshot, queueDay] = await Promise.all([
+    (cardId
+      ? collection.where("cardId", "==", cardId).limit(1)
+      : collection.where("outletId", "==", outletDocument.id)).get(),
+    queueEnabled
+      ? database.collection("outlets").doc(outletDocument.id).collection("queueDays").doc(queueDateKey()).get()
+      : Promise.resolve(null),
+  ]);
   const cards = snapshot.docs
     .map((document) => ({ id: document.id, record: document.data() as CardRecord }))
     .filter(({ record }) => record.ownerId === outlet.ownerId && record.outletId === outletDocument.id && record.claimStatus === "claimed" && record.isEnabled)
@@ -106,7 +113,8 @@ export async function getPublicOutletProfile(id: string, cardId?: string): Promi
     ...presentation,
     links,
     highlights: toPublicOutletHighlights(outlet.publicProfile?.highlights),
-    queueEnabled: isQueueAddonActive(outlet.addons?.queue),
+    queueEnabled,
+    queueOpen: queueEnabled && queueDay?.data()?.isOpen === true,
   };
 }
 

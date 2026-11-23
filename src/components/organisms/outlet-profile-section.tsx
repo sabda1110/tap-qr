@@ -120,7 +120,7 @@ export function OutletProfileSection({
         )}
 
         {config.queueEnabled && <Link to="/$locale/q/$id" params={{ locale: language, id: config.profileId }} className="mt-5 flex min-h-14 items-center justify-center gap-2 border-[3px] border-[var(--ink)] bg-[var(--accent)] px-5 text-center text-base font-black text-[var(--ink)] no-underline shadow-[4px_4px_0_var(--ink)] transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ink)]">
-          {queueContent.submit}<ArrowUpRight aria-hidden="true" className="size-5" />
+          {config.queueOpen ? queueContent.submit : queueContent.closed}<ArrowUpRight aria-hidden="true" className="size-5" />
         </Link>}
 
         <nav aria-label={content.linksLabel} className="outlet-actions">

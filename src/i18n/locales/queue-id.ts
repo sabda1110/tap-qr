@@ -6,7 +6,7 @@ export const queueId = {
     phonePlaceholder: "81234567890", phoneHelp: "Awali dengan 8, gunakan angka saja. Kode negara 62 ditambahkan otomatis.", phoneLeadingZeroWarning: "Awali nomor Anda dengan 8. Angka 0 di depan otomatis dihapus.", contactWhatsApp: "Hubungi WhatsApp", whatsAppMessage: "Halo {name}, nomor antrean Anda {number} sudah dipanggil. Silakan menuju kasir.",
     add: "Masukkan antrean", adding: "Menambahkan…", waiting: "Menunggu", called: "Dipanggil", serving: "Sedang dilayani", completed: "Selesai", no_show: "Tidak hadir", cancelled: "Dibatalkan",
     sourceOnline: "Online", sourceWalkIn: "Walk-in", call: "Panggil", start: "Mulai layanan", finish: "Selesaikan", skip: "Lewati", cancel: "Batalkan", reopen: "Kembalikan ke antrean",
-    refresh: "Muat ulang", open: "Buka antrean", close: "Tutup antrean", openSuccess: "Antrean dibuka.", closeSuccess: "Antrean ditutup untuk pelanggan baru.", error: "Antrean belum dapat diperbarui. Coba lagi.", added: "Pelanggan masuk ke antrean.", updated: "Status antrean diperbarui.",
+    refresh: "Muat ulang", open: "Buka antrean", close: "Tutup antrean", closeHelp: "Menutup antrean menghentikan nomor baru; tiket yang sudah masuk tetap bisa diproses.", openSuccess: "Antrean dibuka.", closeSuccess: "Antrean ditutup untuk pelanggan baru.", error: "Antrean belum dapat diperbarui. Coba lagi.", added: "Pelanggan masuk ke antrean.", updated: "Status antrean diperbarui.",
     cashierAccess: "Akses kasir", pinTitle: "PIN kasir antrean", pinHelp: "PIN ini terpisah dari Membership. Kasir dapat mengelola antrean tanpa masuk ke akun owner.", newPin: "PIN baru (4–6 angka)", confirmPin: "Ulangi PIN", pinMismatch: "PIN tidak sama atau belum valid.", savePin: "Simpan PIN kasir", savingPin: "Menyimpan PIN…", pinConfigured: "PIN kasir sudah aktif", pinNotConfigured: "PIN kasir belum dibuat", cashierLink: "Tautan mode kasir", openCashier: "Buka mode kasir", copyCashier: "Salin tautan kasir", copied: "Tautan kasir berhasil disalin.", saved: "PIN kasir antrean berhasil disimpan.",
   },
   public: {
@@ -17,5 +17,5 @@ export const queueId = {
     statuses: { waiting: "Menunggu", called: "Silakan menuju kasir", serving: "Sedang dilayani", completed: "Selesai", no_show: "Giliran terlewat", cancelled: "Antrean dibatalkan" },
     notificationTitle: "Giliran Anda", notificationBody: "Nomor antrean {number} sudah dipanggil. Silakan menuju kasir.",
   },
-  cashier: { title: "Mode kasir antrean", pinTitle: "Masukkan PIN kasir", pin: "PIN 4–6 angka", login: "Buka antrean", logout: "Akhiri shift", locked: "Terlalu banyak percobaan. Coba lagi dalam 15 menit.", invalidPin: "PIN kasir tidak sesuai." },
+  cashier: { title: "Mode kasir antrean", pinTitle: "Masukkan PIN kasir", pin: "PIN 4–6 angka", login: "Buka antrean", logout: "Akhiri shift", locked: "Terlalu banyak percobaan. Coba lagi dalam 15 menit.", invalidPin: "PIN kasir tidak sesuai.", autoRefresh: "Data antrean diperbarui otomatis tiap 5 detik." },
 };

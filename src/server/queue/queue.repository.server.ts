@@ -13,6 +13,7 @@ const token = () => randomBytes(32).toString("base64url");
 const ticketId = () => randomBytes(16).toString("hex");
 const dayRef = (outletId: string, dateKey: string) => getFirebaseAdminFirestore()
   .collection("outlets").doc(outletId).collection("queueDays").doc(dateKey);
+const queueRevision = (dateKey: string, day?: { revision?: unknown; isOpen?: unknown }) => `${dateKey}:${Number(day?.revision ?? 0)}:${day?.isOpen === true ? 1 : 0}`;
 const notificationCopy = (language: unknown, number: number) => {
   const copy = language === "en" ? queueEn.public : queueId.public;
   return { title: copy.notificationTitle, body: copy.notificationBody.replace("{number}", String(number)) };
@@ -76,7 +77,7 @@ async function createTicket(outletId: string, input: Pick<OwnerQueueInput, "name
     if (counter.data()?.isOpen !== true) throw new Error("QUEUE_CLOSED");
     if (rateRef && (rate?.data()?.count ?? 0) >= 10) throw new Error("QUEUE_RATE_LIMITED");
     const next = Number(counter.data()?.lastNumber ?? 0) + 1;
-    transaction.set(counterRef, { dateKey, lastNumber: next, updatedAt: now }, { merge: true });
+    transaction.set(counterRef, { dateKey, lastNumber: next, revision: Number(counter.data()?.revision ?? 0) + 1, updatedAt: now }, { merge: true });
     transaction.create(ticketRef, { number: next, name: input.name, service: input.service, phone: input.phone, language: input.language ?? "id", status: "waiting", source,
       createdAt: now, updatedAt: now, tokenHash, expiresAt });
     transaction.create(tokenRef, { outletId, dateKey, ticketId: id, expiresAt });
@@ -131,14 +132,25 @@ export async function listOwnerQueue(ownerId: string, outletId: string) {
     return { id: document.id, number: value.number, name: value.name, service: value.service, phone: typeof value.phone === "string" ? value.phone : undefined,
       status: value.status, createdAt: value.createdAt, source: value.source };
   });
-  return { dateKey, tickets, isOpen: day.data()?.isOpen === true };
+  return { dateKey, tickets, isOpen: day.data()?.isOpen === true, revision: queueRevision(dateKey, day.data()) };
+}
+
+export async function getQueueDayRevision(outletId: string) {
+  const dateKey = queueDateKey();
+  const day = await dayRef(outletId, dateKey).get();
+  return queueRevision(dateKey, day.data());
 }
 
 export async function setOwnerQueueOpen(ownerId: string, input: OwnerQueueOpenValues) {
   await assertOutletOwnerAccess(ownerId, input.outletId);
   await assertQueueOutlet(input.outletId);
   const dateKey = queueDateKey();
-  await dayRef(input.outletId, dateKey).set({ dateKey, isOpen: input.isOpen, updatedAt: new Date().toISOString() }, { merge: true });
+  const reference = dayRef(input.outletId, dateKey);
+  await getFirebaseAdminFirestore().runTransaction(async (transaction) => {
+    const day = await transaction.get(reference);
+    transaction.set(reference, { dateKey, isOpen: input.isOpen, revision: Number(day.data()?.revision ?? 0) + 1,
+      updatedAt: new Date().toISOString() }, { merge: true });
+  });
 }
 
 async function assertOutletOwnerAccess(ownerId: string, outletId: string) {
@@ -164,15 +176,17 @@ export async function setOwnerQueueStatus(ownerId: string, input: OwnerQueueStat
   if (input.dateKey !== queueDateKey()) throw new Error("QUEUE_DAY_EXPIRED");
   const database = getFirebaseAdminFirestore();
   const reference = dayRef(input.outletId, input.dateKey).collection("tickets").doc(input.ticketId);
+  const dayReference = dayRef(input.outletId, input.dateKey);
   const notificationId = randomUUID();
   return database.runTransaction(async (transaction) => {
-    const snapshot = await transaction.get(reference);
+    const [snapshot, day] = await Promise.all([transaction.get(reference), transaction.get(dayReference)]);
     if (!snapshot.exists) throw new Error("QUEUE_TICKET_NOT_FOUND");
     const current = snapshot.data()?.status as string;
     if (!transitions[current]?.includes(input.status)) throw new Error("QUEUE_STATUS_INVALID");
     const pushTokens = input.status === "called" ? await transaction.get(reference.collection("pushTokens")) : null;
     const now = new Date().toISOString();
     transaction.update(reference, { status: input.status, updatedAt: now });
+    transaction.set(dayReference, { dateKey: input.dateKey, revision: Number(day.data()?.revision ?? 0) + 1, updatedAt: now }, { merge: true });
     transaction.create(reference.collection("queueEvents").doc(), { event: input.status, actor: "owner", actorUid: ownerId, timestamp: now,
       expiresAt: new Date(`${input.dateKey}T23:59:59.999+07:00`) });
     if (input.status === "called" && pushTokens?.size) {

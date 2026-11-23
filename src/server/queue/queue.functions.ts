@@ -3,7 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestIP } from "@tanstack/react-start/server";
 import { requireAdmin, requireOwner } from "../auth/authorization.server";
 import { adminQueueAddonSchema, ownerQueueInputSchema, ownerQueueOpenSchema, ownerQueueReadSchema, ownerQueueStatusSchema, publicQueueJoinSchema, publicQueueOutletSchema, publicQueueTokenSchema, queueCashierLoginSchema, queueCashierOutletSchema, queueCashierPinSchema, queuePushTokenSchema } from "./queue.schemas";
-import { addOwnerWalkIn, consumeQueuePinAttempt, getPublicQueueOutlet, getPublicQueueTicket, getQueueCashierAccess, joinPublicQueue, listOwnerQueue, registerPublicQueuePushToken, setOwnerQueueOpen, setOwnerQueueStatus, updateAdminQueueAddon, updateOwnerQueueCashierPin } from "./queue.repository.server";
+import { addOwnerWalkIn, consumeQueuePinAttempt, getPublicQueueOutlet, getPublicQueueTicket, getQueueCashierAccess, getQueueDayRevision, joinPublicQueue, listOwnerQueue, registerPublicQueuePushToken, setOwnerQueueOpen, setOwnerQueueStatus, updateAdminQueueAddon, updateOwnerQueueCashierPin } from "./queue.repository.server";
 import { clearQueueCashierSession, requireQueueCashierSession, setQueueCashierSession } from "./queue-cashier-security.server";
 import { hashCashierPin, hashValue, safeEqual } from "../membership/membership-security.server";
 import { dispatchQueueNotification } from "./queue-notifications.server";
@@ -76,6 +76,11 @@ export const getQueueCashierSessionInfo = createServerFn({ method: "GET" }).vali
 export const getQueueCashier = createServerFn({ method: "GET" }).validator(queueCashierOutletSchema).handler(async ({ data }) => {
   const session = await requireQueueCashierSession(data.outletId);
   return { session: { outletName: session.outletName }, queue: await listOwnerQueue(session.ownerId, data.outletId) };
+});
+
+export const getQueueCashierRevision = createServerFn({ method: "GET" }).validator(queueCashierOutletSchema).handler(async ({ data }) => {
+  await requireQueueCashierSession(data.outletId);
+  return getQueueDayRevision(data.outletId);
 });
 
 export const logoutQueueCashier = createServerFn({ method: "POST" }).handler(async () => clearQueueCashierSession());

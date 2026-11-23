@@ -94,6 +94,7 @@ function QueueDashboardContent({ profile, outlets, initial, initialOutletId }: P
           <Button type="button" variant={data?.isOpen ? "outline" : "default"} className="min-h-12" onClick={() => void toggleQueue()} disabled={busy || !data}>{data?.isOpen ? copy.close : copy.open}</Button>
           <Button type="button" variant="outline" className="min-h-12" onClick={() => void refresh()} disabled={busy}>{copy.refresh}</Button>
         </div>
+        <p className="mt-2 text-xs text-[#69737d]">{copy.closeHelp}</p>
         {data ? <>
           <section className="mt-6 grid gap-4 sm:grid-cols-3">
             {metrics.map(([label, value]) => <div key={label} className="border-2 border-black bg-white p-5 shadow-[3px_3px_0_#000]"><p className="text-sm font-bold">{label}</p><p className="mt-2 text-3xl font-black">{value}</p></div>)}

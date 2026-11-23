@@ -1,6 +1,6 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useI18n } from "../../i18n";
-import { addQueueCashierWalkIn, getQueueCashier, loginQueueCashier, logoutQueueCashier, setQueueCashierAvailability, updateQueueCashierTicket } from "../../server/queue/queue.functions";
+import { addQueueCashierWalkIn, getQueueCashier, getQueueCashierRevision, loginQueueCashier, logoutQueueCashier, setQueueCashierAvailability, updateQueueCashierTicket } from "../../server/queue/queue.functions";
 import type { QueueStatus } from "../../server/queue/queue.schemas";
 import type { QueueTicketView } from "../../server/queue/queue.types";
 import { QueuePhoneField } from "../molecules/queue-phone-field";
@@ -24,11 +24,41 @@ function QueueCashierContent({ outletId, initialName, initialQueue }: { outletId
   const [data, setData] = useState(initialQueue);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<"locked" | "invalid" | null>(null);
+  const revision = useRef(initialQueue?.revision ?? "");
 
   async function refresh() {
     const result = await getQueueCashier({ data: { outletId } });
+    revision.current = result.queue?.revision ?? "";
     setOutletName(result.session.outletName); setData(result.queue);
   }
+
+  useEffect(() => {
+    if (!outletName) return;
+    let active = true;
+    let checking = false;
+    async function refreshIfChanged() {
+      if (checking || document.visibilityState !== "visible") return;
+      checking = true;
+      try {
+        const latestRevision = await getQueueCashierRevision({ data: { outletId } });
+        if (!active || latestRevision === revision.current) return;
+        const result = await getQueueCashier({ data: { outletId } });
+        if (!active) return;
+        revision.current = result.queue?.revision ?? "";
+        setOutletName(result.session.outletName);
+        setData(result.queue);
+      } catch { /* A failed background check can retry on the next interval. */ }
+      finally { checking = false; }
+    }
+    const interval = window.setInterval(() => { void refreshIfChanged(); }, 5_000);
+    const onVisibilityChange = () => { if (document.visibilityState === "visible") void refreshIfChanged(); };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [outletId, outletName]);
 
   async function login(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -79,7 +109,7 @@ function QueueCashierContent({ outletId, initialName, initialQueue }: { outletId
 
   const statusLabel: Record<QueueStatus, string> = { waiting: ownerCopy.waiting, called: ownerCopy.called, serving: ownerCopy.serving, completed: ownerCopy.completed, no_show: ownerCopy.no_show, cancelled: ownerCopy.cancelled };
   return <main className="min-h-dvh bg-[#faf9f6] px-4 py-6 text-[#171b22] sm:px-6"><div className="mx-auto max-w-4xl"><header className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-black uppercase tracking-[.15em] text-[#087e91]">{copy.title}</p><h1 className="mt-1 text-2xl font-black">{outletName}</h1></div><Button type="button" variant="outline" onClick={() => { void logoutQueueCashier().then(() => { setOutletName(null); setData(null); }); }}>{copy.logout}</Button></header>
-    <div className="mt-5 flex flex-wrap gap-2"><Button type="button" onClick={() => void toggleQueue()} disabled={busy}>{data?.isOpen ? ownerCopy.close : ownerCopy.open}</Button><Button type="button" variant="outline" disabled={busy} onClick={() => void refresh()}>{ownerCopy.refresh}</Button></div>
+    <div className="mt-5 flex flex-wrap items-center gap-3"><Button type="button" onClick={() => void toggleQueue()} disabled={busy}>{data?.isOpen ? ownerCopy.close : ownerCopy.open}</Button><Button type="button" variant="outline" disabled={busy} onClick={() => void refresh()}>{ownerCopy.refresh}</Button><p className="text-xs text-[#69737d]">{copy.autoRefresh}</p><p className="w-full text-xs text-[#69737d]">{ownerCopy.closeHelp}</p></div>
     <form onSubmit={addWalkIn} className="mt-5 grid gap-3 rounded-2xl border border-black/10 bg-white p-5"><h2 className="font-bold">{ownerCopy.walkInTitle}</h2><label className="text-sm font-bold">{ownerCopy.name}<Input name="name" required maxLength={40} placeholder={ownerCopy.namePlaceholder} className="mt-2" /></label><label className="text-sm font-bold">{ownerCopy.service}<Input name="service" required maxLength={60} placeholder={ownerCopy.servicePlaceholder} className="mt-2" /></label><QueuePhoneField name="phone" label={ownerCopy.phone} placeholder={ownerCopy.phonePlaceholder} help={ownerCopy.phoneHelp} warning={ownerCopy.phoneLeadingZeroWarning} /><Button type="submit" disabled={busy || !data?.isOpen} className="min-h-11 w-full">{busy ? ownerCopy.adding : ownerCopy.addWalkIn}</Button></form>
     <section className="mt-5 space-y-3" aria-live="polite">{data?.tickets.length ? data.tickets.map((ticket) => <QueueTicketRow key={ticket.id} ticket={ticket} label={statusLabel[ticket.status]} sourceLabel={ticket.source === "online" ? ownerCopy.sourceOnline : ownerCopy.sourceWalkIn} copy={ownerCopy} busy={busy} onStatus={(status) => void changeStatus(ticket, status)} />) : <p className="rounded-2xl border border-dashed border-black/20 bg-white p-8 text-center text-sm text-[#69737d]">{ownerCopy.empty}</p>}</section>
   </div></main>;

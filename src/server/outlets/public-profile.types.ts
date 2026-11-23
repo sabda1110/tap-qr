@@ -23,4 +23,5 @@ export type PublicOutletProfile = {
   links: SocialLink[];
   highlights: PublicOutletHighlight[];
   queueEnabled: boolean;
+  queueOpen: boolean;
 };

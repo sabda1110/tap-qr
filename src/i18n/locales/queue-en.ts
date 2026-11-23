@@ -8,7 +8,7 @@ export const queueEn: typeof queueId = {
     phonePlaceholder: "81234567890", phoneHelp: "Start with 8 and enter digits only. The country code 62 is added automatically.", phoneLeadingZeroWarning: "Start your number with 8. A leading 0 is removed automatically.", contactWhatsApp: "Contact on WhatsApp", whatsAppMessage: "Hi {name}, your queue number {number} has been called. Please come to the counter.",
     add: "Add to queue", adding: "Adding…", waiting: "Waiting", called: "Called", serving: "In service", completed: "Completed", no_show: "No-show", cancelled: "Cancelled",
     sourceOnline: "Online", sourceWalkIn: "Walk-in", call: "Call", start: "Start service", finish: "Complete", skip: "Skip", cancel: "Cancel", reopen: "Return to queue",
-    refresh: "Refresh", open: "Open queue", close: "Close queue", openSuccess: "Queue is open.", closeSuccess: "Queue is closed to new customers.", error: "The queue could not be updated. Try again.", added: "Customer added to the queue.", updated: "Queue status updated.",
+    refresh: "Refresh", open: "Open queue", close: "Close queue", closeHelp: "Closing the queue blocks new numbers; existing tickets can still be processed.", openSuccess: "Queue is open.", closeSuccess: "Queue is closed to new customers.", error: "The queue could not be updated. Try again.", added: "Customer added to the queue.", updated: "Queue status updated.",
     cashierAccess: "Cashier access", pinTitle: "Queue cashier PIN", pinHelp: "This PIN is separate from Membership. Cashiers can manage the queue without signing in to the owner account.", newPin: "New PIN (4–6 digits)", confirmPin: "Repeat PIN", pinMismatch: "The PINs do not match or are invalid.", savePin: "Save cashier PIN", savingPin: "Saving PIN…", pinConfigured: "Cashier PIN is active", pinNotConfigured: "Cashier PIN has not been set", cashierLink: "Cashier mode link", openCashier: "Open cashier mode", copyCashier: "Copy cashier link", copied: "Cashier link copied.", saved: "Queue cashier PIN saved.",
   },
   public: {
@@ -19,5 +19,5 @@ export const queueEn: typeof queueId = {
     statuses: { waiting: "Waiting", called: "Please come to the counter", serving: "In service", completed: "Completed", no_show: "Your turn was skipped", cancelled: "Queue cancelled" },
     notificationTitle: "It's your turn", notificationBody: "Queue number {number} has been called. Please go to the counter.",
   },
-  cashier: { title: "Queue cashier mode", pinTitle: "Enter cashier PIN", pin: "4–6 digit PIN", login: "Open queue", logout: "End shift", locked: "Too many attempts. Try again in 15 minutes.", invalidPin: "The cashier PIN is incorrect." },
+  cashier: { title: "Queue cashier mode", pinTitle: "Enter cashier PIN", pin: "4–6 digit PIN", login: "Open queue", logout: "End shift", locked: "Too many attempts. Try again in 15 minutes.", invalidPin: "The cashier PIN is incorrect.", autoRefresh: "Queue data refreshes automatically every 5 seconds." },
 };
