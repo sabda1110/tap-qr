@@ -13,6 +13,10 @@ const requestQueueMessagingTokenOnClient = createClientOnlyFn(async () => {
   const { requestQueueMessagingToken } = await import("../../lib/firebase/messaging.client");
   return requestQueueMessagingToken();
 });
+const listenForQueueMessagesOnClient = createClientOnlyFn(async (onNotification: (message: { title?: string; body?: string }) => void) => {
+  const { listenForQueueMessages } = await import("../../lib/firebase/messaging.client");
+  return listenForQueueMessages(onNotification);
+});
 
 type OutletInfo = { id: string; name: string; slug: string; isOpen: boolean } | null;
 
@@ -83,9 +87,7 @@ export function PublicQueueTicketPage({ initial, token }: { initial: PublicQueue
     if (typeof window === "undefined" || !("Notification" in window) || Notification.permission !== "granted") return;
     let active = true;
     let unsubscribe: (() => void) | null = null;
-    void import("../../lib/firebase/messaging.client").then(({ listenForQueueMessages }) =>
-      listenForQueueMessages((message) => { void handleForegroundNotification(message); })
-    ).then((stop) => {
+    void listenForQueueMessagesOnClient((message) => { void handleForegroundNotification(message); }).then((stop) => {
       if (!active || foregroundUnsubscribe.current) { stop?.(); return; }
       unsubscribe = stop;
       foregroundUnsubscribe.current = stop;
@@ -102,8 +104,7 @@ export function PublicQueueTicketPage({ initial, token }: { initial: PublicQueue
     try {
       const fcmToken = await requestQueueMessagingTokenOnClient();
       if (!fcmToken) { setNotificationError(true); return; }
-      const { listenForQueueMessages } = await import("../../lib/firebase/messaging.client");
-      pendingUnsubscribe = await listenForQueueMessages((message) => { void handleForegroundNotification(message); });
+      pendingUnsubscribe = await listenForQueueMessagesOnClient((message) => { void handleForegroundNotification(message); });
       if (!pendingUnsubscribe) { setNotificationError(true); return; }
       foregroundUnsubscribe.current?.();
       foregroundUnsubscribe.current = pendingUnsubscribe;
