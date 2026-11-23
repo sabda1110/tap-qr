@@ -1,6 +1,7 @@
 import { applicationDefault, cert, getApps, initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
+import { getMessaging } from "firebase-admin/messaging";
 
 function getAdminCredential() {
   const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
@@ -46,4 +47,8 @@ export function getFirebaseAdminAuth() {
 
 export function getFirebaseAdminFirestore() {
   return getFirestore(getAdminApp());
+}
+
+export function getFirebaseAdminMessaging() {
+  return getMessaging(getAdminApp());
 }

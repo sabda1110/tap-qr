@@ -14,10 +14,12 @@ import { outletGalleryEn } from "./outlet-gallery-en";
 import { gettingStartedEn } from "./getting-started-en";
 import { consultationEn } from "./consultation-en";
 import { membershipEn } from "./membership-en";
+import { queueEn } from "./queue-en";
 
 export const en: typeof id = {
   tiktokShowcase: tiktokShowcaseEn,
   membership: membershipEn,
+  queue: queueEn,
   seo: seoEn,
   reviewGuide: reviewGuideEn,
   consultation: consultationEn,

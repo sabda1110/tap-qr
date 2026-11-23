@@ -22,4 +22,5 @@ export type PublicOutletProfile = {
   } | null;
   links: SocialLink[];
   highlights: PublicOutletHighlight[];
+  queueEnabled: boolean;
 };

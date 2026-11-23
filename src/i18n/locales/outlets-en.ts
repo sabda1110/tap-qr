@@ -60,17 +60,16 @@ export const outletsEn = {
     "Remove this link from the selected card? Changes apply after you save.",
   addons: {
     title: "Outlet add-ons",
-    description: "Admin only grants add-on access. The owner configures the cashier PIN, membership period, stamp target, and reward from the Membership menu.",
-    active: "Membership active",
-    inactive: "Not active",
-    expired: "Membership expired",
-    enable: "Enable Outlet Add-on",
-    expiresAt: "Valid until",
-    expiresAtHelp: "Leave blank when the add-on does not expire. Access ends at the end of this date in WIB.",
-    save: "Save add-on",
-    saving: "Saving…",
-    enabledSuccess: "Membership add-on enabled successfully.",
-    disabledSuccess: "Membership add-on disabled and cashier sessions revoked.",
-    error: "Unable to save the add-on settings.",
+    description: "Grant access to Membership and Digital Queue separately. Each add-on can have its own expiry date.",
+    membership: {
+      title: "Membership & stamps", description: "Manage access to the customer loyalty program.", active: "Membership active", inactive: "Not active", expired: "Membership expired",
+      enable: "Enable Membership", expiresAt: "Valid until", expiresAtHelp: "Leave blank when the add-on does not expire. Access ends at the end of this date in WIB.",
+      save: "Save Membership", saving: "Saving…", enabledSuccess: "Membership add-on enabled successfully.", disabledSuccess: "Membership add-on disabled and cashier sessions revoked.", error: "Unable to save Membership settings.",
+    },
+    queue: {
+      title: "Digital Queue", description: "Customers can take a queue number from the outlet profile or an on-site QR code.", active: "Queue active", inactive: "Not active", expired: "Queue expired",
+      enable: "Enable Digital Queue", expiresAt: "Valid until", expiresAtHelp: "Leave blank when the add-on does not expire. Access ends at the end of this date in WIB.",
+      save: "Save Queue", saving: "Saving…", enabledSuccess: "Digital Queue add-on enabled successfully.", disabledSuccess: "Digital Queue add-on disabled.", error: "Unable to save Digital Queue settings.",
+    },
   },
 };

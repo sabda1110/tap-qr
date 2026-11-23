@@ -25,6 +25,15 @@ export type OutletMembershipAddon = {
   };
 };
 
+export type OutletQueueAddon = {
+  enabled: boolean;
+  activatedAt: string;
+  expiresAt?: string | null;
+  cashierPinSalt?: string;
+  cashierPinHash?: string;
+  cashierSessionVersion?: number;
+};
+
 export type MemberDocument = {
   id: string;
   tokenHash: string;
@@ -92,7 +101,7 @@ export type OutletRecord = {
   phone: string;
   status: AccountStatus;
   publicProfile?: OutletPublicProfileSettings;
-  addons?: { membership?: OutletMembershipAddon };
+  addons?: { membership?: OutletMembershipAddon; queue?: OutletQueueAddon };
   createdAt: unknown;
   updatedAt: unknown;
 };

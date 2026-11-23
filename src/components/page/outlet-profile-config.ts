@@ -116,6 +116,8 @@ export function createOutletProfileConfig(
 
   return {
     id: profile.id,
+    queueEnabled: profile.queueEnabled,
+    profileId: profile.slug || profile.id,
     name: profile.name,
     avatarUrl: profile.avatarUrl,
     highlights: profile.highlights,

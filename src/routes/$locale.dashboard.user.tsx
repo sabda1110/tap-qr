@@ -3,7 +3,7 @@ import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 import { getCurrentAuthenticatedUser } from "../server/auth/auth.functions";
 import { getUserDashboardOutlets } from "../server/outlets/user-outlet.functions";
-import { MembershipNavigationContext } from "../components/layouts/membership-navigation-context";
+import { MembershipNavigationContext, QueueNavigationContext } from "../components/layouts/membership-navigation-context";
 
 export const Route = createFileRoute("/$locale/dashboard/user")({
   validateSearch: cardSearchSchema,
@@ -31,12 +31,12 @@ export const Route = createFileRoute("/$locale/dashboard/user")({
     }
 
     const outlets = await getUserDashboardOutlets();
-    return { user, membershipEnabled: outlets.some((outlet) => outlet.membership?.isActive) };
+    return { user, membershipEnabled: outlets.some((outlet) => outlet.membership?.isActive), queueEnabled: outlets.some((outlet) => outlet.queue?.isActive) };
   },
   component: UserDashboardLayoutRoute,
 });
 
 function UserDashboardLayoutRoute() {
-  const { membershipEnabled } = Route.useLoaderData();
-  return <MembershipNavigationContext.Provider value={membershipEnabled}><Outlet /></MembershipNavigationContext.Provider>;
+  const { membershipEnabled, queueEnabled } = Route.useLoaderData();
+  return <MembershipNavigationContext.Provider value={membershipEnabled}><QueueNavigationContext.Provider value={queueEnabled}><Outlet /></QueueNavigationContext.Provider></MembershipNavigationContext.Provider>;
 }

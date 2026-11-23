@@ -13,9 +13,11 @@ import { outletGalleryId } from "./outlet-gallery-id";
 import { gettingStartedId } from "./getting-started-id";
 import { consultationId } from "./consultation-id";
 import { membershipId } from "./membership-id";
+import { queueId } from "./queue-id";
 export const id = {
   tiktokShowcase: tiktokShowcaseId,
   membership: membershipId,
+  queue: queueId,
   seo: seoId,
   reviewGuide: reviewGuideId,
   consultation: consultationId,

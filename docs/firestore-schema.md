@@ -21,6 +21,10 @@ Schema ini adalah kontrak data proyek. Semua akses aplikasi berjalan melalui Fir
 | `memberTokens/{sha256(token)}` | lookup kartu publik ke `outletId` dan `memberId`; token mentah tidak disimpan |
 | `outlets/{outletId}/members/{memberId}/logs/{logId}` | audit aktivitas membership: pendaftaran, verifikasi, stempel, klaim, rotasi QR, dan status |
 | `cashierRateLimits/{outletId}_{sha256(ip)}` | percobaan PIN kasir, waktu kunci, dan `expiresAt` Firestore Timestamp untuk TTL |
+| `queueTokens/{sha256(token)}` | lookup tiket antrean publik ke outlet, tanggal, dan ID tiket; token mentah tidak disimpan |
+| `queueRateLimits/{sha256(outletId:ip:minute)}` | batas join antrean publik; IP mentah tidak disimpan; `expiresAt` untuk TTL |
+| `queueCashierRateLimits/{outletId}_{sha256(ip)}` | percobaan PIN kasir antrean dan waktu kunci 15 menit; IP mentah tidak disimpan; `expiresAt` untuk TTL |
+| `queueNotifications/{notificationId}` | outbox FCM saat tiket dipanggil; status pengiriman, token perangkat server-side, dan `expiresAt` untuk TTL |
 
 ## Membership dan loyalty stamp
 
@@ -37,6 +41,12 @@ Setiap perubahan progres ditulis atomik bersama log pada subkoleksi `logs`. Log 
 Owner dapat menghapus member secara permanen dengan konfirmasi. Operasi membersihkan dokumen member beserta subkoleksi log, lookup `memberTokens`, dan reservasi `memberPhones`, sehingga nomor HP dapat didaftarkan kembali dan QR lama tidak berlaku.
 
 Rate limit PIN dipisahkan per outlet dan hash IP: kegagalan kelima mengunci selama 15 menit. Dokumen limiter tidak menyimpan IP mentah dan `expiresAt` harus dikonfigurasi sebagai TTL. Sesi kasir berupa cookie HTTP-only bertanda tangan, berlaku 24 jam, terbatas pada satu outlet, dan diperiksa terhadap `cashierSessionVersion` pada setiap operasi. PIN dan URL `/$locale/cashier/$outletId` tetap permanen sampai owner mengganti PIN atau add-on dinonaktifkan/kedaluwarsa.
+
+## Add-on Antrean Digital
+
+Antrean adalah entitlement terpisah pada `outlets/{outletId}.addons.queue` dengan `enabled`, `activatedAt`, dan `expiresAt`; admin mengatur akses dan masa aktif, sementara owner mengelola antrean. Add-on ini tidak bergantung pada Membership. Dokumen harian berada di `outlets/{outletId}/queueDays/{YYYY-MM-DD}` dengan `isOpen` dan `lastNumber`; hari memakai zona waktu Asia/Jakarta. Setiap pengambilan nomor QR maupun walk-in membaca dan memperbarui `lastNumber` pada satu transaksi Firestore. Permintaan bersamaan yang menyentuh counter yang sama akan berkonflik dan dicoba ulang oleh Firestore, sehingga nomor unik dibagikan berurutan. Tiket disimpan pada subkoleksi `tickets` dengan nomor, nama panggilan, layanan, bahasa, status, sumber (`online`/`walk_in`), hash token, waktu, dan `expiresAt`. Riwayat status berada di `queueEvents` tanpa nomor telepon atau data kontak.
+
+Pelanggan hanya dapat membaca tiket melalui token acak 256-bit; database menyimpan hash pada dokumen `queueTokens`. Respons publik hanya berisi nama outlet, nomor tiket, layanan, tanggal, dan status. Pelanggan dapat meminta notifikasi browser secara eksplisit dari halaman tiket. Token FCM disimpan server-side pada `outlets/{outletId}/queueDays/{dateKey}/tickets/{ticketId}/pushTokens/{sha256(fcmToken)}` dan dihapus memakai TTL. Ketika kasir memanggil tiket, perubahan status dan outbox `queueNotifications` dibuat atomik; server mengirim pesan FCM setelah transaksi berhasil. Notifikasi hanya dikirim kepada perangkat yang telah memberi izin dan mendaftarkan token. Setup web push memerlukan `VITE_FIREBASE_VAPID_KEY`, konfigurasi Firebase Cloud Messaging, dan kredensial Admin SDK dengan izin mengirim FCM. Tiket, token lookup, limiter, notifikasi, token perangkat, dan `queueEvents` memiliki `expiresAt`; aktifkan TTL Firestore untuk collection group `tickets`, `queueEvents`, `pushTokens`, dan koleksi `queueTokens`, `queueRateLimits`, `queueCashierRateLimits`, serta `queueNotifications`. Jangan menganggap TTL pada dokumen induk `queueDays` akan menghapus subkoleksinya.
 
 ## Outlet dan logo
 

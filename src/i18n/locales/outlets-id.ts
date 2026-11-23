@@ -61,17 +61,16 @@ export const outletsId = {
     "Hapus tautan ini dari kartu yang dipilih? Perubahan diterapkan setelah Anda menyimpan.",
   addons: {
     title: "Add-on outlet",
-    description: "Admin hanya memberikan akses add-on. PIN kasir, masa aktif, target stempel, dan hadiah diatur oleh owner dari menu Membership.",
-    active: "Membership aktif",
-    inactive: "Belum aktif",
-    expired: "Membership kedaluwarsa",
-    enable: "Aktifkan Add-on Outlet",
-    expiresAt: "Berlaku sampai",
-    expiresAtHelp: "Kosongkan jika add-on tidak memiliki tanggal kedaluwarsa. Akses berhenti pada akhir tanggal tersebut dalam WIB.",
-    save: "Simpan add-on",
-    saving: "Menyimpan…",
-    enabledSuccess: "Add-on Membership berhasil diaktifkan.",
-    disabledSuccess: "Add-on Membership dinonaktifkan dan sesi kasir dicabut.",
-    error: "Pengaturan add-on belum dapat disimpan.",
+    description: "Aktifkan akses Membership dan Antrean secara terpisah. Setiap add-on dapat memiliki masa aktif sendiri.",
+    membership: {
+      title: "Membership & stempel", description: "Kelola akses program loyalitas pelanggan.", active: "Membership aktif", inactive: "Belum aktif", expired: "Membership kedaluwarsa",
+      enable: "Aktifkan Membership", expiresAt: "Berlaku sampai", expiresAtHelp: "Kosongkan jika tidak memiliki tanggal kedaluwarsa. Akses berhenti pada akhir tanggal tersebut dalam WIB.",
+      save: "Simpan Membership", saving: "Menyimpan…", enabledSuccess: "Add-on Membership berhasil diaktifkan.", disabledSuccess: "Add-on Membership dinonaktifkan dan sesi kasir dicabut.", error: "Pengaturan Membership belum dapat disimpan.",
+    },
+    queue: {
+      title: "Antrean Digital", description: "Pelanggan dapat mengambil nomor dari profil outlet atau QR di lokasi.", active: "Antrean aktif", inactive: "Belum aktif", expired: "Antrean kedaluwarsa",
+      enable: "Aktifkan Antrean Digital", expiresAt: "Berlaku sampai", expiresAtHelp: "Kosongkan jika tidak memiliki tanggal kedaluwarsa. Akses berhenti pada akhir tanggal tersebut dalam WIB.",
+      save: "Simpan Antrean", saving: "Menyimpan…", enabledSuccess: "Add-on Antrean Digital berhasil diaktifkan.", disabledSuccess: "Add-on Antrean Digital dinonaktifkan.", error: "Pengaturan Antrean Digital belum dapat disimpan.",
+    },
   },
 };

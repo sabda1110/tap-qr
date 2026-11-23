@@ -18,6 +18,14 @@ export type OutletMembershipSummary = {
   };
 };
 
+export type OutletQueueSummary = {
+  enabled: boolean;
+  activatedAt: string;
+  expiresAt: string | null;
+  isActive: boolean;
+  pinConfigured: boolean;
+};
+
 export type OutletSummary = {
   id: string;
   ownerId: string;
@@ -34,6 +42,7 @@ export type OutletSummary = {
   channels: string[];
   highlights: OutletHighlight[];
   membership: OutletMembershipSummary | null;
+  queue: OutletQueueSummary | null;
 };
 
 export type OutletDetail = OutletSummary & {

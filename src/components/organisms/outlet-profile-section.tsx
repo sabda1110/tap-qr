@@ -1,6 +1,7 @@
 import { ArrowUpRight, Clock3, MapPin, Store } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { useState, type CSSProperties } from "react";
-import type { Messages } from "../../i18n";
+import type { Language, Messages } from "../../i18n";
 import type {
   OutletProfileAction,
   OutletProfileConfig,
@@ -12,12 +13,16 @@ import "./outlet-profile.css";
 export function OutletProfileSection({
   config,
   content,
+  queueContent,
+  language,
   onAction,
   galleryContent,
   onHighlightOpen,
 }: {
   config: OutletProfileConfig;
   content: Messages["outletProfile"];
+  queueContent: Messages["queue"]["public"];
+  language: Language;
   onAction: (action: OutletProfileAction) => void;
   galleryContent: Messages["outletGallery"];
   onHighlightOpen: (highlightId: string) => void;
@@ -114,6 +119,10 @@ export function OutletProfileSection({
           </div>
         )}
 
+        {config.queueEnabled && <Link to="/$locale/q/$id" params={{ locale: language, id: config.profileId }} className="mt-5 flex min-h-14 items-center justify-center gap-2 border-[3px] border-[var(--ink)] bg-[var(--accent)] px-5 text-center text-base font-black text-[var(--ink)] no-underline shadow-[4px_4px_0_var(--ink)] transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ink)]">
+          {queueContent.submit}<ArrowUpRight aria-hidden="true" className="size-5" />
+        </Link>}
+
         <nav aria-label={content.linksLabel} className="outlet-actions">
           {config.secondaryActions.map((action) => {
             const isActive = activeActionIds.has(action.id);
@@ -147,7 +156,7 @@ export function OutletProfileSection({
           })}
         </nav>
 
-        {!config.reviewAction && config.secondaryActions.length === 0 && (
+        {!config.reviewAction && config.secondaryActions.length === 0 && !config.queueEnabled && (
           <p className="outlet-empty">{content.empty}</p>
         )}
 

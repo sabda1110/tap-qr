@@ -21,7 +21,7 @@ export function OutletProfilePage({
   failed?: boolean;
   trackProfileView?: boolean;
 }) {
-  const { messages } = useI18n();
+  const { messages, language } = useI18n();
   const content = messages.outletProfile;
   const trackedOutlet = useRef<string | null>(null);
   const config = useMemo(
@@ -55,6 +55,8 @@ export function OutletProfilePage({
         <OutletProfileSection
           config={config}
           content={content}
+          queueContent={messages.queue.public}
+          language={language}
           onAction={trackAction}
           galleryContent={messages.outletGallery}
           onHighlightOpen={trackHighlight}

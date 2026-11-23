@@ -11,6 +11,7 @@ import {
   parseOutletHighlights,
   toPublicOutletHighlights,
 } from "./outlet-highlights";
+import { isQueueAddonActive } from "../queue/queue-access";
 
 function publicUrl(value: string | null | undefined): string | null {
   if (!value) return null;
@@ -105,6 +106,7 @@ export async function getPublicOutletProfile(id: string, cardId?: string): Promi
     ...presentation,
     links,
     highlights: toPublicOutletHighlights(outlet.publicProfile?.highlights),
+    queueEnabled: isQueueAddonActive(outlet.addons?.queue),
   };
 }
 

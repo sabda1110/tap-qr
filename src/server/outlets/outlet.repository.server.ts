@@ -9,6 +9,7 @@ import type {
 import { assertOutletOwner } from "./outlet-ownership";
 import { parseOutletHighlights } from "./outlet-highlights";
 import { isMembershipAddonActive } from "../membership/membership-access";
+import { isQueueAddonActive } from "../queue/queue-access";
 
 function timestamp(value: unknown): string | null {
   if (
@@ -68,6 +69,13 @@ export function buildOutletSummary(
     ],
     highlights: parseOutletHighlights(outlet.publicProfile?.highlights),
     membership: membershipSummary(outlet.addons?.membership),
+    queue: outlet.addons?.queue ? {
+      enabled: outlet.addons.queue.enabled === true,
+      activatedAt: typeof outlet.addons.queue.activatedAt === "string" ? outlet.addons.queue.activatedAt : "",
+      expiresAt: typeof outlet.addons.queue.expiresAt === "string" ? outlet.addons.queue.expiresAt : null,
+      isActive: isQueueAddonActive(outlet.addons.queue),
+      pinConfigured: Boolean(outlet.addons.queue.cashierPinHash && outlet.addons.queue.cashierPinSalt),
+    } : null,
   };
 }
 

@@ -1,0 +1,97 @@
+import { randomBytes } from "node:crypto";
+import { createServerFn } from "@tanstack/react-start";
+import { getRequestIP } from "@tanstack/react-start/server";
+import { requireAdmin, requireOwner } from "../auth/authorization.server";
+import { adminQueueAddonSchema, ownerQueueInputSchema, ownerQueueOpenSchema, ownerQueueReadSchema, ownerQueueStatusSchema, publicQueueJoinSchema, publicQueueOutletSchema, publicQueueTokenSchema, queueCashierLoginSchema, queueCashierOutletSchema, queueCashierPinSchema, queuePushTokenSchema } from "./queue.schemas";
+import { addOwnerWalkIn, consumeQueuePinAttempt, getPublicQueueOutlet, getPublicQueueTicket, getQueueCashierAccess, joinPublicQueue, listOwnerQueue, registerPublicQueuePushToken, setOwnerQueueOpen, setOwnerQueueStatus, updateAdminQueueAddon, updateOwnerQueueCashierPin } from "./queue.repository.server";
+import { clearQueueCashierSession, requireQueueCashierSession, setQueueCashierSession } from "./queue-cashier-security.server";
+import { hashCashierPin, hashValue, safeEqual } from "../membership/membership-security.server";
+import { dispatchQueueNotification } from "./queue-notifications.server";
+
+export const saveAdminQueueAddon = createServerFn({ method: "POST" })
+  .validator(adminQueueAddonSchema)
+  .handler(async ({ data }) => { await requireAdmin(); await updateAdminQueueAddon(data); });
+
+export const joinQueue = createServerFn({ method: "POST" })
+  .validator(publicQueueJoinSchema)
+  .handler(({ data }) => joinPublicQueue(data, getRequestIP({ xForwardedFor: true }) ?? "unknown"));
+
+export const getQueueOutlet = createServerFn({ method: "GET" })
+  .validator(publicQueueOutletSchema)
+  .handler(({ data }) => getPublicQueueOutlet(data.outlet));
+
+export const getQueueTicket = createServerFn({ method: "GET" })
+  .validator(publicQueueTokenSchema)
+  .handler(({ data }) => getPublicQueueTicket(data.token));
+
+export const registerQueuePushToken = createServerFn({ method: "POST" }).validator(queuePushTokenSchema).handler(async ({ data }) => {
+  const result = await registerPublicQueuePushToken(data.ticketToken, data.fcmToken);
+  if (result.notificationId) await dispatchQueueNotification(result.notificationId);
+  return { success: true as const };
+});
+
+export const getOwnerQueue = createServerFn({ method: "GET" })
+  .validator(ownerQueueReadSchema)
+  .handler(async ({ data }) => { const owner = await requireOwner(); return listOwnerQueue(owner.uid, data.outletId); });
+
+export const setOwnerQueueAvailability = createServerFn({ method: "POST" })
+  .validator(ownerQueueOpenSchema)
+  .handler(async ({ data }) => { const owner = await requireOwner(); await setOwnerQueueOpen(owner.uid, data); });
+
+export const addOwnerWalkInToQueue = createServerFn({ method: "POST" })
+  .validator(ownerQueueInputSchema)
+  .handler(async ({ data }) => { const owner = await requireOwner(); return addOwnerWalkIn(owner.uid, data); });
+
+export const updateOwnerQueueTicket = createServerFn({ method: "POST" })
+  .validator(ownerQueueStatusSchema)
+  .handler(async ({ data }) => {
+    const owner = await requireOwner();
+    const notificationId = await setOwnerQueueStatus(owner.uid, data);
+    if (notificationId) await dispatchQueueNotification(notificationId);
+  });
+
+export const saveOwnerQueueCashierPin = createServerFn({ method: "POST" })
+  .validator(queueCashierPinSchema)
+  .handler(async ({ data }) => {
+    const owner = await requireOwner();
+    const salt = randomBytes(16).toString("hex");
+    await updateOwnerQueueCashierPin(owner.uid, data.outletId, hashCashierPin(data.outletId, data.pin, salt), salt);
+  });
+
+export const loginQueueCashier = createServerFn({ method: "POST" }).validator(queueCashierLoginSchema).handler(async ({ data }) => {
+  const config = await getQueueCashierAccess(data.outletId);
+  const valid = Boolean(config.pinHash && config.pinSalt) && safeEqual(hashCashierPin(data.outletId, data.pin, config.pinSalt), config.pinHash);
+  const ipHash = hashValue(getRequestIP({ xForwardedFor: true }) ?? "unknown");
+  await consumeQueuePinAttempt(data.outletId, ipHash, valid);
+  if (!valid) throw new Error("INVALID_QUEUE_CASHIER_PIN");
+  setQueueCashierSession(data.outletId, Number(config.outlet.addons?.queue?.cashierSessionVersion ?? 0));
+  return { outletName: String(config.outlet.name ?? "") };
+});
+
+export const getQueueCashierSessionInfo = createServerFn({ method: "GET" }).validator(queueCashierOutletSchema).handler(async ({ data }) => {
+  const session = await requireQueueCashierSession(data.outletId);
+  return { outletName: session.outletName };
+});
+
+export const getQueueCashier = createServerFn({ method: "GET" }).validator(queueCashierOutletSchema).handler(async ({ data }) => {
+  const session = await requireQueueCashierSession(data.outletId);
+  return { session: { outletName: session.outletName }, queue: await listOwnerQueue(session.ownerId, data.outletId) };
+});
+
+export const logoutQueueCashier = createServerFn({ method: "POST" }).handler(async () => clearQueueCashierSession());
+
+export const addQueueCashierWalkIn = createServerFn({ method: "POST" }).validator(ownerQueueInputSchema).handler(async ({ data }) => {
+  const session = await requireQueueCashierSession(data.outletId);
+  return addOwnerWalkIn(session.ownerId, data);
+});
+
+export const setQueueCashierAvailability = createServerFn({ method: "POST" }).validator(ownerQueueOpenSchema).handler(async ({ data }) => {
+  const session = await requireQueueCashierSession(data.outletId);
+  await setOwnerQueueOpen(session.ownerId, data);
+});
+
+export const updateQueueCashierTicket = createServerFn({ method: "POST" }).validator(ownerQueueStatusSchema).handler(async ({ data }) => {
+  const session = await requireQueueCashierSession(data.outletId);
+  const notificationId = await setOwnerQueueStatus(session.ownerId, data);
+  if (notificationId) await dispatchQueueNotification(notificationId);
+});

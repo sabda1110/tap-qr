@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocaleRouteImport } from './routes/$locale'
+import { Route as FirebaseMessagingSwDotjsRouteImport } from './routes/firebase-messaging-sw[.]js'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LocaleIndexRouteImport } from './routes/$locale.index'
@@ -26,6 +27,8 @@ import { Route as LocaleMTokenRouteImport } from './routes/$locale.m.$token'
 import { Route as LocaleOrdersIndexRouteImport } from './routes/$locale.orders.index'
 import { Route as LocaleOrdersTokenRouteImport } from './routes/$locale.orders.$token'
 import { Route as LocalePIdRouteImport } from './routes/$locale.p.$id'
+import { Route as LocaleQIdRouteImport } from './routes/$locale.q.$id'
+import { Route as LocaleQueueTokenRouteImport } from './routes/$locale.queue.$token'
 import { Route as LocaleTutorialActivationRouteImport } from './routes/$locale.tutorial.activation'
 import { Route as LocaleTutorialGooglePlaceIdRouteImport } from './routes/$locale.tutorial.google-place-id'
 import { Route as LocaleTutorialGoogleReviewRouteImport } from './routes/$locale.tutorial.google-review'
@@ -45,6 +48,8 @@ import { Route as LocaleDashboardUserBuyRouteImport } from './routes/$locale.das
 import { Route as LocaleDashboardUserEditOrderRouteImport } from './routes/$locale.dashboard.user.edit-order'
 import { Route as LocaleDashboardUserMembershipRouteImport } from './routes/$locale.dashboard.user.membership'
 import { Route as LocaleDashboardUserOrdersRouteImport } from './routes/$locale.dashboard.user.orders'
+import { Route as LocaleDashboardUserQueueRouteImport } from './routes/$locale.dashboard.user.queue'
+import { Route as LocaleQueueCashierOutletIdRouteImport } from './routes/$locale.queue.cashier.$outletId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -56,6 +61,12 @@ const LocaleRoute = LocaleRouteImport.update({
   path: '/$locale',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FirebaseMessagingSwDotjsRoute =
+  FirebaseMessagingSwDotjsRouteImport.update({
+    id: '/firebase-messaging-sw.js',
+    path: '/firebase-messaging-sw.js',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
@@ -129,6 +140,16 @@ const LocaleOrdersTokenRoute = LocaleOrdersTokenRouteImport.update({
 const LocalePIdRoute = LocalePIdRouteImport.update({
   id: '/p/$id',
   path: '/p/$id',
+  getParentRoute: () => LocaleRoute,
+} as any)
+const LocaleQIdRoute = LocaleQIdRouteImport.update({
+  id: '/q/$id',
+  path: '/q/$id',
+  getParentRoute: () => LocaleRoute,
+} as any)
+const LocaleQueueTokenRoute = LocaleQueueTokenRouteImport.update({
+  id: '/queue/$token',
+  path: '/queue/$token',
   getParentRoute: () => LocaleRoute,
 } as any)
 const LocaleTutorialActivationRoute =
@@ -243,10 +264,23 @@ const LocaleDashboardUserOrdersRoute =
     path: '/orders',
     getParentRoute: () => LocaleDashboardUserRoute,
   } as any)
+const LocaleDashboardUserQueueRoute =
+  LocaleDashboardUserQueueRouteImport.update({
+    id: '/queue',
+    path: '/queue',
+    getParentRoute: () => LocaleDashboardUserRoute,
+  } as any)
+const LocaleQueueCashierOutletIdRoute =
+  LocaleQueueCashierOutletIdRouteImport.update({
+    id: '/queue/cashier/$outletId',
+    path: '/queue/cashier/$outletId',
+    getParentRoute: () => LocaleRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteWithChildren
+  '/firebase-messaging-sw.js': typeof FirebaseMessagingSwDotjsRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$locale/$cardId': typeof LocaleCardIdRoute
@@ -260,6 +294,8 @@ export interface FileRoutesByFullPath {
   '/$locale/m/$token': typeof LocaleMTokenRoute
   '/$locale/orders/$token': typeof LocaleOrdersTokenRoute
   '/$locale/p/$id': typeof LocalePIdRoute
+  '/$locale/q/$id': typeof LocaleQIdRoute
+  '/$locale/queue/$token': typeof LocaleQueueTokenRoute
   '/$locale/tutorial/activation': typeof LocaleTutorialActivationRoute
   '/$locale/tutorial/google-place-id': typeof LocaleTutorialGooglePlaceIdRoute
   '/$locale/tutorial/google-review': typeof LocaleTutorialGoogleReviewRoute
@@ -279,11 +315,14 @@ export interface FileRoutesByFullPath {
   '/$locale/dashboard/user/edit-order': typeof LocaleDashboardUserEditOrderRoute
   '/$locale/dashboard/user/membership': typeof LocaleDashboardUserMembershipRoute
   '/$locale/dashboard/user/orders': typeof LocaleDashboardUserOrdersRoute
+  '/$locale/dashboard/user/queue': typeof LocaleDashboardUserQueueRoute
+  '/$locale/queue/cashier/$outletId': typeof LocaleQueueCashierOutletIdRoute
   '/$locale/dashboard/admin/': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user/': typeof LocaleDashboardUserIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/firebase-messaging-sw.js': typeof FirebaseMessagingSwDotjsRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$locale/$cardId': typeof LocaleCardIdRoute
@@ -295,6 +334,8 @@ export interface FileRoutesByTo {
   '/$locale/m/$token': typeof LocaleMTokenRoute
   '/$locale/orders/$token': typeof LocaleOrdersTokenRoute
   '/$locale/p/$id': typeof LocalePIdRoute
+  '/$locale/q/$id': typeof LocaleQIdRoute
+  '/$locale/queue/$token': typeof LocaleQueueTokenRoute
   '/$locale/tutorial/activation': typeof LocaleTutorialActivationRoute
   '/$locale/tutorial/google-place-id': typeof LocaleTutorialGooglePlaceIdRoute
   '/$locale/tutorial/google-review': typeof LocaleTutorialGoogleReviewRoute
@@ -314,6 +355,8 @@ export interface FileRoutesByTo {
   '/$locale/dashboard/user/edit-order': typeof LocaleDashboardUserEditOrderRoute
   '/$locale/dashboard/user/membership': typeof LocaleDashboardUserMembershipRoute
   '/$locale/dashboard/user/orders': typeof LocaleDashboardUserOrdersRoute
+  '/$locale/dashboard/user/queue': typeof LocaleDashboardUserQueueRoute
+  '/$locale/queue/cashier/$outletId': typeof LocaleQueueCashierOutletIdRoute
   '/$locale/dashboard/admin': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user': typeof LocaleDashboardUserIndexRoute
 }
@@ -321,6 +364,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteWithChildren
+  '/firebase-messaging-sw.js': typeof FirebaseMessagingSwDotjsRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$locale/$cardId': typeof LocaleCardIdRoute
@@ -334,6 +378,8 @@ export interface FileRoutesById {
   '/$locale/m/$token': typeof LocaleMTokenRoute
   '/$locale/orders/$token': typeof LocaleOrdersTokenRoute
   '/$locale/p/$id': typeof LocalePIdRoute
+  '/$locale/q/$id': typeof LocaleQIdRoute
+  '/$locale/queue/$token': typeof LocaleQueueTokenRoute
   '/$locale/tutorial/activation': typeof LocaleTutorialActivationRoute
   '/$locale/tutorial/google-place-id': typeof LocaleTutorialGooglePlaceIdRoute
   '/$locale/tutorial/google-review': typeof LocaleTutorialGoogleReviewRoute
@@ -353,6 +399,8 @@ export interface FileRoutesById {
   '/$locale/dashboard/user/edit-order': typeof LocaleDashboardUserEditOrderRoute
   '/$locale/dashboard/user/membership': typeof LocaleDashboardUserMembershipRoute
   '/$locale/dashboard/user/orders': typeof LocaleDashboardUserOrdersRoute
+  '/$locale/dashboard/user/queue': typeof LocaleDashboardUserQueueRoute
+  '/$locale/queue/cashier/$outletId': typeof LocaleQueueCashierOutletIdRoute
   '/$locale/dashboard/admin/': typeof LocaleDashboardAdminIndexRoute
   '/$locale/dashboard/user/': typeof LocaleDashboardUserIndexRoute
 }
@@ -361,6 +409,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$locale'
+    | '/firebase-messaging-sw.js'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/$locale/$cardId'
@@ -374,6 +423,8 @@ export interface FileRouteTypes {
     | '/$locale/m/$token'
     | '/$locale/orders/$token'
     | '/$locale/p/$id'
+    | '/$locale/q/$id'
+    | '/$locale/queue/$token'
     | '/$locale/tutorial/activation'
     | '/$locale/tutorial/google-place-id'
     | '/$locale/tutorial/google-review'
@@ -393,11 +444,14 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/user/edit-order'
     | '/$locale/dashboard/user/membership'
     | '/$locale/dashboard/user/orders'
+    | '/$locale/dashboard/user/queue'
+    | '/$locale/queue/cashier/$outletId'
     | '/$locale/dashboard/admin/'
     | '/$locale/dashboard/user/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/firebase-messaging-sw.js'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/$locale/$cardId'
@@ -409,6 +463,8 @@ export interface FileRouteTypes {
     | '/$locale/m/$token'
     | '/$locale/orders/$token'
     | '/$locale/p/$id'
+    | '/$locale/q/$id'
+    | '/$locale/queue/$token'
     | '/$locale/tutorial/activation'
     | '/$locale/tutorial/google-place-id'
     | '/$locale/tutorial/google-review'
@@ -428,12 +484,15 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/user/edit-order'
     | '/$locale/dashboard/user/membership'
     | '/$locale/dashboard/user/orders'
+    | '/$locale/dashboard/user/queue'
+    | '/$locale/queue/cashier/$outletId'
     | '/$locale/dashboard/admin'
     | '/$locale/dashboard/user'
   id:
     | '__root__'
     | '/'
     | '/$locale'
+    | '/firebase-messaging-sw.js'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/$locale/$cardId'
@@ -447,6 +506,8 @@ export interface FileRouteTypes {
     | '/$locale/m/$token'
     | '/$locale/orders/$token'
     | '/$locale/p/$id'
+    | '/$locale/q/$id'
+    | '/$locale/queue/$token'
     | '/$locale/tutorial/activation'
     | '/$locale/tutorial/google-place-id'
     | '/$locale/tutorial/google-review'
@@ -466,6 +527,8 @@ export interface FileRouteTypes {
     | '/$locale/dashboard/user/edit-order'
     | '/$locale/dashboard/user/membership'
     | '/$locale/dashboard/user/orders'
+    | '/$locale/dashboard/user/queue'
+    | '/$locale/queue/cashier/$outletId'
     | '/$locale/dashboard/admin/'
     | '/$locale/dashboard/user/'
   fileRoutesById: FileRoutesById
@@ -473,6 +536,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LocaleRoute: typeof LocaleRouteWithChildren
+  FirebaseMessagingSwDotjsRoute: typeof FirebaseMessagingSwDotjsRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiConsultationsCronRoute: typeof ApiConsultationsCronRoute
@@ -492,6 +556,13 @@ declare module '@tanstack/react-router' {
       path: '/$locale'
       fullPath: '/$locale'
       preLoaderRoute: typeof LocaleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/firebase-messaging-sw.js': {
+      id: '/firebase-messaging-sw.js'
+      path: '/firebase-messaging-sw.js'
+      fullPath: '/firebase-messaging-sw.js'
+      preLoaderRoute: typeof FirebaseMessagingSwDotjsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -597,6 +668,20 @@ declare module '@tanstack/react-router' {
       path: '/p/$id'
       fullPath: '/$locale/p/$id'
       preLoaderRoute: typeof LocalePIdRouteImport
+      parentRoute: typeof LocaleRoute
+    }
+    '/$locale/q/$id': {
+      id: '/$locale/q/$id'
+      path: '/q/$id'
+      fullPath: '/$locale/q/$id'
+      preLoaderRoute: typeof LocaleQIdRouteImport
+      parentRoute: typeof LocaleRoute
+    }
+    '/$locale/queue/$token': {
+      id: '/$locale/queue/$token'
+      path: '/queue/$token'
+      fullPath: '/$locale/queue/$token'
+      preLoaderRoute: typeof LocaleQueueTokenRouteImport
       parentRoute: typeof LocaleRoute
     }
     '/$locale/tutorial/activation': {
@@ -732,6 +817,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleDashboardUserOrdersRouteImport
       parentRoute: typeof LocaleDashboardUserRoute
     }
+    '/$locale/dashboard/user/queue': {
+      id: '/$locale/dashboard/user/queue'
+      path: '/queue'
+      fullPath: '/$locale/dashboard/user/queue'
+      preLoaderRoute: typeof LocaleDashboardUserQueueRouteImport
+      parentRoute: typeof LocaleDashboardUserRoute
+    }
+    '/$locale/queue/cashier/$outletId': {
+      id: '/$locale/queue/cashier/$outletId'
+      path: '/queue/cashier/$outletId'
+      fullPath: '/$locale/queue/cashier/$outletId'
+      preLoaderRoute: typeof LocaleQueueCashierOutletIdRouteImport
+      parentRoute: typeof LocaleRoute
+    }
   }
 }
 
@@ -769,6 +868,7 @@ interface LocaleDashboardUserRouteChildren {
   LocaleDashboardUserEditOrderRoute: typeof LocaleDashboardUserEditOrderRoute
   LocaleDashboardUserMembershipRoute: typeof LocaleDashboardUserMembershipRoute
   LocaleDashboardUserOrdersRoute: typeof LocaleDashboardUserOrdersRoute
+  LocaleDashboardUserQueueRoute: typeof LocaleDashboardUserQueueRoute
   LocaleDashboardUserIndexRoute: typeof LocaleDashboardUserIndexRoute
 }
 
@@ -778,6 +878,7 @@ const LocaleDashboardUserRouteChildren: LocaleDashboardUserRouteChildren = {
   LocaleDashboardUserEditOrderRoute: LocaleDashboardUserEditOrderRoute,
   LocaleDashboardUserMembershipRoute: LocaleDashboardUserMembershipRoute,
   LocaleDashboardUserOrdersRoute: LocaleDashboardUserOrdersRoute,
+  LocaleDashboardUserQueueRoute: LocaleDashboardUserQueueRoute,
   LocaleDashboardUserIndexRoute: LocaleDashboardUserIndexRoute,
 }
 
@@ -796,11 +897,14 @@ interface LocaleRouteChildren {
   LocaleMTokenRoute: typeof LocaleMTokenRoute
   LocaleOrdersTokenRoute: typeof LocaleOrdersTokenRoute
   LocalePIdRoute: typeof LocalePIdRoute
+  LocaleQIdRoute: typeof LocaleQIdRoute
+  LocaleQueueTokenRoute: typeof LocaleQueueTokenRoute
   LocaleTutorialActivationRoute: typeof LocaleTutorialActivationRoute
   LocaleTutorialGooglePlaceIdRoute: typeof LocaleTutorialGooglePlaceIdRoute
   LocaleTutorialGoogleReviewRoute: typeof LocaleTutorialGoogleReviewRoute
   LocaleConsultationIndexRoute: typeof LocaleConsultationIndexRoute
   LocaleOrdersIndexRoute: typeof LocaleOrdersIndexRoute
+  LocaleQueueCashierOutletIdRoute: typeof LocaleQueueCashierOutletIdRoute
 }
 
 const LocaleRouteChildren: LocaleRouteChildren = {
@@ -815,11 +919,14 @@ const LocaleRouteChildren: LocaleRouteChildren = {
   LocaleMTokenRoute: LocaleMTokenRoute,
   LocaleOrdersTokenRoute: LocaleOrdersTokenRoute,
   LocalePIdRoute: LocalePIdRoute,
+  LocaleQIdRoute: LocaleQIdRoute,
+  LocaleQueueTokenRoute: LocaleQueueTokenRoute,
   LocaleTutorialActivationRoute: LocaleTutorialActivationRoute,
   LocaleTutorialGooglePlaceIdRoute: LocaleTutorialGooglePlaceIdRoute,
   LocaleTutorialGoogleReviewRoute: LocaleTutorialGoogleReviewRoute,
   LocaleConsultationIndexRoute: LocaleConsultationIndexRoute,
   LocaleOrdersIndexRoute: LocaleOrdersIndexRoute,
+  LocaleQueueCashierOutletIdRoute: LocaleQueueCashierOutletIdRoute,
 }
 
 const LocaleRouteWithChildren =
@@ -828,6 +935,7 @@ const LocaleRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LocaleRoute: LocaleRouteWithChildren,
+  FirebaseMessagingSwDotjsRoute: FirebaseMessagingSwDotjsRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiConsultationsCronRoute: ApiConsultationsCronRoute,

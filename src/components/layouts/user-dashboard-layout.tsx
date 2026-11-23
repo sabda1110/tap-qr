@@ -4,11 +4,11 @@ import type { Language, Messages } from "../../i18n";
 import { DashboardLayout } from "./dashboard-layout";
 import { UserDashboardSidebar } from "../organisms/user-dashboard-sidebar";
 import { UserMobileHeader } from "../organisms/user-mobile-header";
-import { useMembershipNavigation } from "./membership-navigation-context";
+import { useMembershipNavigation, useQueueNavigation } from "./membership-navigation-context";
 import { useI18n } from "../../i18n";
 
 type UserDashboardLayoutProps = {
-  activeItem: "dashboard" | "accountSettings" | "orders" | "membership";
+  activeItem: "dashboard" | "accountSettings" | "orders" | "membership" | "queue";
   children: ReactNode;
   homeLabel: string;
   language: Language;
@@ -25,6 +25,7 @@ export function UserDashboardLayout({
   onSignOut,
 }: UserDashboardLayoutProps) {
   const membershipEnabled = useMembershipNavigation();
+  const queueEnabled = useQueueNavigation();
   const { messages } = useI18n();
   return (
     <DashboardLayout
@@ -38,6 +39,8 @@ export function UserDashboardLayout({
           onSignOut={onSignOut}
           membershipEnabled={membershipEnabled}
           membershipLabel={messages.membership.owner.nav}
+          queueEnabled={queueEnabled}
+          queueLabel={messages.queue.owner.nav}
         />
       }
       mobileHeader={
@@ -49,6 +52,8 @@ export function UserDashboardLayout({
           onSignOut={onSignOut}
           membershipEnabled={membershipEnabled}
           membershipLabel={messages.membership.owner.nav}
+          queueEnabled={queueEnabled}
+          queueLabel={messages.queue.owner.nav}
         />
       }
       content={children}

@@ -1,6 +1,6 @@
 import { ActivationGuideLink } from "../elements/activation-guide-link";
 import { Link } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, Settings, ShoppingBag, Users } from "lucide-react";
+import { LayoutDashboard, ListOrdered, LogOut, Settings, ShoppingBag, Users } from "lucide-react";
 import type { Language, Messages } from "../../i18n";
 import { BrandLogo } from "../elements/brand-logo";
 import { Button } from "../ui/button";
@@ -13,14 +13,18 @@ export function UserMobileHeader({
   onSignOut,
   membershipEnabled,
   membershipLabel,
+  queueEnabled,
+  queueLabel,
 }: {
-  activeItem: "dashboard" | "accountSettings" | "orders" | "membership";
+  activeItem: "dashboard" | "accountSettings" | "orders" | "membership" | "queue";
   content: Messages["userDashboard"]["sidebar"];
   homeLabel: string;
   language: Language;
   onSignOut: () => void;
   membershipEnabled: boolean;
   membershipLabel: string;
+  queueEnabled: boolean;
+  queueLabel: string;
 }) {
   return (
     <header className="sticky top-0 z-40 border-b border-black/8 bg-white px-4 pt-2 pb-3 lg:hidden">
@@ -41,7 +45,7 @@ export function UserMobileHeader({
       </div>
       <nav
         aria-label={content.navigationLabel}
-        className={`mt-2 grid gap-2 ${membershipEnabled ? "grid-cols-4" : "grid-cols-3"}`}
+        className={`mt-2 grid gap-2 ${Number(membershipEnabled) + Number(queueEnabled) + 3 > 4 ? "grid-cols-5" : membershipEnabled || queueEnabled ? "grid-cols-4" : "grid-cols-3"}`}
       >
         {[
           {
@@ -57,6 +61,7 @@ export function UserMobileHeader({
             icon: ShoppingBag,
           },
           ...(membershipEnabled ? [{ key: "membership", label: membershipLabel, to: "/$locale/dashboard/user/membership" as const, icon: Users }] : []),
+          ...(queueEnabled ? [{ key: "queue", label: queueLabel, to: "/$locale/dashboard/user/queue" as const, icon: ListOrdered }] : []),
           {
             key: "accountSettings",
             label: content.accountSettings,
