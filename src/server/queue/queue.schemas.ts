@@ -22,6 +22,7 @@ export const publicQueueTokenSchema = z.object({ token: queueToken });
 export const queuePushTokenSchema = z.object({ ticketToken: queueToken, fcmToken: z.string().trim().min(40).max(4096) });
 export const queueCashierLoginSchema = z.object({ outletId: queueOutletIdSchema, pin: z.string().regex(/^\d{4,6}$/) });
 export const queueCashierOutletSchema = z.object({ outletId: queueOutletIdSchema });
+export const queueCashierPushTokenSchema = queueCashierOutletSchema.extend({ fcmToken: z.string().trim().min(40).max(4096) });
 export const queueCashierPinSchema = z.object({ outletId: queueOutletIdSchema, pin: z.string().regex(/^\d{4,6}$/) });
 export const publicQueueOutletSchema = z.object({ outlet: queueOutletIdSchema });
 export const ownerQueueInputSchema = z.object({

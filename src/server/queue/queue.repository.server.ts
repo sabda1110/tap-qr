@@ -5,6 +5,7 @@ import { queueEn } from "../../i18n/locales/queue-en";
 import { queueId } from "../../i18n/locales/queue-id";
 import { assertOutletOwner } from "../outlets/outlet-ownership";
 import { isQueueAddonActive, queueDateKey } from "./queue-access";
+import { cashierPushTokensQuery, createCashierBookingNotification } from "./queue-cashier-notifications.repository.server";
 import type { AdminQueueAddonValues, OwnerQueueInput, OwnerQueueOpenValues, OwnerQueueStatusValues, PublicQueueJoinValues } from "./queue.schemas";
 import type { PublicQueueTicket, QueueTicketView } from "./queue.types";
 
@@ -64,7 +65,7 @@ async function createTicket(outletId: string, input: Pick<OwnerQueueInput, "name
   const expiresAt = new Date(`${dateKey}T23:59:59.999+07:00`);
   const rateRef = ip ? database.collection("queueRateLimits").doc(digest(`${outletId}:${ip}:${Math.floor(Date.now() / 60_000)}`)) : null;
 
-  const number = await database.runTransaction(async (transaction) => {
+  const created = await database.runTransaction(async (transaction) => {
     const outletRef = database.collection("outlets").doc(outletId);
     const reads = await Promise.all([
       transaction.get(outletRef), transaction.get(counterRef),
@@ -73,6 +74,7 @@ async function createTicket(outletId: string, input: Pick<OwnerQueueInput, "name
     const outlet = reads[0];
     const counter = reads[1];
     const rate = rateRef ? reads[2] : null;
+    const cashierTokens = source === "online" ? await transaction.get(cashierPushTokensQuery(outletId)) : null;
     if (!outlet.exists || outlet.data()?.status !== "active" || !isQueueAddonActive(outlet.data()?.addons?.queue)) throw new Error("QUEUE_NOT_ENABLED");
     if (counter.data()?.isOpen !== true) throw new Error("QUEUE_CLOSED");
     if (rateRef && (rate?.data()?.count ?? 0) >= 10) throw new Error("QUEUE_RATE_LIMITED");
@@ -86,9 +88,15 @@ async function createTicket(outletId: string, input: Pick<OwnerQueueInput, "name
       business_id: outletId, outletId, cardId: null, event: "queue_join", actionType: "queue_join", source: "queue_page", timestamp: FieldValue.serverTimestamp(),
     });
     if (rateRef) transaction.set(rateRef, { count: (rate?.data()?.count ?? 0) + 1, expiresAt });
-    return next;
+    const notificationId = source === "online" && cashierTokens?.size
+      ? createCashierBookingNotification(transaction, {
+        tokens: cashierTokens, outletId, dateKey, ticketId: id, number: next,
+        language: input.language ?? "id",
+      })
+      : null;
+    return { number: next, notificationId };
   });
-  return { number, token: publicToken, dateKey };
+  return { ...created, token: publicToken, dateKey };
 }
 
 export async function joinPublicQueue(input: PublicQueueJoinValues, ip: string) {
@@ -161,7 +169,8 @@ async function assertOutletOwnerAccess(ownerId: string, outletId: string) {
 
 export async function addOwnerWalkIn(ownerId: string, input: OwnerQueueInput) {
   await assertOutletOwnerAccess(ownerId, input.outletId);
-  return createTicket(input.outletId, input, "walk_in");
+  const created = await createTicket(input.outletId, input, "walk_in");
+  return { number: created.number, token: created.token, dateKey: created.dateKey };
 }
 
 const transitions: Record<string, string[]> = {

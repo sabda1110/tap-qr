@@ -3,7 +3,7 @@ import { createClientOnlyFn } from "@tanstack/react-start";
 import { useRouter } from "@tanstack/react-router";
 import { useI18n } from "../../i18n";
 import type { PublicQueueTicket } from "../../server/queue/queue.types";
-import { getQueueTicket, joinQueue } from "../../server/queue/queue.functions";
+import { getQueueOutlet, getQueueTicket, joinQueue } from "../../server/queue/queue.functions";
 import { registerQueuePushToken } from "../../server/queue/queue.functions";
 import { QueuePhoneField } from "../molecules/queue-phone-field";
 import { Button } from "../ui/button";
