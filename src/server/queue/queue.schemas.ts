@@ -3,6 +3,7 @@ import { z } from "zod";
 export const queueOutletIdSchema = z.string().trim().min(1).max(150).refine((value) => !value.includes("/"));
 const queueName = z.string().trim().min(1).max(40);
 const queueService = z.string().trim().min(2).max(60);
+const queuePhone = z.string().trim().regex(/^8\d{7,11}$/, "QUEUE_PHONE_INVALID").transform((phone) => `62${phone}`);
 const queueToken = z.string().regex(/^[A-Za-z0-9_-]{40,60}$/);
 
 export const adminQueueAddonSchema = z.object({
@@ -14,6 +15,7 @@ export const publicQueueJoinSchema = z.object({
   outlet: queueOutletIdSchema,
   name: queueName,
   service: queueService,
+  phone: queuePhone,
   language: z.enum(["id", "en"]),
 });
 export const publicQueueTokenSchema = z.object({ token: queueToken });
@@ -26,6 +28,7 @@ export const ownerQueueInputSchema = z.object({
   outletId: queueOutletIdSchema,
   name: queueName,
   service: queueService,
+  phone: queuePhone,
 });
 export const ownerQueueReadSchema = z.object({ outletId: queueOutletIdSchema });
 export const ownerQueueOpenSchema = z.object({ outletId: queueOutletIdSchema, isOpen: z.boolean() });

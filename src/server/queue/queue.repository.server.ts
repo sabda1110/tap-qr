@@ -50,7 +50,7 @@ export async function updateAdminQueueAddon(input: AdminQueueAddonValues) {
   });
 }
 
-async function createTicket(outletId: string, input: Pick<OwnerQueueInput, "name" | "service"> & { language?: "id" | "en" }, source: "online" | "walk_in", ip?: string) {
+async function createTicket(outletId: string, input: Pick<OwnerQueueInput, "name" | "service" | "phone"> & { language?: "id" | "en" }, source: "online" | "walk_in", ip?: string) {
   const database = getFirebaseAdminFirestore();
   const dateKey = queueDateKey();
   const counterRef = dayRef(outletId, dateKey);
@@ -77,7 +77,7 @@ async function createTicket(outletId: string, input: Pick<OwnerQueueInput, "name
     if (rateRef && (rate?.data()?.count ?? 0) >= 10) throw new Error("QUEUE_RATE_LIMITED");
     const next = Number(counter.data()?.lastNumber ?? 0) + 1;
     transaction.set(counterRef, { dateKey, lastNumber: next, updatedAt: now }, { merge: true });
-    transaction.create(ticketRef, { number: next, name: input.name, service: input.service, language: input.language ?? "id", status: "waiting", source,
+    transaction.create(ticketRef, { number: next, name: input.name, service: input.service, phone: input.phone, language: input.language ?? "id", status: "waiting", source,
       createdAt: now, updatedAt: now, tokenHash, expiresAt });
     transaction.create(tokenRef, { outletId, dateKey, ticketId: id, expiresAt });
     transaction.create(ticketRef.collection("queueEvents").doc(), { event: "joined", source, timestamp: now, expiresAt });
@@ -128,7 +128,7 @@ export async function listOwnerQueue(ownerId: string, outletId: string) {
   const snapshot = await dayRef(outletId, dateKey).collection("tickets").orderBy("number").limit(300).get();
   const tickets: QueueTicketView[] = snapshot.docs.map((document) => {
     const value = document.data();
-    return { id: document.id, number: value.number, name: value.name, service: value.service,
+    return { id: document.id, number: value.number, name: value.name, service: value.service, phone: typeof value.phone === "string" ? value.phone : undefined,
       status: value.status, createdAt: value.createdAt, source: value.source };
   });
   return { dateKey, tickets, isOpen: day.data()?.isOpen === true };

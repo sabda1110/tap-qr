@@ -5,6 +5,7 @@ import { useI18n } from "../../i18n";
 import type { PublicQueueTicket } from "../../server/queue/queue.types";
 import { getQueueTicket, joinQueue } from "../../server/queue/queue.functions";
 import { registerQueuePushToken } from "../../server/queue/queue.functions";
+import { QueuePhoneField } from "../molecules/queue-phone-field";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
@@ -28,7 +29,7 @@ export function PublicQueuePage({ outlet }: { outlet: OutletInfo }) {
     const form = new FormData(event.currentTarget);
     setBusy(true); setError(false);
     try {
-      const result = await joinQueue({ data: { outlet: outlet.slug, name: String(form.get("name")), service: String(form.get("service")), language } });
+      const result = await joinQueue({ data: { outlet: outlet.slug, name: String(form.get("name")), service: String(form.get("service")), phone: String(form.get("phone")), language } });
       await router.navigate({ to: "/$locale/queue/$token", params: { locale: language, token: result.token } });
     } catch { setError(true); }
     finally { setBusy(false); }
@@ -38,7 +39,7 @@ export function PublicQueuePage({ outlet }: { outlet: OutletInfo }) {
   if (!outlet.isOpen) return <PublicQueueFrame><p className="text-xs font-black uppercase tracking-[.15em] text-[#087e91]">{outlet.name}</p><h1 className="mt-2 text-2xl font-black">{copy.closed}</h1><p className="mt-3 text-sm leading-6">{copy.closedHelp}</p></PublicQueueFrame>;
 
   return <PublicQueueFrame><p className="text-xs font-black uppercase tracking-[.15em] text-[#087e91]">{outlet.name}</p><h1 className="mt-2 text-3xl font-black">{copy.title}</h1><p className="mt-3 text-sm leading-6 text-[#58606b]">{copy.description}</p>
-    <form onSubmit={submit} className="mt-6 grid gap-4"><label className="text-sm font-bold">{copy.name}<Input name="name" required maxLength={40} autoComplete="name" placeholder={copy.namePlaceholder} className="mt-2 min-h-12" /></label><label className="text-sm font-bold">{copy.service}<Input name="service" required minLength={2} maxLength={60} placeholder={copy.servicePlaceholder} className="mt-2 min-h-12" /></label>{error && <p role="alert" className="text-sm font-semibold text-red-700">{copy.error}</p>}<Button disabled={busy} className="min-h-12 w-full">{busy ? copy.submitting : copy.submit}</Button><p className="text-center text-xs text-[#69737d]">{copy.privacy}</p></form>
+    <form onSubmit={submit} className="mt-6 grid gap-4"><label className="text-sm font-bold">{copy.name}<Input name="name" required maxLength={40} autoComplete="name" placeholder={copy.namePlaceholder} className="mt-2 min-h-12" /></label><label className="text-sm font-bold">{copy.service}<Input name="service" required minLength={2} maxLength={60} placeholder={copy.servicePlaceholder} className="mt-2 min-h-12" /></label><QueuePhoneField name="phone" label={copy.phone} placeholder={copy.phonePlaceholder} help={copy.phoneHelp} warning={copy.phoneLeadingZeroWarning} />{error && <p role="alert" className="text-sm font-semibold text-red-700">{copy.error}</p>}<Button type="submit" disabled={busy} className="min-h-12 w-full">{busy ? copy.submitting : copy.submit}</Button><p className="text-center text-xs text-[#69737d]">{copy.privacy}</p></form>
   </PublicQueueFrame>;
 }
 

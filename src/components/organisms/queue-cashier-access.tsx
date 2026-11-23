@@ -37,14 +37,17 @@ export function QueueCashierAccess({ outletId, pinConfigured }: { outletId: stri
     catch { showToast(copy.error, "error"); }
   }
 
-  return <section className="mt-5 rounded-2xl border border-black/10 bg-white p-4 sm:p-5">
-    <h2 className="font-bold">{copy.cashierAccess}</h2><p className="mt-1 text-sm leading-6 text-[#69737d]">{copy.pinHelp}</p>
-    <p className="mt-3 text-xs font-bold text-[#58606b]">{configured ? copy.pinConfigured : copy.pinNotConfigured}</p>
-    <form onSubmit={submit} className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
-      <label className="text-sm font-semibold">{copy.newPin}<Input className="mt-2" name="pin" type="password" inputMode="numeric" autoComplete="new-password" minLength={4} maxLength={6} pattern="[0-9]{4,6}" required /></label>
-      <label className="text-sm font-semibold">{copy.confirmPin}<Input className="mt-2" name="confirmPin" type="password" inputMode="numeric" autoComplete="new-password" minLength={4} maxLength={6} pattern="[0-9]{4,6}" required /></label>
-      <Button type="submit" disabled={busy} className="min-h-11">{busy ? copy.adding : copy.savePin}</Button>
-    </form>
-    {configured && <div className="mt-4 flex flex-wrap gap-2"><Link to="/$locale/queue/cashier/$outletId" params={{ locale: language, outletId }} target="_blank" className="inline-flex min-h-11 items-center rounded-lg bg-[#171b22] px-4 text-sm font-bold text-white no-underline">{copy.openCashier}</Link><Button type="button" variant="outline" onClick={() => void copyLink()}>{copy.copyCashier}</Button></div>}
-  </section>;
+  return <form onSubmit={submit} className="rounded-2xl border border-black/10 bg-white p-5">
+    <div className="flex flex-wrap items-center justify-between gap-2">
+      <h2 className="font-bold">{copy.pinTitle}</h2>
+      <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${configured ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-900"}`}>
+        {configured ? copy.pinConfigured : copy.pinNotConfigured}
+      </span>
+    </div>
+    <p className="mt-2 text-xs leading-5 text-[#69737d]">{copy.pinHelp}</p>
+    <Input className="mt-3" name="pin" aria-label={copy.newPin} type="password" inputMode="numeric" autoComplete="new-password" minLength={4} maxLength={6} pattern="[0-9]{4,6}" placeholder={copy.newPin} required disabled={busy} />
+    <Input className="mt-3" name="confirmPin" aria-label={copy.confirmPin} type="password" inputMode="numeric" autoComplete="new-password" minLength={4} maxLength={6} pattern="[0-9]{4,6}" placeholder={copy.confirmPin} required disabled={busy} />
+    <Button type="submit" variant="warning" disabled={busy} className="mt-3 min-h-11 w-full">{busy ? copy.savingPin : copy.savePin}</Button>
+    {configured && <div className="mt-3 grid gap-2 sm:grid-cols-2"><Link to="/$locale/queue/cashier/$outletId" params={{ locale: language, outletId }} target="_blank" className="flex min-h-11 items-center justify-center rounded-lg border border-black/10 px-3 text-center text-sm font-bold">{copy.openCashier}</Link><Button type="button" variant="outline" className="min-h-11" onClick={() => void copyLink()}>{copy.copyCashier}</Button></div>}
+  </form>;
 }
