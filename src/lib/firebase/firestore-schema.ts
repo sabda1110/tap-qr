@@ -29,6 +29,7 @@ export type OutletQueueAddon = {
   enabled: boolean;
   activatedAt: string;
   expiresAt?: string | null;
+  stationCount?: number;
   cashierPinSalt?: string;
   cashierPinHash?: string;
   cashierSessionVersion?: number;

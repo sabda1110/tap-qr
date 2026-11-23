@@ -22,6 +22,7 @@ export const publicQueueTokenSchema = z.object({ token: queueToken });
 export const queuePushTokenSchema = z.object({ ticketToken: queueToken, fcmToken: z.string().trim().min(40).max(4096) });
 export const queueCashierLoginSchema = z.object({ outletId: queueOutletIdSchema, pin: z.string().regex(/^\d{4,6}$/) });
 export const queueCashierOutletSchema = z.object({ outletId: queueOutletIdSchema });
+export const queueStationCountSchema = z.object({ outletId: queueOutletIdSchema, stationCount: z.number().int().min(1).max(20) });
 export const queueCashierPushTokenSchema = queueCashierOutletSchema.extend({ fcmToken: z.string().trim().min(40).max(4096) });
 export const queueCashierPinSchema = z.object({ outletId: queueOutletIdSchema, pin: z.string().regex(/^\d{4,6}$/) });
 export const publicQueueOutletSchema = z.object({ outlet: queueOutletIdSchema });
@@ -38,6 +39,10 @@ export const ownerQueueStatusSchema = z.object({
   dateKey: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   ticketId: z.string().regex(/^[a-f0-9]{32}$/),
   status: z.enum(["called", "serving", "completed", "no_show", "cancelled", "waiting"]),
+  stationNumber: z.number().int().min(1).max(20).optional(),
+}).refine((input) => input.status !== "serving" || input.stationNumber !== undefined, {
+  message: "QUEUE_STATION_REQUIRED",
+  path: ["stationNumber"],
 });
 
 export type QueueStatus = z.infer<typeof ownerQueueStatusSchema>["status"];

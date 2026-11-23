@@ -2,8 +2,9 @@ import { randomBytes } from "node:crypto";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestIP } from "@tanstack/react-start/server";
 import { requireAdmin, requireOwner } from "../auth/authorization.server";
-import { adminQueueAddonSchema, ownerQueueInputSchema, ownerQueueOpenSchema, ownerQueueReadSchema, ownerQueueStatusSchema, publicQueueJoinSchema, publicQueueOutletSchema, publicQueueTokenSchema, queueCashierLoginSchema, queueCashierOutletSchema, queueCashierPinSchema, queueCashierPushTokenSchema, queuePushTokenSchema } from "./queue.schemas";
-import { addOwnerWalkIn, consumeQueuePinAttempt, getPublicQueueOutlet, getPublicQueueTicket, getQueueCashierAccess, getQueueDayRevision, joinPublicQueue, listOwnerQueue, registerPublicQueuePushToken, setOwnerQueueOpen, setOwnerQueueStatus, updateAdminQueueAddon, updateOwnerQueueCashierPin } from "./queue.repository.server";
+import { adminQueueAddonSchema, ownerQueueInputSchema, ownerQueueOpenSchema, ownerQueueReadSchema, ownerQueueStatusSchema, publicQueueJoinSchema, publicQueueOutletSchema, publicQueueTokenSchema, queueCashierLoginSchema, queueCashierOutletSchema, queueCashierPinSchema, queueCashierPushTokenSchema, queuePushTokenSchema, queueStationCountSchema } from "./queue.schemas";
+import { addOwnerWalkIn, consumeQueuePinAttempt, getPublicQueueOutlet, getPublicQueueTicket, getQueueCashierAccess, getQueueDayRevision, joinPublicQueue, listOwnerQueue, registerPublicQueuePushToken, setOwnerQueueOpen, updateAdminQueueAddon, updateOwnerQueueCashierPin } from "./queue.repository.server";
+import { setOwnerQueueStatus, updateOwnerQueueStationCount } from "./queue-status.repository.server";
 import { deleteCashierPushToken, saveCashierPushToken } from "./queue-cashier-notifications.repository.server";
 import { clearQueueCashierSession, requireQueueCashierSession, setQueueCashierSession } from "./queue-cashier-security.server";
 import { hashCashierPin, hashValue, safeEqual } from "../membership/membership-security.server";
@@ -42,6 +43,11 @@ export const getOwnerQueue = createServerFn({ method: "GET" })
 export const setOwnerQueueAvailability = createServerFn({ method: "POST" })
   .validator(ownerQueueOpenSchema)
   .handler(async ({ data }) => { const owner = await requireOwner(); await setOwnerQueueOpen(owner.uid, data); });
+
+export const setQueueStationCount = createServerFn({ method: "POST" }).validator(queueStationCountSchema).handler(async ({ data }) => {
+  const owner = await requireOwner();
+  await updateOwnerQueueStationCount(owner.uid, data.outletId, data.stationCount);
+});
 
 export const addOwnerWalkInToQueue = createServerFn({ method: "POST" })
   .validator(ownerQueueInputSchema)

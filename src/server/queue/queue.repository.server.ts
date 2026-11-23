@@ -6,16 +6,16 @@ import { queueId } from "../../i18n/locales/queue-id";
 import { assertOutletOwner } from "../outlets/outlet-ownership";
 import { isQueueAddonActive, queueDateKey } from "./queue-access";
 import { cashierPushTokensQuery, createCashierBookingNotification } from "./queue-cashier-notifications.repository.server";
-import type { AdminQueueAddonValues, OwnerQueueInput, OwnerQueueOpenValues, OwnerQueueStatusValues, PublicQueueJoinValues } from "./queue.schemas";
+import type { AdminQueueAddonValues, OwnerQueueInput, OwnerQueueOpenValues, PublicQueueJoinValues } from "./queue.schemas";
 import type { PublicQueueTicket, QueueTicketView } from "./queue.types";
 
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 const token = () => randomBytes(32).toString("base64url");
 const ticketId = () => randomBytes(16).toString("hex");
-const dayRef = (outletId: string, dateKey: string) => getFirebaseAdminFirestore()
+export const dayRef = (outletId: string, dateKey: string) => getFirebaseAdminFirestore()
   .collection("outlets").doc(outletId).collection("queueDays").doc(dateKey);
 const queueRevision = (dateKey: string, day?: { revision?: unknown; isOpen?: unknown }) => `${dateKey}:${Number(day?.revision ?? 0)}:${day?.isOpen === true ? 1 : 0}`;
-const notificationCopy = (language: unknown, number: number) => {
+export const notificationCopy = (language: unknown, number: number) => {
   const copy = language === "en" ? queueEn.public : queueId.public;
   return { title: copy.notificationTitle, body: copy.notificationBody.replace("{number}", String(number)) };
 };
@@ -28,7 +28,7 @@ async function findOutlet(value: string) {
   return matches.empty ? null : matches.docs[0];
 }
 
-async function assertQueueOutlet(outletId: string) {
+export async function assertQueueOutlet(outletId: string) {
   const outlet = await getFirebaseAdminFirestore().collection("outlets").doc(outletId).get();
   if (!outlet.exists || outlet.data()?.status !== "active" || !isQueueAddonActive(outlet.data()?.addons?.queue)) {
     throw new Error("QUEUE_NOT_ENABLED");
@@ -45,6 +45,7 @@ export async function updateAdminQueueAddon(input: AdminQueueAddonValues) {
     const current = snapshot.data()?.addons?.queue;
     transaction.update(reference, {
       "addons.queue": { enabled: input.enabled, activatedAt: current?.activatedAt ?? new Date().toISOString(), expiresAt: input.expiresAt,
+        stationCount: Math.max(1, Math.min(20, Number(current?.stationCount ?? 3))),
         cashierPinSalt: current?.cashierPinSalt ?? "", cashierPinHash: current?.cashierPinHash ?? "",
         cashierSessionVersion: (current?.cashierSessionVersion ?? 0) + (current?.enabled && !input.enabled ? 1 : 0) },
       updatedAt: FieldValue.serverTimestamp(),
@@ -131,16 +132,18 @@ export async function getPublicQueueTicket(rawToken: string): Promise<PublicQueu
 
 export async function listOwnerQueue(ownerId: string, outletId: string) {
   await assertOutletOwnerAccess(ownerId, outletId);
-  await assertQueueOutlet(outletId);
+  const outlet = await assertQueueOutlet(outletId);
+  const stationCount = Math.max(1, Math.min(20, Number(outlet.data()?.addons?.queue?.stationCount ?? 3)));
   const dateKey = queueDateKey();
   const day = await dayRef(outletId, dateKey).get();
-  const snapshot = await dayRef(outletId, dateKey).collection("tickets").orderBy("number").limit(300).get();
+  const snapshot = await dayRef(outletId, dateKey).collection("tickets").orderBy("number", "desc").limit(300).get();
   const tickets: QueueTicketView[] = snapshot.docs.map((document) => {
     const value = document.data();
     return { id: document.id, number: value.number, name: value.name, service: value.service, phone: typeof value.phone === "string" ? value.phone : undefined,
-      status: value.status, createdAt: value.createdAt, source: value.source };
+      status: value.status, stationNumber: typeof value.stationNumber === "number" ? value.stationNumber : undefined,
+      createdAt: value.createdAt, source: value.source };
   });
-  return { dateKey, tickets, isOpen: day.data()?.isOpen === true, revision: queueRevision(dateKey, day.data()) };
+  return { dateKey, tickets, stationCount, isOpen: day.data()?.isOpen === true, revision: queueRevision(dateKey, day.data()) };
 }
 
 export async function getQueueDayRevision(outletId: string) {
@@ -161,7 +164,7 @@ export async function setOwnerQueueOpen(ownerId: string, input: OwnerQueueOpenVa
   });
 }
 
-async function assertOutletOwnerAccess(ownerId: string, outletId: string) {
+export async function assertOutletOwnerAccess(ownerId: string, outletId: string) {
   const outlet = await getFirebaseAdminFirestore().collection("outlets").doc(outletId).get();
   assertOutletOwner(outlet.data()?.ownerId, ownerId);
   if (!outlet.exists) throw new Error("OUTLET_NOT_FOUND");
@@ -171,47 +174,6 @@ export async function addOwnerWalkIn(ownerId: string, input: OwnerQueueInput) {
   await assertOutletOwnerAccess(ownerId, input.outletId);
   const created = await createTicket(input.outletId, input, "walk_in");
   return { number: created.number, token: created.token, dateKey: created.dateKey };
-}
-
-const transitions: Record<string, string[]> = {
-  waiting: ["called", "cancelled", "no_show"],
-  called: ["serving", "waiting", "cancelled", "no_show"],
-  serving: ["completed", "cancelled"],
-};
-
-export async function setOwnerQueueStatus(ownerId: string, input: OwnerQueueStatusValues) {
-  await assertOutletOwnerAccess(ownerId, input.outletId);
-  const outlet = await assertQueueOutlet(input.outletId);
-  if (input.dateKey !== queueDateKey()) throw new Error("QUEUE_DAY_EXPIRED");
-  const database = getFirebaseAdminFirestore();
-  const reference = dayRef(input.outletId, input.dateKey).collection("tickets").doc(input.ticketId);
-  const dayReference = dayRef(input.outletId, input.dateKey);
-  const notificationId = randomUUID();
-  return database.runTransaction(async (transaction) => {
-    const [snapshot, day] = await Promise.all([transaction.get(reference), transaction.get(dayReference)]);
-    if (!snapshot.exists) throw new Error("QUEUE_TICKET_NOT_FOUND");
-    const current = snapshot.data()?.status as string;
-    if (!transitions[current]?.includes(input.status)) throw new Error("QUEUE_STATUS_INVALID");
-    const pushTokens = input.status === "called" ? await transaction.get(reference.collection("pushTokens")) : null;
-    const now = new Date().toISOString();
-    transaction.update(reference, { status: input.status, updatedAt: now });
-    transaction.set(dayReference, { dateKey: input.dateKey, revision: Number(day.data()?.revision ?? 0) + 1, updatedAt: now }, { merge: true });
-    transaction.create(reference.collection("queueEvents").doc(), { event: input.status, actor: "owner", actorUid: ownerId, timestamp: now,
-      expiresAt: new Date(`${input.dateKey}T23:59:59.999+07:00`) });
-    if (input.status === "called" && pushTokens?.size) {
-      const ticket = snapshot.data()!;
-      const language = ticket.language === "en" ? "en" : "id";
-      const messages = notificationCopy(language, Number(ticket.number));
-      const profileUrl = `/${language}/p/${String(outlet.data()?.slug ?? input.outletId)}`;
-      transaction.create(database.collection("queueNotifications").doc(notificationId), {
-        ticketId: input.ticketId, outletId: input.outletId, dateKey: input.dateKey,
-        tokens: pushTokens.docs.slice(0, 10).map((document) => document.data().token),
-        title: messages.title, body: messages.body, url: profileUrl, status: "pending", attempts: 0,
-        createdAt: now, expiresAt: new Date(`${input.dateKey}T23:59:59.999+07:00`),
-      });
-    }
-    return input.status === "called" && pushTokens?.size ? notificationId : null;
-  });
 }
 
 export async function registerPublicQueuePushToken(ticketToken: string, fcmToken: string) {

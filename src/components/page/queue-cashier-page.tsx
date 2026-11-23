@@ -6,6 +6,7 @@ import { addQueueCashierWalkIn, getQueueCashier, getQueueCashierRevision, loginQ
 import type { QueueStatus } from "../../server/queue/queue.schemas";
 import type { QueueTicketView } from "../../server/queue/queue.types";
 import { QueuePhoneField } from "../molecules/queue-phone-field";
+import { QueueStationBoard } from "../organisms/queue-station-board";
 import { QueueTicketRow } from "../organisms/queue-ticket-row";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -53,10 +54,12 @@ function QueueCashierContent({ outletId, initialName, initialQueue }: { outletId
   const seenTicketIds = useRef(new Set(initialQueue?.tickets.map((ticket) => ticket.id) ?? []));
 
   const updateQueueData = useCallback((queue: QueueData, announceNew = false) => {
-    const newBookings = queue?.tickets.filter((ticket) => ticket.source === "online" && !seenTicketIds.current.has(ticket.id)) ?? [];
-    if (announceNew && newBookings.length) {
-      const newest = newBookings[newBookings.length - 1];
-      showToast(copy.newTicketToast.replace("{number}", String(newest.number)), "info");
+    const newTickets = queue?.tickets.filter((ticket) => !seenTicketIds.current.has(ticket.id)) ?? [];
+    if (announceNew && newTickets.length) {
+      const newest = newTickets[0];
+      const message = copy.newTicketToast.replace("{number}", String(newest.number))
+        .replace("{name}", newest.name).replace("{service}", newest.service);
+      showToast(message, "info");
     }
     seenTicketIds.current = new Set(queue?.tickets.map((ticket) => ticket.id) ?? []);
     setData(queue);
@@ -170,7 +173,7 @@ function QueueCashierContent({ outletId, initialName, initialQueue }: { outletId
     try {
       const values = new FormData(form);
       await addQueueCashierWalkIn({ data: { outletId, name: String(values.get("name")), service: String(values.get("service")), phone: String(values.get("phone")) } });
-      form.reset(); showToast(ownerCopy.added, "success"); await refresh(true);
+      form.reset(); showToast(ownerCopy.added, "success"); await refresh();
     } catch { showToast(ownerCopy.error, "error"); }
     finally { setBusy(false); }
   }
@@ -185,11 +188,11 @@ function QueueCashierContent({ outletId, initialName, initialQueue }: { outletId
     finally { setBusy(false); }
   }
 
-  async function changeStatus(ticket: QueueTicketView, status: QueueStatus) {
+  async function changeStatus(ticket: QueueTicketView, status: QueueStatus, stationNumber?: number) {
     if (!data) return;
     setBusy(true);
     try {
-      await updateQueueCashierTicket({ data: { outletId, dateKey: data.dateKey, ticketId: ticket.id, status } });
+      await updateQueueCashierTicket({ data: { outletId, dateKey: data.dateKey, ticketId: ticket.id, status, stationNumber } });
       showToast(ownerCopy.updated, "success"); await refresh(true);
     } catch { showToast(ownerCopy.error, "error"); }
     finally { setBusy(false); }
@@ -212,8 +215,11 @@ function QueueCashierContent({ outletId, initialName, initialQueue }: { outletId
   if (!outletName) return <main className="grid min-h-dvh place-items-center bg-[#fff4a8] p-4"><form onSubmit={login} className="w-full max-w-sm border-4 border-black bg-white p-6 shadow-[7px_7px_0_#000]"><p className="text-xs font-black uppercase tracking-[.15em] text-[#087e91]">TapQR</p><h1 className="mt-2 text-2xl font-black">{copy.title}</h1><label className="mt-5 block text-sm font-bold">{copy.pinTitle}<Input name="pin" type="password" inputMode="numeric" pattern="[0-9]{4,6}" minLength={4} maxLength={6} required className="mt-2 min-h-12" placeholder={copy.pin} /></label>{error && <p role="alert" className="mt-3 text-sm font-semibold text-red-700">{error === "locked" ? copy.locked : copy.invalidPin}</p>}<Button type="submit" disabled={busy} className="mt-4 min-h-12 w-full">{busy ? copy.pinTitle : copy.login}</Button></form></main>;
 
   const statusLabel: Record<QueueStatus, string> = { waiting: ownerCopy.waiting, called: ownerCopy.called, serving: ownerCopy.serving, completed: ownerCopy.completed, no_show: ownerCopy.no_show, cancelled: ownerCopy.cancelled };
-  const latestTicket = data?.tickets[data.tickets.length - 1];
+  const latestTicket = data?.tickets[0];
   const waitingCount = data?.tickets.filter((ticket) => ticket.status === "waiting").length ?? 0;
+  const stationCount = data?.stationCount ?? 3;
+  const occupiedStations = new Set(data?.tickets.flatMap((ticket) => ticket.status === "serving" && ticket.stationNumber ? [ticket.stationNumber] : []) ?? []);
+  const availableStations = Array.from({ length: stationCount }, (_, index) => index + 1).filter((number) => !occupiedStations.has(number));
   const notificationMessage = notificationsRegistered ? copy.notificationActive
     : permission === "denied" ? copy.notificationDenied
       : permission === "unsupported" ? copy.notificationUnsupported
@@ -238,17 +244,14 @@ function QueueCashierContent({ outletId, initialName, initialQueue }: { outletId
 
     <div className="mt-4 flex flex-wrap items-center gap-3"><Button type="button" onClick={() => void toggleQueue()} disabled={busy}>{data?.isOpen ? ownerCopy.close : ownerCopy.open}</Button><Button type="button" variant="outline" disabled={busy} onClick={() => void refresh(true)}>{ownerCopy.refresh}</Button><p className="text-xs text-[#69737d]">{copy.autoRefresh}</p><p className="w-full text-xs text-[#69737d]">{ownerCopy.closeHelp}</p></div>
 
-    <div className="mt-5 grid gap-3 sm:grid-cols-[0.7fr_1.3fr]">
-      <section className="rounded-2xl border border-black/10 bg-[#fff4a8] p-5"><p className="text-xs font-black uppercase tracking-[.12em] text-[#58606b]">{ownerCopy.waiting}</p><p className="mt-1 text-4xl font-black tabular-nums">{waitingCount}</p></section>
-      <section className="rounded-2xl border border-black/10 bg-white p-5" aria-live="polite"><p className="text-xs font-black uppercase tracking-[.12em] text-[#087e91]">{copy.latestTicket}</p>{latestTicket ? <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1"><span className="rounded-lg bg-[#ffb332] px-2.5 py-1 text-lg font-black">#{latestTicket.number}</span><span className="font-bold">{latestTicket.name}</span><span className="text-sm text-[#58606b]">· {latestTicket.service}</span><span className="text-xs text-[#69737d]">· {latestTicket.source === "online" ? ownerCopy.sourceOnline : ownerCopy.sourceWalkIn}</span></div> : <p className="mt-2 text-sm text-[#69737d]">{copy.noTicketsToday}</p>}</section>
-    </div>
+    <QueueStationBoard stationCount={stationCount} tickets={data?.tickets ?? []} ownerCopy={ownerCopy} cashierCopy={copy} statusLabel={statusLabel} />
 
     <form onSubmit={addWalkIn} className="mt-5 grid gap-3 rounded-2xl border border-black/10 bg-white p-5"><h2 className="font-bold">{ownerCopy.walkInTitle}</h2><label className="text-sm font-bold">{ownerCopy.name}<Input name="name" required maxLength={40} placeholder={ownerCopy.namePlaceholder} className="mt-2" /></label><label className="text-sm font-bold">{ownerCopy.service}<Input name="service" required maxLength={60} placeholder={ownerCopy.servicePlaceholder} className="mt-2" /></label><QueuePhoneField name="phone" label={ownerCopy.phone} placeholder={ownerCopy.phonePlaceholder} help={ownerCopy.phoneHelp} warning={ownerCopy.phoneLeadingZeroWarning} /><Button type="submit" disabled={busy || !data?.isOpen} className="min-h-11 w-full">{busy ? ownerCopy.adding : ownerCopy.addWalkIn}</Button></form>
 
     <section className="mt-5 overflow-hidden rounded-2xl border border-black/10 bg-white">
       <div className="max-h-[60vh] overflow-y-auto overscroll-contain" aria-live="polite">
         <header className="sticky top-0 z-10 border-b border-black/10 bg-white/95 px-4 py-3 backdrop-blur"><div className="flex items-center justify-between gap-2"><h2 className="font-bold">{ownerCopy.queueList}</h2><span className="text-xs font-semibold text-[#69737d]">{waitingCount} {ownerCopy.waiting.toLowerCase()}</span></div>{latestTicket && <p className="mt-1 truncate text-xs text-[#58606b]">{copy.latestTicket}: <strong>#{latestTicket.number} · {latestTicket.name}</strong> — {latestTicket.service}</p>}</header>
-        {data?.tickets.length ? data.tickets.map((ticket) => <QueueTicketRow key={ticket.id} ticket={ticket} label={statusLabel[ticket.status]} sourceLabel={ticket.source === "online" ? ownerCopy.sourceOnline : ownerCopy.sourceWalkIn} copy={ownerCopy} busy={busy} onStatus={(status) => void changeStatus(ticket, status)} />) : <p className="p-8 text-center text-sm text-[#69737d]">{ownerCopy.empty}</p>}
+        {data?.tickets.length ? data.tickets.map((ticket) => <QueueTicketRow key={ticket.id} ticket={ticket} label={statusLabel[ticket.status]} sourceLabel={ticket.source === "online" ? ownerCopy.sourceOnline : ownerCopy.sourceWalkIn} copy={ownerCopy} busy={busy} availableStations={availableStations} onStatus={(status, stationNumber) => void changeStatus(ticket, status, stationNumber)} />) : <p className="p-8 text-center text-sm text-[#69737d]">{ownerCopy.empty}</p>}
       </div>
     </section>
   </div></main>;

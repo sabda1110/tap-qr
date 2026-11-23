@@ -7,6 +7,7 @@ export type QueueTicketView = {
   service: string;
   phone?: string;
   status: QueueStatus;
+  stationNumber?: number;
   createdAt: string;
   source: "online" | "walk_in";
 };
